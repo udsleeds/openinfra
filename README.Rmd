@@ -22,7 +22,7 @@ bbt_write_bib(path = "references.bib", keys = bbt_detect_citations("README.Rmd")
 ```
 
 
-# Origin-destination Jittering: A computationally efficient method for generating realistic route networks from origin-destination data 
+# Open Infrastructure Data
 
 <!-- badges: start -->
 [![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
@@ -30,61 +30,6 @@ bbt_write_bib(path = "references.bib", keys = bbt_detect_citations("README.Rmd")
 
 Origin-destination (OD) datasets are ubiquitous for representing travel behavior in transport planning and modelling.
 Despite emerging large data sources, OD data continues to play an established --- if not central --- role in transport research in the 21^st^ century, with recent applications ranging from analysis of the evolution of urban activity and shared mobility services over time [e.g. @shi_exploring_2019; @li_effects_2019] to inference of congestion and mode split [@bachir_inferring_2019; @gao_method_2021]. 
-Perhaps in part because they are so well established, there has been little research in recent years on new methods for processing OD datasets to add value and insight, notwithstanding notable exceptions for OD dataset validation [@alexander_validation_2015], aggregation [@he_simple_2018; @liu_snn_2021] and disaggregation [@katranji_mobility_2016].
-
-Before 
-consist of records that report at least three things:
-
-- A point of
-
-# Research question and hypothesis
-
-
-
-# Methods and data
-
-
-## A synthetic example: synthetic zones
-
-
-## Real world example: Edinburgh
-
-```{r}
-u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/od_iz_ed.Rds"
-f = basename(u)
-if(!file.exists(f)) download.file(u, f)
-od = readRDS("od_iz_ed.Rds")
-head(od)
-
-u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/iz_zones11_ed.Rds"
-f = basename(u)
-if(!file.exists(f)) download.file(u, f)
-zones = readRDS("od_iz_ed.Rds")
-head(zones)
-
-u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/iz_cents11_ed.Rds"
-f = basename(u)
-if(!file.exists(f)) download.file(u, f)
-centroids = readRDS(f)
-head(centroids)
-
-
-```
-
-```{r overview}
-plot(centroids)
-```
-
-
-
-
-# Findings
-
-We found that re-sampling origin and start points during the conversion of tabular OD datasets to their representation as geographic 'desire lines' can be undertaken in a variety of ways, including simple random sampling, sampling nodes on transport networks and simulating origin and destination points in polygons representing building.
-Building on the established practice of jittering in data visualisation [@ref], we label this group of techniques 'origin-destination jittering'.
-
-We found that OD jittering led to substantially more dense and realistic route networks.
-
 
 # References
 
