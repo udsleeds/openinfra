@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
+[![.github/workflows/render-rmarkdown.yaml](https://github.com/udsleeds/openinfra/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/udsleeds/openinfra/actions/workflows/render-rmarkdown.yaml)
 <!-- badges: end -->
 
 Origin-destination (OD) datasets are ubiquitous for representing travel

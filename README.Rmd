@@ -25,7 +25,7 @@ bbt_write_bib(path = "references.bib", keys = bbt_detect_citations("README.Rmd")
 # Open Infrastructure Data
 
 <!-- badges: start -->
-[![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
+[![.github/workflows/render-rmarkdown.yaml](https://github.com/udsleeds/openinfra/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/udsleeds/openinfra/actions/workflows/render-rmarkdown.yaml)
 <!-- badges: end -->
 
 Origin-destination (OD) datasets are ubiquitous for representing travel behavior in transport planning and modelling.
