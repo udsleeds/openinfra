@@ -18,7 +18,7 @@ library(sf)
 library(tmap)
 ```
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, echo=FALSE}
 # Generate citations (requires Zotero)
 library(rbbt)
 bbt_write_bib(path = "references.bib", keys = bbt_detect_citations("README.Rmd"), overwrite = TRUE)

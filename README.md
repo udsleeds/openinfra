@@ -3,12 +3,6 @@
 
 [![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
 
-``` r
-# Generate citations (requires Zotero)
-library(rbbt)
-bbt_write_bib(path = "references.bib", keys = bbt_detect_citations("README.Rmd"), overwrite = TRUE)
-```
-
 # Open access data for transport research: tools, modelling and simulation
 
 This repo contains code and example data to explore the utility of open
@@ -54,7 +48,7 @@ Manchester](https://github.com/Robinlovelace/openTransportDataDemo).
 
 If you’re new to R, it may be worth reading up on introductory material
 such as the free and open source resource *Reproducible Road Safety with
-R* (**lovelace_reproducible_2020?**) tutorial. See [Section
+R* (Lovelace 2020) tutorial. See [Section
 1.5](https://itsleeds.github.io/rrsrr/introduction.html#installing-r-and-rstudio)
 of that tutorial to install R/RStudio and [Section
 3](https://itsleeds.github.io/rrsrr/rstudio.html) on getting started
@@ -378,3 +372,15 @@ For any questions, feel free to ask in a GitHub issue track assocated
 with any of the repositories mentioned in this guide.
 
 # References
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+
+<div id="ref-lovelace_reproducible_2020" class="csl-entry">
+
+Lovelace, Robin. 2020. “Reproducible Road Safety Research with R.” Royal
+Automotive Club Foundation.
+<https://www.racfoundation.org/wp-content/uploads/Reproducible_road_safety_research_with_R_Lovelace_December_2020.pdf>.
+
+</div>
+
+</div>
