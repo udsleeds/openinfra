@@ -17,4 +17,5 @@ Imports:
     od,
     sf,
     tmap,
-    osmextract
+    osmextract,
+    dplyr
