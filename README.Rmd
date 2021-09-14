@@ -12,7 +12,7 @@ bibliography: references.bib
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  echo = FALSE
+  echo = TRUE
 )
 library(sf)
 library(tmap)
@@ -111,7 +111,7 @@ The following commands get transport infrastructure data.
 See documentation on the [`osmextract` website](https://docs.ropensci.org/osmextract/index.html) for details.
 
 ```{r, eval=FALSE}
-osm_data_full = osmextract::oe_get(zones, extra_tags = c("maxspeed", "lanes"))
+osm_data_full = osmextract::oe_get(lida_buffer, extra_tags = c("maxspeed", "lanes"))
 osm_data_region = osm_data_full[lida_buffer, , op = sf::st_within]
 summary(factor(osm_data_region$highway))
 tmap_mode("plot")
@@ -386,8 +386,6 @@ There is lots more we can do with this data and other open transport datasets, a
 
 For any questions, feel free to ask in a GitHub issue track assocated with any of the repositories mentioned in this guide.
 
-
-# References
 
 # References
 
