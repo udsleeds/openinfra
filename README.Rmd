@@ -27,19 +27,30 @@ bbt_write_bib(path = "references.bib", keys = bbt_detect_citations("README.Rmd")
 # Open access data for transport research: tools, modelling and simulation
 
 This repo contains code and example data to explore the utility of open data for transport planning and, specifically, open data on transport infrastructure.
-It was created to support a LIDA internship, the objectives of which are to:
+It was created to support a 12 month LIDA internship, the objectives of which are to:
 
-- develop new methods for bulk downloading, querying and analysing OpenStreetMap data on transport infrastructure
-- assess the quality of OSM data with reference to ‘ground truth’ datasets including data from satellite imagery and Ordnance Survey data
-- develop a typology of transport infrastructure data and data schemas for each infrastructure type and an actionable definition of ‘active travel infrastructure’
-- publish reproducible methods and documentation on using OSM data for transport planning with reference to the strengths and potential pitfalls of the data
-- develop ‘OSM transport infrastructure data packs’ for every transport authority in Great Britain, with layers reflecting a typology of transport infrastructure data developed in the project
-- develop and publish guidance on using OSM data for transport planning
+1. develop new methods for bulk downloading, querying and analysing OpenStreetMap data on transport infrastructure
+1. assess the quality of OSM data with reference to ‘ground truth’ datasets including data from satellite imagery and Ordnance Survey data
+1. develop a typology of transport infrastructure data and data schemas for each infrastructure type and an actionable definition of ‘active travel infrastructure’
+1. articulate ideas on how future research, datasets, software and tools could add value to open transport infrastructure data and support sustainable transport planning practice
+1. publish reproducible methods and documentation on using OSM data for transport planning with reference to the strengths and potential pitfalls of the data
+1. develop ‘OSM transport infrastructure data packs’ for every transport authority in Great Britain, with layers reflecting a typology of transport infrastructure data developed in the project
+1. develop and publish guidance on using OSM data for transport planning
+1. suggest a research agenda to enable better use of existing open datasets on transport infrastructure and envision future developments that could make transport planning more transparent, reproducible and participatory
 
+The internship will be undertaken in two 6 month phases, with a rough plan being for objectives 1:4 to be tackled during months 1:6 and objectives 5:8 to be tackled during months 7:12.
+An agile approach will be taken whereby objectives can be changed during the internship to pursue promising avenues that emerge.
 
 There are already good tools open tools for working with transport infrastructure data, including the R packages [`osmextract`](https://docs.ropensci.org/osmextract/), [`stplanr`](https://docs.ropensci.org/stplanr/), and [`sfnetworks`](https://luukvdmeer.github.io/sfnetworks/).
 These, and packages written in other languages such as Julia and Python, are largely academic-led and technical projects with little uptake among practitioners. 
-This project will be about gaining an understanding of the treatment of transport infrastructure in OSM and, vitally, how OSM and other open datasets can lead to more evidence-based transport plans. 
+This project will explore the landscape of open transport infrastructure, describe and critique how active travel infrastructure is represented, and document how practitioners can better use open data for evidence-based, transparent and participatory active travel interventions.
+
+Local authority planners and other stakeholders have more data than ever before on transport systems to support their work, especially in relation to travel *behaviour* thanks to datasets from traffic counts, travel surveys and open access tools such as the Propensity to Cycle Tool 
+
+However, there is less accessible data on travel *infrastructure*, especially in relation to walking and cycling.
+Good practice on designing for active travel is well known [@departmentfortransport_manual_2007; @parkin_designing_2018] and increasingly recommended/enforced.
+Recent government publications provide clear guidance on design parameter for active travel infrastructure, with the recent '[Cycle infrastructure design](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/904088/cycle-infrastructure-design-ltn-1-20.pdf)' guidance from the Department for Transport specifying 'desirable' and 'absolute' minimum widths of cycleways of 1.5m and 2m on cycleways with low levels of cycle traffic, for example [@departmentfortransport_cycle_2020].
+However, little is known about the extent to which new infrastructure is compliant with such guidance: there is no open data on cycleway widths in most parts of the UK, leading to new approaches to assess compliance using region-specific datasets [@tait_cycling_2022].
 
 The brief example below shows how quickly you can get started with OSM data using command-line driven open source software to ensure reproducibility and scalability, based on an example put together for [ODI Manchester](https://github.com/Robinlovelace/openTransportDataDemo).
 
