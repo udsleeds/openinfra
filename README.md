@@ -73,14 +73,20 @@ low levels of cycle traffic, for example (Department for Transport
 infrastructure is compliant with such guidance: there is no open data on
 cycleway widths in most parts of the UK, leading to new approaches to
 assess compliance using region-specific datasets (Tait et al. 2022).
+Furthermore, new tools building on OSM datasets have been developed, for
+example to model change in transport infrastructure, prioritise road
+space reallocation schemes, and identify ‘low traffic neighbourhoods’
+(e.g. Lovelace 2021; Lovelace et al. 2020; Lucas-Smith 2021). The
+internship will generate new research and publications on additional
+uses of open data to support sustainable transport planning objectives.
+
+# Example of transport infrastructure in R
 
 The brief example below shows how quickly you can get started with OSM
 data using command-line driven open source software to ensure
 reproducibility and scalability, based on an example put together for
 [ODI
 Manchester](https://github.com/Robinlovelace/openTransportDataDemo).
-
-# Example of transport infrastructure in R
 
 If you’re new to R, it may be worth reading up on introductory material
 such as the free and open source resource *Reproducible Road Safety with
@@ -431,6 +437,31 @@ Transport Note. London.
 Lovelace, Robin. 2020. “Reproducible Road Safety Research with R.” Royal
 Automotive Club Foundation.
 <https://www.racfoundation.org/wp-content/uploads/Reproducible_road_safety_research_with_R_Lovelace_December_2020.pdf>.
+
+</div>
+
+<div id="ref-lovelace_open_2021" class="csl-entry">
+
+———. 2021. “Open Source Tools for Geographic Analysis in Transport
+Planning.” *Journal of Geographical Systems*, January.
+<https://doi.org/10.1007/s10109-020-00342-2>.
+
+</div>
+
+<div id="ref-lovelace_methods_2020" class="csl-entry">
+
+Lovelace, Robin, Joseph Talbot, Malcolm Morgan, and Martin Lucas-Smith.
+2020. “Methods to Prioritise Pop-up Active Transport Infrastructure.”
+*Transport Findings*, July, 13421.
+<https://doi.org/10.32866/001c.13421>.
+
+</div>
+
+<div id="ref-lucas-smith_mapping_2021" class="csl-entry">
+
+Lucas-Smith, Martin. 2021. “Mapping Modal Filters and LTNs.”
+CycleStreets. July 25, 2021.
+<https://www.cyclestreets.org/news/2021/07/25/mapping-ltns/>.
 
 </div>
 

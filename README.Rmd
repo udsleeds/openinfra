@@ -51,10 +51,12 @@ However, there is less accessible data on travel *infrastructure*, especially in
 Good practice on designing for active travel is well known [@departmentfortransport_manual_2007; @parkin_designing_2018] and increasingly recommended/enforced.
 Recent government publications provide clear guidance on design parameter for active travel infrastructure, with the recent '[Cycle infrastructure design](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/904088/cycle-infrastructure-design-ltn-1-20.pdf)' guidance from the Department for Transport specifying 'desirable' and 'absolute' minimum widths of cycleways of 1.5m and 2m on cycleways with low levels of cycle traffic, for example [@departmentfortransport_cycle_2020].
 However, little is known about the extent to which new infrastructure is compliant with such guidance: there is no open data on cycleway widths in most parts of the UK, leading to new approaches to assess compliance using region-specific datasets [@tait_cycling_2022].
-
-The brief example below shows how quickly you can get started with OSM data using command-line driven open source software to ensure reproducibility and scalability, based on an example put together for [ODI Manchester](https://github.com/Robinlovelace/openTransportDataDemo).
+Furthermore, new tools building on OSM datasets have been developed, for example to model change in transport infrastructure, prioritise road space reallocation schemes, and identify 'low traffic neighbourhoods' [e.g. @lovelace_open_2021; @lovelace_methods_2020; @lucas-smith_mapping_2021].
+The internship will generate new research and publications on additional uses of open data to support sustainable transport planning objectives.
 
 # Example of transport infrastructure in R
+
+The brief example below shows how quickly you can get started with OSM data using command-line driven open source software to ensure reproducibility and scalability, based on an example put together for [ODI Manchester](https://github.com/Robinlovelace/openTransportDataDemo).
 
 If you're new to R, it may be worth reading up on introductory material such as the free and open source resource *Reproducible Road Safety with R* [@lovelace_reproducible_2020] tutorial.
 See [Section 1.5](https://itsleeds.github.io/rrsrr/introduction.html#installing-r-and-rstudio) of that tutorial to install R/RStudio and [Section 3](https://itsleeds.github.io/rrsrr/rstudio.html) on getting started with the powerful RStudio editor.
