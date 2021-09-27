@@ -7,25 +7,38 @@
 
 This repo contains code and example data to explore the utility of open
 data for transport planning and, specifically, open data on transport
-infrastructure. It was created to support a LIDA internship, the
-objectives of which are to:
+infrastructure. It was created to support a 12 month LIDA internship,
+the objectives of which are to:
 
--   develop new methods for bulk downloading, querying and analysing
+1.  develop new methods for bulk downloading, querying and analysing
     OpenStreetMap data on transport infrastructure
--   assess the quality of OSM data with reference to ‘ground truth’
+2.  assess the quality of OSM data with reference to ‘ground truth’
     datasets including data from satellite imagery and Ordnance Survey
     data
--   publish reproducible methods and documentation on using OSM data for
-    transport planning with reference to the strengths and potential
-    pitfalls of the data
--   develop a typology of transport infrastructure data and data schemas
+3.  develop a typology of transport infrastructure data and data schemas
     for each infrastructure type and an actionable definition of ‘active
     travel infrastructure’
--   develop ‘OSM transport infrastructure data packs’ for every
+4.  articulate ideas on how future research, datasets, software and
+    tools could add value to open transport infrastructure data and
+    support sustainable transport planning practice
+5.  publish reproducible methods and documentation on using OSM data for
+    transport planning with reference to the strengths and potential
+    pitfalls of the data
+6.  develop ‘OSM transport infrastructure data packs’ for every
     transport authority in Great Britain, with layers reflecting a
     typology of transport infrastructure data developed in the project
--   develop and publish guidance on using OSM data for transport
+7.  develop and publish guidance on using OSM data for transport
     planning
+8.  suggest a research agenda to enable better use of existing open
+    datasets on transport infrastructure and envision future
+    developments that could make transport planning more transparent,
+    reproducible and participatory
+
+The internship will be undertaken in two 6 month phases, with a rough
+plan being for objectives 1:4 to be tackled during months 1:6 and
+objectives 5:8 to be tackled during months 7:12. An agile approach will
+be taken whereby objectives can be changed during the internship to
+pursue promising avenues that emerge.
 
 There are already good tools open tools for working with transport
 infrastructure data, including the R packages
@@ -34,17 +47,46 @@ infrastructure data, including the R packages
 [`sfnetworks`](https://luukvdmeer.github.io/sfnetworks/). These, and
 packages written in other languages such as Julia and Python, are
 largely academic-led and technical projects with little uptake among
-practitioners. This project will be about gaining an understanding of
-the treatment of transport infrastructure in OSM and, vitally, how OSM
-and other open datasets can lead to more evidence-based transport plans.
+practitioners. This project will explore the landscape of open transport
+infrastructure, describe and critique how active travel infrastructure
+is represented, and document how practitioners can better use open data
+for evidence-based, transparent and participatory active travel
+interventions.
+
+Local authority planners and other stakeholders have more data than ever
+before on transport systems to support their work, especially in
+relation to travel *behaviour* thanks to datasets from traffic counts,
+travel surveys and open access tools such as the Propensity to Cycle
+Tool
+
+However, there is less accessible data on travel *infrastructure*,
+especially in relation to walking and cycling. Good practice on
+designing for active travel is well known (Department for Transport
+2007; Parkin 2018) and increasingly recommended/enforced. Recent
+government publications provide clear guidance on design parameter for
+active travel infrastructure, with the recent ‘[Cycle infrastructure
+design](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/904088/cycle-infrastructure-design-ltn-1-20.pdf)’
+guidance from the Department for Transport specifying ‘desirable’ and
+‘absolute’ minimum widths of cycleways of 1.5m and 2m on cycleways with
+low levels of cycle traffic, for example (Department for Transport
+2020). However, little is known about the extent to which new
+infrastructure is compliant with such guidance: there is no open data on
+cycleway widths in most parts of the UK, leading to new approaches to
+assess compliance using region-specific datasets (Tait et al. 2022).
+Furthermore, new tools building on OSM datasets have been developed, for
+example to model change in transport infrastructure, prioritise road
+space reallocation schemes, and identify ‘low traffic neighbourhoods’
+(e.g. Lovelace 2021; Lovelace et al. 2020; Lucas-Smith 2021). The
+internship will generate new research and publications on additional
+uses of open data to support sustainable transport planning objectives.
+
+# Example of transport infrastructure in R
 
 The brief example below shows how quickly you can get started with OSM
 data using command-line driven open source software to ensure
 reproducibility and scalability, based on an example put together for
 [ODI
 Manchester](https://github.com/Robinlovelace/openTransportDataDemo).
-
-# Example of transport infrastructure in R
 
 If you’re new to R, it may be worth reading up on introductory material
 such as the free and open source resource *Reproducible Road Safety with
@@ -375,11 +417,67 @@ with any of the repositories mentioned in this guide.
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
+<div id="ref-departmentfortransport_manual_2007" class="csl-entry">
+
+Department for Transport. 2007. “Manual for Streets.” London: Telford.
+<https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/341513/pdfmanforstreets.pdf>.
+
+</div>
+
+<div id="ref-departmentfortransport_cycle_2020" class="csl-entry">
+
+———. 2020. “Cycle Infrastructure Design (LTN 1/20).” 1/20. Local
+Transport Note. London.
+<https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/904088/cycle-infrastructure-design-ltn-1-20.pdf>.
+
+</div>
+
 <div id="ref-lovelace_reproducible_2020" class="csl-entry">
 
 Lovelace, Robin. 2020. “Reproducible Road Safety Research with R.” Royal
 Automotive Club Foundation.
 <https://www.racfoundation.org/wp-content/uploads/Reproducible_road_safety_research_with_R_Lovelace_December_2020.pdf>.
+
+</div>
+
+<div id="ref-lovelace_open_2021" class="csl-entry">
+
+———. 2021. “Open Source Tools for Geographic Analysis in Transport
+Planning.” *Journal of Geographical Systems*, January.
+<https://doi.org/10.1007/s10109-020-00342-2>.
+
+</div>
+
+<div id="ref-lovelace_methods_2020" class="csl-entry">
+
+Lovelace, Robin, Joseph Talbot, Malcolm Morgan, and Martin Lucas-Smith.
+2020. “Methods to Prioritise Pop-up Active Transport Infrastructure.”
+*Transport Findings*, July, 13421.
+<https://doi.org/10.32866/001c.13421>.
+
+</div>
+
+<div id="ref-lucas-smith_mapping_2021" class="csl-entry">
+
+Lucas-Smith, Martin. 2021. “Mapping Modal Filters and LTNs.”
+CycleStreets. July 25, 2021.
+<https://www.cyclestreets.org/news/2021/07/25/mapping-ltns/>.
+
+</div>
+
+<div id="ref-parkin_designing_2018" class="csl-entry">
+
+Parkin, John. 2018. *Designing for Cycle Traffic: International
+Principles and Practice*. ICE Publishing.
+<https://www.icevirtuallibrary.com/isbn/9780727763495>.
+
+</div>
+
+<div id="ref-tait_cycling_2022" class="csl-entry">
+
+Tait, Caroline, Roger Beecham, Robin Lovelace, and Stuart Barber. 2022.
+“Is Cycling Infrastructure in London Safe and Equitable? Evidence from
+the Cycling Infrastructure Database.”
 
 </div>
 
