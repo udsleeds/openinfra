@@ -21,4 +21,5 @@ Imports:
     dplyr,
     pct,
     stplanr,
-    tmap
+    tmap,
+    stats19
