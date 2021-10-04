@@ -26,6 +26,10 @@ bbt_write_bib(path = "references.bib", keys = bbt_detect_citations("README.Rmd")
 
 # Open access data for transport research: tools, modelling and simulation
 
+# Summary
+
+# Introduction
+
 This repo contains code and example data to explore the utility of open data for transport planning and, specifically, open data on transport infrastructure.
 It was created to support a 12 month LIDA internship, the objectives of which are to:
 
