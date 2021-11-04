@@ -5,6 +5,41 @@
 
 # Open access data for transport research: tools, modelling and simulation
 
+# Summary
+
+Getting people walking and cycling has become a priority for many local,
+regional and national governments in recent years. Interventions
+boosting physical activity represent a ‘magic bullet,’ tackling obesity,
+air pollution and wellbeing. Active travel is a rapidly growing topic of
+multi-disciplinary research but has received limited attention from data
+science perspectives, with a recent paper on modelling cycle network
+growth (Orozco et al. 2020) providing a notable exception. The work will
+be grounded in geographic data science, building on previous studies
+assessing open datasets for transport applications (Ferster et al. 2020;
+Haklay 2010).
+
+In the post-pandemic world, active modes will be even more important due
+to reduced public transport capacities, as highlighted by the Department
+for Transport’s £250m Active Travel Fund (ATF) and £2b allocated to
+walking and cycling over the next 5 years in the UK alone.
+
+New policies and investment programs such as the ATF have led to
+increased demand for local evidence to inform interventions ranging from
+new cycleways to improved pavement quality. This project will the
+potential of open access transport sources such as OpenStreetMap (OSM)
+and Ordnance Survey Open Roads (OSOR) datasets, and associated tools,
+for transport planning to meet active travel objectives. Specifically,
+the project will explore how open datasets can be used to understand,
+prioritise and design active travel infrastructure, such as cycleways,
+pavements, crossing points and traffic-calming features. The overall aim
+is to research and add value to open transport infrastructure data — and
+OpenStreetMap data in particular — for use in transport planning. The
+outputs will include new insights, ideas and datasets, leading to a step
+change in the accessibility, utility and understanding of crowd source
+data for evidence-based decision making.
+
+# Introduction
+
 This repo contains code and example data to explore the utility of open
 data for transport planning and, specifically, open data on transport
 infrastructure. It was created to support a 12 month LIDA internship,
@@ -432,6 +467,25 @@ Transport Note. London.
 
 </div>
 
+<div id="ref-ferster_using_2020" class="csl-entry">
+
+Ferster, Colin, Jaimy Fischer, Kevin Manaugh, Trisalyn Nelson, and
+Meghan Winters. 2020. “Using OpenStreetMap to Inventory Bicycle
+Infrastructure: A Comparison with Open Data from Cities.” *International
+Journal of Sustainable Transportation* 14 (1): 64–73.
+<https://doi.org/10.1080/15568318.2018.1519746>.
+
+</div>
+
+<div id="ref-haklay_how_2010a" class="csl-entry">
+
+Haklay, Mordechai. 2010. “How Good Is Volunteered Geographical
+Information? A Comparative Study of OpenStreetMap and Ordnance Survey
+Datasets.” *Environment and Planning B: Planning and Design* 37 (4):
+682–703. <https://doi.org/10.1068/b35097>.
+
+</div>
+
 <div id="ref-lovelace_reproducible_2020" class="csl-entry">
 
 Lovelace, Robin. 2020. “Reproducible Road Safety Research with R.” Royal
@@ -462,6 +516,15 @@ Lovelace, Robin, Joseph Talbot, Malcolm Morgan, and Martin Lucas-Smith.
 Lucas-Smith, Martin. 2021. “Mapping Modal Filters and LTNs.”
 CycleStreets. July 25, 2021.
 <https://www.cyclestreets.org/news/2021/07/25/mapping-ltns/>.
+
+</div>
+
+<div id="ref-orozco_datadriven_2020" class="csl-entry">
+
+Orozco, Luis, Federico Battiston, Gerardo Iñiguez, and Michael Szell.
+2020. “Data-Driven Strategies for Optimal Bicycle Network Growth.”
+*Royal Society Open Science* 7 (December): 201130.
+<https://doi.org/10.1098/rsos.201130>.
 
 </div>
 
