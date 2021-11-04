@@ -48,3 +48,39 @@ osm_highway_cycleway_left = osm_highway_test1 %>%
 table(osm_highway_cycleway_left$cycleway_left)
 
 saveRDS(osm_highway_cycleway_left, "osm_highway_cycleway_left.Rds")
+
+
+# spatial analysis of data
+nrow(osm_highway_cycleway_left) # less than 1000 rows - can map interactive 
+library(tmap)
+tmap_mode("view")
+qtm(osm_highway_cycleway_left)
+# if datset is hug
+osm_highway_cycleway_left %>% 
+  sample_n(size = 100) %>% 
+  qtm()
+
+# geographic subset
+leeds = pct::get_pct_zones(region = "west-yorkshire")
+sf::sf_use_s2(FALSE)
+leeds_with_cycleway_touching = leeds[osm_highway_cycleway_left, ]
+qtm(leeds_with_cycleway_touching)
+
+leeds_with_cycleway_within = leeds[osm_highway_cycleway_left, , op = sf::st_contains]
+qtm(leeds_with_cycleway_within)
+
+osm_centroids = sf::st_centroid(osm_highway_cycleway_left)
+
+leeds_names = leeds %>% select(geo_code, bicycle)
+osm_joined = sf::st_join(osm_centroids, leeds_names)
+names(osm_joined)
+
+osm_n_infra_per_zone = osm_joined %>% 
+  sf::st_drop_geometry() %>% 
+  group_by(geo_code) %>% 
+  summarise(n_cycleways = n()) # in future: calculate length and other things
+
+leeds_joined = left_join(leeds_names, osm_n_infra_per_zone)
+leeds_joined %>% select(n_cycleways) %>% plot()
+
+# check buffers ?
