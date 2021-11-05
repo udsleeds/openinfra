@@ -197,11 +197,13 @@ speed_data <- wy_short %>% mutate(speed = case_when(
   str_detect(other_tags,"80 mph") ~ 80,
   str_detect(other_tags,"90 mph") ~ 90,
   str_detect(other_tags,"100 mph") ~ 100)
-                                           ) %>% filter(!is.na(speed)) # getting rid of NAs
+                                           ) %>% 
+  filter(!is.na(speed)) # getting rid of NAs
 
+# how many rows
 speed_data %>% nrow()
 # > 19754
-speed_data %>% pull(speed) %>% unique # double-checking if all limits are present
+speed_data %>% pull(speed) %>% unique # double checking if all limits are present
 speed_data %>% select(speed) %>% plot()
 
 # leeds subset
@@ -212,8 +214,7 @@ speed_data %>% select(speed) %>% plot()
 #         "wy_pct.Rds")
 leeds <- wy_pct %>% filter(lad_name == "Leeds")
 
-
-
+# plotting speed data on leeds
 st_geometry(leeds) %>% plot(reset = FALSE, 
                             col = "gray",
                             main = "speed limits in Leeds (gray area)")
@@ -224,9 +225,6 @@ speed_data['speed'] %>% plot(add = TRUE,
 
 
 ```
-
-
-
 
 
 
