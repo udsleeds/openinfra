@@ -1,0 +1,344 @@
+---
+title: "West Yorkshire OSM"
+---
+
+useful git commands:
+
+git
+
+git status
+
+git checkout -b gretatest
+
+git commit -am "test change"
+
+git status
+
+git show
+
+git push --
+
+git pull 
+
+git branch -v
+
+git log
+
+```{r}
+library(osmextract) 
+library(tidyverse)
+library(sf)
+```
+
+```{r}
+# Aim: get cycleways in west yorkshire
+
+# oe_match_pattern("Yorkshire")
+# region_name <- "West Yorkshire"
+# wy <- osmextract::oe_get(place = region_name,
+#                          layer = "lines",
+#                          force_download = TRUE,
+#                          force_vectortranslate = TRUE) # importing West Yorkshire data
+# 
+# wy_cycling_net <- osmextract::oe_get_network(place = region_name,
+#                                             mode = "cycling"
+#                                              ) # importing WY cycling network; definition needs further exploration
+
+# saveRDS(wy, 
+#         "wy.Rds")
+# saveRDS(wy_cycling_net,
+#         "wy_cycling_net.Rds")
+
+wy %>% glimpse()
+wy_cycling_net %>% glimpse()
+
+# wy %>% pull(z_order) %>% unique() # checking what it means; has something to do with storing in the SQL database. Will delete for now. Link: https://wiki.openstreetmap.org/wiki/Layer
+wy_short <- wy %>% select(osm_id, 
+                          name,
+                          highway,
+                          other_tags)
+nrow(wy) == nrow(wy_short)
+
+# wy_cycling_net$access %>% unique # might be useful to figure out which roads are actually useful for cyclists? i.e., filtered permeability? https://wiki.openstreetmap.org/wiki/Key:access
+# wy_cycling_net$service %>% unique # https://wiki.openstreetmap.org/wiki/Key:service
+wy_cn_short <- wy_cycling_net %>% 
+  select(osm_id,
+         name,
+         highway,
+         access,
+         bicycle,
+         service,
+         other_tags
+         )
+nrow(wy_cn_short) == nrow(wy_cycling_net)
+
+# wy_short %>% select(highway) %>% plot(main = "wy_short")
+# wy_cn_short %>% select(highway) %>% plot(main = "wy_cn_short")
+```
+
+## **Andrea's comment**:
+I checked the script that you mentioned (i.e. cycleways.R) and I have
+one comment. The object osm_highway (line 8) includes all "OSM ways"
+in the IoW and I think that the ratio nrow(osm_highway) /
+nrow(osm_highways_cycling) does not represent a fair comparison (since
+you are comparing ways and roads). If you want to estimate the ratio
+of (cycleable streets) / (all streets in Iow), you can run:
+
+osm_highway = osmextract::oe_get(place = "Isle of Wight", query =
+"SELECT * FROM lines WHERE highway IS NOT NULL", quiet = TRUE)
+osm_highways_cycling = osmextract::oe_get_network(place = "Isle of
+Wight", mode = "cycling")
+
+and you will notice that
+
+nrow(osm_highway) / nrow(osm_highways_cycling) = 1
+
+since, according to usual OSM tags, bicycle transportation is allowed
+everywhere but for motorways, which are missing in the IoW. If you
+want to create a more restrictive definition for a cycling network
+(i.e. exclude primary or secondary roads), then you can modify the
+code behind oe_get_network (see also the old PR:
+https://github.com/ropensci/osmextract/pull/224).
+
+
+```{r}
+# applying Andrea's comment to West Yorkshare 
+
+# osm_highway = osmextract::oe_get(place = region_name, query =
+# "SELECT * FROM lines WHERE highway IS NOT NULL", quiet = TRUE, force_download = TRUE,
+#                          force_vectortranslate = TRUE)
+# osm_highways_cycling = osmextract::oe_get_network(place = region_name, mode = "cycling", force_download = TRUE,
+#                          force_vectortranslate = TRUE)
+nrow(osm_highway)
+#> 180661
+nrow(osm_highways_cycling)
+#> 167853
+c(nrow(osm_highway) == nrow(osm_highways_cycling), # FALSE
+  nrow(osm_highway) / nrow(osm_highways_cycling) ) # 1.076305 ratio
+# > 0.000000 1.076305
+
+# checking if NULLs are NAs 
+wy_cn_short %>% nrow()
+#> 167853 
+wy_cn_short %>% filter(!is.na(highway)) %>% nrow() # double checking if there are non NAs in the `highway` column
+#> 167853 
+wy_short %>% select(highway) %>% nrow() # includes ALL ways (inlcuding NA)
+#> 233598
+wy_short %>% filter(!is.na(highway)) %>% nrow() 
+#> 180661
+
+wy_short %>% filter(!is.na(highway)) %>% nrow() == nrow(osm_highway) # so NAs are NULLs as expected
+# > TRUE
+
+# Alternative way to figure out NAs
+# wy_short %>% pull(highway) %>% is.na() %>% sum() # we have 52937 NAs
+# wy_short %>% pull(highway) %>% table %>% sum() # 180661 NAs not included in the table
+# ( (wy_short %>% select(highway) %>% nrow()) - (wy_short %>% pull(highway) %>% table %>% sum()) ) == wy_short %>% pull(highway) %>% is.na() %>% sum() # double checking
+
+wy_short %>% filter(!is.na(highway)) %>% nrow() == wy_cn_short %>% nrow()  # we still have unequal number of rows; I think it might have something to do with highway cycling network definition
+# > FALSE
+(wy_short %>% filter(!is.na(highway)) %>% nrow()) - (wy_cn_short %>% nrow()) # we have 12808 more ways in wy_short compared to wy_cn_short
+# > 12808
+
+wy_short %>% pull(highway) %>% table()
+wy_cn_short %>% pull(highway) %>% table()
+# .
+#      bridleway   bus_guideway         busway   construction       corridor       cycleway        footway  living_street       motorway  motorway_link             no           path     pedestrian 
+#           1268             14              7            339             48           3250          36956            392            577            393              6           7286            801 
+#        primary   primary_link       proposed        raceway    residential           road      secondary secondary_link        service       services          steps       tertiary  tertiary_link 
+#           3415            321             78             17          44638             27           1470             43          53252              2           2685           5174            143 
+#          track          trunk     trunk_link   unclassified 
+#           7958           2888            338           6875 
+# .
+#      bridleway         busway       cycleway        footway  living_street       motorway  motorway_link           path     pedestrian        primary   primary_link    residential           road 
+#           1260              6           3233          35543            368            571            389           6928            783           3415            321          44379             27 
+#      secondary secondary_link        service       services       tertiary  tertiary_link          track          trunk     trunk_link   unclassified 
+#           1470             43          46584              2           5156            142           7205           2878            338           6812 
+
+# so I'll filter data based on the highway tags present in cycling network dataset `wy_cn_short`
+highway_tags <- c("bridleway", "busway", "cycleway", "footway", "living_street", "motorway", "motorway_link", "path", "pedestrian", "primary", "primary_link", "residential", "road", "secondary", "secondary_link", "service", "services", "tertiary", "tertiary_link", "track", "trunk", "trunk_link",  "unclassified")
+wy_checking <- wy_short %>% filter(highway %in% highway_tags)
+wy_checking %>% nrow() 
+# > 177474
+wy_checking %>% nrow() == wy_cn_short %>% nrow() 
+# > FALSE
+( wy_checking %>% nrow() ) - ( wy_cn_short %>% nrow() ) # still significantly more lines are present in the wy_short dataset; cycling network must have had some more refined filtering; 
+# > 9621
+
+
+
+# wy_checking %>% select(highway) %>% plot(main = "wy_checking")
+# wy_cn_short %>% select(highway) %>% plot(main = "wy_cn_checking")
+```
+
+It's interesting that Andrea's comment is applicable to IoW but not WY, I reckon it depends on the types of ways/roads present in the area and how well they are tagged. 
+
+## tags
+
+```{r}
+
+? osmextract::oe_get_keys(wy_short)
+all_tags <- osmextract::oe_get_keys(wy_short) 
+
+# maxspeed
+all_tags %>% str_detect("maxspeed") 
+speed = all_tags %>% str_detect("maxspeed")
+wy_short[speed, ] %>% select(highway) %>% plot()
+
+# speed limits
+speed_data <- wy_short %>% mutate(speed = case_when(
+  str_detect(other_tags,"10 mph") ~ 10,
+  str_detect(other_tags,"20 mph") ~ 20,
+  str_detect(other_tags,"30 mph") ~ 30,
+  str_detect(other_tags,"40 mph") ~ 40,
+  str_detect(other_tags,"50 mph") ~ 50,
+  str_detect(other_tags,"60 mph") ~ 60,
+  str_detect(other_tags,"70 mph") ~ 70,
+  str_detect(other_tags,"80 mph") ~ 80,
+  str_detect(other_tags,"90 mph") ~ 90,
+  str_detect(other_tags,"100 mph") ~ 100)
+                                           ) %>% filter(!is.na(speed)) # getting rid of NAs
+
+speed_data %>% nrow()
+# > 19754
+speed_data %>% pull(speed) %>% unique # double-checking if all limits are present
+speed_data %>% select(speed) %>% plot()
+
+# leeds subset
+
+# wy_pct = pct::get_pct_zones(region = "west-yorkshire")
+# sf::sf_use_s2(FALSE)
+# saveRDS(wy_pct,
+#         "wy_pct.Rds")
+leeds <- wy_pct %>% filter(lad_name == "Leeds")
+
+
+
+st_geometry(leeds) %>% plot(reset = FALSE, 
+                            col = "gray",
+                            main = "speed limits in Leeds (gray area)")
+speed_data['speed'] %>% plot(add = TRUE, 
+                             legend = TRUE
+                             )
+
+
+
+```
+
+
+
+
+
+
+```{r}
+# Aim: get cycleways in west yorkshire
+oe_match_pattern(West Yorkshire)
+region_name <- "West Yorkshire"
+
+region_name = "isle of wight" # region to get cycleways for
+
+osm_highway = osmextract::oe_get(place = region_name, layer = "lines", force_vectortranslate = TRUE)
+osm_highways_cycling = osmextract::oe_get_network(place = region_name, mode = "cycling")
+
+nrow(osm_highway) / nrow(osm_highways_cycling) # 3 times fewer lines in cycling data
+
+names(osm_highway)
+names(osm_highways_cycling)
+
+et = "maxspeed"
+osm_highway_maxspeed = osmextract::oe_get(region_name, extra_tags = et)
+names(osm_highway_maxspeed)
+
+# experiment: try missing tag
+et = c("maxspeed", "dfdkdkdfdsdfd")
+osm_highway_test1 = osmextract::oe_get(region_name, extra_tags = et)
+unique(osm_highway_test1$dfdkdkdfdsdfd)
+class(osm_highway_test1$dfdkdkdfdsdfd)
+head(osm_highway_test1$dfdkdkdfdsdfd)
+
+# extract all other tags
+?osmextract::oe_get_keys(osm_highways)
+osmextract::oe_get_keys(osm_highways_cycling)
+
+# identify any rows that have "cycle" in other_tags
+osm_cycle_other_tags = osm_highway %>% 
+  filter(str_detect(other_tags, "cycle"))
+table(osm_cycle_other_tags$other_tags)
+
+# experiment: try with a subtag
+# et = c("maxspeed", "cycleway:right:track") # seemingly non-existent tag?
+et = c("maxspeed", "cycleway:left")
+osm_highway_test1 = osmextract::oe_get("west yorkshire", extra_tags = et, force_vectortranslate = T)
+table(osm_highway_test1$cycleway_left)
+# buffered_lane           lane             no opposite_track   share_busway 
+# 8            104            101              1             10 
+# share_sidewalk    shared_lane          track  unmarked_lane            yes 
+# 1             18             10              1              3 
+
+osm_highway_cycleway_left = osm_highway_test1 %>% 
+  filter(!is.na(cycleway_left) & cycleway_left != "no")
+table(osm_highway_cycleway_left$cycleway_left)
+
+saveRDS(osm_highway_cycleway_left, "osm_highway_cycleway_left.Rds")
+
+
+# spatial analysis of data
+nrow(osm_highway_cycleway_left) # less than 1000 rows - can map interactive 
+library(tmap)
+tmap_mode("view")
+qtm(osm_highway_cycleway_left)
+# if datset is hug
+osm_highway_cycleway_left %>% 
+  sample_n(size = 100) %>% 
+  qtm()
+
+# geographic subset
+leeds = pct::get_pct_zones(region = "west-yorkshire")
+sf::sf_use_s2(FALSE)
+leeds_with_cycleway_touching = leeds[osm_highway_cycleway_left, ]
+qtm(leeds_with_cycleway_touching)
+
+leeds_with_cycleway_within = leeds[osm_highway_cycleway_left, , op = sf::st_contains]
+qtm(leeds_with_cycleway_within)
+
+osm_centroids = sf::st_centroid(osm_highway_cycleway_left)
+
+leeds_names = leeds %>% select(geo_code, bicycle)
+osm_joined = sf::st_join(osm_centroids, leeds_names)
+names(osm_joined)
+
+osm_n_infra_per_zone = osm_joined %>% 
+  sf::st_drop_geometry() %>% 
+  group_by(geo_code) %>% 
+  summarise(n_cycleways = n()) # in future: calculate length and other things
+
+leeds_joined = left_join(leeds_names, osm_n_infra_per_zone)
+leeds_joined %>% select(n_cycleways) %>% plot()
+
+# check buffers ?
+
+```
+
+
+
+## things to explore further:
+- definition of cycling network in osm package
+  - does it allign with LTN 1/20 
+- how 'access' column can be used to evaluate the quality of the cycling network?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
