@@ -49,6 +49,12 @@ library(sf)
 # saveRDS(wy_cycling_net,
 #         "wy_cycling_net.Rds")
 
+wy <- readRDS("wy.Rds")
+wy_short <- readRDS("wy_short.Rds")
+wy_cycling_net <- readRDS("wy_cycling_net.Rds")
+wy_cn_short <- readRDS("wy_cn_short.Rds")
+wy_pct <- readRDS("wy_pct.Rds")
+
 wy %>% glimpse()
 wy_cycling_net %>% glimpse()
 
@@ -58,6 +64,9 @@ wy_short <- wy %>% select(osm_id,
                           highway,
                           other_tags)
 nrow(wy) == nrow(wy_short)
+
+# saveRDS(wy_short,
+#         "wy_short.Rds")
 
 # wy_cycling_net$access %>% unique # might be useful to figure out which roads are actually useful for cyclists? i.e., filtered permeability? https://wiki.openstreetmap.org/wiki/Key:access
 # wy_cycling_net$service %>% unique # https://wiki.openstreetmap.org/wiki/Key:service
@@ -71,6 +80,8 @@ wy_cn_short <- wy_cycling_net %>%
          other_tags
          )
 nrow(wy_cn_short) == nrow(wy_cycling_net)
+
+# wy_cn_short %>% saveRDS("wy_cn_short.Rds")
 
 # wy_short %>% select(highway) %>% plot(main = "wy_short")
 # wy_cn_short %>% select(highway) %>% plot(main = "wy_cn_short")
@@ -173,12 +184,88 @@ wy_checking %>% nrow() == wy_cn_short %>% nrow()
 
 It's interesting that Andrea's comment is applicable to IoW but not WY, I reckon it depends on the types of ways/roads present in the area and how well they are tagged. 
 
-## tags
+## keys and tags
+
+tags of interest for cycling:
+surface
+bicycle
+maxspeed:type
+width
+cycleway
+cycleway:both
+cycleway:right
+cycleway:left
+wheelchair
+kerb
+cycleway:both:lane
+cycleway:left:lane
+cycleway:right:lane
+cycleway:left:width
+cycleway:right:width
+oneway:bicycle
+cycleway:otherside                
+cycleway:otherside:width
+cycleway:both:width
+maxwidth
+cycleway:oneside
+cycleway:oneside:width
+cycleway:right:oneway
+cycleway:width
+cycleway:surface
+width:lanes
+bicycle_road
+mobility_scooter
+cyclestreet
+cycleway:buffer
+cycleway:left:separation:right
+disabled
+bicycle:lanes:conditional
+bicycle:lanes:forward:conditional
+cycleway:lane
+cycleway:left:foot
+cycleway:left:oneway                   
+cycleway:left:segregated              
+cycleway:left:seperation:right         
+cycleway:proposed                      
+cycleway:right:separation:left
+handicap
+
+### data
+```{r}
+et <- c("surface", 
+        "cycleway:surface",
+        "bicycle", 
+        "bicycle_road",
+        "cyclestreet", # https://wiki.openstreetmap.org/wiki/Key:cyclestreet
+        "cycleway",
+        "maxspeed",
+        "maxspeed:type",
+        "width",
+        "cycleway:width",
+        "maxwidth",
+        "cycleway:both", 
+        "cycleway:right",
+        "cycleway:left",
+        "wheelchair",
+        "disabled",
+        "kerb"
+        )
+
+roads <- osmextract::oe_get("west yorkshire",
+                            extra_tags = et,
+                            force_vectortranslate = TRUE)
+roads %>% glimpse()
+wy %>% glimpse()
+```
+
+### key:maxspeed (needs recoding)
 
 ```{r}
 
 ? osmextract::oe_get_keys(wy_short)
 all_tags <- osmextract::oe_get_keys(wy_short) 
+all_tags
+
 
 # maxspeed
 all_tags %>% str_detect("maxspeed") 
@@ -212,6 +299,7 @@ speed_data %>% select(speed) %>% plot()
 # sf::sf_use_s2(FALSE)
 # saveRDS(wy_pct,
 #         "wy_pct.Rds")
+
 leeds <- wy_pct %>% filter(lad_name == "Leeds")
 
 # plotting speed data on leeds
@@ -222,15 +310,210 @@ speed_data['speed'] %>% plot(add = TRUE,
                              legend = TRUE
                              )
 
+```
 
+
+
+### key:surface
+```{r}
+# key:surface https://wiki.openstreetmap.org/wiki/Key:surface
+roads %>% pull(surface) %>% table()%>% sort(decreasing = TRUE)  # for future: how to aggregate surface types?
+roads %>% pull(surface) %>% table() %>% sum()
+round((roads %>% pull(surface) %>% table() %>% sum() / (roads %>% nrow ) ) * 100, 2)
+#> 12.33
+
+
+roads1 <- roads %>% mutate(surface_coded = case_when(
+  stringr::str_detect(surface,"asphalt") ~ "asphalt",
+  stringr::str_detect(surface,"grass") ~ "grass",
+  !stringr::str_detect(surface, c("asphalt","grass")) ~ "other" # values that aren't 'asphalt' or 'grass' are "other"
+  ))
+
+roads1 %>% pull(surface_coded) %>% table %>% sort(decreasing = TRUE)
+#> asphalt   other   grass 
+#> 14319   11835    2656  
+roads1 %>% select(surface_coded) %>% plot()
+
+```
+
+### cycleway:surface
+```{r}
+
+roads1 %>% names()
+
+round( ( roads1 %>% pull(cycleway_surface) %>% table() ) / ( roads1 %>% nrow() ) * 100, 3 )
+#> 0.004
+
+roads1 %>% select(cycleway_surface) %>% plot()
 
 ```
 
 
+### key:bicycle
+```{r}
+# key:bicylce https://wiki.openstreetmap.org/wiki/Key:bicycle
+roads1 %>% pull(bicycle) %>% table %>% sort(decreasing = TRUE)
+roads1 %>% select(bicycle) %>% plot()
+
+round((roads1 %>% pull(bicycle) %>% table() %>% sum() / (roads1 %>% nrow ) ) * 100, 2)
+# > 2.95
+
+# roads1 %>% select(highway) %>% plot(reset = FALSE,
+#                                      col = 'black')
+# roads1 %>% select(cycleway) %>% plot(add = TRUE,
+#                                     # lwd = 2,
+#                                      col = "red") # this is weird
+```
+
+### key:cycleway
+```{r}
+# key:cycleway https://wiki.openstreetmap.org/wiki/Key:cycleway
+# Add the cycleway=* tag to a highway=* to map cycling infrastructure that is an inherent part of the road. This specifically applies to cycle lanes which are always a part of the road, and often also applies to separated cycle tracks if they are running parallel and next to the road. 
+roads1 %>% pull(cycleway) %>% table %>% sort(decreasing = TRUE)
+round((roads1 %>% pull(cycleway) %>% table() %>% sum() / (roads1 %>% nrow ) ) * 100, 2) # percentage of cycleways in relation to highways
+#> 0.38
+
+roads1 %>% select(cycleway) %>% plot() # plotting cycleways
+
+st_geometry(leeds) %>% plot(reset = FALSE,
+                            col = "gray")
+roads1 %>% select(highway) %>% plot(add = TRUE,
+                                     col = 'black')
+roads1 %>% select(cycleway) %>% plot(add = TRUE,
+                                     lwd = 2) # plotting cycleways in relation to highways 
+
+# roads1 %>% select(bicycle) %>% plot(reset = FALSE,
+#                                     col = "black")
+# roads1 %>% select(cycleway) %>% plot(add = TRUE,
+#                                      lwd = 2)
+# roads1 %>% pull(bicycle) %>% table()
+# 
+# roads1 %>% select(highway) %>% plot(reset = FALSE,
+#                                     col = "black")
+# roads1 %>% select(bicycle) %>% plot(add = TRUE,
+#                                     col = 'red')
+
+# roads1  %>% filter(!is.na(bicycle)) %>% nrow()
+
+# roads1 <- st_join(roads1, speed_data
+#                 ) 
+
+
+
+
+## tags
+cl <- roads1 %>% select(cycleway_left)
+cr <- roads1 %>% select(cycleway_right) 
+cb <- roads1 %>% select(cycleway_both)
+
+
+?plot
+
+```
+
+
+### key:width and cycleqay:width
+
+```{r}
+roads1 %>% names()
+roads1 %>% pull(width) %>% table()
+    #  -1     .25       0     0.1     0.3     0.4     0.5    0.5m     0.6     0.7    0.75     0.8     0.9       1 1 - 1.5     1.0     1.1     1.2     1.3 
+    #   1       1      16       7      20      24      60       1      27       4       1      25       4     175       2       6       8      15       6 
+    # 1.4     1.5    1.52     1.6     1.7    1.75     1.8     1.9      10    10.5      11      12    13.5      14      1m       2     2-3     2.0   2.117 
+    #   1      40       3       9       3       3      11       2      10       1       2       1       1       1       2      89       1       3       1 
+    # 2.2     2.3     2.4     2.5     2.6     2.7     2.8     2.9      2+      23       3     3.0     3.2     3.4     3.5   3.5 m     3.8    37.5      3m 
+    #  10       4      11      77      11       3       1       3       1       4      97       2       7       2      12       1       2       1       1 
+    #   4     4.5   4.5 m     4.8      46      4m       5       6     6.5      6m       7     7.4     7.5       8     8.5       9  narrow 
+    #  41       2       1       1       3       1      17       4       2       1       3       1       1       9       3       2       9 
+roads1 %>% pull(cycleway_width) %>% table()
+ # 1.5 1.75 
+ #   1    9 
+
+roads1 %>% pull(width) %>% table() %>% sum()
+#> 938
+
+round((roads1 %>% pull(width) %>% table() %>% sum() / (roads1 %>% nrow ) ) * 100, 2)
+#> 0.4
+roads1 %>% select(width) %>% plot()
+
+round((roads1 %>% pull(cycleway_width) %>% table() %>% sum() / (roads1 %>% nrow ) ) * 100, 3)
+
+
+```
+
+### key:cyclestreet
+
+```{r}
+roads1 %>% pull(cyclestreet) %>% table()
+#> 2
+round((roads1 %>% pull(cyclestreet) %>% table() %>% sum() / (roads1 %>% nrow ) ) * 100, 5)
+#> 0.00086
+
+```
+
+### key:wheelchair
+https://wiki.openstreetmap.org/wiki/Key:wheelchair
+```{r}
+
+roads1 %>% pull(wheelchair) %>% table()
+       # bad designated    limited         no permissive    unknown        yes 
+       #   2          3          3        113          2          1        194 
+round((roads1 %>% pull(wheelchair) %>% table() %>% sum() / (roads1 %>% nrow ) ) * 100, 2)
+#> 0.14
+roads1 %>% select(wheelchair) %>% plot()
+
+```
+
+### key:disabled 
+https://wiki.openstreetmap.org/wiki/Key:disabled
+```{r}
+roads1 %>% pull(disabled) %>% table()
+
+#> 0.14
+round((roads1 %>% pull(disabled) %>% table() %>% sum() / (roads1 %>% nrow ) ) * 100, 5)
+#> 0.00086
+roads1 %>% select(wheelchair) %>% plot()
+```
+
+### key:kerb
+https://wiki.openstreetmap.org/wiki/Key:kerb
+
+```{r}
+roads1 %>% pull(kerb) %>% table()
+     # fl   flush     low lowered  raised     yes 
+     #  2      92       1      51      21       3 
+
+#> 0.14
+round((roads1 %>% pull(kerb) %>% table() %>% sum() / (roads1 %>% nrow ) ) * 100, 2)
+#> 0.07
+
+roads1 %>% select(kerb) %>% plot() # mostly indicated in Leeds?
+
+
+st_geometry(leeds) %>% plot(reset = FALSE)
+roads1 %>% select(kerb) %>% plot(add = TRUE,
+                                 lwd = 4)
+```
+
+
+
 ## things to explore further:
 - definition of cycling network in osm package
-  - does it allign with LTN 1/20 
+  - does it align with LTN 1/20 
+  - key:cycleway in osm data
+  - key:bicycle
 - how 'access' column can be used to evaluate the quality of the cycling network?
+- aggregate roads by speed limits?
+  - overlap with cycling network
+  - what does it say about the safety of cycling?
+- how to aggregate surface types?
+- not sure how cycleway:surface is tagged? has only 10 values. Any use?
+- how to incorporate disability (e.g., wheelchair) related information?
+  - small amount of data (maybe only an issue in WY?)
+  - what are the street sign regulations for the disabled?
+  - how do mappers evaluate (or even consider doing so?!) if its disabled-friendly
+  - disability is not limited to wheelchair use but also blindness, etc.
+  
 
 
 
