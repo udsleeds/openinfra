@@ -54,6 +54,8 @@ wy_short <- readRDS("wy_short.Rds")
 wy_cycling_net <- readRDS("wy_cycling_net.Rds")
 wy_cn_short <- readRDS("wy_cn_short.Rds")
 wy_pct <- readRDS("wy_pct.Rds")
+leeds <- wy_pct %>% filter(lad_name == "Leeds")
+wy_walking <- readRDS("wy_walking.Rds")
 
 wy %>% glimpse()
 wy_cycling_net %>% glimpse()
@@ -184,7 +186,7 @@ wy_checking %>% nrow() == wy_cn_short %>% nrow()
 
 It's interesting that Andrea's comment is applicable to IoW but not WY, I reckon it depends on the types of ways/roads present in the area and how well they are tagged. 
 
-## keys and tags
+## keys and tags for cycling/wheelchair
 
 tags of interest for cycling:
 surface
@@ -229,6 +231,8 @@ cycleway:left:seperation:right
 cycleway:proposed                      
 cycleway:right:separation:left
 handicap
+"cycle"
+"cycleway:est_width"
 
 ### data
 ```{r}
@@ -300,7 +304,6 @@ speed_data %>% select(speed) %>% plot()
 # saveRDS(wy_pct,
 #         "wy_pct.Rds")
 
-leeds <- wy_pct %>% filter(lad_name == "Leeds")
 
 # plotting speed data on leeds
 st_geometry(leeds) %>% plot(reset = FALSE, 
@@ -412,11 +415,14 @@ cb <- roads1 %>% select(cycleway_both)
 ```
 
 
-### key:width and cycleqay:width
+### key:width and cycleway:width
+https://wiki.openstreetmap.org/wiki/Key:width
+https://wiki.openstreetmap.org/wiki/Key:cycleway#Supplementary_details
+
 
 ```{r}
 roads1 %>% names()
-roads1 %>% pull(width) %>% table()
+roads %>% pull(width) %>% table()
     #  -1     .25       0     0.1     0.3     0.4     0.5    0.5m     0.6     0.7    0.75     0.8     0.9       1 1 - 1.5     1.0     1.1     1.2     1.3 
     #   1       1      16       7      20      24      60       1      27       4       1      25       4     175       2       6       8      15       6 
     # 1.4     1.5    1.52     1.6     1.7    1.75     1.8     1.9      10    10.5      11      12    13.5      14      1m       2     2-3     2.0   2.117 
@@ -494,6 +500,117 @@ st_geometry(leeds) %>% plot(reset = FALSE)
 roads1 %>% select(kerb) %>% plot(add = TRUE,
                                  lwd = 4)
 ```
+
+
+# Keys and tags for walking
+
+```{r}
+oe_get_keys(wy)
+
+et_walking <- c("wheelchair",
+"kerb",
+"disabled",
+"mobility_scooter",
+"handicap",
+"foot",
+"lit", # https://wiki.openstreetmap.org/wiki/Key:lit
+"access",
+"sidewalk",
+"footway",
+"incline",
+"smoothness",
+"est_width",
+"ramp",
+"sidewalk_left",
+"sidewalk_right",
+"ramp_wheelchair",
+"footway_left",
+"footway_right",          
+"footway_surface", 
+"priority",
+"sidewalk_both_surface", 
+"path",                                   
+"pedestrian",
+"capacity_disabled",
+"sidewalk_left_width",                    
+"sidewalk_right_surface")
+
+oe_match_pattern("Yorkshire")
+region_name <- "West Yorkshire"
+
+wy_walking <- osmextract::oe_get(region_name,
+                                 force_vectortranslate = TRUE,
+                                 extra_tags = et_walking
+                                 )
+wy_walking %>% glimpse()
+wy_walking %>% names()
+
+# saveRDS(wy_walking,
+#         "wy_walking.Rds")
+
+# wy_walk_short <- wy_walking %>% select("foot",
+#                 "lit",
+#                 "access",
+#                 "sidewalk",
+#                 "footway",
+#                 "incline",
+#                 "smoothness",
+#                 "est_width",
+#                 "ramp",
+#                 "sidewalk_left",
+#                 "sidewalk_right",
+#                 "ramp_wheelchair",
+#                 "footway_left",
+#                 "footway_right",          
+#                 "footway_surface", 
+#                 "priority",
+#                 "sidewalk_both_surface", 
+#                 "path",                                   
+#                 "pedestrian",
+#                 "capacity_disabled",
+#                 "sidewalk_left_width",                    
+#                 "sidewalk_right_surface")
+# saveRDS(wy_walk_short,
+#         "wy_walk_short.Rds")
+wy_walk_short %>% glimpse
+```
+
+
+
+
+### tag:foot, footway, sidewalk
+
+```{r}
+# ============= FOOT
+wy_walk_short %>% pull(foot) %>% table() 
+  # customers    delivery  designated destination discouraged   emergency     limited          no  permissive      permit     private     unknown         yes 
+         # 38           1        3652          34           3           1           1         374         516           1         123         151        7479
+
+round((wy_walk_short %>% pull(foot) %>% table() %>% sum()) / (wy_walk_short %>% nrow()),2)
+#> 0.05
+wy_walk_short %>% select(foot) %>% plot()
+
+
+# ============== FOOTWAY
+wy_walk_short %>% pull(footway) %>% table()
+ # access_aisle          alley       crossing           left           link             no           none             np       sidewalk traffic_island 
+ #            77              1            505             11              1              9              3              1           1505              6 
+ #           yes 
+ #             5 
+round((wy_walk_short %>% pull(footway) %>% table() %>% sum()) / (wy_walk_short %>% nrow()),2)
+#> 0.01
+
+# ============== SIDEWALK
+wy_walk_short %>% pull(sidewalk) %>% table()
+      # both   crossing       left left;right     mapped         no       none      right   separate        yes 
+      #  820          1        431          1         23        452        163        200         79          6 
+round((wy_walk_short %>% pull(sidewalk) %>% table() %>% sum()) / (wy_walk_short %>% nrow()),2)
+#> 0.01
+
+
+```
+
+
 
 
 
