@@ -1,3 +1,7 @@
+This notebook contains the initial exploration of OSM data on walking
+and cycling. Particular focus is paid to the information (keys + tags)
+on accessibility.
+
 # libraries and data
 
 ## libraries
@@ -27,9 +31,18 @@
 
 ## datasets
 
-Data is limited to West Yorkshire.
+Data is limited to West Yorkshire. `osmextract` was used to query the
+OSM database. For a query example see the code below, otherwise proceed
+to uploading the provided .Rds files.
 
-    # datasets that will be used throughout this notebook
+    # QUERY EXAMPLE
+    # oe_match_pattern("Yorkshire")
+    # region_name <- "West Yorkshire"
+    # wy <- osmextract::oe_get(place = region_name,
+    #                          layer = "lines",
+    #                          force_download = TRUE,
+    #                          force_vectortranslate = TRUE) # importing West Yorkshire data
+
     # note: you might have to indicate the path to the directory
     wy <- readRDS("wy.Rds") 
     # wy_short <- readRDS("wy_short.Rds")
@@ -79,7 +92,7 @@ cycleway:left:seperation:right
 cycleway:proposed  
 cycleway:right:separation:left “cycle” “cycleway:est\_width”
 
-# walking + disability
+# walking + accessibility
 
 “wheelchair”, “kerb”, “disabled”, “mobility\_scooter”, “handicap”,
 “foot”, “lit”, “access”, “sidewalk”, “footway”, “incline”, “smoothness”,
@@ -88,6 +101,24 @@ cycleway:right:separation:left “cycle” “cycleway:est\_width”
 “footway\_surface”, “priority”, “sidewalk\_both\_surface”, “path”,  
 “pedestrian”, “capacity\_disabled”, “sidewalk\_left\_width”,  
 “sidewalk\_right\_surface”
+
+## Some notes from lit review:
+
+Biagi et al. (2020) note that mapping accessibility related information
+gained attention following WheelMap launch.
+
+Key road elements for the accessible mobility are as following (based on
+Biani et al. 2020):
+
+-   sidewalk width
+-   slope
+-   kerb
+-   road signs and their height
+-   drains and other elements
+-   parking
+-   traffic lights (sound might be needed for the (partially) deaf)
+
+<!-- -->
 
     # the code below was used to import the data.
 
@@ -155,7 +186,9 @@ cycleway:right:separation:left “cycle” “cycleway:est\_width”
 
     ## [1] 37
 
-## foot
+## keys and tags
+
+### key:foot
 
 Legal access restriction for pedestrians.
 <https://wiki.openstreetmap.org/wiki/Key:foot>
@@ -177,14 +210,14 @@ Legal access restriction for pedestrians.
 
     wy_walking %>% select(foot) %>% plot
 
-![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-6-1.png)
+![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-7-1.png)
 
     st_geometry(leeds) %>% plot(reset = FALSE)
     wy_walking %>% select(foot) %>% plot(add = TRUE)
 
-![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-6-2.png)
+![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-7-2.png)
 
-## <tag:footway>
+### <tag:footway>
 
 The tag highway=footway is used for mapping minor pathways which are
 used mainly or exclusively by pedestrians.
@@ -207,24 +240,98 @@ used mainly or exclusively by pedestrians.
 
     wy_walking %>% select(footway) %>% plot
 
-![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-7-1.png)
+![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-8-1.png)
 
     st_geometry(leeds) %>% plot(reset = FALSE)
     wy_walking %>% select(footway) %>% plot(add = TRUE)
 
-![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-7-2.png)
+![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-8-2.png)
+
+Not sure if `foot` and `footway` overlap? `footway` might be excessive
+(overlap with `sidewalk` as well).
 
     wy_walking %>% select(foot) %>% filter(!is.na(foot)) %>% plot(reset= FALSE,
                                          col = "red",
-                                         main = "key:footway (green) and key:foot (red)")
+                                         main = "tag:footway (green) and key:foot (red)")
     wy_walking %>% select(footway) %>% filter(!is.na(footway)) %>% plot(add = TRUE,
                                             col = "green")
 
-![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-8-1.png)
+![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-9-1.png)
 
-    # the question remains if they intersect
+    # Let's figure out many of `footway` is within `foot`.
 
-## sidewalk
+    foot_walking <- wy_walking %>% select(foot) %>% filter(!is.na(foot)) 
+    # foot_walking %>% pull(foot) %>% table()
+    footway_walking <- wy_walking %>% select(footway) %>% filter(!is.na(footway))
+
+    # I'll use `st_within` argument because I want to make sure that *both* ways are being mapped in the same location rather than, for example, touching each other (for that I'd use `st_touches`).
+
+    # footway_walking[foot_walking, op = st_contains] # how is this argument different from `st_within`?
+    footway_in_foot <- foot_walking[footway_walking, op = st_within]
+    foot_table <- footway_in_foot %>% # which paths in foot are within footway?
+      pull(foot) %>% 
+      table() # making a table with values and their counts
+    foot_table
+
+    ## .
+    ## designated         no        yes 
+    ##        167          1         44
+
+    # the sum of the values in the `footway_table` should be the same even if we swap variables in subsetting. Let's check.
+    footway_table <- footway_walking[foot_walking, op = st_within] %>% 
+      pull(footway) %>% 
+      table() 
+    (foot_table %>% sum()) == (footway_table %>% sum())
+
+    ## [1] TRUE
+
+    # >  TRUE
+    footway_table
+
+    ## .
+    ## access_aisle     crossing     sidewalk          yes 
+    ##            1           96          114            1
+
+    # Let's plot the ways in Leeds area
+    st_geometry(leeds) %>% plot(reset = FALSE)
+    foot_walking %>% plot(add = TRUE,
+                          col = "blue")
+    footway_walking %>% plot(add = TRUE,
+                             col = "green",
+                             lwd = 1.5)
+    footway_in_foot %>% plot(add = TRUE,
+                             col='red',
+                             lwd = 2)
+    title(sub = "blue -> foot, green -> footway, red -> footway in foot")
+
+![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-10-1.png)
+Initial thoughts: most of the ways that are marked as both `foot` and
+`footway` conglomerate in central Leeds. It makes sense because these
+might be shopping streets/areas. However, it makes data cleaning a bit
+harder: do we just create a new `sf` object where we add
+`foot_in_footway` to `foot`? How do we preserve the information given by
+`footway` if we merge? does `footway` give any useful information that
+is needed to be preserved?
+
+-   I guess it’s a matter of conceptualizing (quality) walking network…
+
+Additional note: using `footway` to indicate additional sidewalk
+information (e.g., left or right) has been depreciated and using
+`sidewalk` is preferred.
+
+    # a question on how `st_disjoint` works, if we have time...
+    foot_walking %>% nrow() 
+
+    ## [1] 12374
+
+    foot_walking[footway_walking, op = st_disjoint] %>% pull(foot) %>%  table() %>% sum() # why does it return *all* rows and not only the ones it should be unconnected with?
+
+    ## [1] 12374
+
+    # footway_walking[foot_walking, ] %>% pull(footway) %>%  table() 
+    # footway_walking[foot_walking, op = st_disjoint] %>% table() %>% sum()
+
+### <tag:sidewalk>
 
 The sidewalk (or pavement) is that part of a highway set aside for the
 use of pedestrians and sometimes also cyclists, separated from the \[W\]
@@ -244,16 +351,38 @@ carriageway (or roadway).
     ##        yes   crossing left;right 
     ##          6          1          1
 
-    wy_walking %>% select(sidewalk) %>% plot
-
-![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-9-1.png)
-
     st_geometry(leeds) %>% plot(reset = FALSE)
-    wy_walking %>% select(sidewalk) %>% plot(add = TRUE)
+    wy_walking %>% select(sidewalk) %>% 
+      filter(!is.na(sidewalk) & sidewalk != "no" & sidewalk != "none") %>%
+      plot(add = TRUE,
+           col = 'red')
 
-![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-9-2.png)
+![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-12-1.png)
 
-## wheelchair
+    # let's check if `sidewalk` is within `footway`
+    sidewalk_walking <- wy_walking %>% select(sidewalk) %>% filter(!is.na(sidewalk))
+    footway_walking[sidewalk_walking, op = st_within] # empty; does
+
+    ## Simple feature collection with 0 features and 1 field
+    ## Bounding box:  xmin: NA ymin: NA xmax: NA ymax: NA
+    ## Geodetic CRS:  WGS 84
+    ## [1] footway  geometry
+    ## <0 rows> (or 0-length row.names)
+
+It’s empty. Most likely mappers use `sidewalk` tag instead of
+`footway=sidewalk` even though this does not seem to be discouraged by
+OSM. OSM does indicate, however, that ‘footway=yes’ should be replaced
+with ‘sidewalk=yes’.
+
+    # `sidewalk` does, however, contain `sidewalk` but I don't think it's a problem as they contain different information
+    # foot_walking[sidewalk_walking, op = st_within] %>% plot()
+    foot_walking[sidewalk_walking, op = st_within] %>% pull(foot) %>% table()
+
+    ## .
+    ## designated         no        yes 
+    ##         12         15        134
+
+### key:wheelchair
 
 This tag may be used to mark places or ways that are suitable to be used
 with a wheelchair and a person with a disability who uses another
@@ -273,53 +402,105 @@ of personal experience/someone with a wheelchair told you.
     ##        yes         no designated    limited        bad permissive    unknown 
     ##        194        113          3          3          2          2          1
 
-    wy_walking %>% select(wheelchair) %>% plot
-
-![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-10-1.png)
+    # (((wy_walking %>%  filter(wheelchair == "yes" | wheelchair == "designated") %>% pull(wheelchair) %>% table() %>% sum()) / wy_walking %>% nrow() ) * 100) %>% signif(2)
 
     st_geometry(leeds) %>% plot(reset = FALSE,
-                                main = "wheelchair: brown - yes, pink - no")
-    wy_walking %>% select(wheelchair) %>% filter(!is.na(wheelchair)) %>% plot(add = TRUE)
+                                col = "light gray")
+    title("Leeds",
+          sub = "blue -> mapped sidewalks (0.93%)
+          red -> sidewalks accessible for wheelchair users (0.084%)"
+          )
+    wy_walking %>% select(sidewalk) %>% filter(sidewalk != "none" & sidewalk != "no") %>% plot(add = TRUE,
+                                                                                               col = "blue",
+                                                                                               lwd = 1.5)
+    wy_walking %>% select(wheelchair) %>% filter(wheelchair == "yes" | wheelchair == "designated") %>%
+      plot(add = TRUE,
+           col = "red",
+           lwd = 1.5)
 
-![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-10-2.png)
+![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-15-1.png)
 
-    leeds
+## key:kerb
 
-    ## Simple feature collection with 482 features and 129 fields
-    ## Geometry type: MULTIPOLYGON
-    ## Dimension:     XY
-    ## Bounding box:  xmin: -1.800362 ymin: 53.699 xmax: -1.292229 ymax: 53.94589
-    ## Geodetic CRS:  WGS 84
-    ## # A tibble: 482 × 130
-    ##    geo_code  geo_name   lad11cd   lad_name   all bicycle  foot car_driver
-    ##  * <chr>     <chr>      <chr>     <chr>    <dbl>   <dbl> <dbl>      <dbl>
-    ##  1 E01011556 Leeds 015A E08000035 Leeds      756      10    34        519
-    ##  2 E01011652 Leeds 024C E08000035 Leeds      671      20    37        459
-    ##  3 E01011307 Leeds 103A E08000035 Leeds      640       7    44        431
-    ##  4 E01011280 Leeds 008D E08000035 Leeds      879       6    73        588
-    ##  5 E01011281 Leeds 059A E08000035 Leeds      868      26    72        494
-    ##  6 E01011482 Leeds 056D E08000035 Leeds     1029      48   221        400
-    ##  7 E01011274 Leeds 010C E08000035 Leeds      554      12   101        310
-    ##  8 E01011276 Leeds 011C E08000035 Leeds      669      14    66        466
-    ##  9 E01011277 Leeds 014A E08000035 Leeds      823      13    46        618
-    ## 10 E01011275 Leeds 010D E08000035 Leeds      617      10    70        414
-    ## # … with 472 more rows, and 122 more variables: car_passenger <dbl>,
-    ## #   motorbike <dbl>, train_tube <dbl>, bus <dbl>, taxi_other <dbl>,
-    ## #   govtarget_slc <dbl>, govtarget_sic <dbl>, govtarget_slw <dbl>,
-    ## #   govtarget_siw <dbl>, govtarget_sld <dbl>, govtarget_sid <dbl>,
-    ## #   govtarget_slp <dbl>, govtarget_sip <dbl>, govtarget_slm <dbl>,
-    ## #   govtarget_sim <dbl>, govtarget_slpt <dbl>, govtarget_sipt <dbl>,
-    ## #   govnearmkt_slc <dbl>, govnearmkt_sic <dbl>, govnearmkt_slw <dbl>, …
+Kerb is the edge where a road meets a sidewalk.
+<https://wiki.openstreetmap.org/wiki/Key:kerb>
+
+values:
+
+-   raised: &gt;3cm, wheelchair=no
+-   lowered: ~3cm, wheelchair = yes
+-   flush: ~0cm, wheelchair = yes
+
+flush kerbs might hinder the navigation process for the (partially)
+blind, hence tactile paving key should be mapped at these locations.
+
+    kerb_perc <- perc_ratio(wy_walking, "kerb") # see chunk 3 (or 'additional functions' section)
+    kerb_perc
+
+    ## [1] 0.073
+
+    sf_col_table(wy_walking, "kerb") # see chunk 4 (or 'additional functions' section)
+
+    ## .
+    ##   flush lowered  raised     yes      fl     low 
+    ##      92      51      21       3       2       1
+
+    wy_walking %>% select(kerb) %>% plot()
+
+![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-16-1.png)
+
+    st_geometry(leeds) %>% plot(reset = FALSE)
+    wy_walking %>% select(kerb) %>% 
+      filter(!is.na(kerb) ) %>%
+      plot(add = TRUE,
+           col = 'red')
+
+![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-16-2.png)
+
+### key:tactile\_paving
+
+### key:incline
+
+Indicates a way’s grade, slope or incline. In the case of roads, there
+is often a warning sign along the road.
+<https://wiki.openstreetmap.org/wiki/Key:incline>
+
+    incline_perc <- perc_ratio(wy_walking, "incline") # see chunk 3 (or 'additional functions' section)
+    incline_perc
+
+    ## [1] 0.57
+
+    sf_col_table(wy_walking, "incline")  # see chunk 4 (or 'additional functions' section)
+
+    ## .
+    ##       up     down       0%      10%      12%      14%      20%      yes 
+    ##      854      403       16       10        9        8        6        6 
+    ##     -10% up;steep       5%    steep steep;up     -12%     -14%     -15% 
+    ##        4        4        2        2        2        1        1        1 
+    ##     -25%      -5%    -6.5%      -8%      10°    12.5%      15%       25 
+    ##        1        1        1        1        1        1        1        1 
+    ##      25%      30%      33%       4% down_25%  up/down 
+    ##        1        1        1        1        1        1
+
+    st_geometry(leeds) %>% plot(reset = FALSE)
+    wy_walking %>% select(incline) %>% 
+      filter(!is.na(incline) & incline == "down" | incline == "up") %>%
+      plot(add = TRUE,
+           col = 'red',
+           lwd = 2)
+
+![](walking_cycling_files/figure-markdown_strict/unnamed-chunk-18-1.png)
 
 ## 
 
-    rbind(foot_perc,
+    cbind(foot_perc,
           footway_perc,
           sidewalk_perc,
-          wheelchair_perc)
+          wheelchair_perc,
+          kerb_perc,
+          incline_perc) 
 
-    ##                 [,1]
-    ## foot_perc       5.30
-    ## footway_perc    0.91
-    ## sidewalk_perc   0.93
-    ## wheelchair_perc 0.14
+    ##      foot_perc footway_perc sidewalk_perc wheelchair_perc kerb_perc
+    ## [1,]       5.3         0.91          0.93            0.14     0.073
+    ##      incline_perc
+    ## [1,]         0.57
