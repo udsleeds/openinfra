@@ -533,7 +533,9 @@ et_walking <- c("wheelchair",
 "pedestrian",
 "capacity_disabled",
 "sidewalk_left_width",                    
-"sidewalk_right_surface")
+"sidewalk_right_surface",
+"width",
+"tactile_paving")
 
 oe_match_pattern("Yorkshire")
 region_name <- "West Yorkshire"
@@ -611,6 +613,9 @@ round((wy_walk_short %>% pull(sidewalk) %>% table() %>% sum()) / (wy_walk_short 
 ```
 
 
+```{r}
+osmextract::oe_get_keys(zone = "West Yorkshire")
+```
 
 
 
