@@ -2,10 +2,14 @@
 title: "walking_cycling"
 output: md_document
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 This notebook focuses on exploring OSM data related to cycling and walking. It is limited to West Yorkshire.
+
+infrastructure is changing, policies are changing.
+what kind of data is being mapped?
+linking osm and os
 
 # walking + accessibility
 
@@ -171,8 +175,6 @@ foot_perc
 
 sf_col_table(wy_walking, "foot") # see chunk 4 (or 'additional functions' section)
 
-wy_walking %>% select(foot) %>% plot
-
 st_geometry(leeds) %>% plot(reset = FALSE)
 wy_walking %>% select(foot) %>% plot(add = TRUE)
 
@@ -194,6 +196,8 @@ footway_coded_perc
 st_geometry(leeds) %>% plot(reset = FALSE)
 wy_walking %>% select(footway_coded) %>% plot(add = TRUE)
 
+
+
 ```
 
 Highway=footway is not the only tag that might constitute pedestrian network. It might also include pedestrian and living street. Path could also be considered.
@@ -203,7 +207,7 @@ Highway=footway is not the only tag that might constitute pedestrian network. It
 ped <- c("footway",
          "pedestrian",
          "living_street",
-         "path")
+         "path") # path can be for marking cycling, walking, bridleways, hence is not ideal
 
 wy_walking <- wy_walking %>% mutate(ped_network = if_else(highway %in% ped, TRUE, FALSE)) # creating a new logical column; if the highway in that row contains one of the values in `ped` then it's TRUE, otherwise FALSE
 
@@ -233,11 +237,11 @@ pednet_leeds_within %>% nrow() # 17795 rows
 ((pednet_leeds_within %>% nrow) / (ped_network %>% nrow) * 100 ) %>% signif(3)
 # 39.2% more than a third of all pedestrian networks in WY is located in Leeds. I guess it would be useful to check how large this is by calculating the length of pedestrian networks per 1km^2 or per, for example, 1000 residents.
 
-ped_network[leeds, op = st_intersects] %>% plot()
-ped_network[leeds, op = st_within] %>% plot()
+pednet_leeds_intersects %>% plot()
+pednet_leeds_within %>% plot()
 ```
 
-
+I think it's important to note that ped_network is not indicative of quality network, such as paved surface, height of kerbs. Also, some of them might be shared with cyclists.
 
 ## key:footway
 
@@ -250,8 +254,6 @@ footway_perc <- perc_ratio(wy_walking, "footway") # see chunk 3 (or 'additional 
 footway_perc
 
 sf_col_table(wy_walking, "footway") # see chunk 4 (or 'additional functions' section)
-
-wy_walking %>% select(footway) %>% plot
 
 st_geometry(leeds) %>% plot(reset = FALSE)
 wy_walking %>% select(footway) %>% plot(add = TRUE)
@@ -512,6 +514,21 @@ Width key suffers from the same issue as estimated width because it's not clear 
 width_df <- wy_walking %>% filter(!is.na(width))
 width_df %>% pull(highway) %>% table()
 ```
+
+## width of ways for pedestrians over 1.5m (not accurate as more cleaning needs to be done)
+
+Just curious
+```{r}
+wy_walking %>% nrow()
+ped_network %>% nrow()
+
+width_ped <- ped_network %>% filter(est_width >= 1.5 | width >= 1.5) 
+
+width_ped[leeds, op = st_intersects] %>% nrow()
+
+ped_network %>% pull(width) %>% table()
+```
+
 
 ### ratios
 
