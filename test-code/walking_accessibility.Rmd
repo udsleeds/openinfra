@@ -74,7 +74,11 @@ Data is limited to West Yorkshire. `osmextract` was used to query the OSM databa
 ```
 
 ```{r}
-# note: you might have to indicate the path to the directory
+# note: you might have to indicate the path to the directory - download from:
+# https://github.com/udsleeds/openinfra/releases - or if you have piggyback...
+# piggyback::pb_download("wy.Rds")
+# piggyback::pb_download("wy_walking.Rds")
+# piggyback::pb_download("wy_pct.Rds")
 wy <- readRDS("wy.Rds") 
 # wy_short <- readRDS("wy_short.Rds")
 # wy_cycling_net <- readRDS("wy_cycling_net.Rds")
@@ -165,11 +169,24 @@ Legal access restriction for pedestrians. <https://wiki.openstreetmap.org/wiki/K
 
 ```{r}
 foot_perc <- perc_ratio(wy_walking, "foot") # see chunk 3 (or 'additional functions' section)
-foot_perc
+foot_perc # around 5% of all highways have the 'foot' column not NA
 
 sf_col_table(wy_walking, "foot") # see chunk 4 (or 'additional functions' section)
 
 wy_walking %>% select(foot) %>% plot
+# where is walking not allowed?
+wy_foot_no = wy_walking %>% 
+  filter(foot == "no")
+
+wy_foot_no %>% 
+  mapview::mapview() # less than ~1000 so OK with interactive map
+# what kind of highways is this?
+wy_foot_no %>% 
+  st_drop_geometry() %>% 
+  group_by(highway) %>% 
+  summarise(n = n(), percent = scales::percent(n / nrow(wy_foot_no))) %>% 
+  arrange(desc(n))
+table(wy_foot_no$highway)
 
 st_geometry(leeds) %>% plot(reset = FALSE)
 wy_walking %>% select(foot) %>% plot(add = TRUE)
