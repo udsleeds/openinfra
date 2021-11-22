@@ -10,6 +10,7 @@ library(tidyverse)
 library(sf)
 library(mapview)
 library(pct)
+library(ggplot2)
 ```
 
 ```{r}
@@ -17,48 +18,58 @@ library(pct)
 # you might have to specify a full path to your Rds files
 # to check your working directory use `getwd()` 
 # getwd()
+
+# Greater Manchester
 man_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/walking_and_accessibility_manchester/man_pct.Rds")
 man_walking <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/walking_and_accessibility_manchester/man_walking.Rds")
 manchester_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/walking_and_accessibility_manchester/manchester_pct.Rds")
+
+# West Yorkshire
+wy <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy.Rds")
+leeds_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/leeds_pct.Rds")
+wy_walking <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy_walking.Rds")
 ```
 
 
 ```{r}
-# oe_match_pattern("Manchester")
-# region_name_man <- "Greater Manchester"
-# 
-# # a list of extra tags related to walking + accessibility
-# et_walking <- c("wheelchair", 
-# "kerb",
-# "disabled",
-# "mobility_scooter",
-# "handicap",
-# "foot",
-# "lit", # https://wiki.openstreetmap.org/wiki/Key:lit
-# "access",
-# "sidewalk",
-# "footway",
-# "incline",
-# "smoothness",
-# "est_width",
-# "ramp",
-# "sidewalk_left",
-# "sidewalk_right",
-# "ramp_wheelchair",
-# "footway_left",
-# "footway_right",          
-# "footway_surface", 
-# "priority",
-# "sidewalk_both_surface", 
-# "path",                                   
-# "pedestrian",
-# "capacity_disabled",
-# "sidewalk_left_width",                    
-# "sidewalk_right_surface",
-# "width",
-# "tactile_paving")
-# 
-# 
+# Getting OSMdata from osmextract
+
+oe_match_pattern("Manchester")
+region_name_man <- "Greater Manchester"
+
+# a list of extra tags related to walking + accessibility
+
+et_walking <- c("wheelchair",
+"kerb",
+"disabled",
+"mobility_scooter",
+"handicap",
+"foot",
+"lit", # https://wiki.openstreetmap.org/wiki/Key:lit
+"access",
+"sidewalk",
+"footway",
+"incline",
+"smoothness",
+"est_width",
+"ramp",
+"sidewalk_left",
+"sidewalk_right",
+"ramp_wheelchair",
+"footway_left",
+"footway_right",
+"footway_surface",
+"priority",
+"sidewalk_both_surface",
+"path",
+"pedestrian",
+"capacity_disabled",
+"sidewalk_left_width",
+"sidewalk_right_surface",
+"width",
+"tactile_paving")
+
+
 # man_walking <- osmextract::oe_get(region_name_man,
 #                                   force_vectortranslate = TRUE,
 #                                   extra_tags = et_walking)
@@ -71,14 +82,13 @@ manchester_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/walki
 # extract data from pct (used for subsetting, other spatial operations)
 # View(pct_regions_lookup) # checking how Greater Manchester is coded in PCT
 
-# man_pct <- get_pct_zones(region = "greater-manchester",
-#                          )
+# man_pct <- get_pct_zones(region = "greater-manchester")
 # man_pct
 
 # saveRDS(man_pct,
 #         "man_pct.Rds")
 
-# let's extract Manchester 
+# let's extract Manchester
 # manchester_pct <- man_pct %>% filter(lad_name == "Manchester")
 
 # saveRDS(manchester_pct,
@@ -88,26 +98,18 @@ manchester_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/walki
 
 
 ```{r}
+# function for calculating the ratio (in percentages) of the total highways to a selected column (key)
 perc_ratio <- function(df = dataframe, x = character()){
 ((df %>% pull(x) %>% table() %>% sum()) / (df %>% nrow()) * 100) %>% 
     signif(digits = 2)
 }
 
+# function to pull out a table from an sf object
 sf_col_table <- function(df = dataframe,
                          x = character()){
   df %>% pull(x) %>% table %>% sort(decreasing = TRUE)
                          }
 ```
-
-```{r}
-perc_ratio <- function(df = dataframe, x = character()){
-    ((df %>% pull(x) %>% table() %>% sum()) / (df %>% nrow()) * 100) %>% 
-    signif(digits = 2)
-  }
-
-
-```
-
 
 
 ```{r}
@@ -122,22 +124,22 @@ width_perc_m <- perc_ratio(man_walking, "width")
 left_width_perc_m <- perc_ratio(man_walking, "sidewalk_left_width")
 tact_perc_m <- perc_ratio(man_walking, "tactile_paving")
 
-# foot_perc <- perc_ratio(man_walking, "foot")
-# footway_perc <- perc_ratio(man_walking, "footway")
-# sidewalk_perc <- perc_ratio(man_walking, "sidewalk")
-# wheelchair_perc <- perc_ratio(man_walking, "wheelchair")
-# kerb_perc <- perc_ratio(man_walking, "kerb")
-# incline_perc <- perc_ratio(man_walking, "incline")
-# estwidth_perc <- perc_ratio(man_walking, "est_width")
-# width_perc <- perc_ratio(man_walking, "width")
-# left_width_perc <- perc_ratio(man_walking, "sidewalk_left_width")
-# tact_perc <- perc_ratio(man_walking, "tactile_paving")
+foot_perc_wy <- perc_ratio(wy_walking, "foot")
+footway_perc_wy <- perc_ratio(wy_walking, "footway")
+sidewalk_perc_wy <- perc_ratio(wy_walking, "sidewalk")
+wheelchair_perc_wy <- perc_ratio(wy_walking, "wheelchair")
+kerb_perc_wy <- perc_ratio(wy_walking, "kerb")
+incline_perc_wy <- perc_ratio(wy_walking, "incline")
+estwidth_perc_wy <- perc_ratio(wy_walking, "est_width")
+width_perc_wy <- perc_ratio(wy_walking, "width")
+left_width_perc_wy <- perc_ratio(wy_walking, "sidewalk_left_width")
+tact_perc_wy <- perc_ratio(wy_walking, "tactile_paving")
 
 ```
 
 
-
 ```{r}
+# rbind'ing all the ratios of Greater Manchester
 ratios_manchester <- rbind(foot_perc_m,
       footway_perc_m,
       sidewalk_perc_m,
@@ -150,16 +152,17 @@ ratios_manchester <- rbind(foot_perc_m,
       tact_perc_m
 )  
 
-ratios_wy <- rbind(foot_perc,
-      footway_perc,
-      sidewalk_perc,
-      wheelchair_perc,
-      kerb_perc,
-      incline_perc,
-      estwidth_perc,
-      width_perc,
-      left_width_perc,
-      tact_perc)  
+# rbind'ing all the ratios of West Yorkshire
+ratios_wy <- rbind(foot_perc_wy,
+      footway_perc_wy,
+      sidewalk_perc_wy,
+      wheelchair_perc_wy,
+      kerb_perc_wy,
+      incline_perc_wy,
+      estwidth_perc_wy,
+      width_perc_wy,
+      left_width_perc_wy,
+      tact_perc_wy)  
 ratios_wy %>% class()
 
 # let's join both ratios in one table
@@ -170,7 +173,7 @@ ratios_man_wy <- cbind(ratios_manchester,
              "West Yorkshire")) # setting names so we know which column refers to which zone
 
 # renaming rows
-rownames <- c("foot_perc",
+row_names <- c("foot_perc",
       "footway_perc",
       "sidewalk_perc",
       "wheelchair_perc",
@@ -183,12 +186,20 @@ rownames <- c("foot_perc",
 
 rownames(ratios_man_wy) <- row_names
 
+```
 
+## plotting a bar plot to compare ratios_wy and ratios_manchester
+```{r}
+# turning a wide dataframe to a long one (needed for ggplot)
+ratios_man_wy_long <- ratios_man_wy %>% pivot_longer(cols = c("Greater Manchester",
+             "West Yorkshire"),
+             names_to = "zone_name", values_to = "value")
+ratios_man_wy_long
 
+# the problem is that we have values and we know if it belongs to GM or WY but we don't have information which ratio each value represents. For that, we'll need to transpose a ratios_man_wy, convert it to a long format and then, using a shared `value` key, both long dataframes will be joined
+# we will have to transpose our ratios_man_wy as I'll need columns
 ratios_man_wy1 <- ratios_man_wy %>% t() # transposing the dataframe
 ratios_man_wy1 <- ratios_man_wy1 %>% as.data.frame() # converting back to the dataframe
-
- 
 ratios_man_wy_long1 <- ratios_man_wy1 %>% pivot_longer(cols = c("foot_perc",
       "footway_perc",
       "sidewalk_perc",
@@ -201,24 +212,14 @@ ratios_man_wy_long1 <- ratios_man_wy1 %>% pivot_longer(cols = c("foot_perc",
       "tact_perc"),
              names_to = "perc_name", values_to = "value")
 
-ratios_man_wy_long <- ratios_man_wy %>% pivot_longer(cols = c("Greater Manchester",
-             "West Yorkshire"),
-             names_to = "zone_name", values_to = "value")
-ratios_man_wy_long
-
 ratios_joined <- left_join(ratios_man_wy_long,
                            ratios_man_wy_long1)
+ratios_joined # success!
 
 ```
 
 
-
 ```{r}
-
-library(ggplot2)
-
-
-ratios_joined %>% group_by(perc_name)
 
 ratios_joined %>% 
   ggplot(aes(x = perc_name,
@@ -230,24 +231,7 @@ ratios_joined %>%
             color="black", size=3.5,
             position = position_dodge(1))
 
-
-ratios_man_wy$foot_perc %>% hist()
-
-
-
-ratios_manchester %>% select(as.numeric(foot_perc))
-ratios_manchester[1]
-
-
-ratios_man_wy["Greater Manchester"]
-
 ```
-
-
-```{r}
-
-```
-
 
 
 
