@@ -1,12 +1,11 @@
-Package: web
+Package: openinfra
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
 Author: Who wrote it
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: This is a package developed as part of the OpenInfra project.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-URL: https://udsleeds.github.io/openinfra
+URL: https://github.com/udsleeds/openinfra
