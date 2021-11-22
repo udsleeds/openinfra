@@ -1,13 +1,13 @@
-![Robin Lovelace, 2021](man/figures/feature_image.png)
+![Robin Lovelace, 2021](man/images/feature_image.png)
 
 <br>
 
 Motor traffic-centric perspectives dominate road infrastructure planning
-(Parkin 2018). Yet, other (active) travel modes, such as cycling and
+\[@Parkin2018\]. Yet, other (active) travel modes, such as cycling and
 walking, have been found to bring an array of benefits: improved mental
 and physical health, decarbonisation, as well as being more efficient in
-terms of space (i.e., requires less space) (Parkin 2018). Indeed, in the
-post-pandemic world, active travel will likely become even more
+terms of space (i.e., requires less space) \[@Parkin2018\]. Indeed, in
+the post-pandemic world, active travel will likely become even more
 important due to reduced public transport capacities, as highlighted by
 the Department for Transport’s £250m Active Travel Fund (ATF) and £2b
 allocated to walking and cycling over the next 5 years in the UK alone.
@@ -26,7 +26,7 @@ decision-making due to its crowdsourced nature.
 
 Methodologically, the project builds on geographic data science[1] and
 previous studies assessing open datasets for transport applications
-(Ferster et al. 2020; Haklay 2010) and the experiences of lead
+\[@Ferster\_etal2020; @Haklay2010\] and the experiences of lead
 supervisor (e.g., developing *osmextract* package in R) and PhD student
 Caroline Tait (who developed a *CycleInfraLnd* package in R) to develop
 a new package in R for downloading, processing, and adding value to
@@ -42,6 +42,8 @@ Team)[2].
 Supervisors: Robin Lovelace, Ed Manley, Victoria Houlden
 
 Intern: Greta Timaite
+
+## Bibliography
 
 Ferster, Colin, Jaimy Fischer, Kevin Manaugh, Trisalyn Nelson, and
 Meghan Winters. 2020. “Using OpenStreetMap to Inventory Bicycle
