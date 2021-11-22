@@ -218,6 +218,10 @@ pre code {
 <p>Create a project for a <em>package</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh1c2V0aGlzKVxubGlicmFyeShwa2dkb3duKVxuYGBgIn0= -->
+<pre class="r"><code>library(usethis)
+library(pkgdown)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Build a website for a package.</p>
@@ -229,23 +233,23 @@ pre code {
 <!-- rnb-output-begin eyJkYXRhIjoiT3ZlcndyaXRlIHByZS1leGlzdGluZyBmaWxlICdfcGtnZG93bi55bWwnP1xuIn0= -->
 <pre><code>Overwrite pre-existing file &#39;_pkgdown.yml&#39;?</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG4xOiBObyB3YXlcbjI6IERlZmluaXRlbHlcbjM6IE5vXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4xOiBZdXBcbjI6IE5vdCBub3dcbjM6IE5vcGVcbiJ9 -->
 <pre><code>
-1: No way
-2: Definitely
-3: No</code></pre>
+1: Yup
+2: Not now
+3: Nope</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuMlxuYGBgIn0= -->
-<pre class="r"><code>2</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuM1xuYGBgIn0= -->
+<pre class="r"><code>3</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoi4pyTIFdyaXRpbmcgJ19wa2dkb3duLnltbCdcbuKAoiBNb2RpZnkgJ19wa2dkb3duLnltbCdcbiJ9 -->
-<pre><code>✓ Writing &#39;_pkgdown.yml&#39;
+<!-- rnb-output-begin eyJkYXRhIjoi4pyTIExlYXZpbmcgJ19wa2dkb3duLnltbCcgdW5jaGFuZ2VkXG7igKIgTW9kaWZ5ICdfcGtnZG93bi55bWwnXG4ifQ== -->
+<pre><code>✓ Leaving &#39;_pkgdown.yml&#39; unchanged
 • Modify &#39;_pkgdown.yml&#39;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGtnZG93bjo6YnVpbGRfc2l0ZSgpICMgY3JlYXRlcyBkb2NzIGZvbGRlciB3aXRoIGZpbGVzIGZvciB0aGUgd2Vic2l0ZVxuYGBgIn0= -->
 <pre class="r"><code>pkgdown::build_site() # creates docs folder with files for the website</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiLS0gSW5zdGFsbGluZyBwYWNrYWdlIGludG8gdGVtcG9yYXJ5IGxpYnJhcnkgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cblxuLVxuXG5cXFxuXG58XG5cbi9cblxuLVxuXG5cXFxuPT0gQnVpbGRpbmcgcGtnZG93biBzaXRlID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxufFxuUmVhZGluZyBmcm9tOiAnL1VzZXJzL2dyZXRhdGltYWl0ZS9EZXNrdG9wL29wZW5pbmZyYS93ZWInXG5cbi9cbldyaXRpbmcgdG86ICAgJy9Vc2Vycy9ncmV0YXRpbWFpdGUvRGVza3RvcC9vcGVuaW5mcmEvd2ViL2RvY3MnXG5cbi1cblxuXFxcblxufFxuXG4vXG4tLSBJbml0aWFsaXNpbmcgc2l0ZSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuXG4tXG5cblxcXG5cbnxcblxuL1xuXG4tXG5cblxcXG5cbnxcbi0tIEJ1aWxkaW5nIGhvbWUgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5cbi9cblxuLVxuXG5cXFxuXG58XG5cbi9cblxuLVxuXG5cXFxuXG58XG5cbi9cblxuLVxuXG5cXFxuXG58XG5cbi9cbi0tIEJ1aWxkaW5nIGZ1bmN0aW9uIHJlZmVyZW5jZSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5cbi1cblxuXFxcblJlYWRpbmcgJ21hbi9oZWxsby5SZCdcblxufFxuXG4vXG49PSBET05FID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuXG4tXG5cblxcXG5cbiBcbi0tIFByZXZpZXdpbmcgc2l0ZSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiLS0gSW5zdGFsbGluZyBwYWNrYWdlIGludG8gdGVtcG9yYXJ5IGxpYnJhcnkgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cblxuLVxuXG5cXFxuXG58XG5cbi9cblxuLVxuPT0gQnVpbGRpbmcgcGtnZG93biBzaXRlID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxuXFxcblJlYWRpbmcgZnJvbTogJy9Vc2Vycy9ncmV0YXRpbWFpdGUvRGVza3RvcC9vcGVuaW5mcmEnXG5cbnxcbldyaXRpbmcgdG86ICAgJy9Vc2Vycy9ncmV0YXRpbWFpdGUvRGVza3RvcC9vcGVuaW5mcmEvZG9jcydcblxuL1xuXG4tXG4tLSBJbml0aWFsaXNpbmcgc2l0ZSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuXG5cXFxuXG58XG5cbi9cbldyaXRpbmcgJ3NpdGVtYXAueG1sJ1xuXG4tXG5Xcml0aW5nICc0MDQuaHRtbCdcblxuXFxcbi0tIEJ1aWxkaW5nIGhvbWUgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5cbnxcblxuL1xuXG4tXG5cblxcXG5cbnxcblxuL1xuXG4tXG5cblxcXG5cbnxcbi0tIEJ1aWxkaW5nIGZ1bmN0aW9uIHJlZmVyZW5jZSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5cbi9cblJlYWRpbmcgJ21hbi9oZWxsby5SZCdcblxuLVxuPT0gRE9ORSA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxuXFxcblxufFxuXG4gXG4tLSBQcmV2aWV3aW5nIHNpdGUgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuIn0= -->
 <pre><code>-- Installing package into temporary library --------------------------------------------------------------
 
 -
@@ -257,46 +261,32 @@ pre code {
 /
 
 -
-
-\
 == Building pkgdown site =======================================================
 
+\
+Reading from: &#39;/Users/gretatimaite/Desktop/openinfra&#39;
+
 |
-Reading from: &#39;/Users/gretatimaite/Desktop/openinfra/web&#39;
+Writing to:   &#39;/Users/gretatimaite/Desktop/openinfra/docs&#39;
 
 /
-Writing to:   &#39;/Users/gretatimaite/Desktop/openinfra/web/docs&#39;
 
 -
-
-\
-
-|
-
-/
 -- Initialising site -----------------------------------------------------------
 
--
-
 \
 
 |
 
 /
+Writing &#39;sitemap.xml&#39;
 
 -
+Writing &#39;404.html&#39;
 
 \
-
-|
 -- Building home ---------------------------------------------------------------
 
-/
-
--
-
-\
-
 |
 
 /
@@ -314,23 +304,17 @@ Writing to:   &#39;/Users/gretatimaite/Desktop/openinfra/web/docs&#39;
 \
 
 |
-
-/
 -- Building function reference -------------------------------------------------
 
--
-
-\
+/
 Reading &#39;man/hello.Rd&#39;
 
-|
-
-/
+-
 == DONE ========================================================================
 
--
-
 \
+
+|
 
  
 -- Previewing site ----------------------------------------------------------------------------------------</code></pre>
@@ -375,7 +359,7 @@ Reading &#39;man/hello.Rd&#39;
 <p>web/.github/.gitignore *.html</p>
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29kZSBmb3Igd2Vic2l0ZSIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKQ3JlYXRlIGEgcHJvamVjdCBmb3IgYSAqcGFja2FnZSouCgpgYGB7cn0KbGlicmFyeSh1c2V0aGlzKQpsaWJyYXJ5KHBrZ2Rvd24pCmBgYAoKCkJ1aWxkIGEgd2Vic2l0ZSBmb3IgYSBwYWNrYWdlLgpgYGB7cn0KdXNldGhpczo6dXNlX3BrZ2Rvd24oKSAjIGNyZWF0ZXMgX3BsZ2Rvd24ueW1sIGZpbGUKcGtnZG93bjo6YnVpbGRfc2l0ZSgpICMgY3JlYXRlcyBkb2NzIGZvbGRlciB3aXRoIGZpbGVzIGZvciB0aGUgd2Vic2l0ZQoKcGtnZG93bjo6cHJldmlld19zaXRlKCkgIyBwcmV2aWV3IHRoZSBzaXRlCmBgYAoKQWRkIHRoaXMgcmVwb3NpdG9yeSB0byBHaXRodWIgKEkgdXNlZCBkZXNrdG9wIGFwcCkuIE1ha2Ugc3VyZSBpdCdzIHB1YmxpYy4KSGF2ZSBhIGxvb2sgYXQgeW91ciBHaXRIdWIgaWYgaXQncyB0aGVyZSBhbHJlYWR5LiBGb3IgbWUgaXQgc2hvd3MgdGhhdCB0aGVyZSdzIGEgZm9sZGVyIG9ubHkgKG5vIGNvbnRlbnRzIHlldCkuIFdlIG5lZWQgdG8gcHVzaCB0aGUgZmlsZXMgdG8gR2l0aHViLgoKYGBge3J9CiMgbm93IHJ1biB0aGUgY29kZSBiZWxvdyB0byBsaW5rIHlvdXIgd2Vic2l0ZSB0byBHaXRIdWIgcGFnZXMKdXNlX3BrZ2Rvd25fZ2l0aHViX3BhZ2VzKCkKdXNldGhpczo6dXNlX2dpdGh1Yl9hY3Rpb24oInBrZ2Rvd24iKSAKIyBwa2dkb3duOjpwcmV2aWV3X3NpdGUoKQpgYGAKCk5vdyBpbiB0aGUgR2l0SHViIHJlcG9zaXRvcnkncyAiQWJvdXQiIHNlY3Rpb24sIHlvdSBzaG91bGQgc2VlIHlvdXIgd2Vic2l0ZSdzIGxpbmsuIFlvdXIgX3BrZ2Rvd24ueW1sIHNob3VsZCBoYXZlIGEgVVJMIG9mIHlvdXIgR2l0SHViIFBhZ2VzLgoKCkl0IG1pZ2h0IHNob3cgNDA0IGVycm9yLiBXYWl0IGZvciBpdC4gQWxzbywgeW91IGNhbiBjaGFuZ2UgdGhlIHNvdXJjZSBvZiB5b3VyIEdpdEh1YiBQYWdlcyBpZiB5b3UgZ28gdG8gdGhlIHJlcG8ncyBzZXR0aW5ncyAtPiBQYWdlcyAtPiBzb3VyY2UKLS0+IE1pbmUgaXM6IGdoLXBhZ2VzIC8ocm9vdCkKCkNyZWF0ZSBhIFJFQURNRSBmaWxlLiBNYWtlIHN1cmUgaXQncyBrbml0dGVkIGFzIG1kIGZpbGUgKGluIHRoZSBSbWQgYWRkOiBvdXRwdXQ6IG1kX2RvY3VtZW50KSBvciBpdCB3aWxsIG5vdCBiZSByZWNvZ25pc2VkLiBQdXNoIGNoYW5nZXMKCgpgYGB7cn0KIyBNaWdodCBiZSBuZWVkZWQgdG8gcHVzaCB0aGUgZmlsZXMgdG8gR2l0SHViCiMgdXNldGhpczo6dXNlX2dpdCgpICMgYWdyZWUgdG8gcHVzaAojIHVzZXRoaXM6OnVzZV9naXRodWIoKQpgYGAKCgouUmJ1aWxkaWdub3JlCgpeLipcLlJwcm9qJApeXC5ScHJvalwudXNlciQKXl9wa2dkb3duXC55bWwkCl5kb2NzJApecGtnZG93biQKXlwuZ2l0aHViJApeUkVBRE1FXC5SbWQkCgoKd2ViLyAuZ2l0aWdub3JlICAgaW4gbWFzdGVyCgouUnByb2oudXNlcgouUmhpc3RvcnkKLlJEYXRhCi5SdXNlcmRhdGEKLlJkYXRhCi5odHRyLW9hdXRoCi5EU19TdG9yZQpkb2NzCgoKCndlYi8uZ2l0aHViLy5naXRpZ25vcmUgCiouaHRtbAoKCgogCiAKCgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29kZSBmb3Igd2Vic2l0ZSIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKQ3JlYXRlIGEgcHJvamVjdCBmb3IgYSAqcGFja2FnZSouCgpgYGB7cn0KbGlicmFyeSh1c2V0aGlzKQpsaWJyYXJ5KHBrZ2Rvd24pCmBgYAoKCkJ1aWxkIGEgd2Vic2l0ZSBmb3IgYSBwYWNrYWdlLgpgYGB7cn0KdXNldGhpczo6dXNlX3BrZ2Rvd24oKSAjIGNyZWF0ZXMgX3BsZ2Rvd24ueW1sIGZpbGUKcGtnZG93bjo6YnVpbGRfc2l0ZSgpICMgY3JlYXRlcyBkb2NzIGZvbGRlciB3aXRoIGZpbGVzIGZvciB0aGUgd2Vic2l0ZQoKcGtnZG93bjo6cHJldmlld19zaXRlKCkgIyBwcmV2aWV3IHRoZSBzaXRlCmBgYAoKQWRkIHRoaXMgcmVwb3NpdG9yeSB0byBHaXRodWIgKEkgdXNlZCBkZXNrdG9wIGFwcCkuIE1ha2Ugc3VyZSBpdCdzIHB1YmxpYy4KSGF2ZSBhIGxvb2sgYXQgeW91ciBHaXRIdWIgaWYgaXQncyB0aGVyZSBhbHJlYWR5LiBGb3IgbWUgaXQgc2hvd3MgdGhhdCB0aGVyZSdzIGEgZm9sZGVyIG9ubHkgKG5vIGNvbnRlbnRzIHlldCkuIFdlIG5lZWQgdG8gcHVzaCB0aGUgZmlsZXMgdG8gR2l0aHViLgoKYGBge3J9CiMgbm93IHJ1biB0aGUgY29kZSBiZWxvdyB0byBsaW5rIHlvdXIgd2Vic2l0ZSB0byBHaXRIdWIgcGFnZXMKdXNldGhpczo6dXNlX3BrZ2Rvd25fZ2l0aHViX3BhZ2VzKCkKdXNldGhpczo6dXNlX2dpdGh1Yl9hY3Rpb24oInBrZ2Rvd24iKSAKIyBwa2dkb3duOjpwcmV2aWV3X3NpdGUoKQpgYGAKCk5vdyBpbiB0aGUgR2l0SHViIHJlcG9zaXRvcnkncyAiQWJvdXQiIHNlY3Rpb24sIHlvdSBzaG91bGQgc2VlIHlvdXIgd2Vic2l0ZSdzIGxpbmsuIFlvdXIgX3BrZ2Rvd24ueW1sIHNob3VsZCBoYXZlIGEgVVJMIG9mIHlvdXIgR2l0SHViIFBhZ2VzLgoKCkl0IG1pZ2h0IHNob3cgNDA0IGVycm9yLiBXYWl0IGZvciBpdC4gQWxzbywgeW91IGNhbiBjaGFuZ2UgdGhlIHNvdXJjZSBvZiB5b3VyIEdpdEh1YiBQYWdlcyBpZiB5b3UgZ28gdG8gdGhlIHJlcG8ncyBzZXR0aW5ncyAtPiBQYWdlcyAtPiBzb3VyY2UKLS0+IE1pbmUgaXM6IGdoLXBhZ2VzIC8ocm9vdCkKCkNyZWF0ZSBhIFJFQURNRSBmaWxlLiBNYWtlIHN1cmUgaXQncyBrbml0dGVkIGFzIG1kIGZpbGUgKGluIHRoZSBSbWQgYWRkOiBvdXRwdXQ6IG1kX2RvY3VtZW50KSBvciBpdCB3aWxsIG5vdCBiZSByZWNvZ25pc2VkLiBQdXNoIGNoYW5nZXMKCgpgYGB7cn0KIyBNaWdodCBiZSBuZWVkZWQgdG8gcHVzaCB0aGUgZmlsZXMgdG8gR2l0SHViCiMgdXNldGhpczo6dXNlX2dpdCgpICMgYWdyZWUgdG8gcHVzaAojIHVzZXRoaXM6OnVzZV9naXRodWIoKQpgYGAKCgouUmJ1aWxkaWdub3JlCgpeLipcLlJwcm9qJApeXC5ScHJvalwudXNlciQKXl9wa2dkb3duXC55bWwkCl5kb2NzJApecGtnZG93biQKXlwuZ2l0aHViJApeUkVBRE1FXC5SbWQkCgoKd2ViLyAuZ2l0aWdub3JlICAgaW4gbWFzdGVyCgouUnByb2oudXNlcgouUmhpc3RvcnkKLlJEYXRhCi5SdXNlcmRhdGEKLlJkYXRhCi5odHRyLW9hdXRoCi5EU19TdG9yZQpkb2NzCgoKCndlYi8uZ2l0aHViLy5naXRpZ25vcmUgCiouaHRtbAoKCgogCiAKCgoK</div>
 
 
 

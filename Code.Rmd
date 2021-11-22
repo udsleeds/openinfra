@@ -24,7 +24,7 @@ Have a look at your GitHub if it's there already. For me it shows that there's a
 
 ```{r}
 # now run the code below to link your website to GitHub pages
-use_pkgdown_github_pages()
+usethis::use_pkgdown_github_pages()
 usethis::use_github_action("pkgdown") 
 # pkgdown::preview_site()
 ```
