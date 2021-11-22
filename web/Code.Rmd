@@ -1,0 +1,81 @@
+---
+title: "Code for website"
+output: html_notebook
+---
+
+Create a project for a *package*.
+
+```{r}
+library(usethis)
+library(pkgdown)
+```
+
+
+Build a website for a package.
+```{r}
+usethis::use_pkgdown() # creates _plgdown.yml file
+pkgdown::build_site() # creates docs folder with files for the website
+
+pkgdown::preview_site() # preview the site
+```
+
+Add this repository to Github (I used desktop app). Make sure it's public.
+Have a look at your GitHub if it's there already. For me it shows that there's a folder only (no contents yet). We need to push the files to Github.
+
+```{r}
+# now run the code below to link your website to GitHub pages
+use_pkgdown_github_pages()
+usethis::use_github_action("pkgdown") 
+# pkgdown::preview_site()
+```
+
+Now in the GitHub repository's "About" section, you should see your website's link. Your _pkgdown.yml should have a URL of your GitHub Pages.
+
+
+It might show 404 error. Wait for it. Also, you can change the source of your GitHub Pages if you go to the repo's settings -> Pages -> source
+--> Mine is: gh-pages /(root)
+
+Create a README file. Make sure it's knitted as md file (in the Rmd add: output: md_document) or it will not be recognised. Push changes
+
+
+```{r}
+# Might be needed to push the files to GitHub
+# usethis::use_git() # agree to push
+# usethis::use_github()
+```
+
+
+.Rbuildignore
+
+^.*\.Rproj$
+^\.Rproj\.user$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
+^README\.Rmd$
+
+
+web/ .gitignore   in master
+
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.Rdata
+.httr-oauth
+.DS_Store
+docs
+
+
+
+web/.github/.gitignore 
+*.html
+
+
+
+ 
+ 
+
+
+
