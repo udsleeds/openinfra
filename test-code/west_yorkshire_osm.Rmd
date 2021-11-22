@@ -44,7 +44,7 @@ library(sf)
 #                                             mode = "cycling"
 #                                              ) # importing WY cycling network; definition needs further exploration
 
-# saveRDS(wy, 
+# saveRDS(wy,
 #         "wy.Rds")
 # saveRDS(wy_cycling_net,
 #         "wy_cycling_net.Rds")
@@ -56,6 +56,7 @@ wy_cn_short <- readRDS("wy_cn_short.Rds")
 wy_pct <- readRDS("wy_pct.Rds")
 leeds <- wy_pct %>% filter(lad_name == "Leeds")
 wy_walking <- readRDS("wy_walking.Rds")
+
 
 wy %>% glimpse()
 wy_cycling_net %>% glimpse()
@@ -303,6 +304,10 @@ speed_data %>% select(speed) %>% plot()
 # sf::sf_use_s2(FALSE)
 # saveRDS(wy_pct,
 #         "wy_pct.Rds")
+
+# leeds_pct <- wy_pct %>% filter(lad_name == "Leeds")
+# saveRDS(leeds,
+#         "leeds_pct.Rds")
 
 
 # plotting speed data on leeds
