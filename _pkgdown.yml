@@ -1,2 +1,6 @@
+title: OpenInfra
 url: https://udsleeds.github.io/openinfra
+template:
+  params:
+    bootswatch: flatly
 
