@@ -81,14 +81,15 @@ Data is limited to West Yorkshire. `osmextract` was used to query the OSM databa
 
 ```{r}
 # note: you might have to indicate the path to the directory
-wy <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy.Rds") 
+wy <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy.Rds")
 # wy_short <- readRDS("wy_short.Rds")
 # wy_cycling_net <- readRDS("wy_cycling_net.Rds")
 # wy_cn_short <- readRDS("wy_cn_short.Rds")
 wy_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy_pct.Rds")
-leeds <- wy_pct %>% filter(lad_name == "Leeds")
+leeds_pct <- wy_pct %>% filter(lad_name == "Leeds")
 wy_walking <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy_walking.Rds")
 # wy_walk_short <- readRDS("wy_walking.Rds")
+
 ```
 
 ## additional functions
@@ -153,6 +154,8 @@ sf_col_table <- function(df = dataframe,
 #                                  force_vectortranslate = TRUE,
 #                                  extra_tags = et_walking
 #                                  )
+# saveRDS(wy_walking,
+#         "wy_walking.Rds")
 
 # ============
 # `wy_walking` is the data we'll use in this section. 
@@ -549,6 +552,49 @@ ratios <- rbind(foot_perc,
 
 ratios
 ```
+
+## linking pct data with Leeds Census 2011
+```{r, message = FALSE}
+# working with lsoa data
+travel_foot_leeds_lsoa <- read_csv("~/Desktop/Method of travel to work On foot % 2011 lsoa.csv")
+travel_foot_leeds_lsoa
+
+# checking if leeds_pct$geo_code matches travel_foot_leeds_lsoa$NAME
+leeds_pct$geo_code %in% travel_foot_leeds_lsoa$NAME %>% table() # TRUE 482
+
+```
+
+```{r}
+# Cleaning data -- extracting digits from the `Method of travel to work: On foot %|2011` column
+
+travel_foot_leeds_lsoa <- travel_foot_leeds_lsoa %>%
+  mutate(value = readr::parse_number(travel_foot_leeds_lsoa$"Method of travel to work: On foot %|2011")) # using `parse_number` to extract digits, which will be added to a new column called "value"
+
+# there were 3 parsing failures. Let's check which ones failed
+travel_foot_leeds_lsoa %>% filter(is.na(value)) # not sure why they failed as I don't see any differences compared to other rows
+# I'll fix this manually for now but I'll need to come up with more nuanced code to avoid parsing issues...
+travel_foot_leeds_lsoa <- travel_foot_leeds_lsoa %>% 
+  filter(NAME == "E01011375") %>%
+           mutate(value = 7.2)
+travel_foot_leeds_lsoa <- travel_foot_leeds_lsoa %>% 
+  filter(NAME == "E01011564") %>%
+           mutate(value = 1.7)
+travel_foot_leeds_lsoa <- travel_foot_leeds_lsoa %>% 
+  filter(NAME == "E01011670") %>%
+           mutate(value = 12.1)
+
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
