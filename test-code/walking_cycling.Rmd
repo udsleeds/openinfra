@@ -567,29 +567,41 @@ leeds_pct$geo_code %in% travel_foot_leeds_lsoa$NAME %>% table() # TRUE 482
 ```{r}
 # Cleaning data -- extracting digits from the `Method of travel to work: On foot %|2011` column
 
-travel_foot_leeds_lsoa <- travel_foot_leeds_lsoa %>%
+travel_foot_leeds_lsoa1 <- travel_foot_leeds_lsoa %>%
   mutate(value = readr::parse_number(travel_foot_leeds_lsoa$"Method of travel to work: On foot %|2011")) # using `parse_number` to extract digits, which will be added to a new column called "value"
 
 # there were 3 parsing failures. Let's check which ones failed
-travel_foot_leeds_lsoa %>% filter(is.na(value)) # not sure why they failed as I don't see any differences compared to other rows
+travel_foot_leeds_lsoa1 %>% filter(is.na(value)) # not sure why they failed as I don't see any differences compared to other rows
 # I'll fix this manually for now but I'll need to come up with more nuanced code to avoid parsing issues...
-travel_foot_leeds_lsoa <- travel_foot_leeds_lsoa %>% 
-  filter(NAME == "E01011375") %>%
-           mutate(value = 7.2)
-travel_foot_leeds_lsoa <- travel_foot_leeds_lsoa %>% 
-  filter(NAME == "E01011564") %>%
-           mutate(value = 1.7)
-travel_foot_leeds_lsoa <- travel_foot_leeds_lsoa %>% 
-  filter(NAME == "E01011670") %>%
-           mutate(value = 12.1)
+  
+travel_foot_leeds_lsoa1$value[travel_foot_leeds_lsoa1$NAME == "E01011375"] <- 7.2
+travel_foot_leeds_lsoa1$value[travel_foot_leeds_lsoa1$NAME == "E01011564"] <- 1.7
+travel_foot_leeds_lsoa1$value[travel_foot_leeds_lsoa1$NAME == "E01011670"] <- 12.7
 
+# double-checking if there are any NAs left
+travel_foot_leeds_lsoa1 %>% filter(is.na(value)) # none
 ```
 
+
+```{r, message = FALSE}
+# now we can join `leeds_pct` and `travel_foot_leeds_lsoa1` dataframes
+
+leeds_joined <- left_join(leeds_pct,
+                          travel_foot_leeds_lsoa1,
+                          by = c(geo_code = "NAME"))
+# checking if we have `value` column
+leeds_joined %>% select(value) # good :)
+```
 
 ```{r}
+wy_walking[leeds_joined, op = st_intersection]
 
+st_geometry(leeds) %>% plot(reset = FALSE)
+leeds_joined %>% select(value) %>% plot(add = TRUE,
+                                        fill = leeds_joined$geo_name)
+wy_walking %>% filter(highway == "footway") %>% plot(add = TRUE,
+                                                     col = "white")
 ```
-
 
 
 
