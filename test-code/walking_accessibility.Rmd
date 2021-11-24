@@ -694,7 +694,7 @@ highway_pedestrian_no <- c("tertiary",
                            "services") 
 
 wy_walking_nogeom1 <- wy_walking_nogeom %>% 
-  mutate(pedestrian = case_when(
+  mutate(pedestrian_friendly = case_when(
     # highway=*
     highway %in% highway_pedestrian_yes ~ "yes",
     highway %in% highway_pedestrian_maybe ~ "maybe",
@@ -703,7 +703,7 @@ wy_walking_nogeom1 <- wy_walking_nogeom %>%
          )
 
 ## just a quick sanity check that numbers match
-wy_walking_nogeom1 %>% filter(pedestrian == "yes" | pedestrian == "maybe" | pedestrian == "no") %>% nrow() # 181302 rows that had been recoded
+wy_walking_nogeom1 %>% filter(pedestrian_friendly == "yes" | pedestrian_friendly == "maybe" | pedestrian_friendly == "no") %>% nrow() # 181302 rows that had been recoded
 wy_walking_nogeom1 %>% filter(is.na(highway)) %>% nrow() # 53311 rows that have NAs in key:highway =*, hence no recoding
 (181302 + 53311) == (wy_walking_nogeom %>% nrow()) # value must be TRUE
 
@@ -741,7 +741,7 @@ foot_pedestrian_no <- c("no",
                         )
 
 wy_walking_nogeom2 <- wy_walking_nogeom %>% 
-  mutate(pedestrian = case_when(
+  mutate(pedestrian_friendly = case_when(
     highway %in% highway_pedestrian_yes 
     ~ "yes",
     highway %in% highway_pedestrian_no 
@@ -763,8 +763,8 @@ wy_walking_nogeom2 <- wy_walking_nogeom %>%
 
 
 # checking if any "maybe" highways were reclassified to "yes" because foot was added
-wy_walking_nogeom1 %>% filter(pedestrian == "yes") %>% nrow
-wy_walking_nogeom2 %>% filter(pedestrian == "yes") %>% nrow
+wy_walking_nogeom1 %>% filter(pedestrian_friendly == "yes") %>% nrow
+wy_walking_nogeom2 %>% filter(pedestrian_friendly == "yes") %>% nrow
 # pedestrian network expanded. Let's see how much
 wy_walking_nogeom2 %>% filter(highway %in% highway_pedestrian_maybe, foot %in% foot_pedestrian_yes) %>% nrow() 
 # 6080 rows
@@ -776,7 +776,7 @@ wy_walking_nogeom2 %>% filter(highway == "cycleway", foot %in% foot_pedestrian_y
 ### recategorization: key:footway=*
 
 ```{r}
-sf_col_table(wy_walking_nogeom1, "footway")
+sf_col_table(wy_walking_nogeom, "footway")
 # .
 #       sidewalk       crossing   access_aisle           left             no traffic_island 
 #           1546            512             77             11              9              6 
@@ -816,7 +816,7 @@ footway_pedestrian_no <- c("no", # not sure what i
 #          )
 
 wy_walking_nogeom3 <- wy_walking_nogeom %>% 
-  mutate(pedestrian = case_when(
+  mutate(pedestrian_friendly = case_when(
     highway %in% highway_pedestrian_yes ~ "yes",
     highway %in% highway_pedestrian_no ~ "no",
     
@@ -838,14 +838,15 @@ wy_walking_nogeom3 <- wy_walking_nogeom %>%
   )
 
 # tracking the recategorization changes 
-wy_walking_nogeom2 %>% filter(pedestrian == "yes") %>% nrow
-wy_walking_nogeom2 %>% filter(pedestrian == "maybe") %>% nrow 
-wy_walking_nogeom3 %>% filter(pedestrian == "yes") %>% nrow
-wy_walking_nogeom3 %>% filter(pedestrian == "maybe") %>% nrow
-wy_walking_nogeom2 %>% filter(pedestrian == "no") %>% nrow
-wy_walking_nogeom3 %>% filter(pedestrian == "no") %>% nrow
+# wy_walking_nogeom2 %>% filter(pedestrian_friendly == "yes") %>% nrow
+# wy_walking_nogeom2 %>% filter(pedestrian_friendly == "maybe") %>% nrow 
+# wy_walking_nogeom3 %>% filter(pedestrian_friendly == "yes") %>% nrow
+# wy_walking_nogeom3 %>% filter(pedestrian_friendly == "maybe") %>% nrow
+# wy_walking_nogeom2 %>% filter(pedestrian_friendly == "no") %>% nrow
+# wy_walking_nogeom3 %>% filter(pedestrian_friendly == "no") %>% nrow
 ```
 
+### recategorization: key:sidewalk=*
 ```{r}
 sf_col_table(wy_walking_nogeom, "sidewalk")
 # .
@@ -867,7 +868,7 @@ sidewalk_pedestrian_no <- c("no",
                             "none")
 
 wy_walking_nogeom4 <- wy_walking_nogeom %>% 
-  mutate(pedestrian = case_when(
+  mutate(pedestrian_friendly = case_when(
     highway %in% highway_pedestrian_yes ~ "yes",
     highway %in% highway_pedestrian_no ~ "no",
     
@@ -890,13 +891,93 @@ wy_walking_nogeom4 <- wy_walking_nogeom %>%
          )
          )
 
-# wy_walking_nogeom4 %>% filter(pedestrian == "yes") %>% nrow()
-# wy_walking_nogeom4 %>% filter(pedestrian == "maybe") %>% nrow()
+# wy_walking_nogeom4 %>% filter(pedestrian_friendly == "yes") %>% nrow()
+#> 45169 
+# wy_walking_nogeom4 %>% filter(pedestrian_friendly == "maybe") %>% nrow()
+#> 120834
 ```
 
+### recategorization: key:pedestrian=*
+
+```{r}
+sf_col_table(wy_walking,"pedestrian")
+# crossing 
+#        2
+
+ped_pedestrian_yes <- c("crossing ")
+
+wy_walking_nogeom5 <- wy_walking_nogeom %>% 
+  mutate(pedestrian_friendly = case_when(
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_no ~ "no",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_yes | 
+      footway %in% footway_pedestrian_yes | 
+      sidewalk %in% sidewalk_pedestrian_yes |
+      pedestrian %in% ped_pedestrian_yes
+    ~ "yes",
+    
+    highway %in% highway_pedestrian_maybe |
+      foot %in% foot_pedestrian_maybe |
+      footway %in% footway_pedestrian_maybe # note: there's no "maybe" sidewalk
+    ~ "maybe",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_no  | 
+      footway %in% footway_pedestrian_no | 
+      sidewalk %in% sidewalk_pedestrian_no 
+    ~ "no"
+         )
+         )
 
 
+```
 
+### recategorization: key:path=*
 
+```{r}
+sf_col_table(wy_walking,"path")
+# .
+# footpath       no 
+#        1        1 
+
+path_pedestrian_yes <- c("footpath")
+
+path_pedestrian_no <- c("no")
+
+wy_walking_nogeom6 <- wy_walking_nogeom %>% 
+  mutate(pedestrian_friendly = case_when(
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_no ~ "no",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_yes | 
+      footway %in% footway_pedestrian_yes | 
+      sidewalk %in% sidewalk_pedestrian_yes |
+      pedestrian %in% ped_pedestrian_yes |
+      path %in% path_pedestrian_yes
+    ~ "yes",
+    
+    highway %in% highway_pedestrian_maybe |
+      foot %in% foot_pedestrian_maybe |
+      footway %in% footway_pedestrian_maybe # note: there's no "maybe" sidewalk
+    ~ "maybe",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_no  | 
+      footway %in% footway_pedestrian_no | 
+      sidewalk %in% sidewalk_pedestrian_no |
+      path %in% path_pedestrian_no
+    ~ "no"
+         )
+         )
+
+# let's see how how many "maybe" highways were recategorized to pedestrian_friendly = "yes" or "no"
+(wy_walking_nogeom6 %>% filter(pedestrian_friendly == "yes") %>% nrow()) - (wy_walking_nogeom1 %>% filter(pedestrian_friendly == "yes") %>% nrow())
+#> 6880
+(wy_walking_nogeom6 %>% filter(pedestrian_friendly == "maybe") %>% nrow()) - (wy_walking_nogeom1 %>% filter(pedestrian_friendly == "maybe") %>% nrow())
+#> -6875
+```
 
 
