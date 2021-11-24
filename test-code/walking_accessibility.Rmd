@@ -629,3 +629,145 @@ leeds_joined_lsoa %>% select(econ_active_census) %>% plot(add = TRUE)
 wy_walking %>% filter(highway == "footway") %>% plot(add = TRUE,
                                                      col = "white")
 ```
+
+
+## Pedestrian infrastructure
+
+Making a function that returns an OSM data frame with a new variable called 'pedestrian' that is 'yes/no/maybe'.
+
+Next steps: adding a column regarding accessibility.
+
+```{r}
+# to make the computation faster, I'll drop the `geometry` column.
+wy_walking_nogeom <- wy_walking %>% st_drop_geometry()
+wy_walking_nogeom %>% ncol()
+```
+
+### categorization of key:highway
+```{r}
+# I'll start recategorization from highway column.
+sf_col_table(wy_walking_nogeom, "highway") # unique values in a decreasing order
+# .
+#        service    residential        footway          track           path   unclassified 
+#          53446          44695          37086           7990           7352           6880 
+#       tertiary        primary       cycleway          trunk          steps      secondary 
+#           5202           3422           3325           2899           2705           1475 
+#      bridleway     pedestrian       motorway  living_street  motorway_link   construction 
+#           1268            808            577            395            393            339 
+#     trunk_link   primary_link  tertiary_link       proposed       corridor secondary_link 
+#            337            322            143             78             48             43 
+#           road        raceway   bus_guideway         busway             no       services 
+#             27             17             14              8              6              2 
+
+
+highway_pedestrian_yes <- c("footway",
+                                 "pedestrian",
+                                 "living_street") # tags indicating pedestrian friendly highways
+
+highway_pedestrian_maybe <- c("service",
+                              "residential",
+                              "track", # could also be yes but of poor quality?
+                              "path", # could also be yes but of poor quality?
+                              "unclassified",
+                              "cycleway",
+                              "steps", # friendly to pedestrians but not accessible?
+                              "bridleway",
+                              "corridor") # tags indicating *potentially* pedestrian friendly highways
+
+highway_pedestrian_no <- c("tertiary",  
+                           "primary",
+                           "trunk",
+                           "secondary",
+                           "motorway",
+                           "motorway_link",
+                           "construction",
+                           "trunk_link",
+                           "primary_link",
+                           "tertiary_link",
+                           "proposed",
+                           "secondary_link",
+                           "road", # treated as a tagging error 
+                           "raceway",
+                           "bus_guideway",
+                           "busway",
+                           "no", # I think it's a tagging error
+                           "services") 
+
+wy_walking_nogeom <- wy_walking_nogeom %>% 
+  mutate(pedestrian = case_when(
+    # highway=*
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_maybe ~ "maybe",
+    highway %in% highway_pedestrian_no ~ "no"
+         )
+         )
+
+wy_walking_nogeom %>% filter(pedestrian == "yes")
+## just a quick sanity check that numbers match
+wy_walking_nogeom %>% filter(pedestrian == "yes" | pedestrian == "maybe" | pedestrian == "no") %>% nrow() # 181302 rows that had been recoded
+wy_walking_nogeom %>% filter(is.na(highway)) %>% nrow() # 53311 rows that have NAs in key:highway =*, hence no recoding
+(181302 + 53311) == (wy_walking_nogeom %>% nrow()) # value must be TRUE
+
+```
+
+
+### categorization of key:foot
+
+```{r}
+sf_col_table(wy_walking_nogeom, "foot")
+# .
+#         yes  designated  permissive          no     unknown     private   customers destination 
+#        7479        3741         516         387         151         123          38          34 
+# discouraged    delivery   emergency    informal     limited      permit 
+#           3           1           1           1           1           1 
+
+foot_pedestrian_yes <- c("yes",
+                              "designated"
+                              )
+
+foot_pedestrian_maybe <- c("permissive",
+                           "private",
+                           "customers",
+                           "destination", # or no?
+                           "discouraged",
+                           "delivery",
+                           "permit"
+                           )
+
+foot_pedestrian_no <- c("no",
+                        "unknown",
+                        "emergency",
+                        "informal", # not sure what it means
+                        "limited" # not sure what it means
+                        )
+
+
+wy_walking_nogeom1 <- wy_walking_nogeom %>% 
+  mutate(pedestrian = case_when(
+    # highway=*
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_maybe ~ "maybe",
+    highway %in% highway_pedestrian_no ~ "no",
+        # foot=*
+    highway %in% highway_pedestrian_maybe & foot %in% foot_pedestrian_yes ~ "yes", 
+    highway %in% highway_pedestrian_maybe & foot %in% foot_pedestrian_maybe ~ "maybe",
+    highway %in% highway_pedestrian_maybe & foot %in% foot_pedestrian_no ~ "no"
+         )
+         )
+
+
+# checking if any "maybe" highways were reclassified to "yes" because foot was added
+wy_walking_nogeom %>% filter(pedestrian == "yes") %>% nrow
+wy_walking_nogeom1 %>% filter(pedestrian == "yes") %>% nrow
+# nope, same number of rows
+```
+
+
+
+
+
+
+
+
+
+
