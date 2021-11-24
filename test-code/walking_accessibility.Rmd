@@ -837,10 +837,7 @@ wy_walking_nogeom3 <- wy_walking_nogeom %>%
   )
   )
 
-wy_walking_nogeom3 %>% filter(highway %in% highway_pedestrian_maybe & 
-      foot %in% foot_pedestrian_no  | 
-      footway %in% footway_pedestrian_no)
-
+# tracking the recategorization changes 
 wy_walking_nogeom2 %>% filter(pedestrian == "yes") %>% nrow
 wy_walking_nogeom2 %>% filter(pedestrian == "maybe") %>% nrow 
 wy_walking_nogeom3 %>% filter(pedestrian == "yes") %>% nrow
@@ -850,11 +847,7 @@ wy_walking_nogeom3 %>% filter(pedestrian == "no") %>% nrow
 ```
 
 ```{r}
-wy_walking_nogeom2 %>% filter(highway %in% highway_pedestrian_maybe & footway %in% footway_pedestrian_yes )
-```
-
-```{r}
-sf_col_table(wy_walking_nogeom2, "sidewalk")
+sf_col_table(wy_walking_nogeom, "sidewalk")
 # .
 #       both         no       left      right       none   separate     mapped        yes   crossing 
 #        833        452        432        201        163         79         23          6          1 
@@ -862,31 +855,18 @@ sf_col_table(wy_walking_nogeom2, "sidewalk")
 #          1 
 
 sidewalk_pedestrian_yes <- c("both",
-                             "left")
-sidewalk_pedestrian_no <- c("no")
+                             "left",
+                             "right",
+                             "separate",
+                             "mapped", # I assume it indicates sidewalk's presence?
+                             "yes",
+                             "crossing", # most probably should have been assigned to footway=*
+                             "left;right") 
 
-wy_walking_nogeom3 <- wy_walking_nogeom2 %>% 
-  mutate(pedestrian = case_when(
-    # highway=*
-    highway %in% highway_pedestrian_yes ~ "yes",
-    highway %in% highway_pedestrian_maybe ~ "maybe",
-    highway %in% highway_pedestrian_no ~ "no",
-    # foot=*
-    highway %in% highway_pedestrian_maybe & foot %in% foot_pedestrian_yes ~ "yes", 
-    highway %in% highway_pedestrian_maybe & foot %in% foot_pedestrian_maybe ~ "maybe",
-    highway %in% highway_pedestrian_maybe & foot %in% foot_pedestrian_no ~ "no",
-    # footway=*
-    highway %in% highway_pedestrian_maybe & footway %in% footway_pedestrian_yes ~ "yes",
-    highway %in% highway_pedestrian_maybe & footway %in% footway_pedestrian_no ~ "no",
-    # sidewalk
-    highway %in% highway_pedestrian_maybe & sidewalk %in% sidewalk_pedestrian_yes ~ "yes",
-    highway %in% highway_pedestrian_maybe & sidewalk %in% sidewalk_pedestrian_no ~ "no"
+sidewalk_pedestrian_no <- c("no",
+                            "none")
 
-         )
-         )
-
-
-wy_walking_nogeom_test <- wy_walking_nogeom %>% 
+wy_walking_nogeom4 <- wy_walking_nogeom %>% 
   mutate(pedestrian = case_when(
     highway %in% highway_pedestrian_yes ~ "yes",
     highway %in% highway_pedestrian_no ~ "no",
@@ -894,24 +874,26 @@ wy_walking_nogeom_test <- wy_walking_nogeom %>%
     highway %in% highway_pedestrian_maybe & 
       foot %in% foot_pedestrian_yes | 
       footway %in% footway_pedestrian_yes | 
-      sidewalk %in% sidewalk_pedestrian_yes ~ "yes",
+      sidewalk %in% sidewalk_pedestrian_yes 
+    ~ "yes",
+    
+    highway %in% highway_pedestrian_maybe |
+      foot %in% foot_pedestrian_maybe |
+      footway %in% footway_pedestrian_maybe # note, there's no "maybe" sidewalk
+    ~ "maybe",
     
     highway %in% highway_pedestrian_maybe & 
       foot %in% foot_pedestrian_no  | 
       footway %in% footway_pedestrian_no | 
-      sidewalk %in% sidewalk_pedestrian_no ~ "no"
-  )
-  )
+      sidewalk %in% sidewalk_pedestrian_no 
+    ~ "no"
+         )
+         )
 
-
-wy_walking_nogeom_test %>% filter(pedestrian == "yes") %>% nrow()
-wy_walking_nogeom %>% filter(pedestrian == "yes") %>% nrow()
+# wy_walking_nogeom4 %>% filter(pedestrian == "yes") %>% nrow()
+# wy_walking_nogeom4 %>% filter(pedestrian == "maybe") %>% nrow()
 ```
 
-```{r}
-wy_walking_nogeom2 %>% filter(highway %in% highway_pedestrian_maybe & sidewalk %in% sidewalk_pedestrian_yes)
-
-```
 
 
 
