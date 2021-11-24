@@ -1011,7 +1011,7 @@ wy_walking_fr <- wy_walking %>%
          )
 
 st_geometry(leeds_pct) %>% plot(reset = FALSE)
-wy_walking_fr %>% select(pedestrian_friendly) %>% filter(!is.na(pedestrian_friendly)) %>% plot(add = TRUE)
+wy_walking_fr[leeds_pct, op = st_within] %>% select(pedestrian_friendly) %>% filter(pedestrian_friendly == "yes") %>% plot(add = TRUE)
 ```
 
 
@@ -1024,6 +1024,7 @@ manchester_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/walki
 
 
 ```{r}
+# recategorizing GM dataframe
 man_walking_fr <- man_walking %>% 
   mutate(pedestrian_friendly = case_when(
     highway %in% highway_pedestrian_yes ~ "yes",
@@ -1052,21 +1053,16 @@ man_walking_fr <- man_walking %>%
          )
 ```
 
-```{r}
-sf_col_table(wy_walking_fr, "pedestrian_friendly")
-sf_col_table(man_walking_fr, "pedestrian_friendly")
-```
 
 ```{r}
+# preparing data for plotting by turning it from wide to long df
+
 man_ped_n_perc <- man_walking_fr %>% 
   st_drop_geometry() %>% 
   group_by(pedestrian_friendly) %>% 
   summarise(n_man = n(),
             percent_man = ((n_man / nrow(man_walking_fr) ) * 100) %>% signif(2)
             )
-
-
-
 
 wy_ped_n_perc <- wy_walking_fr %>% 
   st_drop_geometry() %>% 
@@ -1099,7 +1095,7 @@ joined_man_wy_ped_long <- left_join(joined_man_wy_ped_perc_long,
                                     by = "pedestrian_friendly")
 
 
-
+# plotting 
 joined_man_wy_ped_long %>%   
   ggplot(aes(
     x = pedestrian_friendly,
@@ -1112,21 +1108,4 @@ joined_man_wy_ped_long %>%
             color="black", size=3.5,
             position = position_dodge(1)
             ) 
-  
-joined_man_wy_ped_long %>% str
-  
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
