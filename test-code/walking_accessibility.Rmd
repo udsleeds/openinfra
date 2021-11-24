@@ -980,4 +980,153 @@ wy_walking_nogeom6 <- wy_walking_nogeom %>%
 #> -6875
 ```
 
+## plotting pedestrian network in WY
+
+```{r}
+wy_walking_fr <- wy_walking %>% 
+  mutate(pedestrian_friendly = case_when(
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_no ~ "no",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_yes | 
+      footway %in% footway_pedestrian_yes | 
+      sidewalk %in% sidewalk_pedestrian_yes |
+      pedestrian %in% ped_pedestrian_yes |
+      path %in% path_pedestrian_yes
+    ~ "yes",
+    
+    highway %in% highway_pedestrian_maybe |
+      foot %in% foot_pedestrian_maybe |
+      footway %in% footway_pedestrian_maybe # note: there's no "maybe" sidewalk
+    ~ "maybe",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_no  | 
+      footway %in% footway_pedestrian_no | 
+      sidewalk %in% sidewalk_pedestrian_no |
+      path %in% path_pedestrian_no
+    ~ "no"
+         )
+         )
+
+st_geometry(leeds_pct) %>% plot(reset = FALSE)
+wy_walking_fr %>% select(pedestrian_friendly) %>% filter(!is.na(pedestrian_friendly)) %>% plot(add = TRUE)
+```
+
+
+## Greater Manchester
+```{r}
+man_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/walking_and_accessibility_manchester/man_pct.Rds")
+man_walking <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/walking_and_accessibility_manchester/man_walking.Rds")
+manchester_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/walking_and_accessibility_manchester/manchester_pct.Rds")
+```
+
+
+```{r}
+man_walking_fr <- man_walking %>% 
+  mutate(pedestrian_friendly = case_when(
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_no ~ "no",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_yes | 
+      footway %in% footway_pedestrian_yes | 
+      sidewalk %in% sidewalk_pedestrian_yes |
+      pedestrian %in% ped_pedestrian_yes |
+      path %in% path_pedestrian_yes
+    ~ "yes",
+    
+    highway %in% highway_pedestrian_maybe |
+      foot %in% foot_pedestrian_maybe |
+      footway %in% footway_pedestrian_maybe # note: there's no "maybe" sidewalk
+    ~ "maybe",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_no  | 
+      footway %in% footway_pedestrian_no | 
+      sidewalk %in% sidewalk_pedestrian_no |
+      path %in% path_pedestrian_no
+    ~ "no"
+         )
+         )
+```
+
+```{r}
+sf_col_table(wy_walking_fr, "pedestrian_friendly")
+sf_col_table(man_walking_fr, "pedestrian_friendly")
+```
+
+```{r}
+man_ped_n_perc <- man_walking_fr %>% 
+  st_drop_geometry() %>% 
+  group_by(pedestrian_friendly) %>% 
+  summarise(n_man = n(),
+            percent_man = ((n_man / nrow(man_walking_fr) ) * 100) %>% signif(2)
+            )
+
+
+
+
+wy_ped_n_perc <- wy_walking_fr %>% 
+  st_drop_geometry() %>% 
+  group_by(pedestrian_friendly) %>% 
+  summarise(n_wy = n(),
+            percent_wy = ((n_wy / nrow(wy_walking_fr) ) * 100) %>% signif(2)
+            )
+
+joined_man_wy_ped_n_perc <- left_join(man_ped_n_perc,
+                                 wy_ped_n_perc)
+
+joined_man_wy_ped_perc_long <- joined_man_wy_ped_n_perc %>% 
+  pivot_longer(
+    col = c("percent_man",
+            "percent_wy"),
+    values_to = "percent"
+    ) %>% 
+  select(c(1, 4, 5))
+
+joined_man_wy_ped_n_long <- joined_man_wy_ped_n_perc %>%
+  pivot_longer(
+    col = c("n_man",
+            "n_wy"),
+    values_to = "n"
+  ) %>% 
+  select(1, 4, 5)
+
+joined_man_wy_ped_long <- left_join(joined_man_wy_ped_perc_long,
+                                    joined_man_wy_ped_n_long,
+                                    by = "pedestrian_friendly")
+
+
+
+joined_man_wy_ped_long %>%   
+  ggplot(aes(
+    x = pedestrian_friendly,
+    y = percent,
+    fill = name.x
+  )) +
+  geom_bar(stat="identity",
+           position=position_dodge()) +
+  geom_text(aes(label=percent), 
+            color="black", size=3.5,
+            position = position_dodge(1)
+            ) 
+  
+joined_man_wy_ped_long %>% str
+  
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
