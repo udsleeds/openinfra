@@ -1,5 +1,5 @@
 ---
-title: "R Notebook"
+title: "recode_pedestrian()"
 ---
 ```{r}
 # library(osmextract) 
@@ -364,6 +364,10 @@ sf_col_table(wy_walking1, "pedestrian_friendly")
 new_df <- recode_pedestrian(wy_walking)
 new_df %>% nrow()
 # 234613
+sf_col_table(new_df, "pedestrian_friendly")
+# .
+#  maybe    yes     no 
+# 120834  45169  15308 
 new_df_yes <- recode_pedestrian(wy_walking, 
                                 filter_df = "yes")
 new_df_yes %>% nrow
