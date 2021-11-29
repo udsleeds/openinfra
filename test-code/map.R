@@ -30,21 +30,21 @@ table(osm_in_bbox$highway)
 # service          steps       tertiary   unclassified 
 # 22             14              4              5 
 osm_recategorised = osm_in_bbox %>% 
-  mutate(highway_recategorised = case_when(
+  mutate(highway = case_when(
     str_detect(highway, "path|link|tert|unclassified") ~ "other",
     TRUE ~ highway
   ))
 sf::st_write(osm_recategorised, "data-small/osm_recategorised.geojson")
-osm_recategorised %>% select(highway_recategorised) %>% plot()
+osm_recategorised %>% select(highway) %>% plot()
 osm_recategorised_sln = stplanr::SpatialLinesNetwork(osm_recategorised)
 osm_clean = stplanr::sln_clean_graph(osm_recategorised_sln)
 osm_clean_sf = osm_clean@sl
 m1 = tm_shape(osm_recategorised, bbox = bbox) +
-  tm_lines("highway_recategorised", lwd = 3, palette = "Set2") +
+  tm_lines("highway", lwd = 3, palette = "Set2") +
   tm_layout(legend.frame = TRUE, legend.bg.alpha = 0.5, legend.position = c("left", "top"))
 m1
-m2 = 
-
+tmap_save(m1, "m1.png")
+mapview::mapview(osm_recategorised)
 # Get satellite data ------------------------------------------------------
 library(ceramic)
 
