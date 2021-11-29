@@ -42,7 +42,7 @@ recode_pedestrian <- function(df = osm_dataframe,
                               path_yes = NULL,
                               path_no = NULL,
                               filter_df = NULL) {
-  
+  # defining default values used in the function
     highway_footway_default_yes = c("footway",
                             "pedestrian",
                             "living_street"
@@ -122,6 +122,7 @@ recode_pedestrian <- function(df = osm_dataframe,
     
     filter_df_default = c("no")
     
+    # telling the function that default values should be used unless other argument values given.
     if(is.null(highway_footway_yes)) {
     highway_footway_yes = highway_footway_default_yes
     }
@@ -178,6 +179,7 @@ recode_pedestrian <- function(df = osm_dataframe,
     path_no = path_default_no
     }
     
+    # recategorization
  new_osm_df <-  df %>% 
   mutate(pedestrian_friendly = case_when(
     highway %in% highway_footway_yes ~ "yes",
@@ -205,6 +207,7 @@ recode_pedestrian <- function(df = osm_dataframe,
          )
          )
  
+ # telling the function what should be returned depending on the filter_df values
  if(is.null(filter_df)) {
    
    filter_df = filter_df_default
