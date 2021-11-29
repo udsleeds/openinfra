@@ -386,6 +386,12 @@ sf_col_table(new_df, "pedestrian_friendly")
 
 ```
 
+## when OSM df does not have the needed keys and tags for recategorization
+```{r}
+recode_pedestrian(wy)
+```
+
+
 ## testing filter_df
 ```{r}
 new_df_no <- recode_pedestrian(wy_walking, 
