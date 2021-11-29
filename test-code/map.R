@@ -5,23 +5,59 @@ library(osmextract)
 library(tmap)
 library(maptiles)
 
-route_mcr = route_google(from = "Manchester Piccadily", to = "Manchester Conference Centre", mode = "walking")
-m = mapview::mapview(route_mcr) # looks good!
-m
+# route_mcr = route_google(from = "Manchester Piccadily", to = "Manchester Conference Centre", mode = "walking")
+# sf::write_sf(route_mcr, "data-small/route_mcr.geojson")
+route_mcr = sf::read_sf("https://github.com/udsleeds/openinfra/raw/main/data-small/route_mcr.geojson")
+
+# m = mapview::mapview(route_mcr) # looks good!
+# m
 # Create custom bounding box:
-map_edited = mapedit::editMap(m)
-bbox = sf::st_bbox(map_edited$drawn$geometry)
-bbox
+# map_edited = mapedit::editMap(m)
+# bbox = sf::st_bbox(map_edited$drawn$geometry)
+# bbox
 # xmin      ymin      xmax      ymax 
 # -2.236786 53.474959 -2.229480 53.477265 
-sf::write_sf(route_mcr, "data-small/route_mcr.geojson")
+bbox = c(-2.236786, 53.474959, -2.229480, 53.477265)
 
 # get satellite data
-bbox_projected = sf::st_transform(map_edited$drawn$geometry, "EPSG:3857")
+# bbox_projected = sf::st_transform(map_edited$drawn$geometry, "EPSG:3857")
 # Get tiles: https://github.com/riatelab/maptiles/
-tiles = get_tiles(bbox_projected, crop = TRUE)
+# tiles = get_tiles(bbox_projected, crop = TRUE)
 # get OSM data
-osm_highways_mcr = oe_get_network(place = "manchester", mode = "walking")
+et = c("maxspeed")
+osm_highways_mcr = oe_get_network(place = "greater manchester", mode = "walking")
+osm_tags = osmextract::oe_get_keys(osm_highways_mcr)
+# 300+ keys, starting with:
+# [1] "maxspeed"                              "surface"                              
+# [3] "oneway"                                "source:name"                          
+# [5] "lit"                                   "bicycle"   
+et = c("maxspeed", "bicycle", "lit", "cycleway:left", "wheelchair", "foot")
+osm_highways_mcr = oe_get_network(place = "greater manchester", mode = "walking", extra_tags = et)
+table(osm_highways_mcr$cycleway_left)
+table(osm_highways_mcr$pedestrian)
+osm_df = osm_highways_mcr %>% sf::st_drop_geometry()
+osm_highways_tagged = rbind(
+  # osm_df %>% filter(!is.na(cycleway_left)) %>% mutate(key = "cycleway_left", value = cycleway_left),
+  osm_df %>% filter(!is.na(wheelchair)) %>% mutate(key = "wheelchair", value = wheelchair),
+  osm_df %>% filter(!is.na(foot)) %>% mutate(key = "foot", value = foot),
+  osm_df %>% filter(!is.na(lit)) %>% mutate(key = "lit", value = lit),
+  osm_df %>% filter(!is.na(bicycle)) %>% mutate(key = "bicycle", value = bicycle),
+  osm_df %>% filter(str_detect(highway, "footway|living_street|path|pedestrian|steps|resi")) %>%
+    mutate(key = "highway", value = highway),
+  osm_df %>% filter(!is.na(maxspeed)) %>% mutate(key = "maxspeed", value = maxspeed)
+)
+osm_highways_tagged_large_categories = osm_highways_tagged %>% 
+  group_by(key, value) %>% 
+  mutate(n = n()) %>% 
+  filter(n > 10) %>% 
+  ungroup()
+summary(osm_highways_tagged_large_categories$cycleway_left)
+ggplot(osm_highways_tagged_large_categories) +
+  geom_bar(aes(value)) +
+  facet_wrap(~key, scales = "free_x") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+
 # osm_in_bbox = osm_highways_mcr[map_edited$drawn$geometry, , op = sf::st_within]
 osm_in_bbox = osm_highways_mcr[map_edited$drawn$geometry, ]
 table(osm_in_bbox$highway)
