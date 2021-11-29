@@ -1,7 +1,7 @@
 ---
 title: "recode_pedestrian()"
 ---
-```{r}
+```{r, message = FALSE}
 # library(osmextract) 
 library(tidyverse)
 library(sf)
@@ -10,13 +10,22 @@ library(sf)
 # library(ggplot2)
 ```
 
-```{r}
+```{r, message = FALSE}
 # leeds_pct <- readRDS("leeds_pct.Rds")
-wy_walking <- readRDS("/test-code/wy_walking.Rds")
+wy_walking <- readRDS("test-code/wy_walking.Rds")
+wy <- readRDS("test-code/wy.Rds")
+# getwd()
 ```
+
 
 # recode_pedestrian()
 ```{r}
+# this function has been developed to recategorize OSM data into a pedestrian network. Network is composed of the following OSM keys and tags: tag:highway=footway, key:footway, key:foot, key:sidewalk, key:pedestrian, key:path.
+# the function takes in the OSM dataframe and returns a new OSM dataframe with a new column called `pedestrian_friendly`.
+# `pedestrian_friendly` has three values (NAs excluded): "yes" (the highway is pedestrian friendly), "maybe" (the highway is potentially pedestrian friendly), and "no" (highways are not pedestrian friendly).
+# the OSM data requires the keys and tags of which the pedestrian network is composed, otherwise it will not be able to return a `pedestrian_friendly` column.
+# It is possible to modify the values that are considered pedestrian friendly or not but not the keys and tags of which the network is made up.
+# Finally, `filter_df` allows to filter the OSM dataframe based on the new `pedestrian_friendly` column. The argument can take three values: "yes", "maybe", and "no". If "yes" is given, then only the rows containing "yes" in `pedestrian_friendly` will be returned. To return *all* the values, keep filter_df=NULL
 recode_pedestrian <- function(df = osm_dataframe,
                               highway_footway_yes = NULL,
                               highway_footway_maybe = NULL,
@@ -204,7 +213,9 @@ recode_pedestrian <- function(df = osm_dataframe,
  
  if(filter_df == "no"){
    
-   return(new_osm_df)
+   new_osm_df_no <-  new_osm_df %>% filter(pedestrian_friendly == "no")
+
+   return(new_osm_df_no)
  }
  
  if(filter_df == "maybe"){
@@ -214,7 +225,7 @@ recode_pedestrian <- function(df = osm_dataframe,
    return(new_osm_df_maybe)
  }
  
- else{
+ if(filter_df == "yes"){
    
    new_osm_df_yes <-  new_osm_df %>% filter(pedestrian_friendly == "yes")
 
@@ -226,6 +237,7 @@ recode_pedestrian <- function(df = osm_dataframe,
 ```
 
 # testing
+## using function vs 'regular' approach
 Note: labelling below is slightly different from the one used in the recode_pedestrian() function
 ```{r}
 # "ground truth" recategorization
@@ -368,10 +380,15 @@ sf_col_table(new_df, "pedestrian_friendly")
 # .
 #  maybe    yes     no 
 # 120834  45169  15308 
-new_df_yes <- recode_pedestrian(wy_walking, 
-                                filter_df = "yes")
-new_df_yes %>% nrow
-# 45169
+
+```
+
+## testing filter_df
+```{r}
+new_df_no <- recode_pedestrian(wy_walking, 
+                                filter_df = "no")
+new_df_no %>% nrow
+# 15308 
 ```
 
 
