@@ -61,6 +61,7 @@ ggplot(osm_highways_tagged_large_categories) +
 
 # osm_in_bbox = osm_highways_mcr[map_edited$drawn$geometry, , op = sf::st_within]
 osm_in_bbox = osm_highways_mcr[map_edited$drawn$geometry, ]
+
 table(osm_in_bbox$highway)
 # footway           path     pedestrian        primary    residential      secondary secondary_link 
 # 74              2              5              9             14              3              1 
