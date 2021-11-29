@@ -31,7 +31,7 @@ osm_tags = osmextract::oe_get_keys(osm_highways_mcr)
 # [1] "maxspeed"                              "surface"                              
 # [3] "oneway"                                "source:name"                          
 # [5] "lit"                                   "bicycle"   
-et = c("maxspeed", "bicycle", "lit", "cycleway:left", "wheelchair", "foot")
+et = c("maxspeed", "bicycle", "cycleway", "lit", "cycleway:left", "wheelchair", "foot")
 osm_highways_mcr = oe_get_network(place = "greater manchester", mode = "walking", extra_tags = et)
 table(osm_highways_mcr$cycleway_left)
 table(osm_highways_mcr$pedestrian)
@@ -40,9 +40,10 @@ osm_highways_tagged = rbind(
   # osm_df %>% filter(!is.na(cycleway_left)) %>% mutate(key = "cycleway_left", value = cycleway_left),
   osm_df %>% filter(!is.na(wheelchair)) %>% mutate(key = "wheelchair", value = wheelchair),
   osm_df %>% filter(!is.na(foot)) %>% mutate(key = "foot", value = foot),
+  # osm_df %>% filter(!is.na(cycleway)) %>% mutate(key = "cycleway", value = cycleway),
   osm_df %>% filter(!is.na(lit)) %>% mutate(key = "lit", value = lit),
   osm_df %>% filter(!is.na(bicycle)) %>% mutate(key = "bicycle", value = bicycle),
-  osm_df %>% filter(str_detect(highway, "footway|living_street|path|pedestrian|steps|resi")) %>%
+  osm_df %>% filter(str_detect(highway, "footway|living_street|path|pedestrian|steps|cycle")) %>%
     mutate(key = "highway", value = highway),
   osm_df %>% filter(!is.na(maxspeed)) %>% mutate(key = "maxspeed", value = maxspeed)
 )
