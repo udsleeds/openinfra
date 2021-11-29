@@ -24,6 +24,7 @@ tiles = get_tiles(bbox_projected, crop = TRUE)
 osm_highways_mcr = oe_get_network(place = "manchester", mode = "walking")
 # osm_in_bbox = osm_highways_mcr[map_edited$drawn$geometry, , op = sf::st_within]
 osm_in_bbox = osm_highways_mcr[map_edited$drawn$geometry, ]
+
 table(osm_in_bbox$highway)
 # footway           path     pedestrian        primary    residential      secondary secondary_link 
 # 74              2              5              9             14              3              1 
