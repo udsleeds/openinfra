@@ -1,8 +1,9 @@
 # Aim: create maps of Manchester city centre for walking and cycling Innovations
+library(tidyverse)
 library(stplanr)
 library(osmextract)
 library(tmap)
-library(ceramic)
+library(maptiles)
 
 route_mcr = route_google(from = "Manchester Piccadily", to = "Manchester Conference Centre", mode = "walking")
 m = mapview::mapview(route_mcr) # looks good!
@@ -15,15 +16,33 @@ bbox
 # -2.236786 53.474959 -2.229480 53.477265 
 sf::write_sf(route_mcr, "data-small/route_mcr.geojson")
 
-
-
-
-
-
-
-
+# get satellite data
+bbox_projected = sf::st_transform(map_edited$drawn$geometry, "EPSG:3857")
+# Get tiles: https://github.com/riatelab/maptiles/
+tiles = get_tiles(bbox_projected, crop = TRUE)
+# get OSM data
+osm_highways_mcr = oe_get_network(place = "manchester", mode = "walking")
+osm_in_bbox = osm_highways_mcr[map_edited$drawn$geometry, , op = sf::st_within]
+table(osm_in_bbox$highway)
+# footway           path     pedestrian        primary    residential      secondary secondary_link 
+# 74              2              5              9             14              3              1 
+# service          steps       tertiary   unclassified 
+# 22             14              4              5 
+osm_recategorised = osm_in_bbox %>% 
+  mutate(highway_recategorised = case_when(
+    str_detect(highway, "path|link|tert|unclassified") ~ "other",
+    TRUE ~ highway
+  ))
+sf::st_write(osm_recategorised, "data-small/osm_recategorised.geojson")
+osm_recategorised %>% select(highway_recategorised) %>% plot()
+osm_in_bbox$highway = trafficalmr::tc_recode()
+m1 = tm_shape(osm_recategorised) +
+  tm_lines("highway_recategorised", lwd = 2)
+m1
+m2 = 
 
 # Get satellite data ------------------------------------------------------
+library(ceramic)
 
 # Source: https://github.com/hypertidy/ceramic/issues/42
 library(gdalio)
@@ -41,7 +60,7 @@ get_im_bing_from_sf = function(x, dimension = c(512, 512), resample = "bilinear"
 </GDAL_WMS>'
   gdalio_terra(ve_src, bands = 1:3, band_output_type = "integer", resample = resample)
 }
-route_mcr_projected = sf::st_transform(route_mcr, 2264)
+route_mcr_projected = sf::st_transform(map_edited$drawn$geometry, 2264)
 map_satellite_terra = get_im_bing_from_sf(route_mcr_projected, dimension = c(512, 1024))
 terra::plotRGB(map_satellite_terra)
 
