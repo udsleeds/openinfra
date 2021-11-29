@@ -22,7 +22,8 @@ bbox_projected = sf::st_transform(map_edited$drawn$geometry, "EPSG:3857")
 tiles = get_tiles(bbox_projected, crop = TRUE)
 # get OSM data
 osm_highways_mcr = oe_get_network(place = "manchester", mode = "walking")
-osm_in_bbox = osm_highways_mcr[map_edited$drawn$geometry, , op = sf::st_within]
+# osm_in_bbox = osm_highways_mcr[map_edited$drawn$geometry, , op = sf::st_within]
+osm_in_bbox = osm_highways_mcr[map_edited$drawn$geometry, ]
 table(osm_in_bbox$highway)
 # footway           path     pedestrian        primary    residential      secondary secondary_link 
 # 74              2              5              9             14              3              1 
@@ -35,9 +36,12 @@ osm_recategorised = osm_in_bbox %>%
   ))
 sf::st_write(osm_recategorised, "data-small/osm_recategorised.geojson")
 osm_recategorised %>% select(highway_recategorised) %>% plot()
-osm_in_bbox$highway = trafficalmr::tc_recode()
-m1 = tm_shape(osm_recategorised) +
-  tm_lines("highway_recategorised", lwd = 2)
+osm_recategorised_sln = stplanr::SpatialLinesNetwork(osm_recategorised)
+osm_clean = stplanr::sln_clean_graph(osm_recategorised_sln)
+osm_clean_sf = osm_clean@sl
+m1 = tm_shape(osm_recategorised, bbox = bbox) +
+  tm_lines("highway_recategorised", lwd = 3, palette = "Set2") +
+  tm_layout(legend.frame = TRUE, legend.bg.alpha = 0.5, legend.position = c("left", "top"))
 m1
 m2 = 
 
