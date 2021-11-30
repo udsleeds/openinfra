@@ -99,9 +99,14 @@ et_walking <- c("wheelchair",
 
 ```{r}
 # function for calculating the ratio (in percentages) of the total highways to a selected column (key)
-perc_ratio <- function(df = dataframe, x = character()){
-((df %>% pull(x) %>% table() %>% sum()) / (df %>% nrow()) * 100) %>% 
+proportion_sf <- function(df = dataframe, x = NULL){
+  for (i in 1:length(x)) {
+    
+   percentages <-  ((df[, x][[i]] %>% table() %>% sum()) / (df %>% nrow()) * 100) %>% 
     signif(digits = 2)
+   
+   print(percentages)
+  }
 }
 
 # function to pull out a table from an sf object
