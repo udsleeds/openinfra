@@ -7,8 +7,8 @@ link-citation: yes
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  fig.path = "openinfra/man/figures")
+# knitr::opts_chunk$set(
+#   fig.path = "man/figures")
 ```
 
 ![Robin Lovelace, 2021](man/figures/feature_image.png)
