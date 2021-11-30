@@ -53,9 +53,12 @@ cycleway:right:separation:left "cycle" "cycleway:est_width"
 
 ```{r}
 # load up the libraries
-library(osmextract) 
+library(osmextract)
 library(tidyverse)
 library(sf)
+library(mapview)
+library(pct)
+library(ggplot2)
 ```
 
 ## datasets
@@ -84,7 +87,7 @@ wy <- readRDS("wy.Rds")
 # wy_cycling_net <- readRDS("wy_cycling_net.Rds")
 # wy_cn_short <- readRDS("wy_cn_short.Rds")
 wy_pct <- readRDS("wy_pct.Rds")
-leeds <- wy_pct %>% filter(lad_name == "Leeds")
+leeds_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/leeds_pct.Rds")
 wy_walking <- readRDS("wy_walking.Rds")
 # wy_walk_short <- readRDS("wy_walking.Rds")
 ```
@@ -92,23 +95,35 @@ wy_walking <- readRDS("wy_walking.Rds")
 ## additional functions
 
 ```{r}
-# My very first function of which I am very proud :)
 # what it does:
 # 1. calculates the ratio of the (sf) column's non-NA cases (rows) to the total number of cases (rows)
 # 2. converts ratio to percentages
 # 3. rounds to 2 significant numbers
-perc_ratio <- function(df = dataframe, x = character()){
-((df %>% pull(x) %>% table() %>% sum()) / (df %>% nrow()) * 100) %>% 
+proportion_sf <- function(df = dataframe, x = NULL){
+  for (i in 1:length(x)) {
+    
+   percentages <-  ((df[, x][[i]] %>% table() %>% sum()) / (df %>% nrow()) * 100) %>% 
     signif(digits = 2)
+   
+   print(percentages)
+  }
 }
+
+# examples:
+# proportion_sf(wy_walking, x = 3:5)
+# proportion_sf (wy_walking,
+#               x = c("highway",
+#                     "waterway",
+#                     "aerialway"))
 ```
+
 
 ```{r}
 # a function that returns a table of sf object's column's values sorted decreasingly
 sf_col_table <- function(df = dataframe,
                          x = character()){
   df %>% pull(x) %>% table %>% sort(decreasing = TRUE)
-                         }
+}
 ```
 
 # walking + accessibility
@@ -721,8 +736,8 @@ sf_col_table(wy_walking_nogeom, "foot")
 #           3           1           1           1           1           1 
 
 foot_pedestrian_yes <- c("yes",
-                              "designated"
-                              )
+                         "designated"
+                         )
 
 foot_pedestrian_maybe <- c("permissive",
                            "private",
@@ -1109,3 +1124,61 @@ joined_man_wy_ped_long %>%
             position = position_dodge(1)
             ) 
 ```
+
+
+```{r}
+wy_pedestrian <- recode_pedestrian(wy_walking)
+wy_pedestrian_leeds <- wy_pedestrian[leeds_pct, op = st_within]
+wy_pedestrian_leeds_yes <- wy_pedestrian_leeds %>% filter(pedestrian_friendly == "yes")
+
+wy_pedestrian_leeds %>%  select(osm_id, name, highway, pedestrian_friendly, foot, footway, sidewalk) %>% filter(!is.na(pedestrian_friendly)) %>% mapview(zcol = "pedestrian_friendly", burst = TRUE)
+```
+
+```{r}
+
+wy_pedestrian_leeds %>% filter(pedestrian_friendly == "yes" | pedestrian_friendly == "maybe") %>% select(osm_id, name, highway, pedestrian_friendly, foot, footway, sidewalk )%>% mapview(zcol = "pedestrian_friendly", burst = TRUE)
+```
+
+```{r}
+
+# wy_pedestrian_leeds %>% filter(pedestrian_friendly == "maybe") %>% mapview()
+```
+
+
+```{r}
+# wy_pedestrian_leeds %>% mutate(ped_yes = case_when(pedestrian_friendly == "yes" ~"yes")) %>% 
+#                                  mutate(ped_maybe = case_when(pedestrian_friendly == "maybe" ~"maybe")) %>%
+#  select(osm_id, name, highway, pedestrian_friendly, foot, footway, sidewalk, ped_yes, ped_maybe) %>%  filter(!is.na(ped_yes) | !is.na(ped_maybe)) %>%  mapview(zcol = c("ped_yes", "ped_maybe"), legend = TRUE, burst = TRUE)
+```
+
+
+
+
+
+```{r}
+wy_pedestrian_leeds %>% filter(osm_id == 257801955 | osm_id == 	1709451) %>% mapview()
+
+# osmextract::oe_get_keys(zone = "West Yorkshire")
+# 
+# wy_walking_testing <- osmextract::oe_get("West Yorkshire",
+#                                  force_vectortranslate = TRUE,
+#                                  extra_tags = "informal"
+#                                  )
+
+# wy_walking_testing %>% filter(!is.na(informal)) 
+# sf_col_table(wy_walking, x = "sidewalk") %>% sum() 
+# sf_col_table(wy_walking_testing, x = "informal") %>% sum() 
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
