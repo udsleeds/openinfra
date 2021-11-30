@@ -1,4 +1,4 @@
-![Robin Lovelace, 2021](man/images/feature_image.png)
+![Robin Lovelace, 2021](man/figures/feature_image.png)
 
 <br>
 

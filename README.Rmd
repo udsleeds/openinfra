@@ -5,6 +5,7 @@ bibliography: bibliography.bib
 nocite: '@*'
 link-citation: yes
 ---
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   fig.path = "man/images")
