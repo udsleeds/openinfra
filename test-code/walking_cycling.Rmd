@@ -86,7 +86,7 @@ wy <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy.Rds")
 # wy_cycling_net <- readRDS("wy_cycling_net.Rds")
 # wy_cn_short <- readRDS("wy_cn_short.Rds")
 wy_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy_pct.Rds")
-leeds_pct <- wy_pct %>% filter(lad_name == "Leeds")
+leeds_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/leeds_pct.Rds")
 wy_walking <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy_walking.Rds")
 # wy_walk_short <- readRDS("wy_walking.Rds")
 
@@ -655,6 +655,11 @@ econ_active_leeds_lsoa1 %>% filter(is.na(value)) # none
 leeds_joined_lsoa <- left_join(leeds_joined_lsoa,
                           econ_active_leeds_lsoa1,
                           by = c(geo_code = "NAME"))
+
+# saving data
+# saveRDS(leeds_joined_lsoa,
+#         "leeds_joined_lsoa.Rds")
+
 # checking if we have `value` column
 # leeds_joined_lsoa %>% select(econ_active_census) 
 
@@ -670,8 +675,6 @@ leeds_joined_lsoa %>% select(econ_active_census) %>% plot(add = TRUE)
 wy_walking %>% filter(highway == "footway") %>% plot(add = TRUE,
                                                      col = "white")
 ```
-
-
 
 
 
