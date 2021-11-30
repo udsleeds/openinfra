@@ -8,10 +8,10 @@ link-citation: yes
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  fig.path = "man/figures")
+  fig.path = "openinfra/man/figures")
 ```
 
-![Robin Lovelace, 2021](man/figures/feature_image.PNG)
+![Robin Lovelace, 2021](man/figures/feature_image.png)
 
 <br>
 
