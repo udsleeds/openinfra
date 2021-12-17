@@ -107,63 +107,6 @@ recode_pedestrian <- function(df = osm_dataframe,
     path_yes = c("footpath")
     path_no <- c("no")
     
-    # telling the function that default values should be used unless other argument values given.
-    if(is.null(highway_footway_yes)) {
-    highway_footway_yes = highway_footway_default_yes
-    }
-    
-    if(is.null(highway_footway_maybe)) {
-    highway_footway_maybe = highway_footway_default_maybe
-    }
-    
-    if(is.null(highway_footway_no)) {
-    highway_footway_no = highway_footway_default_no
-    }
-    
-    if(is.null(footway_yes)) {
-    footway_yes = footway_default_yes
-    }    
-    
-    if(is.null(footway_maybe)) {
-    footway_maybe = footway_default_maybe
-    }
-    
-    if(is.null(footway_no)) {
-    footway_no = footway_default_no
-    }
-    
-    if(is.null(foot_yes)) {
-    foot_yes = foot_default_yes
-    } 
-    
-    if(is.null(foot_maybe)) {
-    foot_maybe = foot_default_maybe
-    }
-        
-    if(is.null(foot_no)) {
-    foot_no = foot_default_no
-    }
-    
-    if(is.null(sidewalk_yes)) {
-    sidewalk_yes = sidewalk_default_yes
-    }
-        
-    if(is.null(sidewalk_no)) {
-    sidewalk_no = sidewalk_default_no
-    }
-    
-    if(is.null(pedestrian_yes)) {
-    pedestrian_yes = pedestrian_default_yes
-    }
-   
-    if(is.null(path_yes)) {
-    path_yes = path_default_yes
-    }
-    
-    if(is.null(path_no)) {
-    path_no = path_default_no
-    }
-    
     # recategorization
  new_osm_df <-  df %>% 
   mutate(pedestrian_friendly = case_when(
@@ -191,35 +134,6 @@ recode_pedestrian <- function(df = osm_dataframe,
     ~ "no"
          )
          )
- 
- # telling the function what should be returned depending on the filter_df values
- if(is.null(filter_df)) {
-   
-   filter_df = filter_df_default
-   return(new_osm_df)
- }
- 
- if(filter_df == "no"){
-   
-   new_osm_df_no <-  new_osm_df %>% filter(pedestrian_friendly == "no")
-
-   return(new_osm_df_no)
- }
- 
- if(filter_df == "maybe"){
-   
-   new_osm_df_maybe <-  new_osm_df %>% filter(pedestrian_friendly == "maybe")
-
-   return(new_osm_df_maybe)
- }
- 
- if(filter_df == "yes"){
-   
-   new_osm_df_yes <-  new_osm_df %>% filter(pedestrian_friendly == "yes")
-
-   return(new_osm_df_yes)
-
- }
 
 }
 ```
