@@ -27,23 +27,9 @@ wy <- readRDS("test-code/wy.Rds")
 # It is possible to modify the values that are considered pedestrian friendly or not but not the keys and tags of which the network is made up.
 # Finally, `filter_df` allows to filter the OSM dataframe based on the new `pedestrian_friendly` column. The argument can take three values: "yes", "maybe", and "no". If "yes" is given, then only the rows containing "yes" in `pedestrian_friendly` will be returned. To return *all* the values, keep filter_df=NULL
 recode_pedestrian <- function(df = osm_dataframe,
-                              highway_footway_yes = NULL,
-                              highway_footway_maybe = NULL,
-                              highway_footway_no = NULL,
-                              footway_yes = NULL,
-                              footway_maybe = NULL,
-                              footway_no = NULL,
-                              foot_yes = NULL,
-                              foot_maybe = NULL,
-                              foot_no = NULL,
-                              sidewalk_yes = NULL,
-                              sidewalk_no = NULL,
-                              pedestrian_yes = NULL,
-                              path_yes = NULL,
-                              path_no = NULL,
-                              filter_df = NULL) {
+                              encouraged = NULL) {
   # defining default values used in the function
-    highway_footway_default_yes = c("footway",
+    highway_footway_yes = c("footway",
                             "pedestrian",
                             "living_street",
                             "residential",
@@ -57,13 +43,13 @@ recode_pedestrian <- function(df = osm_dataframe,
                             "secondary",
                             "trunk"
                             )
-    highway_footway_default_maybe <- c("service",
+    highway_footway_maybe <- c("service",
                                        "cycleway",
                                        "corridor",
                                        "construction",
                                        "road"
                                        )  
-    highway_footway_default_no <- c("motorway",
+    highway_footway_no <- c("motorway",
                            "motorway_link",
                            "trunk_link",
                             "primary_link",
@@ -76,23 +62,23 @@ recode_pedestrian <- function(df = osm_dataframe,
                            "no", 
                            "services"
                            )
-    footway_default_yes = c("sidewalk",
+    footway_yes = c("sidewalk",
                             "crossing",
                             "access_aisle",
                             "left",
                             "yes"
                             )
-    footway_default_maybe <- c("traffic_island", 
+    footway_maybe <- c("traffic_island", 
                               "link",
                               "alley"
                               )
-    footway_default_no <- c("no",
+    footway_no <- c("no",
                            "none",
                            "np") 
-    foot_default_yes <-  c("yes",
+    foot_yes <-  c("yes",
                            "designated"
                            )
-    foot_default_maybe <- c("permissive",
+    foot_maybe <- c("permissive",
                            "private",
                            "customers",
                            "destination", # or no?
@@ -100,13 +86,13 @@ recode_pedestrian <- function(df = osm_dataframe,
                            "delivery",
                            "permit"
                            )
-    foot_default_no <- c("no",
+    foot_no <- c("no",
                         "unknown",
                         "emergency",
                         "informal", 
                         "limited" 
                         )
-    sidewalk_default_yes = c("both",
+    sidewalk_yes = c("both",
                          "left",
                          "right",
                          "separate",
@@ -115,13 +101,11 @@ recode_pedestrian <- function(df = osm_dataframe,
                          "crossing", 
                          "left;right"
                          ) 
-    sidewalk_default_no <- c("no",
-                            "none")
-    pedestrian_default_yes = c("crossing ")
-    path_default_yes = c("footpath")
-    path_default_no <- c("no")
-    
-    filter_df_default = c("no")
+    sidewalk_no <- c("no",
+                     "none")
+    pedestrian_yes = c("crossing ")
+    path_yes = c("footpath")
+    path_no <- c("no")
     
     # telling the function that default values should be used unless other argument values given.
     if(is.null(highway_footway_yes)) {
