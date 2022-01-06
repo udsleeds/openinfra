@@ -4,9 +4,21 @@ library(tmap)
 library(tidyverse)
 tmap_mode("view")
 sf::sf_use_s2(FALSE)
-regions_dft_2020 = sf::read_sf("data-small/regions_dft_2020.geojson")
+
+# Read-in previously created regions:
+# regions_dft_2020 = sf::read_sf("data-small/regions_dft_2020.geojson")
+regions_dft_2020 = sf::read_sf("https://github.com/udsleeds/openinfra/raw/main/data-small/regions_dft_2020.geojson")
 tm_shape(regions_dft_2020) + tm_polygons("Level")
-regions_atf = read.csv("data-small/atf-funds.csv")
+# regions_atf = read.csv("data-small/atf-funds.csv")
+
+# Read-in ATF funding allocations from: 
+# https://www.gov.uk/government/publications/emergency-active-travel-fund-local-transport-authority-allocations/emergency-active-travel-fund-total-indicative-allocations
+regions_atf = readr::read_csv("https://github.com/udsleeds/openinfra/raw/main/data-small/atf-funds.csv")
+
+# Read in 2021 LAD data
+lads_uk_2021 = sf::read_sf("https://github.com/udsleeds/openinfra/raw/main/data-small/Local_Authority_Districts_(December_2021)_UK_BUC.geojson")
+
+
 summary(regions_dft_2020$Name %in% regions_atf$Name) # 26 match
 regions_atf = regions_atf %>% 
   mutate(
@@ -79,27 +91,27 @@ sf::write_sf(lads_joined, "data-small/lads_joined_2021.geojson")
 summary(is.na(lads_joined$Region_name))
 
 
-regions_new = lads_joined %>% 
-  group_by(Region_name) %>% 
-  summarise(
-    Region_name_long = first(Region_name_long),
-    N_LADs = n(),
-    LAD_names = paste(LAD21NM, collapse = ","),
-    Allocation1 = first(Allocation1),
-    Allocation2 = first(Allocation2)
-  ) %>% 
-  filter(!is.na(Region_name))
-plot(regions_new)
-regions_new$LAD_names
-
-sf::write_sf(regions_new, "data-small/regions_new.geojson")
-
-lads_to_regions_2021 = readr::read_csv("data-small/Local_Authority_District_to_Region_(April_2021)_Lookup_in_England.csv")
-length(unique(lads_to_regions_2021$RGN21NM)) # 9
-lads_uk_2021 = sf::read_sf("data-small/Local_Authority_Districts_(December_2021)_UK_BUC.geojson")
-lads_in_lookup = lads_uk_2021$LAD21NM %in% lads_to_regions_2021$LAD21NM
-summary(lads_in_lookup)
-qtm(lads_uk_2021[lads_in_lookup, ]) # promising: all LADS in England
+# regions_new = lads_joined %>% 
+#   group_by(Region_name) %>% 
+#   summarise(
+#     Region_name_long = first(Region_name_long),
+#     N_LADs = n(),
+#     LAD_names = paste(LAD21NM, collapse = ","),
+#     Allocation1 = first(Allocation1),
+#     Allocation2 = first(Allocation2)
+#   ) %>% 
+#   filter(!is.na(Region_name))
+# plot(regions_new)
+# regions_new$LAD_names
+# 
+# sf::write_sf(regions_new, "data-small/regions_new.geojson")
+# 
+# lads_to_regions_2021 = readr::read_csv("data-small/Local_Authority_District_to_Region_(April_2021)_Lookup_in_England.csv")
+# length(unique(lads_to_regions_2021$RGN21NM)) # 9
+# lads_uk_2021 = sf::read_sf("data-small/Local_Authority_Districts_(December_2021)_UK_BUC.geojson")
+# lads_in_lookup = lads_uk_2021$LAD21NM %in% lads_to_regions_2021$LAD21NM
+# summary(lads_in_lookup)
+# qtm(lads_uk_2021[lads_in_lookup, ]) # promising: all LADS in England
 
 # Test code:
 # lads_to_regions_2020 = readRDS("~/cyipt/tempCycleways/lads.Rds")
