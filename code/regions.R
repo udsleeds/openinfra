@@ -91,20 +91,20 @@ sf::write_sf(lads_joined, "data-small/lads_joined_2021.geojson")
 summary(is.na(lads_joined$Region_name))
 
 
-# regions_new = lads_joined %>% 
-#   group_by(Region_name) %>% 
-#   summarise(
-#     Region_name_long = first(Region_name_long),
-#     N_LADs = n(),
-#     LAD_names = paste(LAD21NM, collapse = ","),
-#     Allocation1 = first(Allocation1),
-#     Allocation2 = first(Allocation2)
-#   ) %>% 
-#   filter(!is.na(Region_name))
-# plot(regions_new)
-# regions_new$LAD_names
-# 
-# sf::write_sf(regions_new, "data-small/regions_new.geojson")
+regions_new = lads_joined %>%
+  group_by(Region_name) %>%
+  summarise(
+    Region_name_long = first(Region_name_long),
+    N_LADs = n(),
+    LAD_names = paste(LAD21NM, collapse = ","),
+    Allocation1 = first(Allocation1),
+    Allocation2 = first(Allocation2)
+  ) %>%
+  filter(!is.na(Region_name))
+plot(regions_new)
+regions_new$LAD_names
+
+sf::write_sf(regions_new, "data-small/regions_new.geojson")
 # 
 # lads_to_regions_2021 = readr::read_csv("data-small/Local_Authority_District_to_Region_(April_2021)_Lookup_in_England.csv")
 # length(unique(lads_to_regions_2021$RGN21NM)) # 9
