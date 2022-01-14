@@ -15,8 +15,7 @@ mers = readRDS("mers.Rds")
 
 
 # EDA =====================
-## WY
-
+## WY ========
 wy_df = wy %>% 
   sf::st_drop_geometry() %>% 
   filter(!is.na(highway))
@@ -84,8 +83,10 @@ wy_tagged_grouped = wy_tagged %>%
   filter(n > 10) %>% 
   ungroup()
 
+wy_tagged_grouped %>% select(lit) %>% table
 
-## plot 1 
+
+## plot 1 ====
 tags_needed = c("bicycle", "foot", "cycleway","footway", "value")
 wy_plot1 = wy_tagged_grouped %>% filter(key %in% tags_needed) %>% select(key, tags_needed) %>% 
 ggplot( aes(x = value)) +
@@ -94,24 +95,23 @@ ggplot( aes(x = value)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 
-## plot 2
-
+## plot 2 ====
 wy_tagged_grouped_prop = wy_tagged_grouped %>% 
   group_by(highway) %>% 
   summarize(n = n(),
             Proportion = n / nrow(wy_df) * 100)
 
-wy_plot2 = wy_tagged_grouped_prop %>%  filter(highway == "footway" | highway == "cycleway")  %>% 
+wy_plot2 = wy_tagged_grouped_prop %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"))  %>% 
   ggplot( aes(x = highway,
               y = Proportion)) +
   geom_bar(stat = "identity") 
 
-## plot 3
-
+## plot 3 ====
 wy_tagged_grouped_prop2 = wy_tagged_grouped %>% 
   group_by(value, key) %>% 
   summarize(n = n(),
             Proportion = n / nrow(wy_df) * 100)
+
 wy_plot3 = wy_tagged_grouped_prop2 %>% filter(key %in% tags_needed) %>% select(key, Proportion) %>% 
   ggplot( aes(x = value,
               y = Proportion)) +
@@ -120,10 +120,18 @@ wy_plot3 = wy_tagged_grouped_prop2 %>% filter(key %in% tags_needed) %>% select(k
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 
-# ============
+## plot 4 =====
 
-## GM
+tags_needed2 = c("maxspeed", "lit")
+wy_plot4 = wy_tagged_grouped_prop2 %>% filter(key %in% tags_needed2) %>% select(key, Proportion) %>% 
+  ggplot( aes(x = value,
+              y = Proportion)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~key, scales = "free_x") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 
+## GM ============
 gm_df = gm %>% 
   sf::st_drop_geometry() %>% 
   filter(!is.na(highway))
@@ -191,7 +199,7 @@ gm_tagged_grouped = gm_tagged %>%
   filter(n > 10) %>% 
   ungroup() 
   
-## plot 1 
+### plot 1 ====
 tags_needed = c("bicycle", "foot", "cycleway","footway", "value")
 gm_plot1 = gm_tagged_grouped %>% filter(key %in% tags_needed) %>% select(key, tags_needed) %>% 
   ggplot( aes(x = value)) +
@@ -200,21 +208,19 @@ gm_plot1 = gm_tagged_grouped %>% filter(key %in% tags_needed) %>% select(key, ta
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 
-## plot 2
-
-gm_tagged_grouped %>% filter(highway == "footway") %>% nrow()
+### plot 2 ====
 
 gm_tagged_grouped_prop = gm_tagged_grouped %>% 
   group_by(highway) %>% 
   summarize(n = n(),
             Proportion = n / nrow(gm_df) * 100)
 
-gm_plot2 = gm_tagged_grouped_prop %>%  filter(highway == "footway" | highway == "cycleway")  %>% 
+gm_plot2 = gm_tagged_grouped_prop %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"))   %>% 
   ggplot( aes(x = highway,
               y = Proportion)) +
   geom_bar(stat = "identity") 
 
-## plot 3
+### plot 3 ====
 
 gm_tagged_grouped_prop2 = gm_tagged_grouped %>% 
   group_by(value, key) %>% 
@@ -228,9 +234,17 @@ gm_plot3 = gm_tagged_grouped_prop2 %>% filter(key %in% tags_needed) %>% select(k
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 
-gm_plot3
+### plot 4 ====
+tags_needed2 = c("maxspeed", "lit")
+gm_plot4 = gm_tagged_grouped_prop2 %>% filter(key %in% tags_needed2) %>% select(key, Proportion) %>% 
+  ggplot( aes(x = value,
+              y = Proportion)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~key, scales = "free_x") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 
-# MERSEYSIDE ===========
+## MERSEYSIDE ===========
 
 mers_df = mers %>% 
   sf::st_drop_geometry() %>% 
@@ -299,7 +313,7 @@ mers_tagged_grouped = mers_tagged %>%
   filter(n > 10) %>% 
   ungroup() 
 
-## plot 1 
+### plot 1 ====
 tags_needed = c("bicycle", "foot", "cycleway","footway", "value")
 mers_plot1 = mers_tagged_grouped %>% filter(key %in% tags_needed) %>% select(key, tags_needed) %>% 
   ggplot( aes(x = value)) +
@@ -308,19 +322,19 @@ mers_plot1 = mers_tagged_grouped %>% filter(key %in% tags_needed) %>% select(key
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 
-## plot 2
+### plot 2 ====
 
 mers_tagged_grouped_prop = mers_tagged_grouped %>% 
   group_by(highway) %>% 
   summarize(n = n(),
             Proportion = n / nrow(mers_df) * 100)
 
-mers_plot2 = mers_tagged_grouped_prop %>%  filter(highway == "footway" | highway == "cycleway")  %>% 
+mers_plot2 = mers_tagged_grouped_prop %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"))   %>% 
   ggplot( aes(x = highway,
               y = Proportion)) +
   geom_bar(stat = "identity") 
 
-## plot 3
+### plot 3 ====
 
 mers_tagged_grouped_prop2 = mers_tagged_grouped %>% 
   group_by(value, key) %>% 
@@ -334,8 +348,16 @@ mers_plot3 = mers_tagged_grouped_prop2 %>% filter(key %in% tags_needed) %>% sele
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 
-mers_plot3
+### plot 4 =====
 
+tags_needed2 = c("maxspeed_cat", "lit_cat")
+mers_plot4 = mers_tagged_grouped_prop2 %>% filter(key %in% tags_needed2) %>% select(key, Proportion) %>% 
+  ggplot( aes(x = value,
+              y = Proportion)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~key, scales = "free_x") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 
 
 ## WY + GM + mers joined =============
@@ -351,7 +373,7 @@ all_tagged_grouped = all_tagged %>%
   ungroup() 
 
 
-## plot 1 
+### plot 1 ======
 all_plot1 = all_tagged_grouped %>% filter(key %in% tags_needed) %>% select(key, tags_needed, name) %>% group_by(value, name, key) %>% summarise(N = n()) %>% 
   ggplot( aes(x = value,
            y = N,
@@ -367,7 +389,7 @@ all_plot1 = all_tagged_grouped %>% filter(key %in% tags_needed) %>% select(key, 
             position = position_dodge(1))
 
 
-## plot 2
+### plot 2 ======
 
 gm_tagged_grouped_prop_name = gm_tagged_grouped_prop %>% mutate(name = "gm")
 wy_tagged_grouped_prop_name = wy_tagged_grouped_prop %>% mutate(name = "wy")
@@ -377,7 +399,7 @@ joined = rbind(gm_tagged_grouped_prop_name,
                wy_tagged_grouped_prop_name,
                mers_tagged_grouped_prop_name)
 
-all_plot2 = joined %>%  filter(highway == "footway" | highway == "cycleway")  %>% 
+all_plot2 = joined %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"))   %>% 
   ggplot(aes(x = highway,
               y = Proportion,
               fill = name)) +
@@ -389,7 +411,7 @@ all_plot2 = joined %>%  filter(highway == "footway" | highway == "cycleway")  %>
             color="black", size=3.5,
             position = position_dodge(1))
 
-## plot 3
+### plot 3 ====
 
 gm_tagged_grouped_prop_name2 = gm_tagged_grouped_prop2 %>% mutate(name = "gm")
 wy_tagged_grouped_prop_name2 = wy_tagged_grouped_prop2 %>% mutate(name = "wy")
@@ -426,4 +448,33 @@ joined_plot3.1 = joined2  %>% filter (key %in% tags_needed) %>%
             position = position_dodge(1)
   ) 
 
+### plot 4 
+
+joined_plot4 = joined2  %>% filter (key %in% c("maxspeed", "lit")) %>% 
+  ggplot(aes(x = value,
+             y = Proportion,
+             fill = name)) +
+  geom_bar(stat = "identity",
+           position=position_dodge() ) + 
+  theme_bw() +
+  facet_wrap(~key, scales = "free_x") +
+  geom_text(aes(label=round(Proportion,2)),
+            color="black", size=3.5,
+            position = position_dodge(1)
+  ) 
+
+joined_plot4.1 = joined2  %>% filter (key %in% c("maxspeed", "lit")) %>% 
+  ggplot(aes(x = value,
+             y = n,
+             fill = name)) +
+  geom_bar(stat = "identity",
+           position=position_dodge() ) + 
+  theme_bw() +
+  facet_wrap(~key, scales = "free_x") +
+  geom_text(aes(label=round(n)),
+            color="black", size=3.5,
+            position = position_dodge(1)
+  ) 
+
+wy %>% pull(width) %>% parse_number() %>% table()
 
