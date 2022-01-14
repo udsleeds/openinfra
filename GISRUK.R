@@ -13,7 +13,6 @@ wy = readRDS("wy.Rds")
 gm = readRDS("gm.Rds")
 mers = readRDS("mers.Rds")
 
-
 # EDA =====================
 ## WY ========
 wy_df = wy %>% 
@@ -28,7 +27,7 @@ wy_df_cat = wy_df %>%
    str_detect(bicycle, "destin|permis|priva|unknown")~ "maybe"),
    
    wheelchair_cat = case_when(
-      str_detect(wheelchair, "bad|limit|permis") ~ ",aybe",
+      str_detect(wheelchair, "bad|limit|permis") ~ "maybe",
       str_detect(wheelchair, "desig|yes") ~ "yes",
       str_detect(wheelchair, "no") ~ "no"
   ),
@@ -54,16 +53,27 @@ wy_df_cat = wy_df %>%
     maxspeed_cl > 1 & maxspeed_cl <= 20 ~ "1-20 mph",
     maxspeed_cl > 20 & maxspeed_cl <= 40~ "21-40 mph",
     maxspeed_cl > 40 & maxspeed_cl <= 60~ "41-60 mph",
-    maxspeed_cl > 60 ~ "61 < mph"
+    maxspeed_cl > 60 ~ ">61 mph"
     ),
   cycleway_cat = case_when(
     str_detect(cycleway, "buff|lane|segr|sep|track") ~ "separate",
     str_detect(cycleway, "no") ~ "no",
     str_detect(cycleway, "share") ~ "shared",
     str_detect(cycleway, "cross|cyclestreet|left|opp|path|side|yes|unm") ~ "other"
+  ),
+  kerb_cat = case_when(
+    str_detect(kerb, "fl")~ "flush",
+    str_detect(kerb, "low")~ "lowered",
+    str_detect(kerb, "raise")~ "raised",
+    str_detect(kerb, "yes|no")~ "other"
+    ),
+  width_cl = width %>% parse_number(),
+  width_cat = case_when(
+    width_cl > 0 & width_cl < 1.5 ~ "< 1.5m",
+    width_cl <= 1.5 & width_cl <= 2 ~ "1.5m - 2m",
+    width_cl > 2 ~ ">2m"
+    )
   )
-  )
-
 
 wy_tagged = rbind(
   wy_df_cat %>% filter(!is.na(wheelchair_cat)) %>% mutate(key = "wheelchair", value = wheelchair_cat, name = "wy"),
@@ -74,7 +84,9 @@ wy_tagged = rbind(
     mutate(key = "highway", value = highway, name = "wy"),
   wy_df_cat %>% filter(!is.na(maxspeed_cat)) %>% mutate(key = "maxspeed", value = maxspeed_cat, name = "wy"),
   wy_df_cat %>% filter(!is.na(bicycle_cat)) %>% mutate(key = "bicycle", value = bicycle_cat, name = "wy"),
-  wy_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "wy")
+  wy_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "wy"),
+  wy_df_cat %>% filter(!is.na(kerb_cat)) %>% mutate(key = "kerb", value = kerb_cat, name = "wy"),
+  wy_df_cat %>% filter(!is.na(width_cat)) %>% mutate(key = "width", value = width_cat, name = "wy")
 ) 
 
 wy_tagged_grouped = wy_tagged %>% 
@@ -122,7 +134,7 @@ wy_plot3 = wy_tagged_grouped_prop2 %>% filter(key %in% tags_needed) %>% select(k
 
 ## plot 4 =====
 
-tags_needed2 = c("maxspeed", "lit")
+tags_needed2 = c("maxspeed", "lit", "kerb", "width")
 wy_plot4 = wy_tagged_grouped_prop2 %>% filter(key %in% tags_needed2) %>% select(key, Proportion) %>% 
   ggplot( aes(x = value,
               y = Proportion)) +
@@ -177,6 +189,18 @@ gm_df_cat = gm_df %>%
       str_detect(cycleway, "no") ~ "no",
       str_detect(cycleway, "share") ~ "shared",
       str_detect(cycleway, "cross|cyclestreet|left|opp|path|side|yes|unm") ~ "other"
+    ),
+    kerb_cat = case_when(
+      str_detect(kerb, "fl")~ "flush",
+      str_detect(kerb, "low")~ "lowered",
+      str_detect(kerb, "raise")~ "raised",
+      str_detect(kerb, "yes|no")~ "other"
+    ),
+    width_cl = width %>% parse_number(),
+    width_cat = case_when(
+      width_cl > 0 & width_cl < 1.5 ~ "< 1.5m",
+      width_cl <= 1.5 & width_cl <= 2 ~ "1.5m - 2m",
+      width_cl > 2 ~ ">2m"
     )
   )
 
@@ -190,7 +214,9 @@ gm_tagged = rbind(
     mutate(key = "highway", value = highway, name = "gm"),
   gm_df_cat %>% filter(!is.na(maxspeed_cat)) %>% mutate(key = "maxspeed", value = maxspeed_cat, name = "gm"),
   gm_df_cat %>% filter(!is.na(bicycle_cat)) %>% mutate(key = "bicycle", value = bicycle_cat, name = "gm"),
-  gm_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "gm")
+  gm_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "gm"),
+  gm_df_cat %>% filter(!is.na(kerb_cat)) %>% mutate(key = "kerb", value = kerb_cat, name = "gm"),
+  gm_df_cat %>% filter(!is.na(width_cat)) %>% mutate(key = "width", value = width_cat, name = "gm")
 ) 
 
 gm_tagged_grouped = gm_tagged %>% 
@@ -235,7 +261,7 @@ gm_plot3 = gm_tagged_grouped_prop2 %>% filter(key %in% tags_needed) %>% select(k
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 
 ### plot 4 ====
-tags_needed2 = c("maxspeed", "lit")
+tags_needed2 = c("maxspeed", "lit", "kerb", "width")
 gm_plot4 = gm_tagged_grouped_prop2 %>% filter(key %in% tags_needed2) %>% select(key, Proportion) %>% 
   ggplot( aes(x = value,
               y = Proportion)) +
@@ -291,6 +317,18 @@ mers_df_cat = mers_df %>%
       str_detect(cycleway, "no") ~ "no",
       str_detect(cycleway, "share") ~ "shared",
       str_detect(cycleway, "cross|cyclestreet|left|opp|path|side|yes|unm") ~ "other"
+    ),
+    kerb_cat = case_when(
+      str_detect(kerb, "fl")~ "flush",
+      str_detect(kerb, "low")~ "lowered",
+      str_detect(kerb, "raise")~ "raised",
+      str_detect(kerb, "yes|no")~ "other"
+    ),
+    width_cl = width %>% parse_number(),
+    width_cat = case_when(
+      width_cl > 0 & width_cl < 1.5 ~ "< 1.5m",
+      width_cl <= 1.5 & width_cl <= 2 ~ "1.5m - 2m",
+      width_cl > 2 ~ ">2m"
     )
   )
 
@@ -304,7 +342,9 @@ mers_tagged = rbind(
     mutate(key = "highway", value = highway, name = "mers"),
   mers_df_cat %>% filter(!is.na(maxspeed_cat)) %>% mutate(key = "maxspeed", value = maxspeed_cat, name = "mers"),
   mers_df_cat %>% filter(!is.na(bicycle_cat)) %>% mutate(key = "bicycle", value = bicycle_cat, name = "mers"),
-  mers_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "mers")
+  mers_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "mers"),
+  mers_df_cat %>% filter(!is.na(kerb_cat)) %>% mutate(key = "kerb", value = kerb_cat, name = "mers"),
+  mers_df_cat %>% filter(!is.na(width_cat)) %>% mutate(key = "width", value = width_cat, name = "mers")
 ) 
 
 mers_tagged_grouped = mers_tagged %>% 
@@ -350,7 +390,7 @@ mers_plot3 = mers_tagged_grouped_prop2 %>% filter(key %in% tags_needed) %>% sele
 
 ### plot 4 =====
 
-tags_needed2 = c("maxspeed_cat", "lit_cat")
+tags_needed2 = c("maxspeed", "lit", "kerb", "width")
 mers_plot4 = mers_tagged_grouped_prop2 %>% filter(key %in% tags_needed2) %>% select(key, Proportion) %>% 
   ggplot( aes(x = value,
               y = Proportion)) +
@@ -450,7 +490,7 @@ joined_plot3.1 = joined2  %>% filter (key %in% tags_needed) %>%
 
 ### plot 4 
 
-joined_plot4 = joined2  %>% filter (key %in% c("maxspeed", "lit")) %>% 
+joined_plot4 = joined2  %>% filter (key %in% tags_needed2) %>% 
   ggplot(aes(x = value,
              y = Proportion,
              fill = name)) +
@@ -476,5 +516,4 @@ joined_plot4.1 = joined2  %>% filter (key %in% c("maxspeed", "lit")) %>%
             position = position_dodge(1)
   ) 
 
-wy %>% pull(width) %>% parse_number() %>% table()
 
