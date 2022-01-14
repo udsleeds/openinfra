@@ -14,7 +14,6 @@ gm = readRDS("gm.Rds")
 mers = readRDS("mers.Rds")
 
 
-
 # EDA =====================
 ## WY
 
@@ -22,17 +21,62 @@ wy_df = wy %>%
   sf::st_drop_geometry() %>% 
   filter(!is.na(highway))
 
+wy_df_cat = wy_df %>% 
+  mutate(
+    bicycle_cat = case_when(
+   str_detect(bicycle, "designated|yes")  ~ "yes/designated",
+   str_detect(bicycle, "no|dismount")  ~ "no",
+   str_detect(bicycle, "destin|permis|priva|unknown")~ "maybe"),
+   
+   wheelchair_cat = case_when(
+      str_detect(wheelchair, "bad|limit|permis") ~ ",aybe",
+      str_detect(wheelchair, "desig|yes") ~ "yes",
+      str_detect(wheelchair, "no") ~ "no"
+  ),
+  foot_cat = case_when(
+    str_detect(foot, "designated|yes")  ~ "yes/designated",
+    str_detect(foot, "no|disc")  ~ "no",
+    str_detect(foot, "cust|deli|dest|emerg|limit|permis|permit|priv|unknown")  ~ "maybe"
+  ),
+  footway_cat = case_when(
+    str_detect(footway, "access|alley|left|link|traffic") ~ "other",
+    str_detect(footway, "no") ~ "no",
+    str_detect(footway, "yes|sidewalk") ~ "yes/sidewalk",
+  ),
+  lit_cat = case_when(
+    str_detect(lit, "af|auto|dis|interval|sep|suns|sunr")~ "other",
+    str_detect(lit, "limit")~ "limited",
+    str_detect(lit, "yes")~ "yes",
+    str_detect(lit, "no")~ "no"
+  ),
+  maxspeed_cl = maxspeed %>% 
+    parse_number(),
+  maxspeed_cat = case_when(
+    maxspeed_cl > 1 & maxspeed_cl <= 20 ~ "1-20 mph",
+    maxspeed_cl > 20 & maxspeed_cl <= 40~ "21-40 mph",
+    maxspeed_cl > 40 & maxspeed_cl <= 60~ "41-60 mph",
+    maxspeed_cl > 60 ~ "61 < mph"
+    ),
+  cycleway_cat = case_when(
+    str_detect(cycleway, "buff|lane|segr|sep|track") ~ "separate",
+    str_detect(cycleway, "no") ~ "no",
+    str_detect(cycleway, "share") ~ "shared",
+    str_detect(cycleway, "cross|cyclestreet|left|opp|path|side|yes|unm") ~ "other"
+  )
+  )
+  )
+
 
 wy_tagged = rbind(
-  wy_df %>% filter(!is.na(wheelchair)) %>% mutate(key = "wheelchair", value = wheelchair, name = "wy"),
-  wy_df %>% filter(!is.na(foot)) %>% mutate(key = "foot", value = foot, name = "wy"),
-  wy_df %>% filter(!is.na(footway)) %>% mutate(key = "footway", value = footway, name = "wy"),
-  wy_df %>% filter(!is.na(lit)) %>% mutate(key = "lit", value = lit, name = "wy"),
-  wy_df %>% filter(str_detect(highway, "footway|living_street|path|pedestrian|steps|cycle")) %>%
+  wy_df_cat %>% filter(!is.na(wheelchair_cat)) %>% mutate(key = "wheelchair", value = wheelchair_cat, name = "wy"),
+  wy_df_cat %>% filter(!is.na(foot_cat)) %>% mutate(key = "foot", value = foot_cat, name = "wy"),
+  wy_df_cat %>% filter(!is.na(footway_cat)) %>% mutate(key = "footway", value = footway_cat, name = "wy"),
+  wy_df_cat %>% filter(!is.na(lit_cat)) %>% mutate(key = "lit", value = lit_cat, name = "wy"),
+  wy_df_cat %>% filter(str_detect(highway, "footway|living_street|path|pedestrian|steps|cycle")) %>%
     mutate(key = "highway", value = highway, name = "wy"),
-  wy_df %>% filter(!is.na(maxspeed)) %>% mutate(key = "maxspeed", value = maxspeed, name = "wy"),
-  wy_df %>% filter(!is.na(bicycle)) %>% mutate(key = "bicycle", value = bicycle, name = "wy"),
-  wy_df %>% filter(!is.na(cycleway)) %>% mutate(key = "cycleway", value = cycleway, name = "wy")
+  wy_df_cat %>% filter(!is.na(maxspeed_cat)) %>% mutate(key = "maxspeed", value = maxspeed_cat, name = "wy"),
+  wy_df_cat %>% filter(!is.na(bicycle_cat)) %>% mutate(key = "bicycle", value = bicycle_cat, name = "wy"),
+  wy_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "wy")
 ) 
 
 wy_tagged_grouped = wy_tagged %>% 
