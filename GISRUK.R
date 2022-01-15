@@ -6,12 +6,12 @@ library(tmap)
 library(ggplot)
 
 # GETTING DATA  =================
-piggyback::pb_download("wy.Rds")
-piggyback::pb_download("gm.Rds")
-piggyback::pb_download("mers.Rds")
-wy = readRDS("wy.Rds")
-gm = readRDS("gm.Rds")
-mers = readRDS("mers.Rds")
+# piggyback::pb_download("wy.Rds")
+# piggyback::pb_download("gm.Rds")
+# piggyback::pb_download("mers.Rds")
+# wy = readRDS("wy.Rds")
+# gm = readRDS("gm.Rds")
+# mers = readRDS("mers.Rds")
 
 # EDA =====================
 ## WY ========
@@ -53,7 +53,7 @@ wy_df_cat = wy_df %>%
     maxspeed_cl > 1 & maxspeed_cl <= 20 ~ "1-20 mph",
     maxspeed_cl > 20 & maxspeed_cl <= 40~ "21-40 mph",
     maxspeed_cl > 40 & maxspeed_cl <= 60~ "41-60 mph",
-    maxspeed_cl > 60 ~ ">61 mph"
+    maxspeed_cl > 60 ~ "61 mph <"
     ),
   cycleway_cat = case_when(
     str_detect(cycleway, "buff|lane|segr|sep|track") ~ "separate",
@@ -71,8 +71,16 @@ wy_df_cat = wy_df %>%
   width_cat = case_when(
     width_cl > 0 & width_cl < 1.5 ~ "< 1.5m",
     width_cl <= 1.5 & width_cl <= 2 ~ "1.5m - 2m",
-    width_cl > 2 ~ ">2m"
-    )
+    width_cl > 2 ~ "2m <"
+    ),
+  sidewalk_cat = case_when(
+    str_detect(sidewalk, "both")~ "both",
+    str_detect(sidewalk, "left")~ "left",
+    str_detect(sidewalk, "right")~ "right",
+    str_detect(sidewalk, "no|none")~ "no",
+    str_detect(sidewalk, "separate")~ "separated",
+    str_detect(sidewalk, "yes|mapped")~ "yes",
+    str_detect(sidewalk, "cross")~ "other")
   )
 
 wy_tagged = rbind(
@@ -86,7 +94,8 @@ wy_tagged = rbind(
   wy_df_cat %>% filter(!is.na(bicycle_cat)) %>% mutate(key = "bicycle", value = bicycle_cat, name = "wy"),
   wy_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "wy"),
   wy_df_cat %>% filter(!is.na(kerb_cat)) %>% mutate(key = "kerb", value = kerb_cat, name = "wy"),
-  wy_df_cat %>% filter(!is.na(width_cat)) %>% mutate(key = "width", value = width_cat, name = "wy")
+  wy_df_cat %>% filter(!is.na(width_cat)) %>% mutate(key = "width", value = width_cat, name = "wy"),
+  wy_df_cat %>% filter(!is.na(sidewalk_cat)) %>% mutate(key = "sidewalk", value = sidewalk_cat, name = "wy")
 ) 
 
 wy_tagged_grouped = wy_tagged %>% 
@@ -182,7 +191,7 @@ gm_df_cat = gm_df %>%
       maxspeed_cl > 1 & maxspeed_cl <= 20 ~ "1-20 mph",
       maxspeed_cl > 20 & maxspeed_cl <= 40~ "21-40 mph",
       maxspeed_cl > 40 & maxspeed_cl <= 60~ "41-60 mph",
-      maxspeed_cl > 60 ~ "61 < mph"
+      maxspeed_cl > 60 ~ "61 mph <"
     ),
     cycleway_cat = case_when(
       str_detect(cycleway, "buff|lane|segr|sep|track") ~ "separate",
@@ -200,8 +209,16 @@ gm_df_cat = gm_df %>%
     width_cat = case_when(
       width_cl > 0 & width_cl < 1.5 ~ "< 1.5m",
       width_cl <= 1.5 & width_cl <= 2 ~ "1.5m - 2m",
-      width_cl > 2 ~ ">2m"
-    )
+      width_cl > 2 ~ "2m <"
+    ),
+    sidewalk_cat = case_when(
+      str_detect(sidewalk, "both")~ "both",
+      str_detect(sidewalk, "left")~ "left",
+      str_detect(sidewalk, "right")~ "right",
+      str_detect(sidewalk, "no|none")~ "no",
+      str_detect(sidewalk, "separate")~ "separated",
+      str_detect(sidewalk, "yes|mapped")~ "yes",
+      str_detect(sidewalk, "cross")~ "other")
   )
 
 
@@ -216,7 +233,8 @@ gm_tagged = rbind(
   gm_df_cat %>% filter(!is.na(bicycle_cat)) %>% mutate(key = "bicycle", value = bicycle_cat, name = "gm"),
   gm_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "gm"),
   gm_df_cat %>% filter(!is.na(kerb_cat)) %>% mutate(key = "kerb", value = kerb_cat, name = "gm"),
-  gm_df_cat %>% filter(!is.na(width_cat)) %>% mutate(key = "width", value = width_cat, name = "gm")
+  gm_df_cat %>% filter(!is.na(width_cat)) %>% mutate(key = "width", value = width_cat, name = "gm"),
+  gm_df_cat %>% filter(!is.na(sidewalk_cat)) %>% mutate(key = "sidewalk", value = sidewalk_cat, name = "gm")
 ) 
 
 gm_tagged_grouped = gm_tagged %>% 
@@ -310,7 +328,7 @@ mers_df_cat = mers_df %>%
       maxspeed_cl > 1 & maxspeed_cl <= 20 ~ "1-20 mph",
       maxspeed_cl > 20 & maxspeed_cl <= 40~ "21-40 mph",
       maxspeed_cl > 40 & maxspeed_cl <= 60~ "41-60 mph",
-      maxspeed_cl > 60 ~ "61 < mph"
+      maxspeed_cl > 60 ~ "61 mph <"
     ),
     cycleway_cat = case_when(
       str_detect(cycleway, "buff|lane|segr|sep|track") ~ "separate",
@@ -328,8 +346,16 @@ mers_df_cat = mers_df %>%
     width_cat = case_when(
       width_cl > 0 & width_cl < 1.5 ~ "< 1.5m",
       width_cl <= 1.5 & width_cl <= 2 ~ "1.5m - 2m",
-      width_cl > 2 ~ ">2m"
-    )
+      width_cl > 2 ~ "2m <"
+    ),
+    sidewalk_cat = case_when(
+      str_detect(sidewalk, "both")~ "both",
+      str_detect(sidewalk, "left")~ "left",
+      str_detect(sidewalk, "right")~ "right",
+      str_detect(sidewalk, "no|none")~ "no",
+      str_detect(sidewalk, "separate")~ "separated",
+      str_detect(sidewalk, "yes|mapped")~ "yes",
+      str_detect(sidewalk, "cross")~ "other")
   )
 
 
@@ -344,7 +370,8 @@ mers_tagged = rbind(
   mers_df_cat %>% filter(!is.na(bicycle_cat)) %>% mutate(key = "bicycle", value = bicycle_cat, name = "mers"),
   mers_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "mers"),
   mers_df_cat %>% filter(!is.na(kerb_cat)) %>% mutate(key = "kerb", value = kerb_cat, name = "mers"),
-  mers_df_cat %>% filter(!is.na(width_cat)) %>% mutate(key = "width", value = width_cat, name = "mers")
+  mers_df_cat %>% filter(!is.na(width_cat)) %>% mutate(key = "width", value = width_cat, name = "mers"),
+  mers_df_cat %>% filter(!is.na(sidewalk_cat)) %>% mutate(key = "sidewalk", value = sidewalk_cat, name = "mers")
 ) 
 
 mers_tagged_grouped = mers_tagged %>% 
@@ -489,8 +516,8 @@ joined_plot3.1 = joined2  %>% filter (key %in% tags_needed) %>%
   ) 
 
 ### plot 4 
-
-joined_plot4 = joined2  %>% filter (key %in% tags_needed2) %>% 
+tags_needed3 = c("kerb", "sidewalk", "lit", "maxspeed")
+joined_plot4 = joined2  %>% filter (key %in% tags_needed3) %>% 
   ggplot(aes(x = value,
              y = Proportion,
              fill = name)) +
@@ -503,7 +530,7 @@ joined_plot4 = joined2  %>% filter (key %in% tags_needed2) %>%
             position = position_dodge(1)
   ) 
 
-joined_plot4.1 = joined2  %>% filter (key %in% c("maxspeed", "lit")) %>% 
+joined_plot4.1 = joined2  %>% filter (key %in% tags_needed2) %>% 
   ggplot(aes(x = value,
              y = n,
              fill = name)) +
@@ -515,5 +542,4 @@ joined_plot4.1 = joined2  %>% filter (key %in% c("maxspeed", "lit")) %>%
             color="black", size=3.5,
             position = position_dodge(1)
   ) 
-
 
