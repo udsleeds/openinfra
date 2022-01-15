@@ -560,5 +560,3 @@ joined_plot4.1 = joined2  %>% filter (key %in% tags_needed2) %>%
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
   xlab("Tag type")+
   ylab("Frequency")
-
-
