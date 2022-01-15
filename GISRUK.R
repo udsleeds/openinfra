@@ -3,15 +3,15 @@ library(sf)
 library(osmextract)
 library(mapview)
 library(tmap)
-library(ggplot)
+library(ggplot2)
 
 # GETTING DATA  =================
 # piggyback::pb_download("wy.Rds")
 # piggyback::pb_download("gm.Rds")
 # piggyback::pb_download("mers.Rds")
-# wy = readRDS("wy.Rds")
-# gm = readRDS("gm.Rds")
-# mers = readRDS("mers.Rds")
+wy = readRDS("/Users/gretatimaite/Desktop/openinfra/GISRUK_paper/wy.Rds")
+gm = readRDS("/Users/gretatimaite/Desktop/openinfra/GISRUK_paper/gm.Rds")
+mers = readRDS("/Users/gretatimaite/Desktop/openinfra/GISRUK_paper/mers.Rds")
 
 # EDA =====================
 ## WY ========
@@ -450,10 +450,13 @@ all_plot1 = all_tagged_grouped %>% filter(key %in% tags_needed) %>% select(key, 
   facet_wrap(~key, scales = "free_x") +
   # scale_y_continuous(labels=scales::percent) +
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1.5, hjust=0.5)) +
   geom_text(aes(label=N), 
             color="black", size=3.5,
-            position = position_dodge(1))
+            position = position_dodge(1))+
+  scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
+  xlab("Tag name")+
+  ylab("Frequency")
 
 
 ### plot 2 ======
@@ -473,10 +476,13 @@ all_plot2 = joined %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"
   geom_bar(stat = "identity",
            position=position_dodge() ) + 
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 0, vjust = .5, hjust=1)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=.5)) +
   geom_text(aes(label=round(Proportion,2)), 
             color="black", size=3.5,
-            position = position_dodge(1))
+            position = position_dodge(1))+
+  scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
+  xlab("Type of highway")+
+  ylab("Proportion")
 
 ### plot 3 ====
 
@@ -499,7 +505,10 @@ joined_plot3 = joined2  %>% filter (key %in% tags_needed) %>%
   geom_text(aes(label=round(Proportion,2)),
            color="black", size=3.5,
            position = position_dodge(1)
-            ) 
+            ) +
+  scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
+  xlab("Tag type")+
+  ylab("Proportion")
 
 
 joined_plot3.1 = joined2  %>% filter (key %in% tags_needed) %>% 
@@ -513,7 +522,10 @@ joined_plot3.1 = joined2  %>% filter (key %in% tags_needed) %>%
   geom_text(aes(label=round(n)),
             color="black", size=3.5,
             position = position_dodge(1)
-  ) 
+  ) +
+  scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
+  xlab("Tag type")+
+  ylab("Frequency")
 
 ### plot 4 
 tags_needed3 = c("kerb", "sidewalk", "lit", "maxspeed")
@@ -528,7 +540,10 @@ joined_plot4 = joined2  %>% filter (key %in% tags_needed3) %>%
   geom_text(aes(label=round(Proportion,2)),
             color="black", size=3.5,
             position = position_dodge(1)
-  ) 
+  ) +
+  scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
+  xlab("Tag type")+
+  ylab("Proportion")
 
 joined_plot4.1 = joined2  %>% filter (key %in% tags_needed2) %>% 
   ggplot(aes(x = value,
@@ -541,5 +556,9 @@ joined_plot4.1 = joined2  %>% filter (key %in% tags_needed2) %>%
   geom_text(aes(label=round(n)),
             color="black", size=3.5,
             position = position_dodge(1)
-  ) 
+  ) +
+  scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
+  xlab("Tag type")+
+  ylab("Frequency")
+
 
