@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2022.1.15)  16 JAN 2022 11:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2022.1.15)  16 JAN 2022 20:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -303,61 +303,61 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 {/Users/gretatimaite/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.197 \section{Results}\label{results}}
-                                        [2]
+l.197 A
+       lso, for each bar plot displayed in the paper there is an accompanying [2]
 <all_plot2.png, id=68, 1204.5pt x 652.4375pt>
 File: all_plot2.png Graphic file (type png)
 <use all_plot2.png>
-Package pdftex.def Info: all_plot2.png  used on input line 215.
+Package pdftex.def Info: all_plot2.png  used on input line 223.
 (pdftex.def)             Requested size: 472.03123pt x 255.68407pt.
 <joined_plot3.png, id=70, 1204.5pt x 652.4375pt>
 File: joined_plot3.png Graphic file (type png)
 <use joined_plot3.png>
-Package pdftex.def Info: joined_plot3.png  used on input line 231.
+Package pdftex.def Info: joined_plot3.png  used on input line 239.
 (pdftex.def)             Requested size: 472.03123pt x 255.68407pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.258 
-       [3]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+l.251 \texttt{footway\ =\ sidewalk}
+                                    [3]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.258 
-       [4 <./all_plot2.png> <./joined_plot3.png>]
+l.251 \texttt{footway\ =\ sidewalk}
+                                    [4 <./all_plot2.png> <./joined_plot3.png>]
 <joined_plot4.png, id=91, 1204.5pt x 652.4375pt>
 File: joined_plot4.png Graphic file (type png)
 <use joined_plot4.png>
-Package pdftex.def Info: joined_plot4.png  used on input line 275.
+Package pdftex.def Info: joined_plot4.png  used on input line 268.
 (pdftex.def)             Requested size: 472.03123pt x 255.68407pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.294 
+l.285 
        [5 <./joined_plot4.png>]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.353 \leavevmode
-                 \hypertarget{ref-Laverty_etal_2020}{}% [6]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+l.352 
+       [6]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.450 \end{document}
+l.468 \end{document}
                      [7] (./openinfra_gisruk.aux)
 Package rerunfilecheck Info: File `openinfra_gisruk.out' has not changed.
 (rerunfilecheck)             Checksum: 49CA635192B46F487B0E29BCB7F0A71F;1068.
  ) 
 Here is how much of TeX's memory you used:
- 9431 strings out of 480246
- 149947 string characters out of 5894696
+ 9433 strings out of 480246
+ 149996 string characters out of 5894696
  451259 words of memory out of 5000000
  27226 multiletter control sequences out of 15000+600000
  477695 words of font info for 56 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,8n,63p,687b,386s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,8n,63p,687b,388s stack positions out of 5000i,500n,10000p,200000b,80000s
  </Users/gretatimaite/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk> </Users/gretatimaite/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0600.600pk> </Users/gretatimaite/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0800.600pk></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on openinfra_gisruk.pdf (7 pages, 282518 bytes).
+Output written on openinfra_gisruk.pdf (7 pages, 284125 bytes).
 PDF statistics:
- 200 PDF objects out of 1000 (max. 8388607)
- 156 compressed objects within 2 object streams
- 41 named destinations out of 1000 (max. 500000)
+ 206 PDF objects out of 1000 (max. 8388607)
+ 162 compressed objects within 2 object streams
+ 43 named destinations out of 1000 (max. 500000)
  80 words of extra memory for PDF output out of 10000 (max. 10000000)
 
