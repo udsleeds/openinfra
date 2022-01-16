@@ -1,0 +1,130 @@
+---
+output:
+  pdf_document:
+    template: GISRUKPaperTemplate.tex
+bibliography: references.bib
+---
+
+```{r, eval=FALSE, echo=FALSE}
+rbbt::bbt_update_bib(path_rmd = "openinfra_gisruk.Rmd", path_bib = "references.bib")
+```
+
+<!-- % **************  MAIN BODY OF THE PAPER ************** -->
+Introduction
+==========================
+
+A move from motor to active (cycling and walking) modes of travel offers health, economic, and environmental benefits [@Parkin_2018]. Importantly, active travel can become an alternative to public transport during the pandemic when social distancing reduces operational capacities. Acknowledging the benefits, the UK has boosted its investment in active travel^[https://www.gov.uk/government/news/2-billion-package-to-create-new-era-for-cycling-and-walking]. Indeed, it has been argued that pandemic provides an opportunity to encourage a behavioural change in traveling patterns that could be maintained after the pandemic [@Laverty_etal_2020].
+
+Nevertheless, it is essential to ensure that street infrastructure meets the needs of all pedestrians and cyclists if active travel uptake is to be increased. For example, Aldred et  al. [-@Aldred_etal_2016] argued that a mere increase in cycling levels does not always lead to increased diversity of cyclists. Therefore, it is important for policy to explicitly address different needs of (potential) cyclists and active travelers in general. The invitation for the public to engage in the decision-making is one of the potential ways to understand what needs to be implemented to encourage active travel. 
+
+Propensity to Cycle Tool (PCT) [@Lovelace_etal_2017], an open-source cycling scenarios generating tool, is a good example of an accessible tool designed for both policy makers and citizens to make data-driven decisions regarding cycling investments. Arguably, another approach to solidify bottom-up approach to decision making is to encourage not only the development and use of open-source tools but also to encourage contribution to the generation and use of open-access data that could be used for planning transport infrastructure.
+
+OpenInfra and OpenStreetMap
+------------
+
+OpenInfra is a 12-month project run at the University of Leeds which aims to explore the potential use of open-access data for transport, and specifically active travel, research. For this, OpenStreetMap (OSM) has been chosen as a case study as it was estimated that road data in OSM is over 80% complete [@Leigh_Ball_2017]. Problematically, road data was operationalized as “vehicle circulation”, hence excluding non-vehicle paths, such as walking and, based on the used highway tags, cycling. It should be noted that this limitation was acknowledged by noting that non-vehicle paths (e.g., pedestrian paths) were also found to be increasingly mapped.
+
+Importantly, OSM has been used to plan both cycling and pedestrian networks. It has also been utilized to plan accessible pedestrian infrastructure, but its potential is limited by the incomplete information, such as on sidewalk attributes [@Mobasheri_etal_2018]. Increasing the quality and quantity of OSM data needed for accessible pedestrian network planning might lead to cheaper, if not free, assistive technology for people with disabilities [@Boularouk_etal_2017] who often have lower median incomes compared to people without disabilities [@Francis-Devine_2021].
+
+
+Data, tools, and methods
+==============================
+
+To examine the potential of OSM for active travel research, exploratory data analysis (EDA) was used.
+
+
+Data was queried using `osmextract` package [@Gilardi_Lovelace2021] using R. Three areas were chosen as case studies (for data sizes see Table 1): 
+
+1.	West Yorkshire: it is the area about which the team has local knowledge that supports “sense-making” of OSM. 
+2.	Greater Manchester: the recent proposal to deliver the most comprehensive active travel network (see @beelines_gm_2018) makes it an interesting case-study and a less computationally-intensive alternative to London. 
+3.	Merseyside: not only an area where GISRUK 2022 takes place but also a metropolitan county whose citizens, given recent Active Travel Protest in Liverpool^[https://www.merseycycle.org.uk/active-travel-protest-liverpool/], could benefit from open access data to push for data-driven and evidence-based decision making.
+  
+\begin{table}[!htbp] \centering 
+  \caption{Number of highways per metropolitan county} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+Metropolitan county & Number of highways \\ 
+\hline \\[-1.8ex] 
+West Yorkshire & 182481 \\ 
+Greater Manchester & 176575 \\ 
+Merseyside & 73660 \\
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
+  
+Reproducible code can be found in Open Infra GitHub repository: https://github.com/udsleeds/openinfra
+
+Results
+=======
+
+The results discussed in this section are not supposed to reveal the factual completeness of OSM data as no comparison to “ground truth” has been yet done. Nevertheless, it is still evident that OSM provides a comprehensible, if not complete, network of highways. Footways stand out for constituting about ¼ of all the mapped highways in all three metropolitan counties. Given Greater Manchester's proposal to provide the most comprehensive cycling and walking network in Britain, it is surprising that it does not have, in proportion to all the highways mapped in Greater Manchester, more footways and only slightly more cycleways compared to West Yorkshire and Merseyside. One could argue that *footways* take a specific semantic meaning of representing minor pathways, hence does not represent an entire walking network. Nevertheless, it does not seem that Greater Manchester has, for instance, more living streets or pedestrianized roads either.
+
+<!-- Original LaTeX: -->
+<!-- \begin{figure}[htbp] \begin{center}  -->
+<!-- \resizebox{0.3\textwidth}{!}{  -->
+<!-- 	\includegraphics{all_plot2.png} -->
+<!-- } \caption{Proportions of different highways in OSM} \label{first_figure} \end{center} \end{figure} % -->
+
+```{r highway_proportions, fig.cap="Proportions of different highways in a given metropolitan county", out.width="100%", echo = F}
+knitr::include_graphics("all_plot2.png")
+```
+
+Arguably the key “selling point” of OSM data is not the information on the types of highways but the available attributes about them. For instance, bicycle and foot tags indicate if the highways are accessible, accordingly, to cyclists and pedestrians (Figure 2). In this way shared spaces might be represented. Interestingly, there seems to be a tendency to provide more information on the road accessibility to cyclists. The reasons behind this difference is beyond the scope of this paper as it would involve an examination of OSM mapping practices but it is likely that cyclists, in general, experience more legal restrictions, hence leading to an increased awareness of the importance to provide this information. 
+
+<!-- Original LaTeX: -->
+<!-- \begin{figure}[htbp] \begin{center}  -->
+<!-- \resizebox{0.3\textwidth}{!}{  -->
+<!-- 	\includegraphics{joined_plot3.png} -->
+<!-- } \caption{The proportion of relevant tags for active travel to all highways mapped in OSM} \label{second_figure} \end{center} \end{figure} % -->
+
+```{r active_travel_proportions, fig.cap="The proportion of relevant tags for active travel to all highways mapped in a given metropolitan county", out.width="100%", echo = F}
+knitr::include_graphics("joined_plot3.png")
+```
+
+Echoing Mobasheri et a.’s (2017) observation regarding limited data on sidewalks, it can be argued that the problem persists. Ideally, one would expect a majority of footways to have the presence (or absence) of a sidewalk tagged given that the current convention of OSM is provide this data^[also see the documentation: https://wiki.openstreetmap.org/wiki/Key:footway]:
+
+`highway = footway`
+
+`footway = sidewalk`
+
+`sidewalk = [relevant value]`
+
+The data becomes even more scarce if one aims to find out more refined information about sidewalks, e.g., if it is on the left or right side of a road (see Table 3). It seems to be on par with cycleway tag, which contains similar information to sidewalk. It is hard to explain why there is a drop in information availability, yet one potential reason might be linked to straightforwardness of providing information. For example, it might be easier to judge the presence of sidewalk on both sides that evaluate if it is on the right or left side of the road^[for more information on how to evaluate if something is the left and right side, see https://wiki.openstreetmap.org/wiki/Forward_%26_backward,_left_%26_right ].
+
+Finally, OSM has the potential to represent highway features essential for accessible (pedestrian) network planning (see Table 3). For example, awareness of kerb height and sidewalk width are essential street elements for people using wheelchairs to move around while lighting is important to vision impaired people. In this context, width tag has been recategorized using the most recent Inclusive Mobility guide [@inclusive_mobility_dfy_2021]. While currently there is too little information for the tags to be taken advantage of, but, given accurate data is present in the future, it could be used to assess which sidewalks are wide enough to comply with the existing guidance. In comparison to width and kerb tags, there is surprisingly a lot of information on the presence of lighting. The lit tag does not capture the information on, for example, minimum illumination level as outlined in the Inclusive Mobility guide, but it still could be used to evaluate, e.g., highway's safety.
+
+<!-- Original LaTeX: -->
+<!-- \begin{figure}[htbp] \begin{center}  -->
+<!-- \resizebox{0.3\textwidth}{!}{  -->
+<!-- 	\includegraphics{joined_plot4.png} -->
+<!-- } \caption{The proportion of relevant tags for accessible active travel to all highways mapped in OSM} \label{third_figure} \end{center} \end{figure} % -->
+
+```{r accessibility_proportions, fig.cap="The proportion of relevant tags for accessible active travel to all highways mapped in a given metropolitan county", out.width="100%", echo = F}
+knitr::include_graphics("joined_plot4.png")
+```
+
+Discussion and future directions
+================================
+
+The EDA has shown that OSM does offer an extensive network of highways, however it is still limited by the missing data on highway attributes. For example, ideally every footway had information on the presence/absence of sidewalk. The lack of data is even more evident for the attributes relevant for accessible infrastructure. In all three case studies there is barely any information on kerb height or sidewalk width that are essential for accessible (pedestrian) network. Regardless of the current limitations of OSM data, the authors still believe that if more nuanced information on highways is provided (by both encouraging current and new mappers to provide attribute data of their local areas), OSM holds the potential to support data-driven evidence-based decision making.
+
+Given that, the OpenInfra project team will further explore the potential of OSM data. Not only the current analysis will be scaled up to incorporate all local authorities in England but also will consider how to make OSM data more accessible to the public and policymakers. By the end of the project an R package will be developed to allow easier interaction with OSM data that will include, but not limited to, data recategorization for UK context (e.g., sidewalk width compliance with Inclusive Mobility guide).  
+
+Acknowledgements
+================
+
+Acknowledgement should be made of any funding bodies who have supported
+the work reported in the paper, of those who have given permission for
+their work to be reproduced or of individuals whose particular
+assistance is due recognition. Acknowledge data providers here where
+appropriate.
+
+Biography
+=========
+
+Greta is a data science intern at the University of Leeds.
+
+References 
+========================
