@@ -619,9 +619,85 @@ wy_int_cat_plot2 = wy %>%
     )
   ) %>% select("bicycle_cat", "cycleway_cat", "foot_cat", "footway_cat")
 
-tags_needed = c("bicycle", "foot", "cycleway","footway", "value")
+gm_int_cat_plot2 = gm %>% 
+  mutate(
+    bicycle_cat = case_when(
+      str_detect(bicycle, "designated|yes")  ~ "yes/designated",
+      str_detect(bicycle, "no|dismount")  ~ "no",
+      str_detect(bicycle, "destin|permis|priva|unknown")~ "maybe"),
+    
+    foot_cat = case_when(
+      str_detect(foot, "designated|yes")  ~ "yes/designated",
+      str_detect(foot, "no|disc")  ~ "no",
+      str_detect(foot, "cust|deli|dest|emerg|limit|permis|permit|priv|unknown")  ~ "maybe"
+    ),
+    footway_cat = case_when(
+      str_detect(footway, "access|alley|left|link|traffic") ~ "other",
+      str_detect(footway, "no") ~ "no",
+      str_detect(footway, "yes|sidewalk") ~ "yes/sidewalk",
+    ),
+    cycleway_cat = case_when(
+      str_detect(cycleway, "buff|lane|segr|sep|track") ~ "separate",
+      str_detect(cycleway, "no") ~ "no",
+      str_detect(cycleway, "share") ~ "shared",
+      str_detect(cycleway, "cross|cyclestreet|left|opp|path|side|yes|unm") ~ "other"
+    )
+  ) %>% select("bicycle_cat", "cycleway_cat", "foot_cat", "footway_cat")
 
-tm_shape(wy_int_cat_plot2 )+
+mers_int_cat_plot2 = mers %>% 
+  mutate(
+    bicycle_cat = case_when(
+      str_detect(bicycle, "designated|yes")  ~ "yes/designated",
+      str_detect(bicycle, "no|dismount")  ~ "no",
+      str_detect(bicycle, "destin|permis|priva|unknown")~ "maybe"),
+    
+    foot_cat = case_when(
+      str_detect(foot, "designated|yes")  ~ "yes/designated",
+      str_detect(foot, "no|disc")  ~ "no",
+      str_detect(foot, "cust|deli|dest|emerg|limit|permis|permit|priv|unknown")  ~ "maybe"
+    ),
+    footway_cat = case_when(
+      str_detect(footway, "access|alley|left|link|traffic") ~ "other",
+      str_detect(footway, "no") ~ "no",
+      str_detect(footway, "yes|sidewalk") ~ "yes/sidewalk",
+    ),
+    cycleway_cat = case_when(
+      str_detect(cycleway, "buff|lane|segr|sep|track") ~ "separate",
+      str_detect(cycleway, "no") ~ "no",
+      str_detect(cycleway, "share") ~ "shared",
+      str_detect(cycleway, "cross|cyclestreet|left|opp|path|side|yes|unm") ~ "other"
+    )
+  ) %>% filter(!is.na(bicycle_cat) | !is.na(cycleway_cat) | !is.na(foot_cat) | !is.na(footway_cat)) %>% 
+  select("bicycle_cat", "cycleway_cat", "foot_cat", "footway_cat")
+
+joined_plot3_int1.1 = tm_shape(wy_int_cat_plot2 )+
   tm_lines("bicycle_cat")+
-  tm_shape(wy_int_cat_plot2)+
+  tm_shape(gm_int_cat_plot2)+
+  tm_lines("bicycle_cat")+
+  tm_shape(mers_int_cat_plot2)+
+  tm_lines("bicycle_cat")
+joined_plot3_int1.2 = tm_shape(wy_int_cat_plot2 )+
+  tm_lines("cyclway_cat")+
+  tm_shape(gm_int_cat_plot2)+
+  tm_lines("cycleway_cat")+
+  tm_shape(mers_int_cat_plot2)+
   tm_lines("cycleway_cat")
+joined_plot3_int1.3 = tm_shape(wy_int_cat_plot2 )+
+  tm_lines("foot_cat")+
+  tm_shape(gm_int_cat_plot2)+
+  tm_lines("foot_cat")+
+  tm_shape(mers_int_cat_plot2)+
+  tm_lines("foot_cat")
+joined_plot3_int1.4 = tm_shape(wy_int_cat_plot2 )+
+  tm_lines("footway_cat")+
+  tm_shape(gm_int_cat_plot2)+
+  tm_lines("footway_cat")+
+  tm_shape(mers_int_cat_plot2)+
+  tm_lines("footway_cat")
+
+joined_plot3_int = tmap_arrange(joined_plot3_int1.1, joined_plot3_int1.2,joined_plot3_int1.3, joined_plot3_int1.4,
+                                ncol = 2)
+
+tmap_save(joined_plot3_int,
+          filename = "joined_plot3_int.html")
+
