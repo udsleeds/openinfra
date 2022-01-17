@@ -5,12 +5,12 @@ library(tmap)
 library(ggplot2)
 
 # GETTING DATA  =================
-# piggyback::pb_download("wy.Rds")
+# piggyback::pb_download("wy.RDS")
 # piggyback::pb_download("gm.Rds")
 # piggyback::pb_download("mers.Rds")
-wy = readRDS("GISRUK_paper/wy.Rds")
-gm = readRDS("GISRUK_paper/gm.Rds")
-mers = readRDS("GISRUK_paper/mers.Rds")
+wy = readRDS("wy.RDS")
+gm = readRDS("gm.Rds")
+mers = readRDS("mers.Rds")
 
 # EDA =====================
 ## WY ========
@@ -670,12 +670,17 @@ mers_int_cat_plot2 = mers %>%
   ) %>% filter(!is.na(bicycle_cat) | !is.na(cycleway_cat) | !is.na(foot_cat) | !is.na(footway_cat)) %>% 
   select("bicycle_cat", "cycleway_cat", "foot_cat", "footway_cat")
 
+tmap_mode("view")
 joined_plot3_int1.1 = tm_shape(wy_int_cat_plot2 )+
-  tm_lines("bicycle_cat")+
-  tm_shape(gm_int_cat_plot2)+
-  tm_lines("bicycle_cat")+
+  tm_lines("bicycle_cat",
+           colorNA = NULL)+
+  tm_shape(gm_int_cat_plot2,
+           colorNA = NULL)+
+  tm_lines("bicycle_cat",
+           colorNA = NULL)+
   tm_shape(mers_int_cat_plot2)+
-  tm_lines("bicycle_cat")
+  tm_lines("bicycle_cat",
+           colorNA = NULL)
 joined_plot3_int1.2 = tm_shape(wy_int_cat_plot2 )+
   tm_lines("cyclway_cat")+
   tm_shape(gm_int_cat_plot2)+
@@ -695,9 +700,12 @@ joined_plot3_int1.4 = tm_shape(wy_int_cat_plot2 )+
   tm_shape(mers_int_cat_plot2)+
   tm_lines("footway_cat")
 
-joined_plot3_int = tmap_arrange(joined_plot3_int1.1, joined_plot3_int1.2,joined_plot3_int1.3, joined_plot3_int1.4,
+joined_plot3_int = tmap_arrange(joined_plot3_int1.1, joined_plot3_int1.2,
                                 ncol = 2)
 
 tmap_save(joined_plot3_int,
           filename = "joined_plot3_int.html")
+
+subset1 = wy_int_cat_plot2[1:1200,]
+
 
