@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2022.1.14)  17 JAN 2022 10:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2022.1.14)  17 JAN 2022 12:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -330,12 +330,15 @@ ing (ext4): destination with the same identifier (name{page.}) has been already
                    \relax 
 l.202 
        [2]
-<all_plot2.png, id=68, 1204.5pt x 652.4375pt>
-File: all_plot2.png Graphic file (type png)
-<use all_plot2.png>
-Package pdftex.def Info: all_plot2.png  used on input line 223.
-(pdftex.def)             Requested size: 472.03123pt x 255.68407pt.
-<joined_plot3.png, id=70, 1204.5pt x 652.4375pt>
+<openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf, id=68, 459.7175
+pt x 310.15875pt>
+File: openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf Graphic fil
+e (type pdf)
+<use openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf>
+Package pdftex.def Info: openinfra_gisruk_files/figure-latex/highway_proportion
+s-1.pdf  used on input line 223.
+(pdftex.def)             Requested size: 472.03123pt x 318.48268pt.
+<joined_plot3.png, id=69, 1204.5pt x 652.4375pt>
 File: joined_plot3.png Graphic file (type png)
 <use joined_plot3.png>
 Package pdftex.def Info: joined_plot3.png  used on input line 239.
@@ -350,8 +353,14 @@ he same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.249 \texttt{highway\ =\ footway}
-                                   [4 <./all_plot2.png> <./joined_plot3.png>]
-<joined_plot4.png, id=90, 1204.5pt x 652.4375pt>
+                                   [4 <./openinfra_gisruk_files/figure-latex/hi
+ghway_proportions-1.pdf>]pdfTeX warning (ext4): destination with the same ident
+ifier (name{page.}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.249 \texttt{highway\ =\ footway}
+                                   [5 <./joined_plot3.png>]
+<joined_plot4.png, id=99, 1204.5pt x 652.4375pt>
 File: joined_plot4.png Graphic file (type png)
 <use joined_plot4.png>
 Package pdftex.def Info: joined_plot4.png  used on input line 268.
@@ -361,26 +370,25 @@ een already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.285 
-       [5 <./joined_plot4.png>]pdfTeX warning (ext4): destination with the same
+       [6 <./joined_plot4.png>]pdfTeX warning (ext4): destination with the same
  identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.347 \leavevmode
-                 \vadjust pre{\hypertarget{ref-Boularouk_etal_2017}{}}% [6]pdfT
-eX warning (ext4): destination with the same identifier (name{page.}) has been 
-already used, duplicate ignored
+l.346 
+       [7]pdfTeX warning (ext4): destination with the same identifier (name{pag
+e.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.468 \end{document}
-                     [7] (./openinfra_gisruk.aux)
+                     [8] (./openinfra_gisruk.aux)
 Package rerunfilecheck Info: File `openinfra_gisruk.out' has not changed.
 (rerunfilecheck)             Checksum: 49CA635192B46F487B0E29BCB7F0A71F;1068.
  ) 
 Here is how much of TeX's memory you used:
  9732 strings out of 480226
- 152067 string characters out of 5895137
+ 152494 string characters out of 5895137
  454153 words of memory out of 5000000
- 27530 multiletter control sequences out of 15000+600000
+ 27528 multiletter control sequences out of 15000+600000
  477695 words of font info for 56 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,8n,63p,639b,388s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -397,10 +405,10 @@ f-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></home/robin/.TinyTeX/texmf-dist
 /public/amsfonts/cm/cmti10.pfb></home/robin/.TinyTeX/texmf-dist/fonts/type1/pub
 lic/amsfonts/cm/cmtt10.pfb></home/robin/.TinyTeX/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmtt9.pfb>
-Output written on openinfra_gisruk.pdf (7 pages, 283928 bytes).
+Output written on openinfra_gisruk.pdf (8 pages, 258749 bytes).
 PDF statistics:
- 206 PDF objects out of 1000 (max. 8388607)
- 162 compressed objects within 2 object streams
+ 215 PDF objects out of 1000 (max. 8388607)
+ 169 compressed objects within 2 object streams
  43 named destinations out of 1000 (max. 500000)
  80 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -500,6 +500,7 @@ all_plot2 = joined %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"
   theme(legend.position = "top",
         legend.direction = "horizontal")
 all_plot2
+saveRDS(all_plot2, "GISRUK_paper/all_plot2.Rds")
 
 ### plot 3 ====
 

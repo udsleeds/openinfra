@@ -67,7 +67,9 @@ It is evident that OSM provides a comprehensible, if not complete, network of hi
 <!-- } \caption{Proportions of different highways in OSM} \label{first_figure} \end{center} \end{figure} % -->
 
 ```{r highway_proportions, fig.cap="Proportions of different highways in a given metropolitan county", out.width="100%", echo = F}
-knitr::include_graphics("all_plot2.png")
+# knitr::include_graphics("all_plot2.png")
+# Rebuild figure on-the-fly:
+readRDS("all_plot2.Rds")
 ```
 
 Arguably the key “selling point” of OSM data is not the information on the types of highways but the available attributes about them. For instance, bicycle and foot tags indicate if the highways are accessible, accordingly, to cyclists and pedestrians (Figure 2). In this way shared spaces might be represented. Interestingly, there seems to be a tendency to provide more information on the road accessibility to cyclists. The reasons behind this difference is beyond the scope of this paper as it would involve an examination of OSM mapping practices but it is likely that cyclists, in general, experience more legal restrictions, hence leading to an increased awareness of the importance to provide this data. 
@@ -79,6 +81,7 @@ Arguably the key “selling point” of OSM data is not the information on the t
 <!-- } \caption{The proportion of relevant tags for active travel to all highways mapped in OSM} \label{second_figure} \end{center} \end{figure} % -->
 
 ```{r active_travel_proportions, fig.cap="The proportion of relevant tags for active travel to all highways mapped in a given metropolitan county", out.width="100%", echo = F}
+# TODO: make this read in the RDS version also
 knitr::include_graphics("joined_plot3.png")
 ```
 
@@ -99,6 +102,7 @@ The data becomes even more scarce if one seeks for more refined information abou
 <!-- } \caption{The proportion of relevant tags for accessible active travel to all highways mapped in OSM} \label{third_figure} \end{center} \end{figure} % -->
 
 ```{r accessibility_proportions, fig.cap="The proportion of relevant tags for accessible active travel to all highways mapped in a given metropolitan county", out.width="100%", echo = F}
+# TODO: make this read in the RDS version also
 knitr::include_graphics("joined_plot4.png")
 ```
 
@@ -107,9 +111,13 @@ Finally, OSM has the potential to represent highway features essential for acces
 Discussion and future directions
 ================================
 
-The EDA has shown that OSM does offer an extensive network of highways, however it is still limited by the missing data on highway attributes. For example, ideally every footway had information on the presence/absence of sidewalk. The lack of data is even more evident for the attributes relevant for accessible infrastructure. In all three case studies there is barely any information on kerb height or sidewalk width that are essential for accessible (pedestrian) network. Regardless of the current limitations of OSM data, the authors still believe that if more detailed information on highways is provided (by both encouraging current and new mappers to provide attribute data of their local areas), OSM holds the potential to support data-driven evidence-based decision making.
+The exploratory data analysis presented in this paper shows that OSM provides geometry data on the transport network.
+OSM datasets are, however, limited by lack of detail attributes, such as presence (about which there is variable coverage) and width (about which there is very little information) of footways and cycleways.
+These limitations are particularly relevant when planning for active modes. In all three case studies there is barely any information on kerb height or sidewalk width that are needed for accessible (pedestrian) network. Regardless of the current limitations of OSM data, we believe that OSM and other open datasets (perhaps building on an OSM foundation) have great potential.
+If more attribute information is added (e.g. by current and new mappers who are incentivised by policies encouraging citizen science), the potential of OSM datasets for data-driven evidence-based transport planning would would be greatly increased.
 
-Given that, the OpenInfra project team will further explore the potential of OSM data. Not only the current analysis will be scaled up to incorporate all local authorities in England but also will consider how to make OSM data more accessible to the public and policymakers. By the end of the project an R package will be developed to allow easier interaction with OSM data that will include, but not limited to, data recategorization for UK context (e.g., sidewalk width compliance with Inclusive Mobility guide).  
+In future work we plan to further explore the potential of OSM data, by scaling up the analysis to incorporate all local authorities in England and explore more aspects of the data.
+We aim to make OSM data more accessible to the public and policymakers, by providing 'open transport infrastructure data packs' that add value to raw OSM data (e.g., sidewalk width compliance with Inclusive Mobility guide).  
 
 Acknowledgements
 ================
