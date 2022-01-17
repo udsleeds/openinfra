@@ -38,8 +38,8 @@ that could be used for planning transport infrastructure.
 OpenInfra is a 12-month project run at the University of Leeds which
 aims to explore the potential use of open-access data for transport, and
 specifically active travel, research. For this, OpenStreetMap (OSM) has
-been chosen as a case study.It was estimated that road data in OSM is
-over 80% complete (Barrington-Leigh and Millard-Ball 2017).
+been chosen as a case study. It has been estimated that road data in OSM
+is over 80% complete (Barrington-Leigh and Millard-Ball 2017).
 Problematically, road data was operationalized as “vehicle circulation”,
 hence excluding non-vehicle paths, such as walking and, based on the
 used highway tags, cycling. It should be noted that this limitation was
