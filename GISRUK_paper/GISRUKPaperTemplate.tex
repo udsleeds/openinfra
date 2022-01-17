@@ -1,0 +1,166 @@
+\documentclass[11pt]{article}
+\usepackage[left=25mm, right=25mm, top=25mm, bottom=25mm, includehead=true, includefoot=true]{geometry}
+
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{natbib} % For referencing
+\usepackage{authblk} % For author lists
+\usepackage[parfill]{parskip} % Line between paragraphs
+
+\pagenumbering{gobble} % Turn off page numbers
+
+% Make all headings the same size (11pt):
+\usepackage{sectsty}
+\sectionfont{\normalsize}
+\subsectionfont{\normalsize}
+\subsubsectionfont{\normalsize}
+\paragraphfont{\normalsize}
+
+
+\renewcommand{\abstractname}{Summary} % Make 'abstract' be called 'Summary'
+
+
+% This makes links and bookmarks in the pdf output (should be last usepackage command because it overrides lots of other commands)
+\usepackage[pdftex]{hyperref} 
+\hypersetup{pdfborder={0 0 0} } % This turns off the stupid colourful border around links
+
+
+% From pandoc:
+% https://github.com/jgm/pandoc-templates/blob/master/default.latex
+$if(pagestyle)$
+\pagestyle{$pagestyle$}
+$endif$
+$if(csl-refs)$
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+$endif$
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% https://stackoverflow.com/questions/41052687/rstudio-pdf-knit-fails-with-environment-shaded-undefined-error
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+% **************  TITLE AND AUTHOR INFORMATION **************
+
+\title{The potential of OpenStreetMap for (accessible) active travel planning}
+
+\author[1]{Greta Timaite\thanks{g.timaite@leeds.ac.uk}}
+\author[1]{Robin Lovelace}
+\affil[1]{Leeds Institute for Data Analytics, University of Leeds}
+
+\renewcommand\Authands{ and } % correct last comma in author list
+
+\begin{document}
+
+\maketitle
+
+% **************  ABSTRACT/SUMMARY  **************
+
+\begin{abstract}
+\centering
+
+Open-access data has the potential to encourage a more participatory and bottom-up approach to decision-making in transport research. This paper discusses the initial findings of OpenInfra project that aims to explore the potential of OpenStreetMap in (accessible) transport infrastructure planning, specifically in the context of active travel in the UK. Exploratory data analysis reveals that, while OSM provides extensive highways data, it lacks systematic information of key attributes relevant to planning for active travel (kerb height, sidewalk width), are still largely missing.  \textit{}
+
+
+{\bf KEYWORDS:} OSM, Active Travel, Planning, Accessibility \textit{}
+
+\end{abstract}
+
+% **************  MAIN BODY OF THE PAPER **************
+
+$body$
+
+% \section{Introduction to guidelines}
+% 
+% The purpose of providing these notes is to standardise the format of the short papers submitted to GISRUK 2015. These notes are based on author guidelines previously produced for the GISRUK conference series which in turn were based on other guidelines.
+% 
+% The pages should have margins of 2.5 cm all round. The base font should be Times New Roman 11pt, or closest equivalent and text should be single spaced. Each section of the paper should be numbered. Section headings should be left-justified and given in bold type.  A slightly larger font should be used for the title of the paper and the authors (16pt and 14pt respectively). The first line of each paragraph in each section should \textbf{NOT} be indented.
+% 
+% \subsection{Sub-sections}
+% 
+% Sub-sections should also be numbered as shown here. The sub-section heading should be left-justified and given in bold type (11pt). 
+% 
+% \section{Figures, Tables and Equations,}
+% 
+% % Tables should be as shown below (or as close as possible) and should be referenced as Table~\ref{first_table} in the text.
+% % 
+% % \begin{table}[htdp]
+% % \caption{GISRUK Conferences}
+% % \begin{center}
+% % \begin{tabular}{c|c}
+% % \hline 
+% % Year	 & City \\
+% % \hline 
+% % 2007 & Maynooth \\
+% % 2008 & Manchester \\
+% % 2009 & Durham \\
+% % 2010 & UCL \\
+% % 2011 & Portsmouth \\
+% % 2012 & Lancaster\\ 
+% % \hline
+% % \end{tabular}
+% % \end{center}
+% % \label{first_table}
+% % \end{table}%
+% 
+% Equations should be centred on the page and numbered consecutively in the right-hand margin, as below. They should be referred to in the text as Equation~\ref{first_equation}. 
+% 
+% \begin{equation}
+% E=mc^2
+% \label{first_equation}
+% \end{equation}
+% 
+% Figures should be presented as an integral part of the paper and should be referred to as Figure~\ref{first_figure} in the text.
+% 
+% \begin{figure}[htbp] \begin{center} 
+% \resizebox{0.3\textwidth}{!}{ 
+% 	\includegraphics{lancaster.png}
+% } \caption{Location of Lancaster University} \label{first_figure} \end{center} \end{figure} %
+% 
+% 
+% \section{References and Citations}
+% 
+% A list of references cited should be provided at the end of the paper using the Harvard format as shown below. Citations of these within the text should be given as follows: papers such as an interesting one by \citet{HARVEY:2006} and also interesting books \citep{DAY:2006}.
+% 
+% \section{File format}
+% 
+% Papers should be submitted in unrestricted \textbf{pdf} format. Authors are requested to keep to the word limit of 1500 words. 
+% 
+% \section{Acknowledgements}
+% 
+% Acknowledgement should be made of any funding bodies who have supported the work reported in the paper, of those who have given permission for their work to be reproduced or of individuals whose particular assistance is due recognition. Acknowledge data providers here where appropriate.
+% 
+% \section{Biography}
+% All contributing authors should include a biography of no more than 50 words each outlining their career stage and research interests.
+% 
+% 
+% % **************  REFERENCES **************
+% 
+% % \bibliographystyle{apa}
+% % \bibliography{references.bib}
+
+\end{document}
