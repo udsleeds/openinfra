@@ -35,7 +35,7 @@ Data for this project was queried using `osmextract` package [@Gilardi_Lovelace2
 
 1.	West Yorkshire: it is the area about which the team has local knowledge that supports “sense-making” of OSM. 
 2.	Greater Manchester: the recent proposal to deliver the most comprehensive active travel network (see @beelines_gm_2018) makes it an interesting case-study and a less computationally-intensive alternative to London. 
-3.	Merseyside: not only an area where GISRUK 2022 takes place but also a metropolitan county whose citizens, given recent Active Travel Protest in Liverpool^[https://www.merseycycle.org.uk/active-travel-protest-liverpool/], could benefit from open access data to push for data-driven and evidence-based decision-making.
+3.	Merseyside: not only an area where GISRUK 2022 takes place but also a metropolitan county whose citizens, given recent Active Travel Protest in Liverpool^[https://www.merseycycle.org.uk/active-travel-protest-liverpool/], could benefit from open-access data to push for data-driven and evidence-based decision-making.
   
 \begin{table}[!htbp] \centering 
   \caption{Number of highways per metropolitan county} 
