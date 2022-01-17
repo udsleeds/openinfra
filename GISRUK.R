@@ -482,7 +482,9 @@ all_plot2 = joined %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"
             position = position_dodge(1))+
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
   xlab("Type of highway")+
-  ylab("Proportion")
+  ylab("Proportion")+
+  theme(legend.position = "top",
+        legend.direction = "horizontal")
 
 ### plot 3 ====
 
@@ -508,7 +510,9 @@ joined_plot3 = joined2  %>% filter (key %in% tags_needed) %>%
             ) +
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
   xlab("Tag type")+
-  ylab("Proportion")
+  ylab("Proportion")+
+  theme(legend.position = "top",
+        legend.direction = "horizontal")
 
 
 joined_plot3.1 = joined2  %>% filter (key %in% tags_needed) %>% 
@@ -525,10 +529,12 @@ joined_plot3.1 = joined2  %>% filter (key %in% tags_needed) %>%
   ) +
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
   xlab("Tag type")+
-  ylab("Frequency")
+  ylab("Frequency")+
+  theme(legend.position = "top",
+        legend.direction = "horizontal")
 
 ### plot 4 
-tags_needed3 = c("kerb", "sidewalk", "lit", "maxspeed")
+tags_needed3 = c("kerb", "sidewalk", "width", "lit")
 joined_plot4 = joined2  %>% filter (key %in% tags_needed3) %>% 
   ggplot(aes(x = value,
              y = Proportion,
@@ -543,7 +549,9 @@ joined_plot4 = joined2  %>% filter (key %in% tags_needed3) %>%
   ) +
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
   xlab("Tag type")+
-  ylab("Proportion")
+  ylab("Proportion")+
+  theme(legend.position = "top",
+        legend.direction = "horizontal")
 
 joined_plot4.1 = joined2  %>% filter (key %in% tags_needed2) %>% 
   ggplot(aes(x = value,
@@ -559,4 +567,25 @@ joined_plot4.1 = joined2  %>% filter (key %in% tags_needed2) %>%
   ) +
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
   xlab("Tag type")+
-  ylab("Frequency")
+  ylab("Frequency")+
+  theme(legend.position = "top",
+        legend.direction = "horizontal")
+
+
+
+
+## interactive maps
+
+tmap_mode("view")
+subset1 = wy %>% filter(highway == "footway",
+                 bicycle == "designated") 
+subset2 = mers %>% filter(highway == "footway",
+                 bicycle == "designated") 
+
+int_map1 = tm_shape(subset1)+
+  tm_lines()
+tmap_save(int_map1,
+          filename = "int_map1")
+
+int_map2 = tm_shape(subset2)+
+  tm_lines()
