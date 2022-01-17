@@ -36,7 +36,7 @@ used for planning transport infrastructure.
 OpenInfra is a 12-month project run at the University of Leeds which
 aims to explore the potential use of open-access data for transport, and
 specifically active travel, research. For this, OpenStreetMap (OSM) has
-been chosen as a case study as it was estimated that road data in OSM is
+been chosen as a case study.It was estimated that road data in OSM is
 over 80% complete (Barrington-Leigh and Millard-Ball 2017).
 Problematically, road data was operationalized as “vehicle circulation”,
 hence excluding non-vehicle paths, such as walking and, based on the
@@ -44,20 +44,20 @@ used highway tags, cycling. It should be noted that this limitation was
 acknowledged by noting that non-vehicle paths (e.g., pedestrian paths)
 were also found to be increasingly mapped.
 
-Importantly, OSM has been used to plan both cycling and pedestrian
-networks. It has also been utilized to plan accessible pedestrian
-infrastructure, but its potential is limited by the incomplete
-information, such as on sidewalk attributes (Mobasheri et al. 2018).
-Increasing the quality and quantity of OSM data needed for accessible
-pedestrian network planning might lead to cheaper, if not free,
-assistive technology for people with disabilities (Boularouk, Josselin,
-and Altman 2017) who often have lower median incomes compared to people
-without disabilities (Francis-Devine 2021).
+OSM has been used to plan both cycling and pedestrian networks. It has
+also been utilized to plan accessible pedestrian infrastructure, but its
+potential is limited by the incomplete information, such as on sidewalk
+attributes (Mobasheri et al. 2018). Increasing the quality and quantity
+of OSM data needed for accessible pedestrian network planning might lead
+to cheaper, if not free, assistive technology for people with
+disabilities (Boularouk, Josselin, and Altman 2017) who often have lower
+median incomes compared to people without disabilities (Francis-Devine
+2021).
 
 # Data, tools, and methods
 
-Data for this project is queried using `osmextract` package (Gilardi and
-Lovelace 2021) using R. Three areas were chosen as case studies (for
+Data for this project was queried using `osmextract` package (Gilardi
+and Lovelace 2021) in R. Three areas were chosen as case studies (for
 data sizes see Table 1):
 
 1.  West Yorkshire: it is the area about which the team has local
@@ -72,35 +72,37 @@ data sizes see Table 1):
     push for data-driven and evidence-based decision making.
 
 Exploratory data analysis (EDA) was used to make sense of the existing
-data. There is not single notion of EDA (Hullman and Gelman 2021) and
-there are attempts to rethink EDA in geographical analysis (Beecham and
-Lovelace 2022). In this context, EDA is used to explore what data is
-missing and how the present data can be utilized for (accessible) active
-travel research.
-
-Also, for each bar plot displayed in the paper there is an accompanying
-interactive map that can be explored if the reader is interested in
-learning more about geospatial distribution of data.
+data. There is no single concept of EDA (Hullman and Gelman 2021) and
+currently there are attempts to rethink EDA in the context of
+geographical analysis (Beecham and Lovelace 2022). In this case, EDA was
+used to explore what data is missing and how the present data can be
+utilized for (accessible) active travel research. For this, bar charts
+were chosen to show the proportion of a tag to all the highways
+(excluding motorways and motorway links as pedestrians and cyclists
+cannot use them in the UK) in a given metropolitan county. Moreover, to
+reduce the number of bins and account for duplicate information (e.g.,
+“no” and “none”), tags in Figure 2 and Figure 3 were recategorized.
+Finally, for each bar plot displayed in the paper there is an
+accompanying interactive map that can be explored to learn more about
+the geospatial distribution of data.
 
 The reproducible code can be found in OpenInfra GitHub repository:
 <https://github.com/udsleeds/openinfra>
 
 # Results
 
-The results discussed in this section are not supposed to reveal the
-factual completeness of OSM data as no comparison to “ground truth” has
-been yet done. Nevertheless, it is still evident that OSM provides a
-comprehensible, if not complete, network of highways. Footways stand out
-for constituting about ¼ of all the mapped highways in all three
-metropolitan counties. Given Greater Manchester’s proposal to provide
-the most comprehensive cycling and walking network in Britain, it is
-surprising that it does not have, in proportion to all the highways
-mapped in Greater Manchester, more footways and only slightly more
-cycleways compared to West Yorkshire and Merseyside. One could argue
-that *footways* take a specific semantic meaning of representing minor
-pathways, hence does not represent an entire walking network.
-Nevertheless, it does not seem that Greater Manchester has, for
-instance, more living streets or pedestrianized roads either.
+It is evident that OSM provides a comprehensible, if not complete,
+network of highways. Footways stand out for constituting about ¼ of all
+the mapped highways in all three metropolitan counties. Given Greater
+Manchester’s proposal to provide the most comprehensive cycling and
+walking network in Britain, it is surprising that it does not have, in
+proportion to all the highways mapped in Greater Manchester, more
+footways and only slightly more cycleways compared to West Yorkshire and
+Merseyside. One could argue that *footways* take a specific semantic
+meaning of representing minor pathways, hence does not represent an
+entire walking network. Nevertheless, it does not seem that Greater
+Manchester has, for instance, more living streets or pedestrianized
+roads either.
 
 <!-- Original LaTeX: -->
 <!-- \begin{figure}[htbp] \begin{center}  -->
@@ -120,7 +122,7 @@ reasons behind this difference is beyond the scope of this paper as it
 would involve an examination of OSM mapping practices but it is likely
 that cyclists, in general, experience more legal restrictions, hence
 leading to an increased awareness of the importance to provide this
-information.
+data.
 
 <!-- Original LaTeX: -->
 <!-- \begin{figure}[htbp] \begin{center}  -->
@@ -142,7 +144,7 @@ this data[^3]:
 
 `sidewalk = [relevant value]`
 
-The data becomes even more scarce if one aims to find out more refined
+The data becomes even more scarce if one seeks for more refined
 information about sidewalks, e.g., if it is on the left or right side of
 a road (see Table 3). It seems to be on par with cycleway tag, which
 contains similar information to sidewalk. It is hard to explain why
@@ -161,18 +163,18 @@ sides that evaluate if it is on the right or left side of the road[^4].
 
 Finally, OSM has the potential to represent highway features essential
 for accessible (pedestrian) network planning (see Table 3). For example,
-awareness of kerb height and sidewalk width are essential street
-elements for people using wheelchairs to move around while lighting is
-important to vision impaired people. In this context, width tag has been
-recategorized using the most recent Inclusive Mobility guide (Department
-for Transport 2021). While currently there is too little information for
-the tags to be taken advantage of, but, given accurate data is present
-in the future, it could be used to assess which sidewalks are wide
-enough to comply with the existing guidance. In comparison to width and
-kerb tags, there is surprisingly a lot of information on the presence of
-lighting. The lit tag does not capture the information on, for example,
-minimum illumination level as outlined in the Inclusive Mobility guide,
-but it still could be used to evaluate, e.g., highway’s safety.
+kerb height and sidewalk width are essential street elements for people
+using wheelchairs to move around while lighting is important to vision
+impaired people. In this context, width tag has been recategorized using
+the most recent Inclusive Mobility guide (Department for Transport
+2021). While currently there is too little information for the tags to
+be taken advantage of, but, given accurate data is present in the
+future, it could be used to assess which sidewalks are wide enough to
+comply with the existing guidance. In comparison to width and kerb tags,
+there is surprisingly a lot of information on the presence of lighting.
+The lit tag does not capture the information on, for example, minimum
+illumination level as outlined in the Inclusive Mobility guide, but it
+still could be used to evaluate, e.g., highway’s safety.
 
 # Discussion and future directions
 
@@ -184,7 +186,7 @@ the attributes relevant for accessible infrastructure. In all three case
 studies there is barely any information on kerb height or sidewalk width
 that are essential for accessible (pedestrian) network. Regardless of
 the current limitations of OSM data, the authors still believe that if
-more nuanced information on highways is provided (by both encouraging
+more detailed information on highways is provided (by both encouraging
 current and new mappers to provide attribute data of their local areas),
 OSM holds the potential to support data-driven evidence-based decision
 making.
