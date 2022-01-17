@@ -1,7 +1,6 @@
 library(tidyverse)
 library(sf)
 library(osmextract)
-library(mapview)
 library(tmap)
 library(ggplot2)
 
@@ -9,15 +8,16 @@ library(ggplot2)
 # piggyback::pb_download("wy.Rds")
 # piggyback::pb_download("gm.Rds")
 # piggyback::pb_download("mers.Rds")
-wy = readRDS("/Users/gretatimaite/Desktop/openinfra/GISRUK_paper/wy.Rds")
-gm = readRDS("/Users/gretatimaite/Desktop/openinfra/GISRUK_paper/gm.Rds")
-mers = readRDS("/Users/gretatimaite/Desktop/openinfra/GISRUK_paper/mers.Rds")
+wy = readRDS("GISRUK_paper/wy.Rds")
+gm = readRDS("GISRUK_paper/gm.Rds")
+mers = readRDS("GISRUK_paper/mers.Rds")
 
 # EDA =====================
 ## WY ========
 wy_df = wy %>% 
   sf::st_drop_geometry() %>% 
-  filter(!is.na(highway))
+  filter(!is.na(highway) & highway != "motorway" & highway != "motorway_link") 
+
 
 wy_df_cat = wy_df %>% 
   mutate(
@@ -155,7 +155,7 @@ wy_plot4 = wy_tagged_grouped_prop2 %>% filter(key %in% tags_needed2) %>% select(
 ## GM ============
 gm_df = gm %>% 
   sf::st_drop_geometry() %>% 
-  filter(!is.na(highway))
+  filter(!is.na(highway) & highway != "motorway" & highway != "motorway_link") 
 
 gm_df_cat = gm_df %>% 
   mutate(
@@ -292,7 +292,7 @@ gm_plot4 = gm_tagged_grouped_prop2 %>% filter(key %in% tags_needed2) %>% select(
 
 mers_df = mers %>% 
   sf::st_drop_geometry() %>% 
-  filter(!is.na(highway))
+  filter(!is.na(highway) & highway != "motorway" & highway != "motorway_link") 
 
 mers_df_cat = mers_df %>% 
   mutate(
@@ -574,18 +574,54 @@ joined_plot4.1 = joined2  %>% filter (key %in% tags_needed2) %>%
 
 
 
-## interactive maps
+### interactive map 1 =======
 
 tmap_mode("view")
-subset1 = wy %>% filter(highway == "footway",
-                 bicycle == "designated") 
-subset2 = mers %>% filter(highway == "footway",
-                 bicycle == "designated") 
+wy_int = wy %>% filter(str_detect(highway, "foot|cycle|ped|steps|living"))
+gm_int = gm %>% filter(str_detect(highway, "foot|cycle|ped|steps|living"))
+mers_int = mers %>% filter(str_detect(highway, "foot|cycle|ped|steps|living"))
 
-int_map1 = tm_shape(subset1)+
-  tm_lines()
-tmap_save(int_map1,
-          filename = "int_map1")
+all_join2_int = tm_shape(wy_int)+
+  tm_lines("highway")+
+  tm_shape(gm_int)+
+  tm_lines("highway")+
+  tm_shape(mers_int)+
+  tm_lines("highway")
 
-int_map2 = tm_shape(subset2)+
-  tm_lines()
+tmap_save(all_join2_int,
+          filename = "all_join2_int.html")
+
+
+### interactive maps 2 and 3
+
+wy_int_cat_plot2 = wy %>% 
+  mutate(
+    bicycle_cat = case_when(
+      str_detect(bicycle, "designated|yes")  ~ "yes/designated",
+      str_detect(bicycle, "no|dismount")  ~ "no",
+      str_detect(bicycle, "destin|permis|priva|unknown")~ "maybe"),
+
+    foot_cat = case_when(
+      str_detect(foot, "designated|yes")  ~ "yes/designated",
+      str_detect(foot, "no|disc")  ~ "no",
+      str_detect(foot, "cust|deli|dest|emerg|limit|permis|permit|priv|unknown")  ~ "maybe"
+    ),
+    footway_cat = case_when(
+      str_detect(footway, "access|alley|left|link|traffic") ~ "other",
+      str_detect(footway, "no") ~ "no",
+      str_detect(footway, "yes|sidewalk") ~ "yes/sidewalk",
+    ),
+    cycleway_cat = case_when(
+      str_detect(cycleway, "buff|lane|segr|sep|track") ~ "separate",
+      str_detect(cycleway, "no") ~ "no",
+      str_detect(cycleway, "share") ~ "shared",
+      str_detect(cycleway, "cross|cyclestreet|left|opp|path|side|yes|unm") ~ "other"
+    )
+  ) %>% select("bicycle_cat", "cycleway_cat", "foot_cat", "footway_cat")
+
+tags_needed = c("bicycle", "foot", "cycleway","footway", "value")
+
+tm_shape(wy_int_cat_plot2 )+
+  tm_lines("bicycle_cat")+
+  tm_shape(wy_int_cat_plot2)+
+  tm_lines("cycleway_cat")
