@@ -5,9 +5,12 @@ library(tmap)
 library(ggplot2)
 
 # GETTING DATA  =================
-# piggyback::pb_download("wy.Rds")
+# piggyback::pb_download("wy.RDS")
 # piggyback::pb_download("gm.Rds")
 # piggyback::pb_download("mers.Rds")
+file.copy("wy.RDS", "GISRUK_paper/wy.Rds")
+file.copy("gm.Rds", "GISRUK_paper")
+file.copy("mers.Rds", "GISRUK_paper")
 wy = readRDS("GISRUK_paper/wy.Rds")
 gm = readRDS("GISRUK_paper/gm.Rds")
 mers = readRDS("GISRUK_paper/mers.Rds")
@@ -17,7 +20,6 @@ mers = readRDS("GISRUK_paper/mers.Rds")
 wy_df = wy %>% 
   sf::st_drop_geometry() %>% 
   filter(!is.na(highway) & highway != "motorway" & highway != "motorway_link") 
-
 
 wy_df_cat = wy_df %>% 
   mutate(
@@ -120,7 +122,7 @@ ggplot( aes(x = value)) +
 wy_tagged_grouped_prop = wy_tagged_grouped %>% 
   group_by(highway) %>% 
   summarize(n = n(),
-            Proportion = n / nrow(wy_df) * 100)
+            Proportion = n / nrow(wy_df))
 
 wy_plot2 = wy_tagged_grouped_prop %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"))  %>% 
   ggplot( aes(x = highway,
@@ -131,15 +133,17 @@ wy_plot2 = wy_tagged_grouped_prop %>%  filter(str_detect(highway, "foot|cycle|pe
 wy_tagged_grouped_prop2 = wy_tagged_grouped %>% 
   group_by(value, key) %>% 
   summarize(n = n(),
-            Proportion = n / nrow(wy_df) * 100)
+            Proportion = n / nrow(wy_df))
 
 wy_plot3 = wy_tagged_grouped_prop2 %>% filter(key %in% tags_needed) %>% select(key, Proportion) %>% 
   ggplot( aes(x = value,
               y = Proportion)) +
   geom_bar(stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
   facet_wrap(~key, scales = "free_x") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
+wy_plot3
 
 ## plot 4 =====
 
@@ -147,10 +151,13 @@ tags_needed2 = c("maxspeed", "lit", "kerb", "width")
 wy_plot4 = wy_tagged_grouped_prop2 %>% filter(key %in% tags_needed2) %>% select(key, Proportion) %>% 
   ggplot( aes(x = value,
               y = Proportion)) +
+  scale_y_continuous(labels = scales::percent) +
   geom_bar(stat = "identity") +
   facet_wrap(~key, scales = "free_x") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
+
+wy_plot4
 
 ## GM ============
 gm_df = gm %>% 
@@ -251,30 +258,34 @@ gm_plot1 = gm_tagged_grouped %>% filter(key %in% tags_needed) %>% select(key, ta
   facet_wrap(~key, scales = "free_x") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
+gm_plot1
 
 ### plot 2 ====
 
 gm_tagged_grouped_prop = gm_tagged_grouped %>% 
   group_by(highway) %>% 
   summarize(n = n(),
-            Proportion = n / nrow(gm_df) * 100)
+            Proportion = n / nrow(gm_df))
 
 gm_plot2 = gm_tagged_grouped_prop %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"))   %>% 
   ggplot( aes(x = highway,
               y = Proportion)) +
+  scale_y_continuous(labels = scales::percent) +
   geom_bar(stat = "identity") 
+gm_plot2
 
 ### plot 3 ====
 
 gm_tagged_grouped_prop2 = gm_tagged_grouped %>% 
   group_by(value, key) %>% 
   summarize(n = n(),
-            Proportion = n / nrow(gm_df) * 100)
+            Proportion = n / nrow(gm_df))
 gm_plot3 = gm_tagged_grouped_prop2 %>% filter(key %in% tags_needed) %>% select(key, Proportion) %>% 
   ggplot( aes(x = value,
               y = Proportion)) +
   geom_bar(stat = "identity") +
   facet_wrap(~key, scales = "free_x") +
+  scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 
@@ -283,6 +294,7 @@ tags_needed2 = c("maxspeed", "lit", "kerb", "width")
 gm_plot4 = gm_tagged_grouped_prop2 %>% filter(key %in% tags_needed2) %>% select(key, Proportion) %>% 
   ggplot( aes(x = value,
               y = Proportion)) +
+  scale_y_continuous(labels = scales::percent) +
   geom_bar(stat = "identity") +
   facet_wrap(~key, scales = "free_x") +
   theme_bw() +
@@ -394,11 +406,12 @@ mers_plot1 = mers_tagged_grouped %>% filter(key %in% tags_needed) %>% select(key
 mers_tagged_grouped_prop = mers_tagged_grouped %>% 
   group_by(highway) %>% 
   summarize(n = n(),
-            Proportion = n / nrow(mers_df) * 100)
+            Proportion = n / nrow(mers_df))
 
 mers_plot2 = mers_tagged_grouped_prop %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"))   %>% 
   ggplot( aes(x = highway,
               y = Proportion)) +
+  scale_y_continuous(labels = scales::percent) +
   geom_bar(stat = "identity") 
 
 ### plot 3 ====
@@ -406,12 +419,13 @@ mers_plot2 = mers_tagged_grouped_prop %>%  filter(str_detect(highway, "foot|cycl
 mers_tagged_grouped_prop2 = mers_tagged_grouped %>% 
   group_by(value, key) %>% 
   summarize(n = n(),
-            Proportion = n / nrow(mers_df) * 100)
+            Proportion = n / nrow(mers_df))
 mers_plot3 = mers_tagged_grouped_prop2 %>% filter(key %in% tags_needed) %>% select(key, Proportion) %>% 
   ggplot( aes(x = value,
               y = Proportion)) +
   geom_bar(stat = "identity") +
   facet_wrap(~key, scales = "free_x") +
+  scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 
@@ -425,7 +439,6 @@ mers_plot4 = mers_tagged_grouped_prop2 %>% filter(key %in% tags_needed2) %>% sel
   facet_wrap(~key, scales = "free_x") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
-
 
 ## WY + GM + mers joined =============
 
@@ -457,7 +470,7 @@ all_plot1 = all_tagged_grouped %>% filter(key %in% tags_needed) %>% select(key, 
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
   xlab("Tag name")+
   ylab("Frequency")
-
+all_plot1
 
 ### plot 2 ======
 
@@ -477,14 +490,16 @@ all_plot2 = joined %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"
            position=position_dodge() ) + 
   theme_bw() +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=.5)) +
-  geom_text(aes(label=round(Proportion,2)), 
+  geom_text(aes(label=round(Proportion * 100)), 
             color="black", size=3.5,
-            position = position_dodge(1))+
+            position = position_dodge(1), vjust = 0.02)+
+  scale_y_continuous(labels = scales::percent, name = "Percentage") +
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
   xlab("Type of highway")+
   ylab("Proportion")+
   theme(legend.position = "top",
         legend.direction = "horizontal")
+all_plot2
 
 ### plot 3 ====
 
@@ -504,10 +519,10 @@ joined_plot3 = joined2  %>% filter (key %in% tags_needed) %>%
            position=position_dodge() ) + 
   theme_bw() +
   facet_wrap(~key, scales = "free_x") +
-  geom_text(aes(label=round(Proportion,2)),
-           color="black", size=3.5,
-           position = position_dodge(1)
-            ) +
+  geom_text(aes(label=round(Proportion * 100)), 
+            color="black", size=3.5,
+            position = position_dodge(1), vjust = 0.02)+
+  scale_y_continuous(labels = scales::percent, name = "Percentage") +
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
   xlab("Tag type")+
   ylab("Proportion")+
@@ -543,10 +558,10 @@ joined_plot4 = joined2  %>% filter (key %in% tags_needed3) %>%
            position=position_dodge() ) + 
   theme_bw() +
   facet_wrap(~key, scales = "free_x") +
-  geom_text(aes(label=round(Proportion,2)),
+  geom_text(aes(label=round(Proportion * 100)), 
             color="black", size=3.5,
-            position = position_dodge(1)
-  ) +
+            position = position_dodge(1), vjust = 0.02)+
+  scale_y_continuous(labels = scales::percent, name = "Percentage") +
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
   xlab("Tag type")+
   ylab("Proportion")+
