@@ -8,18 +8,18 @@ library(ggplot2)
 # piggyback::pb_download("wy.RDS")
 # piggyback::pb_download("gm.Rds")
 # piggyback::pb_download("mers.Rds")
-<<<<<<< HEAD
+
 wy = readRDS("wy.RDS")
 gm = readRDS("gm.Rds")
 mers = readRDS("mers.Rds")
-=======
+
 file.copy("wy.RDS", "GISRUK_paper/wy.Rds")
 file.copy("gm.Rds", "GISRUK_paper")
 file.copy("mers.Rds", "GISRUK_paper")
 wy = readRDS("GISRUK_paper/wy.Rds")
 gm = readRDS("GISRUK_paper/gm.Rds")
 mers = readRDS("GISRUK_paper/mers.Rds")
->>>>>>> 1f2cf730a4e343cadcfb0a2c5c1229558f0c731b
+
 
 # EDA =====================
 ## WY ========
@@ -471,7 +471,7 @@ all_plot1 = all_tagged_grouped %>% filter(key %in% tags_needed) %>% select(key, 
   theme_bw() +
   theme(axis.text.x = element_text(angle = 0, vjust = 1.5, hjust=0.5)) +
   geom_text(aes(label=N), 
-            color="black", size=3.5,
+            color="black", size=3,
             position = position_dodge(1))+
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
   xlab("Tag name")+
@@ -497,7 +497,7 @@ all_plot2 = joined %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"
   theme_bw() +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=.5)) +
   geom_text(aes(label=round(Proportion * 100)), 
-            color="black", size=3.5,
+            color="black", size=3,
             position = position_dodge(1), vjust = 0.02)+
   scale_y_continuous(labels = scales::percent, name = "Percentage") +
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
@@ -527,7 +527,7 @@ joined_plot3 = joined2  %>% filter (key %in% tags_needed) %>%
   theme_bw() +
   facet_wrap(~key, scales = "free_x") +
   geom_text(aes(label=round(Proportion * 100)), 
-            color="black", size=3.5,
+            color="black", size=3,
             position = position_dodge(1), vjust = 0.02)+
   scale_y_continuous(labels = scales::percent, name = "Percentage") +
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
@@ -535,7 +535,7 @@ joined_plot3 = joined2  %>% filter (key %in% tags_needed) %>%
   ylab("Proportion")+
   theme(legend.position = "top",
         legend.direction = "horizontal")
-
+saveRDS(joined_plot3, "GISRUK_paper/joined_plot3.Rds")
 
 joined_plot3.1 = joined2  %>% filter (key %in% tags_needed) %>% 
   ggplot(aes(x = value,
@@ -566,7 +566,7 @@ joined_plot4 = joined2  %>% filter (key %in% tags_needed3) %>%
   theme_bw() +
   facet_wrap(~key, scales = "free_x") +
   geom_text(aes(label=round(Proportion * 100)), 
-            color="black", size=3.5,
+            color="black", size=3,
             position = position_dodge(1), vjust = 0.02)+
   scale_y_continuous(labels = scales::percent, name = "Percentage") +
   scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater Manchester", "Merseyside", "West Workshire"))+
@@ -574,6 +574,7 @@ joined_plot4 = joined2  %>% filter (key %in% tags_needed3) %>%
   ylab("Proportion")+
   theme(legend.position = "top",
         legend.direction = "horizontal")
+saveRDS(joined_plot4, "GISRUK_paper/joined_plot4.Rds")
 
 joined_plot4.1 = joined2  %>% filter (key %in% tags_needed2) %>% 
   ggplot(aes(x = value,
