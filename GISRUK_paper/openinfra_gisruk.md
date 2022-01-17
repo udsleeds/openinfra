@@ -3,33 +3,35 @@
 
 # Introduction
 
-A move from motor to active (cycling and walking) modes of travel offers
-health, economic, and environmental benefits (Parkin 2018). Importantly,
-active travel can become an alternative to public transport during the
-pandemic when social distancing reduces operational capacities.
-Acknowledging the benefits, the UK has boosted its investment in active
-travel[^1]. Indeed, it has been argued that pandemic provides an
-opportunity to encourage a behavioural change in traveling patterns that
-could be maintained after the pandemic (Laverty et al. 2020).
+Shifting the focus of transport planning interventions away from
+provision for motorised modes and towards active modes (walking, cycling
+and ‘wheeling’) offers health, economic, and environmental benefits
+(Parkin 2018). Active travel can become an alternative to public
+transport, vital during pandemic-induced reductions in operational
+capacities. Acknowledging this, the UK government has boosted investment
+in active travel[^1] over the last 2 years, recognising that the
+pandemic provides an opportunity to encourage a behavioural change in
+traveling patterns that could be maintained after the pandemic (Laverty
+et al. 2020).
 
-Nevertheless, it is essential to ensure that street infrastructure meets
-the needs of all pedestrians and cyclists if active travel uptake is to
-be increased. For example, Aldred et al. (2016) argued that a mere
-increase in cycling levels does not always lead to increased diversity
-of cyclists. Therefore, it is important for policy to explicitly address
-different needs of (potential) cyclists and active travelers in general.
-The invitation for the public to engage in the decision-making is one of
-the potential ways to understand what needs to be implemented to
-encourage active travel.
+For the investment to be effective, new interventions and infrastructure
+must meet the needs of people walking, cycling and wheeling. Aldred,
+Woodcock, and Goodman (2016) argued that merely increasing cycling
+levels does not always lead to increased diversity cycling
+participation. Therefore, it is important for policy to explicitly
+address different needs of (potential) cyclists and active travelers in
+general. The invitation for the public to engage in the decision-making
+is one of the potential ways to understand what needs to be implemented
+to encourage active travel.
 
-Propensity to Cycle Tool (PCT) (Lovelace et al. 2017), an open-source
-cycling scenarios generating tool, is a good example of an accessible
-tool designed for both policy makers and citizens to make data-driven
-decisions regarding cycling investments. Arguably, another approach to
-solidify bottom-up approach to decision making is to encourage not only
-the development and use of open-source tools but also to encourage
-contribution to the generation and use of open-access data that could be
-used for planning transport infrastructure.
+The Propensity to Cycle Tool (PCT) (Lovelace et al. 2017), an
+open-source tool for strategic cycle network planning, is a good example
+of an accessible tool designed for both policy makers and citizens to
+make data-driven decisions regarding cycling investments. Arguably,
+another approach to solidify bottom-up approach to decision making is to
+encourage not only the development and use of open-source tools but also
+to encourage contribution to the generation and use of open-access data
+that could be used for planning transport infrastructure.
 
 ## OpenInfra and OpenStreetMap
 
