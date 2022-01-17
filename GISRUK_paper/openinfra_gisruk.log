@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2022.1.14)  17 JAN 2022 12:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2022.1.14)  17 JAN 2022 12:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -218,24 +218,24 @@ File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
 ) (./openinfra_gisruk.aux)
 \openout1 = `openinfra_gisruk.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -291,7 +291,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 71.
+Package hyperref Info: Link coloring OFF on input line 69.
 (/home/robin/.TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
 (/home/robin/.TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
@@ -302,25 +302,25 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count287
 )
-LaTeX Info: Redefining \ref on input line 71.
-LaTeX Info: Redefining \pageref on input line 71.
-LaTeX Info: Redefining \nameref on input line 71.
+LaTeX Info: Redefining \ref on input line 69.
+LaTeX Info: Redefining \pageref on input line 69.
+LaTeX Info: Redefining \nameref on input line 69.
 (./openinfra_gisruk.out) (./openinfra_gisruk.out)
 \@outlinefile=\write3
 \openout3 = `openinfra_gisruk.out'.
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 74.
+(Font)              <12> on input line 72.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 74.
+(Font)              <8> on input line 72.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 74.
+(Font)              <6> on input line 72.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 74.
+(Font)              <9> on input line 72.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 74.
+(Font)              <5> on input line 72.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 98.
+(Font)              <10.95> on input line 96.
 [1
 
 {/home/robin/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]pdfTeX warn
@@ -328,7 +328,7 @@ ing (ext4): destination with the same identifier (name{page.}) has been already
  used, duplicate ignored
 <to be read again> 
                    \relax 
-l.202 
+l.200 
        [2]
 <openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf, id=68, 459.7175
 pt x 310.15875pt>
@@ -336,59 +336,61 @@ File: openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf Graphic fil
 e (type pdf)
 <use openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf>
 Package pdftex.def Info: openinfra_gisruk_files/figure-latex/highway_proportion
-s-1.pdf  used on input line 223.
+s-1.pdf  used on input line 221.
 (pdftex.def)             Requested size: 472.03123pt x 318.48268pt.
 <joined_plot3.png, id=69, 1204.5pt x 652.4375pt>
 File: joined_plot3.png Graphic file (type png)
 <use joined_plot3.png>
-Package pdftex.def Info: joined_plot3.png  used on input line 239.
+Package pdftex.def Info: joined_plot3.png  used on input line 237.
 (pdftex.def)             Requested size: 472.03123pt x 255.68407pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.249 \texttt{highway\ =\ footway}
-                                   [3]pdfTeX warning (ext4): destination with t
-he same identifier (name{page.}) has been already used, duplicate ignored
+l.251 \texttt{sidewalk\ =\ {[}relevant\ value{]}}
+                                                  [3]pdfTeX warning (ext4): des
+tination with the same identifier (name{page.}) has been already used, duplicat
+e ignored
 <to be read again> 
                    \relax 
-l.249 \texttt{highway\ =\ footway}
-                                   [4 <./openinfra_gisruk_files/figure-latex/hi
-ghway_proportions-1.pdf>]pdfTeX warning (ext4): destination with the same ident
-ifier (name{page.}) has been already used, duplicate ignored
+l.251 \texttt{sidewalk\ =\ {[}relevant\ value{]}}
+                                                  [4 <./openinfra_gisruk_files/
+figure-latex/highway_proportions-1.pdf>]pdfTeX warning (ext4): destination with
+ the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.249 \texttt{highway\ =\ footway}
-                                   [5 <./joined_plot3.png>]
-<joined_plot4.png, id=99, 1204.5pt x 652.4375pt>
+l.251 \texttt{sidewalk\ =\ {[}relevant\ value{]}}
+                                                  [5 <./joined_plot3.png>]
+<joined_plot4.png, id=100, 1204.5pt x 652.4375pt>
 File: joined_plot4.png Graphic file (type png)
 <use joined_plot4.png>
-Package pdftex.def Info: joined_plot4.png  used on input line 268.
+Package pdftex.def Info: joined_plot4.png  used on input line 266.
 (pdftex.def)             Requested size: 472.03123pt x 255.68407pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.285 
+l.283 
        [6 <./joined_plot4.png>]pdfTeX warning (ext4): destination with the same
  identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.346 
-       [7]pdfTeX warning (ext4): destination with the same identifier (name{pag
-e.}) has been already used, duplicate ignored
+l.351 \leavevmode
+                 \vadjust pre{\hypertarget{ref-inclusive_mobility_dfy_2021}{}}%
+[7]pdfTeX warning (ext4): destination with the same identifier (name{page.}) ha
+s been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.468 \end{document}
+l.466 \end{document}
                      [8] (./openinfra_gisruk.aux)
 Package rerunfilecheck Info: File `openinfra_gisruk.out' has not changed.
 (rerunfilecheck)             Checksum: 49CA635192B46F487B0E29BCB7F0A71F;1068.
  ) 
 Here is how much of TeX's memory you used:
- 9732 strings out of 480226
- 152494 string characters out of 5895137
- 454153 words of memory out of 5000000
- 27528 multiletter control sequences out of 15000+600000
+ 9729 strings out of 480226
+ 152458 string characters out of 5895137
+ 453879 words of memory out of 5000000
+ 27525 multiletter control sequences out of 15000+600000
  477695 words of font info for 56 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,8n,63p,639b,388s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -405,9 +407,9 @@ f-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></home/robin/.TinyTeX/texmf-dist
 /public/amsfonts/cm/cmti10.pfb></home/robin/.TinyTeX/texmf-dist/fonts/type1/pub
 lic/amsfonts/cm/cmtt10.pfb></home/robin/.TinyTeX/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmtt9.pfb>
-Output written on openinfra_gisruk.pdf (8 pages, 258749 bytes).
+Output written on openinfra_gisruk.pdf (8 pages, 255752 bytes).
 PDF statistics:
- 215 PDF objects out of 1000 (max. 8388607)
+ 211 PDF objects out of 1000 (max. 8388607)
  169 compressed objects within 2 object streams
  43 named destinations out of 1000 (max. 500000)
  80 words of extra memory for PDF output out of 10000 (max. 10000000)

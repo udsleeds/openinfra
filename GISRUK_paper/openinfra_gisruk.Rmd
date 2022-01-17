@@ -1,4 +1,5 @@
 ---
+# output: bookdown::word_document2
 output:
   pdf_document:
     template: GISRUKPaperTemplate.tex
