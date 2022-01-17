@@ -1,13 +1,14 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2022.1.15)  16 JAN 2022 20:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2022.1.14)  17 JAN 2022 10:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **openinfra_gisruk.tex
 (./openinfra_gisruk.tex
 LaTeX2e <2021-11-15> patch level 1
-L3 programming layer <2022-01-12> (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
+L3 programming layer <2022-01-12> (/home/robin/.TinyTeX/texmf-dist/tex/latex/ba
+se/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/base/size11.clo
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/base/size11.clo
 File: size11.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
 )
 \c@part=\count185
@@ -21,14 +22,14 @@ File: size11.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
 \abovecaptionskip=\skip47
 \belowcaptionskip=\skip48
 \bibindent=\dimen138
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks16
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty
 Package: iftex 2020/03/06 v1.0d TeX engine tests
 ))
 \Gm@cnth=\count193
@@ -43,50 +44,51 @@ Package: iftex 2020/03/06 v1.0d TeX engine tests
 \Gm@layouthoffset=\dimen145
 \Gm@layoutvoffset=\dimen146
 \Gm@dimlist=\toks17
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 107.
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen147
 \Gin@req@width=\dimen148
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/url/url.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip16
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/natbib/natbib.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/natbib/natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip49
 \bibsep=\skip50
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count196
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/preprint/authblk.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/preprint/authblk.sty
 Package: authblk 2001/02/27 1.3 (PWD)
 \affilsep=\skip51
 \@affilsep=\skip52
 \c@Maxaffil=\count197
 \c@authors=\count198
 \c@affil=\count199
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/parskip/parskip.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/parskip/parskip.sty
 Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
 Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
 Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
-)) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+)) (/home/robin/.TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count266
-)) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/sectsty/sectsty.sty
-Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading styles
+)) (/home/robin/.TinyTeX/texmf-dist/tex/latex/sectsty/sectsty.sty
+Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading sty
+les
 
 LaTeX Warning: Command \underbar  has changed.
                Check if current package is valid.
@@ -95,43 +97,45 @@ LaTeX Warning: Command \underbar  has changed.
 LaTeX Warning: Command \underline  has changed.
                Check if current package is valid.
 
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2021-06-07 v7.00m Hypertext links for LaTeX
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
-Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+(/home/robin/.TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty
 Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
 )
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
 Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty
 Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty
 Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
 Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.sty
 Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
 )
 \@linkdim=\dimen149
 \Hy@linkcounter=\count267
 \Hy@pagecounter=\count268
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2021-06-07 v7.00m Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def
-File: hyperref-langpatches.def 2021-06-07 v7.00m Hyperref: patches for babel languages
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def
+File: hyperref-langpatches.def 2021-06-07 v7.00m Hyperref: patches for babel la
+nguages
+) (/home/robin/.TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/generic/etexcmds/etexcmds.sty
 Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 )
 \Hy@SavedSpaceFactor=\count269
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
 File: puenc.def 2021-06-07 v7.00m Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
@@ -146,10 +150,11 @@ Package hyperref Info: Bookmarks ON on input line 4445.
 \c@Hy@tempcnt=\count270
 LaTeX Info: Redefining \url on input line 4804.
 \XeTeXLinkMargin=\dimen150
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
-Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
+(/home/robin/.TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
 ))
 \Fld@menulength=\count271
 \Field@Width=\dimen151
@@ -163,7 +168,7 @@ Package hyperref Info: Link coloring with OCG OFF on input line 6101.
 Package hyperref Info: PDF/A mode OFF on input line 6106.
 LaTeX Info: Redefining \ref on input line 6146.
 LaTeX Info: Redefining \pageref on input line 6150.
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 )
@@ -172,27 +177,29 @@ package with kernel methods
 \c@Hfootnote=\count274
 )
 Package hyperref Info: Driver: hpdftex.
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def
 File: hpdftex.def 2021-06-07 v7.00m Hyperref driver for pdfTeX
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty
-Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
+kage
 with kernel methods
 )
 \Fld@listcount=\count275
 \c@bookmark@seq@number=\count276
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
 Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
 Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 )
-Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 286.
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+86.
 )
 \Hy@SectionHShift=\skip53
 )
 \cslhangindent=\skip54
 \csllabelwidth=\skip55
 \cslentryspacingunit=\skip56
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/tools/calc.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
 \calc@Acount=\count277
 \calc@Bcount=\count278
@@ -204,31 +211,31 @@ LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
 \calc@Ccount=\count279
 \calc@Cskip=\skip59
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count280
 \l__pdf_internal_box=\box50
 ) (./openinfra_gisruk.aux)
 \openout1 = `openinfra_gisruk.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -263,48 +270,66 @@ LaTeX Font Info:    ... okay on input line 74.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count281
+\scratchdimen=\dimen155
+\scratchbox=\box51
+\nofMPsegments=\count282
+\nofMParguments=\count283
+\everyMPshowfont=\toks18
+\MPscratchCnt=\count284
+\MPscratchDim=\dimen156
+\MPnumerator=\count285
+\makeMPintoPDFobject=\count286
+\everyMPtoPDFconversion=\toks19
+) (/home/robin/.TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
-Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
 ))
-Package hyperref Info: Link coloring OFF on input line 74.
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
+Package hyperref Info: Link coloring OFF on input line 71.
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
-(/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
+(/home/robin/.TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
-) (/Users/gretatimaite/Library/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+) (/home/robin/.TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.st
+y
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count281
+\c@section@level=\count287
 )
-LaTeX Info: Redefining \ref on input line 74.
-LaTeX Info: Redefining \pageref on input line 74.
-LaTeX Info: Redefining \nameref on input line 74.
+LaTeX Info: Redefining \ref on input line 71.
+LaTeX Info: Redefining \pageref on input line 71.
+LaTeX Info: Redefining \nameref on input line 71.
 (./openinfra_gisruk.out) (./openinfra_gisruk.out)
 \@outlinefile=\write3
 \openout3 = `openinfra_gisruk.out'.
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 77.
+(Font)              <12> on input line 74.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 77.
+(Font)              <8> on input line 74.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 77.
+(Font)              <6> on input line 74.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 77.
+(Font)              <9> on input line 74.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 77.
+(Font)              <5> on input line 74.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 100.
+(Font)              <10.95> on input line 98.
 [1
 
-{/Users/gretatimaite/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+{/home/robin/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]pdfTeX warn
+ing (ext4): destination with the same identifier (name{page.}) has been already
+ used, duplicate ignored
 <to be read again> 
                    \relax 
-l.197 A
-       lso, for each bar plot displayed in the paper there is an accompanying [2]
+l.202 
+       [2]
 <all_plot2.png, id=68, 1204.5pt x 652.4375pt>
 File: all_plot2.png Graphic file (type png)
 <use all_plot2.png>
@@ -315,29 +340,35 @@ File: joined_plot3.png Graphic file (type png)
 <use joined_plot3.png>
 Package pdftex.def Info: joined_plot3.png  used on input line 239.
 (pdftex.def)             Requested size: 472.03123pt x 255.68407pt.
-pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.251 \texttt{footway\ =\ sidewalk}
-                                    [3]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+l.249 \texttt{highway\ =\ footway}
+                                   [3]pdfTeX warning (ext4): destination with t
+he same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.251 \texttt{footway\ =\ sidewalk}
-                                    [4 <./all_plot2.png> <./joined_plot3.png>]
-<joined_plot4.png, id=91, 1204.5pt x 652.4375pt>
+l.249 \texttt{highway\ =\ footway}
+                                   [4 <./all_plot2.png> <./joined_plot3.png>]
+<joined_plot4.png, id=90, 1204.5pt x 652.4375pt>
 File: joined_plot4.png Graphic file (type png)
 <use joined_plot4.png>
 Package pdftex.def Info: joined_plot4.png  used on input line 268.
 (pdftex.def)             Requested size: 472.03123pt x 255.68407pt.
-pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.285 
-       [5 <./joined_plot4.png>]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+       [5 <./joined_plot4.png>]pdfTeX warning (ext4): destination with the same
+ identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.352 
-       [6]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+l.347 \leavevmode
+                 \vadjust pre{\hypertarget{ref-Boularouk_etal_2017}{}}% [6]pdfT
+eX warning (ext4): destination with the same identifier (name{page.}) has been 
+already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.468 \end{document}
@@ -346,15 +377,27 @@ Package rerunfilecheck Info: File `openinfra_gisruk.out' has not changed.
 (rerunfilecheck)             Checksum: 49CA635192B46F487B0E29BCB7F0A71F;1068.
  ) 
 Here is how much of TeX's memory you used:
- 9433 strings out of 480246
- 149996 string characters out of 5894696
- 451259 words of memory out of 5000000
- 27226 multiletter control sequences out of 15000+600000
+ 9732 strings out of 480226
+ 152067 string characters out of 5895137
+ 454153 words of memory out of 5000000
+ 27530 multiletter control sequences out of 15000+600000
  477695 words of font info for 56 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,8n,63p,687b,388s stack positions out of 5000i,500n,10000p,200000b,80000s
- </Users/gretatimaite/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk> </Users/gretatimaite/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0600.600pk> </Users/gretatimaite/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0800.600pk></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on openinfra_gisruk.pdf (7 pages, 284125 bytes).
+ 60i,8n,63p,639b,388s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/robin/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk> 
+</home/robin/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0600.600pk> </h
+ome/robin/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0800.600pk></home/
+robin/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></home/robi
+n/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></home/robin/.Ti
+nyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></home/robin/.TinyTeX
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></home/robin/.TinyTeX/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></home/robin/.TinyTeX/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmr8.pfb></home/robin/.TinyTeX/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmr9.pfb></home/robin/.TinyTeX/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmti10.pfb></home/robin/.TinyTeX/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmtt10.pfb></home/robin/.TinyTeX/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmtt9.pfb>
+Output written on openinfra_gisruk.pdf (7 pages, 283862 bytes).
 PDF statistics:
  206 PDF objects out of 1000 (max. 8388607)
  162 compressed objects within 2 object streams
