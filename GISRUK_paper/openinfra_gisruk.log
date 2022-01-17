@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2022.1.14)  17 JAN 2022 12:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2022.1.14)  17 JAN 2022 16:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -375,13 +375,12 @@ l.283
  identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.351 \leavevmode
-                 \vadjust pre{\hypertarget{ref-inclusive_mobility_dfy_2021}{}}%
-[7]pdfTeX warning (ext4): destination with the same identifier (name{page.}) ha
-s been already used, duplicate ignored
+l.349 
+       [7]pdfTeX warning (ext4): destination with the same identifier (name{pag
+e.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.466 \end{document}
+l.477 \end{document}
                      [8] (./openinfra_gisruk.aux)
 Package rerunfilecheck Info: File `openinfra_gisruk.out' has not changed.
 (rerunfilecheck)             Checksum: 49CA635192B46F487B0E29BCB7F0A71F;1068.
@@ -407,7 +406,7 @@ f-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></home/robin/.TinyTeX/texmf-dist
 /public/amsfonts/cm/cmti10.pfb></home/robin/.TinyTeX/texmf-dist/fonts/type1/pub
 lic/amsfonts/cm/cmtt10.pfb></home/robin/.TinyTeX/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmtt9.pfb>
-Output written on openinfra_gisruk.pdf (8 pages, 255752 bytes).
+Output written on openinfra_gisruk.pdf (8 pages, 256206 bytes).
 PDF statistics:
  211 PDF objects out of 1000 (max. 8388607)
  169 compressed objects within 2 object streams

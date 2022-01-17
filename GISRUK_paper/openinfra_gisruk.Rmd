@@ -130,5 +130,9 @@ Biography
 
 Greta is a data science intern at Leeds Institute for Data Analytics, University of Leeds. She has an interdisciplinary background in sociology and computational research methods.
 
+Robin is an Associate Professor of Transport Data Science working at the University of Leeds' Institute for Transport Studies (ITS) and Leeds Institute for Data Analytics (LIDA).
+Robin is undertaking a fellowship to support evidence-based decision making in central government in collaboration with the No. 10 Data Science Team and is an Alan Turing Fellow, specialising in transport modelling, geocomputation and data driven tools for evidence-based decision making to support policy objectives including uptake of active travel to maximise health, wellbeing and equity outcomes, and rapid decarbonisation of local, city, regional and national transport systems.
+
+
 References 
 ========================
