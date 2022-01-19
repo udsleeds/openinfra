@@ -193,10 +193,10 @@ gl_plot3 = gl_tagged_grouped_prop2 %>% filter(key %in% tags_add) %>% select(key,
 gl_plot3
 
 # I'm surprised there's barely any info on kerbs. 
-gl %>% filter(is.na(highway) & kerb == "lowered" | kerb == "flush") %>% nrow()
-#> 3983 rows
-gl %>% pull(kerb)  %>% table %>% sum
+gl %>% filter(is.na(highway) & !is.na(kerb)) %>% nrow()
+#> 4020 rows
+gl %>% filter(!is.na(kerb)) %>% nrow()
 #> 4053
-# most of the kerbs are is.na(highway).
+# almost all of the kerbs are tagged to is.na(highway).
 # a large proportion of kerb data is waterway and aerialway atttribute
 gl %>% filter(highway == "waterway" | highway == "aerialway" & kerb == "lowered" | kerb == "flush") %>% nrow()
