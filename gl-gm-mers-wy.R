@@ -831,17 +831,26 @@ gm %>% filter(!is.na(est_width)) %>% nrow()
 wy %>% filter(!is.na(est_width)) %>% nrow()
 #> 261
 
-# interactive
 
-## interactive map
+## interactive map =====
 wy_df_high_foot = wy %>% filter(highway == "footway") %>% select(highway)
-wy_df_sidewalk = wy %>% filter(!is.na(sidewalk)) %>% select(sidewalk)
+wy_df_sidewalk = wy %>% filter(!is.na(sidewalk)) %>% 
+  mutate(sidewalk_cat = case_when(
+    str_detect(sidewalk, "both")~ "both",
+    str_detect(sidewalk, "left")~ "left",
+    str_detect(sidewalk, "right")~ "right",
+    str_detect(sidewalk, "no|none")~ "no",
+    str_detect(sidewalk, "separate")~ "separated",
+    str_detect(sidewalk, "yes|mapped")~ "yes",
+    str_detect(sidewalk, "cross") & TRUE~ "other"))
 
 tmap_mode("view")
 wy_foot_side_interactive = tm_shape(wy_df_high_foot)+
-  tm_lines(col = "blue")+
+  tm_lines(col = "black")+
   tm_shape(wy_df_sidewalk)+
-  tm_lines(col = "red")
+  tm_lines("sidewalk_cat",
+           palette = "Set1",
+           lwd = 2)
 
 tmap_save(wy_foot_side_interactive, 
           "wy_foot_side_interactive.png",
@@ -849,3 +858,4 @@ tmap_save(wy_foot_side_interactive,
 tmap_save(wy_foot_side_interactive, 
           "wy_foot_side_interactive.html",
           dpi = 700)
+
