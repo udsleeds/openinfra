@@ -21,7 +21,7 @@ gl = readRDS("gl.Rds")
 #                 "mobility_scooter",
 #                 "handicap",
 #                 "foot",
-#                 "lit", 
+#                 "lit",
 #                 "access",
 #                 "sidewalk",
 #                 "footway",
@@ -43,9 +43,10 @@ gl = readRDS("gl.Rds")
 #                 "capacity_disabled",
 #                 "sidewalk_left_width",
 #                 "sidewalk_right_surface",
-#                 "maxspeed"
+#                 "maxspeed",
+#                 "surface"
 # )
-# 
+#  
 # wy <- osmextract::oe_get(place = region_wy,
 #                          layer = "lines",
 #                          force_download = TRUE,
@@ -85,6 +86,8 @@ mers = readRDS("mers.Rds")
 wy_df = wy %>% 
   sf::st_drop_geometry() %>% 
   filter(!is.na(highway) & highway != "motorway" & highway != "motorway_link") 
+
+wy_df %>% select(surface) %>% table
 
 wy_df_cat = wy_df %>% 
   mutate(
@@ -147,8 +150,28 @@ wy_df_cat = wy_df %>%
       str_detect(sidewalk, "no|none")~ "no",
       str_detect(sidewalk, "separate")~ "separated",
       str_detect(sidewalk, "yes|mapped")~ "yes",
-      str_detect(sidewalk, "cross")~ "other")
+      str_detect(sidewalk, "cross")~ "other"),
+    surface_cat = case_when(
+      str_detect(surface, "asphalt")~ "asphalt",
+      str_detect(surface, "pave")~ "paved",
+      str_detect(surface, "concrete")~ "concrete",
+      str_detect(surface, "dirt|mud|ground")~ "dirt",
+      str_detect(surface, "grass")~ "grass",
+      str_detect(surface, "gravel")~ "gravel",
+      str_detect(surface, "stone")~ "stoned",
+      !is.na(surface) & TRUE ~ "other",
+    ),
+    incline_cl = incline %>% parse_number(),
+    incline_cat = case_when(
+      str_detect(incline, "up")~ "up",
+      str_detect(incline, "down")~ "down",
+      incline_cl > 0 & incline_cl < 10 ~ "0% - 10%", 
+      incline_cl > 10 ~ " 10% <", 
+      incline_cl < 0 & incline_cl > -10 ~ "-10% - 0%",
+      !is.na(incline) & TRUE ~ "other"
+    )
   )
+
 
 wy_tagged = rbind(
   wy_df_cat %>% filter(!is.na(wheelchair_cat)) %>% mutate(key = "wheelchair", value = wheelchair_cat, name = "wy"),
@@ -162,7 +185,9 @@ wy_tagged = rbind(
   wy_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "wy"),
   wy_df_cat %>% filter(!is.na(kerb_cat)) %>% mutate(key = "kerb", value = kerb_cat, name = "wy"),
   wy_df_cat %>% filter(!is.na(width_cat)) %>% mutate(key = "width", value = width_cat, name = "wy"),
-  wy_df_cat %>% filter(!is.na(sidewalk_cat)) %>% mutate(key = "sidewalk", value = sidewalk_cat, name = "wy")
+  wy_df_cat %>% filter(!is.na(sidewalk_cat)) %>% mutate(key = "sidewalk", value = sidewalk_cat, name = "wy"),
+  wy_df_cat %>% filter(!is.na(surface_cat)) %>% mutate(key = "surface", value = surface_cat, name = "wy"),
+  wy_df_cat %>% filter(!is.na(incline_cat)) %>% mutate(key = "incline", value = incline_cat, name = "wy")
 ) 
 
 wy_tagged_grouped = wy_tagged %>% 
@@ -170,8 +195,6 @@ wy_tagged_grouped = wy_tagged %>%
   mutate(n = n()) %>% 
   filter(n > 10) %>% 
   ungroup()
-
-wy_tagged_grouped %>% select(lit) %>% table
 
 
 ## plot 1 ====
@@ -278,7 +301,26 @@ gm_df_cat = gm_df %>%
       str_detect(sidewalk, "no|none")~ "no",
       str_detect(sidewalk, "separate")~ "separated",
       str_detect(sidewalk, "yes|mapped")~ "yes",
-      str_detect(sidewalk, "cross")~ "other")
+      str_detect(sidewalk, "cross")~ "other"),
+    surface_cat = case_when(
+      str_detect(surface, "asphalt")~ "asphalt",
+      str_detect(surface, "pave")~ "paved",
+      str_detect(surface, "concrete")~ "concrete",
+      str_detect(surface, "dirt|mud|ground")~ "dirt",
+      str_detect(surface, "grass")~ "grass",
+      str_detect(surface, "gravel")~ "gravel",
+      str_detect(surface, "stone")~ "stoned",
+      !is.na(surface) & TRUE ~ "other",
+    ),
+    incline_cl = incline %>% parse_number(),
+    incline_cat = case_when(
+      str_detect(incline, "up")~ "up",
+      str_detect(incline, "down")~ "down",
+      incline_cl > 0 & incline_cl < 10 ~ "0% - 10%", 
+      incline_cl > 10 ~ " 10% <", 
+      incline_cl < 0 & incline_cl > -10 ~ "-10% - 0%",
+      !is.na(incline) & TRUE ~ "other"
+    )
   )
 
 
@@ -294,7 +336,9 @@ gm_tagged = rbind(
   gm_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "gm"),
   gm_df_cat %>% filter(!is.na(kerb_cat)) %>% mutate(key = "kerb", value = kerb_cat, name = "gm"),
   gm_df_cat %>% filter(!is.na(width_cat)) %>% mutate(key = "width", value = width_cat, name = "gm"),
-  gm_df_cat %>% filter(!is.na(sidewalk_cat)) %>% mutate(key = "sidewalk", value = sidewalk_cat, name = "gm")
+  gm_df_cat %>% filter(!is.na(sidewalk_cat)) %>% mutate(key = "sidewalk", value = sidewalk_cat, name = "gm"),
+  gm_df_cat %>% filter(!is.na(surface_cat)) %>% mutate(key = "surface", value = surface_cat, name = "gm"),
+  gm_df_cat %>% filter(!is.na(incline_cat)) %>% mutate(key = "incline", value = incline_cat, name = "gm")
 ) 
 
 gm_tagged_grouped = gm_tagged %>% 
@@ -408,7 +452,26 @@ mers_df_cat = mers_df %>%
       str_detect(sidewalk, "no|none")~ "no",
       str_detect(sidewalk, "separate")~ "separated",
       str_detect(sidewalk, "yes|mapped")~ "yes",
-      str_detect(sidewalk, "cross")~ "other")
+      str_detect(sidewalk, "cross")~ "other"),
+    surface_cat = case_when(
+      str_detect(surface, "asphalt")~ "asphalt",
+      str_detect(surface, "pave")~ "paved",
+      str_detect(surface, "concrete")~ "concrete",
+      str_detect(surface, "dirt|mud|ground")~ "dirt",
+      str_detect(surface, "grass")~ "grass",
+      str_detect(surface, "gravel")~ "gravel",
+      str_detect(surface, "stone")~ "stoned",
+      !is.na(surface) & TRUE ~ "other",
+    ),
+    incline_cl = incline %>% parse_number(),
+    incline_cat = case_when(
+      str_detect(incline, "up")~ "up",
+      str_detect(incline, "down")~ "down",
+      incline_cl > 0 & incline_cl < 10 ~ "0% - 10%", 
+      incline_cl > 10 ~ " 10% <", 
+      incline_cl < 0 & incline_cl > -10 ~ "-10% - 0%",
+      !is.na(incline) & TRUE ~ "other"
+    )
   )
 
 
@@ -424,7 +487,8 @@ mers_tagged = rbind(
   mers_df_cat %>% filter(!is.na(cycleway_cat)) %>% mutate(key = "cycleway", value = cycleway_cat, name = "mers"),
   mers_df_cat %>% filter(!is.na(kerb_cat)) %>% mutate(key = "kerb", value = kerb_cat, name = "mers"),
   mers_df_cat %>% filter(!is.na(width_cat)) %>% mutate(key = "width", value = width_cat, name = "mers"),
-  mers_df_cat %>% filter(!is.na(sidewalk_cat)) %>% mutate(key = "sidewalk", value = sidewalk_cat, name = "mers")
+  mers_df_cat %>% filter(!is.na(sidewalk_cat)) %>% mutate(key = "sidewalk", value = sidewalk_cat, name = "mers"),
+  mers_df_cat %>% filter(!is.na(surface_cat)) %>% mutate(key = "surface", value = surface_cat, name = "mers")
 ) 
 
 mers_tagged_grouped = mers_tagged %>% 
@@ -662,9 +726,9 @@ joined_plot1 = joined %>%  filter(str_detect(highway, "foot|cycle|ped|steps|livi
         legend.direction = "horizontal")
 joined_plot1
 # saveRDS(joined_plot1, "joined_plot1.Rds")
-ggsave("joined_plot1.png",
-       plot = joined_plot1,
-       dpi = 700)
+# ggsave("joined_plot1.png",
+#        plot = joined_plot1,
+#        dpi = 700)
 
 image_read("~/openinfra/joined_plot1.png")
 
@@ -699,11 +763,11 @@ joined_plot2 = joined2  %>% filter (key %in% tags_cf) %>%
         legend.direction = "horizontal")
 joined_plot2
 # saveRDS(joined_plot2, "joined_plot2.Rds")
-ggsave("joined_plot2.png",
-       plot = joined_plot2,
-       dpi = 700)
+# ggsave("joined_plot2.png",
+#        plot = joined_plot2,
+#        dpi = 700)
 
-### plot 3
+### plot 3 =====
 tags_needed3 = c("kerb", "sidewalk", "width", "lit")
 joined_plot3 = joined2  %>% filter (key %in% tags_needed3) %>% 
   ggplot(aes(x = value,
@@ -725,11 +789,35 @@ joined_plot3 = joined2  %>% filter (key %in% tags_needed3) %>%
 joined_plot3
 # saveRDS(joined_plot3, "joined_plot3.Rds")
 
-ggsave("joined_plot3.png",
-       plot = joined_plot3,
-       dpi = 700)
+# ggsave("joined_plot3.png",
+#        plot = joined_plot3,
+#        dpi = 700)
 
-image_read("openinfra/joined_plot3.png")
+
+### plot 4 ====
+
+tags_needed4 = c("maxspeed", "surface", "incline", "wheelchair")
+joined_plot4 = joined2  %>% filter (key %in% tags_needed4) %>% 
+  ggplot(aes(x = value,
+             y = Proportion,
+             fill = name)) +
+  geom_bar(stat = "identity",
+           position=position_dodge() ) + 
+  theme_bw() +
+  facet_wrap(~key, scales = "free_x") +
+  geom_text(aes(label=round(Proportion * 100)), 
+            color="black", size=3,
+            position = position_dodge(1), vjust = 0.02)+
+  scale_y_continuous(labels = scales::percent, name = "Percentage") +
+  scale_fill_discrete(name = "Metropolitan counties", labels = c("Greater London", "Greater Manchester", "Merseyside", "West Workshire"))+
+  xlab("Tag type")+
+  ylab("Proportion")+
+  theme(legend.position = "top",
+        legend.direction = "horizontal")
+joined_plot4
+# ggsave("joined_plot4.png",
+#        plot = joined_plot4,
+#        dpi = 700)
 
 # ========
 # Let's check out if est_width is used
