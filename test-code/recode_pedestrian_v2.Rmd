@@ -1,0 +1,225 @@
++---
+title: "recode_pedestrian_v2"
+output: md_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r}
+# this function has been developed to recategorize OSM data into a pedestrian network. Network is composed of the following OSM keys and tags: tag:highway=footway, key:footway, key:foot, key:sidewalk, key:pedestrian, key:path.
+# the function takes in the OSM dataframe and returns a new OSM dataframe with a new column called `pedestrian_friendly`.
+# `pedestrian_friendly` has three values (NAs excluded): "yes" (the highway is pedestrian friendly), "maybe" (the highway is potentially pedestrian friendly), and "no" (highways are not pedestrian friendly).
+# the OSM data requires the keys and tags of which the pedestrian network is composed, otherwise it will not be able to return a `pedestrian_friendly` column.
+# It is possible to modify the values that are considered pedestrian friendly or not but not the keys and tags of which the network is made up.
+# Finally, `filter_df` allows to filter the OSM dataframe based on the new `pedestrian_friendly` column. The argument can take three values: "yes", "maybe", and "no". If "yes" is given, then only the rows containing "yes" in `pedestrian_friendly` will be returned. To return *all* the values, keep filter_df=NULL
+recode_pedestrian <- function(df = osm_dataframe,
+                              highway_footway_yes = NULL,
+                              highway_footway_maybe = NULL,
+                              highway_footway_no = NULL,
+                              footway_yes = NULL,
+                              footway_maybe = NULL,
+                              footway_no = NULL,
+                              foot_yes = NULL,
+                              foot_maybe = NULL,
+                              foot_no = NULL,
+                              sidewalk_yes = NULL,
+                              sidewalk_no = NULL,
+                              pedestrian_yes = NULL,
+                              path_yes = NULL,
+                              path_no = NULL) {
+  # defining default values used in the function
+    highway_footway_default_yes = c("footway",
+                            "pedestrian",
+                            "living_street",
+                            "residential",
+                            "path",
+                            "steps",
+                            "track",
+                            "unclassified"
+                            )
+    highway_footway_default_maybe <- c("service",
+                                       "cycleway",
+                                       "bridleway",
+                                       "corridor")  
+    highway_footway_default_no <- c("tertiary",  
+                           "primary",
+                           "trunk",
+                           "secondary",
+                           "motorway",
+                           "motorway_link",
+                           "construction",
+                           "trunk_link",
+                           "primary_link",
+                           "tertiary_link",
+                           "proposed",
+                           "secondary_link",
+                           "road", 
+                           "raceway",
+                           "bus_guideway",
+                           "busway",
+                           "no", 
+                           "services"
+                           )
+    footway_default_yes = c("sidewalk",
+                            "crossing",
+                            "access_aisle",
+                            "left",
+                            "yes"
+                            )
+    footway_default_maybe <- c("traffic_island", 
+                              "link",
+                              "alley"
+                              )
+    footway_default_no <- c("no",
+                           "none",
+                           "np") 
+    foot_default_yes <-  c("yes",
+                           "designated"
+                           )
+    foot_default_maybe <- c("permissive",
+                           "private",
+                           "customers",
+                           "destination", # or no?
+                           "discouraged",
+                           "delivery",
+                           "permit"
+                           )
+    foot_default_no <- c("no",
+                        "unknown",
+                        "emergency",
+                        "informal", 
+                        "limited" 
+                        )
+    sidewalk_default_yes = c("both",
+                         "left",
+                         "right",
+                         "separate",
+                         "mapped", 
+                         "yes",
+                         "crossing", 
+                         "left;right"
+                         ) 
+    sidewalk_default_no <- c("no",
+                            "none")
+    pedestrian_default_yes = c("crossing ")
+    path_default_yes = c("footpath")
+    path_default_no <- c("no")
+    
+    filter_df_default = c("no")
+    
+    # telling the function that default values should be used unless other argument values given.
+    if(is.null(highway_footway_yes)) {
+    highway_footway_yes = highway_footway_default_yes
+    }
+    
+    if(is.null(highway_footway_maybe)) {
+    highway_footway_maybe = highway_footway_default_maybe
+    }
+    
+    if(is.null(highway_footway_no)) {
+    highway_footway_no = highway_footway_default_no
+    }
+    
+    if(is.null(footway_yes)) {
+    footway_yes = footway_default_yes
+    }    
+    
+    if(is.null(footway_maybe)) {
+    footway_maybe = footway_default_maybe
+    }
+    
+    if(is.null(footway_no)) {
+    footway_no = footway_default_no
+    }
+    
+    if(is.null(foot_yes)) {
+    foot_yes = foot_default_yes
+    } 
+    
+    if(is.null(foot_maybe)) {
+    foot_maybe = foot_default_maybe
+    }
+        
+    if(is.null(foot_no)) {
+    foot_no = foot_default_no
+    }
+    
+    if(is.null(sidewalk_yes)) {
+    sidewalk_yes = sidewalk_default_yes
+    }
+        
+    if(is.null(sidewalk_no)) {
+    sidewalk_no = sidewalk_default_no
+    }
+    
+    if(is.null(pedestrian_yes)) {
+    pedestrian_yes = pedestrian_default_yes
+    }
+   
+    if(is.null(path_yes)) {
+    path_yes = path_default_yes
+    }
+    
+    if(is.null(path_no)) {
+    path_no = path_default_no
+    }
+    
+    # recategorization
+ new_osm_df <-  df %>% 
+  mutate(pedestrian_friendly = case_when(
+    highway %in% highway_footway_yes ~ "yes",
+    highway %in% highway_footway_no ~ "no",
+    
+    highway %in% highway_footway_maybe & 
+      foot %in% foot_yes | 
+      footway %in% footway_yes | 
+      sidewalk %in% sidewalk_yes |
+      pedestrian %in% pedestrian_yes |
+      path %in% path_yes
+    ~ "yes",
+    
+    highway %in% highway_footway_maybe |
+      foot %in% foot_maybe |
+      footway %in% footway_maybe 
+    ~ "maybe",
+    
+    highway %in% highway_footway_maybe & 
+      foot %in% foot_no  | 
+      footway %in% footway_no | 
+      sidewalk %in% sidewalk_no |
+      path %in% path_no
+    ~ "no"
+         )
+         )
+ 
+ # telling the function what should be returned depending on the filter_df values
+ if(is.null(filter_df)) {
+   
+   filter_df = filter_df_default
+   return(new_osm_df)
+ }
+ 
+ if(filter_df == "no"){
+   
+   new_osm_df_no <-  new_osm_df %>% filter(pedestrian_friendly == "no")
+
+   return(new_osm_df_no)
+ }
+ 
+ if(filter_df == "maybe"){
+   
+   new_osm_df_maybe <-  new_osm_df %>% filter(pedestrian_friendly == "maybe")
+
+   return(new_osm_df_maybe)
+ }
+ 
+ if(filter_df == "yes"){
+   
+   new_osm_df_yes <-  new_osm_df %>% filter(pedestrian_friendly == "yes")
+
+   return(new_osm_df_yes)
+
+ }
+
+}
+```
