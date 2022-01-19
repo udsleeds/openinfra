@@ -833,7 +833,7 @@ wy %>% filter(!is.na(est_width)) %>% nrow()
 
 
 ## interactive map =====
-wy_df_high_foot = wy %>% filter(highway == "footway") %>% select(highway)
+wy_df_high_foot = wy %>% filter(!is.na(highway)) %>% select(highway)
 wy_df_sidewalk = wy %>% filter(!is.na(sidewalk)) %>% 
   mutate(sidewalk_cat = case_when(
     str_detect(sidewalk, "both")~ "both",
