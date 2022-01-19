@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2022.1.15)  17 JAN 2022 18:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2022.1.15)  17 JAN 2022 19:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -303,52 +303,52 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 {/Users/gretatimaite/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.204 
+l.205 
        [2]
 <openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf, id=70, 469.755pt x 325.215pt>
 File: openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf Graphic file (type pdf)
 <use openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf>
-Package pdftex.def Info: openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf  used on input line 225.
+Package pdftex.def Info: openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf  used on input line 226.
 (pdftex.def)             Requested size: 472.03123pt x 326.79224pt.
 <openinfra_gisruk_files/figure-latex/active_travel_proportions-1.pdf, id=71, 469.755pt x 325.215pt>
 File: openinfra_gisruk_files/figure-latex/active_travel_proportions-1.pdf Graphic file (type pdf)
 <use openinfra_gisruk_files/figure-latex/active_travel_proportions-1.pdf>
-Package pdftex.def Info: openinfra_gisruk_files/figure-latex/active_travel_proportions-1.pdf  used on input line 241.
+Package pdftex.def Info: openinfra_gisruk_files/figure-latex/active_travel_proportions-1.pdf  used on input line 242.
 (pdftex.def)             Requested size: 472.03123pt x 326.79224pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.251 \texttt{highway\ =\ footway}
-                                   [3]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+l.251 
+       [3]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.251 \texttt{highway\ =\ footway}
-                                   [4 <./openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf>]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+l.251 
+       [4 <./openinfra_gisruk_files/figure-latex/highway_proportions-1.pdf>]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.251 \texttt{highway\ =\ footway}
-                                   [5 <./openinfra_gisruk_files/figure-latex/active_travel_proportions-1.pdf>]
+l.251 
+       [5 <./openinfra_gisruk_files/figure-latex/active_travel_proportions-1.pdf>]
 <openinfra_gisruk_files/figure-latex/accessibility_proportions-1.pdf, id=102, 469.755pt x 325.215pt>
 File: openinfra_gisruk_files/figure-latex/accessibility_proportions-1.pdf Graphic file (type pdf)
 <use openinfra_gisruk_files/figure-latex/accessibility_proportions-1.pdf>
-Package pdftex.def Info: openinfra_gisruk_files/figure-latex/accessibility_proportions-1.pdf  used on input line 258.
+Package pdftex.def Info: openinfra_gisruk_files/figure-latex/accessibility_proportions-1.pdf  used on input line 259.
 (pdftex.def)             Requested size: 472.03123pt x 326.79224pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.288 
-       [6 <./openinfra_gisruk_files/figure-latex/accessibility_proportions-1.pdf>]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+l.274 F
+       inally, OSM has the potential to represent highway features essential [6 <./openinfra_gisruk_files/figure-latex/accessibility_proportions-1.pdf>]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.338 
+l.339 
        [7]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.416 
+l.411 
        [8]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.502 \end{document}
+l.503 \end{document}
                      [9] (./openinfra_gisruk.aux)
 Package rerunfilecheck Info: File `openinfra_gisruk.out' has not changed.
 (rerunfilecheck)             Checksum: 49CA635192B46F487B0E29BCB7F0A71F;1068.
@@ -356,16 +356,16 @@ Package rerunfilecheck Info: File `openinfra_gisruk.out' has not changed.
 Here is how much of TeX's memory you used:
  9433 strings out of 480246
  151288 string characters out of 5894696
- 451127 words of memory out of 5000000
+ 450127 words of memory out of 5000000
  27219 multiletter control sequences out of 15000+600000
  478040 words of font info for 57 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,8n,63p,639b,388s stack positions out of 5000i,500n,10000p,200000b,80000s
  </Users/gretatimaite/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk> </Users/gretatimaite/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0600.600pk> </Users/gretatimaite/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0800.600pk></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></Users/gretatimaite/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on openinfra_gisruk.pdf (9 pages, 196805 bytes).
+Output written on openinfra_gisruk.pdf (9 pages, 195980 bytes).
 PDF statistics:
- 271 PDF objects out of 1000 (max. 8388607)
- 226 compressed objects within 3 object streams
+ 233 PDF objects out of 1000 (max. 8388607)
+ 189 compressed objects within 2 object streams
  46 named destinations out of 1000 (max. 500000)
  80 words of extra memory for PDF output out of 10000 (max. 10000000)
 
