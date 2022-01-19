@@ -830,3 +830,22 @@ gm %>% filter(!is.na(est_width)) %>% nrow()
 #> 17
 wy %>% filter(!is.na(est_width)) %>% nrow()
 #> 261
+
+# interactive
+
+## interactive map
+wy_df_high_foot = wy %>% filter(highway == "footway") %>% select(highway)
+wy_df_sidewalk = wy %>% filter(!is.na(sidewalk)) %>% select(sidewalk)
+
+tmap_mode("view")
+wy_foot_side_interactive = tm_shape(wy_df_high_foot)+
+  tm_lines(col = "blue")+
+  tm_shape(wy_df_sidewalk)+
+  tm_lines(col = "red")
+
+tmap_save(wy_foot_side_interactive, 
+          "wy_foot_side_interactive.png",
+          dpi = 700)
+tmap_save(wy_foot_side_interactive, 
+          "wy_foot_side_interactive.html",
+          dpi = 700)
