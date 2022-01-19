@@ -716,3 +716,15 @@ joined_plot3 = joined2  %>% filter (key %in% tags_needed3) %>%
         legend.direction = "horizontal")
 joined_plot3
 # saveRDS(joined_plot3, "GISRUK_paper/joined_plot3.Rds")
+
+# ========
+# I'm surprised how little there's data on width. Let's check out if est_width is used
+# let's have a look if est_width is used
+gl %>% filter(!is.na(est_width)) %>% nrow()
+#> 680
+mers %>% filter(!is.na(est_width)) %>% nrow
+#> 10
+gm %>% filter(!is.na(est_width)) %>% nrow()
+#> 17
+wy %>% filter(!is.na(est_width)) %>% nrow()
+#> 261
