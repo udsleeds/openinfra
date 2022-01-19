@@ -141,6 +141,7 @@ gl_tagged_grouped = gl_tagged %>%
 
 ## plot 1 ====
 gl_tagged_grouped_prop = gl_tagged_grouped %>% 
+  # select(highway) %>% 
   group_by(highway) %>% 
   summarize(n = n(),
             Proportion = n / nrow(gl_df))
@@ -148,9 +149,14 @@ gl_tagged_grouped_prop = gl_tagged_grouped %>%
 gl_plot1 = gl_tagged_grouped_prop %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"))  %>% 
   ggplot( aes(x = highway,
               y = Proportion)) +
+  geom_text(aes(label=round(Proportion * 100)), 
+           color="black", size=3,
+           position = position_dodge(1), vjust = 0.02)+
+  scale_y_continuous(labels = scales::percent, name = "Percentage")+
   geom_bar(stat = "identity") 
+gl_plot1
 
-## plot 32 ====
+## plot 2 ====
 gl_tagged_grouped_prop2 = gl_tagged_grouped %>% 
   group_by(value, key) %>% 
   summarize(n = n(),
@@ -161,6 +167,9 @@ gl_plot2 = gl_tagged_grouped_prop2 %>% filter(key %in% tags_cf) %>% select(key, 
   ggplot( aes(x = value,
               y = Proportion)) +
   geom_bar(stat = "identity") +
+  geom_text(aes(label=round(Proportion * 100)), 
+            color="black", size=3,
+            position = position_dodge(1), vjust = 0.02)+
   scale_y_continuous(labels = scales::percent) +
   facet_wrap(~key, scales = "free_x") +
   theme_bw() +
@@ -173,11 +182,13 @@ tags_add = c("maxspeed", "lit", "kerb", "width")
 gl_plot3 = gl_tagged_grouped_prop2 %>% filter(key %in% tags_add) %>% select(key, Proportion) %>% 
   ggplot( aes(x = value,
               y = Proportion)) +
+  geom_text(aes(label=round(Proportion * 100)), 
+            color="black", size=3,
+            position = position_dodge(1), vjust = 0.02)+
   scale_y_continuous(labels = scales::percent) +
   geom_bar(stat = "identity") +
   facet_wrap(~key, scales = "free_x") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
-
 gl_plot3
 
