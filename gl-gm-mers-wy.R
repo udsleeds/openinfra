@@ -643,7 +643,7 @@ joined = rbind(gm_tagged_grouped_prop_name,
                mers_tagged_grouped_prop_name,
                gl_tagged_grouped_prop_name)
 
-joined1 = joined %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"))   %>% 
+joined_plot1 = joined %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"))   %>% 
   ggplot(aes(x = highway,
              y = Proportion,
              fill = name)) +
@@ -660,8 +660,13 @@ joined1 = joined %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"))
   ylab("Proportion")+
   theme(legend.position = "top",
         legend.direction = "horizontal")
-joined1
-# saveRDS(joined1, "joined1.Rds")
+joined_plot1
+# saveRDS(joined_plot1, "joined_plot1.Rds")
+ggsave("joined_plot1.png",
+       plot = joined_plot1,
+       dpi = 700)
+
+image_read("~/openinfra/joined_plot1.png")
 
 ### plot 2 ====
 
@@ -694,6 +699,9 @@ joined_plot2 = joined2  %>% filter (key %in% tags_cf) %>%
         legend.direction = "horizontal")
 joined_plot2
 # saveRDS(joined_plot2, "joined_plot2.Rds")
+ggsave("joined_plot2.png",
+       plot = joined_plot2,
+       dpi = 700)
 
 ### plot 3
 tags_needed3 = c("kerb", "sidewalk", "width", "lit")
@@ -715,10 +723,16 @@ joined_plot3 = joined2  %>% filter (key %in% tags_needed3) %>%
   theme(legend.position = "top",
         legend.direction = "horizontal")
 joined_plot3
-# saveRDS(joined_plot3, "GISRUK_paper/joined_plot3.Rds")
+# saveRDS(joined_plot3, "joined_plot3.Rds")
+
+ggsave("joined_plot3.png",
+       plot = joined_plot3,
+       dpi = 700)
+
+image_read("openinfra/joined_plot3.png")
 
 # ========
-# I'm surprised how little there's data on width. Let's check out if est_width is used
+# Let's check out if est_width is used
 # let's have a look if est_width is used
 gl %>% filter(!is.na(est_width)) %>% nrow()
 #> 680
