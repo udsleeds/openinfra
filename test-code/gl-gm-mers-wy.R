@@ -3,6 +3,7 @@ library(sf)
 library(mapview)
 library(tmap)
 library(osmextract)
+library(pct)
 
 # Getting data =====
 ## Greater London =====
@@ -858,4 +859,54 @@ tmap_save(wy_foot_side_interactive,
 tmap_save(wy_foot_side_interactive, 
           "wy_foot_side_interactive.html",
           dpi = 700)
+
+## regions from pct 
+# pct::pct_regions %>% pull(region_name)
+
+wy_pct = pct::get_pct(region = "west-yorkshire",
+                      layer = "z",
+                      purpose = "commute",
+                      geography = "lsoa")
+gm_pct = pct::get_pct(region = "greater-manchester",
+                      layer = "z",
+                      purpose = "commute",
+                      geography = "lsoa")
+liv_pct = pct::get_pct(region = "liverpool-city-region",
+                      layer = "z",
+                      purpose = "commute",
+                      geography = "lsoa")
+lond_pct = pct::get_pct(region = "london",
+                      layer = "z",
+                      purpose = "commute",
+                      geography = "lsoa")
+
+
+wy_pct_geom = wy_pct %>% select(geo_code) %>% st_combine
+gm_pct_geom = gm_pct %>% select(geo_code) %>% st_combine
+liv_pct_geom = liv_pct %>% select(geo_code) %>% st_combine
+lond_pct_geom = lond_pct %>% select(geo_code) %>% st_combine
+
+# tmap_options(check.and.fix = TRUE)
+
+tmap_mode("view")
+tm_shape(wy_pct_geom)+
+  tm_polygons(col = "blue")+
+  tm_shape(gm_pct_geom)+
+  tm_polygons(col = "yellow")+
+  tm_shape(liv_pct_geom)+
+  tm_polygons(col = "red")+
+  tm_shape(lond_pct_geom)+
+  tm_polygons(col = "black")
+  
+
+wy_foot_bi = wy %>% filter(highway == "footway", bicycle == "designated")
+wy_foot_bi %>% nrow
+wy_cycle_foot = wy %>% filter(highway == "cycleway", foot == "designated") 
+
+tm_shape(wy_cycle_foot)+
+  tm_lines(lwd = 5)
+
+tm_shape(wy_foot_bi)+
+  tm_lines(lwd = 5)
+
 
