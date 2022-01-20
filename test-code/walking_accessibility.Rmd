@@ -2,7 +2,7 @@
 title: "walking_accessibility"
 author: "Greta"
 date: "11/18/2021"
-output: html_document
+output: md_document
 ---
 This notebook focuses on exploring OSM data related to cycling and walking. It is limited to West Yorkshire.
 
@@ -53,9 +53,12 @@ cycleway:right:separation:left "cycle" "cycleway:est_width"
 
 ```{r}
 # load up the libraries
-library(osmextract) 
+library(osmextract)
 library(tidyverse)
 library(sf)
+library(mapview)
+library(pct)
+library(ggplot2)
 ```
 
 ## datasets
@@ -84,7 +87,7 @@ wy <- readRDS("wy.Rds")
 # wy_cycling_net <- readRDS("wy_cycling_net.Rds")
 # wy_cn_short <- readRDS("wy_cn_short.Rds")
 wy_pct <- readRDS("wy_pct.Rds")
-leeds <- wy_pct %>% filter(lad_name == "Leeds")
+leeds_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/leeds_pct.Rds")
 wy_walking <- readRDS("wy_walking.Rds")
 # wy_walk_short <- readRDS("wy_walking.Rds")
 ```
@@ -92,23 +95,35 @@ wy_walking <- readRDS("wy_walking.Rds")
 ## additional functions
 
 ```{r}
-# My very first function of which I am very proud :)
 # what it does:
 # 1. calculates the ratio of the (sf) column's non-NA cases (rows) to the total number of cases (rows)
 # 2. converts ratio to percentages
 # 3. rounds to 2 significant numbers
-perc_ratio <- function(df = dataframe, x = character()){
-((df %>% pull(x) %>% table() %>% sum()) / (df %>% nrow()) * 100) %>% 
+proportion_sf <- function(df = dataframe, x = NULL){
+  for (i in 1:length(x)) {
+    
+   percentages <-  ((df[, x][[i]] %>% table() %>% sum()) / (df %>% nrow()) * 100) %>% 
     signif(digits = 2)
+   
+   print(percentages)
+  }
 }
+
+# examples:
+# proportion_sf(wy_walking, x = 3:5)
+# proportion_sf (wy_walking,
+#               x = c("highway",
+#                     "waterway",
+#                     "aerialway"))
 ```
+
 
 ```{r}
 # a function that returns a table of sf object's column's values sorted decreasingly
 sf_col_table <- function(df = dataframe,
                          x = character()){
   df %>% pull(x) %>% table %>% sort(decreasing = TRUE)
-                         }
+}
 ```
 
 # walking + accessibility
@@ -504,3 +519,666 @@ ratios <- rbind(foot_perc,
 
 ratios
 ```
+
+
+
+## linking pct data with Leeds Census 2011
+```{r, message = FALSE}
+# working with lsoa data
+travel_foot_leeds_lsoa <- read_csv("~/Desktop/Method of travel to work On foot % 2011 lsoa.csv")
+travel_foot_leeds_lsoa
+
+# checking if leeds_pct$geo_code matches travel_foot_leeds_lsoa$NAME
+leeds_pct$geo_code %in% travel_foot_leeds_lsoa$NAME %>% table() # TRUE 482
+
+```
+
+### pct + traveling on foot (%)
+```{r}
+# Cleaning data -- extracting digits from the `Method of travel to work: On foot %|2011` column
+
+travel_foot_leeds_lsoa1 <- travel_foot_leeds_lsoa %>%
+  mutate(foot_census = readr::parse_number(travel_foot_leeds_lsoa$"Method of travel to work: On foot %|2011")) # using `parse_number` to extract digits, which will be added to a new column called "value"
+
+# there were 3 parsing failures. Let's check which ones failed
+travel_foot_leeds_lsoa1 %>% filter(is.na(foot_census)) # not sure why they failed as I don't see any differences compared to other rows
+# I'll fix this manually for now but I'll need to come up with more nuanced code to avoid parsing issues...
+  
+travel_foot_leeds_lsoa1$foot_census[travel_foot_leeds_lsoa1$NAME == "E01011375"] <- 7.2
+travel_foot_leeds_lsoa1$foot_census[travel_foot_leeds_lsoa1$NAME == "E01011564"] <- 1.7
+travel_foot_leeds_lsoa1$foot_census[travel_foot_leeds_lsoa1$NAME == "E01011670"] <- 12.7
+
+# double-checking if there are any NAs left
+travel_foot_leeds_lsoa1 %>% filter(is.na(value)) # none
+```
+
+### joining pct + census
+
+```{r, message = FALSE}
+# now we can join `leeds_pct` and `travel_foot_leeds_lsoa1` dataframes
+
+leeds_joined_lsoa <- left_join(leeds_pct,
+                          travel_foot_leeds_lsoa1,
+                          by = c(geo_code = "NAME"))
+# checking if we have `value` column
+leeds_joined_lsoa %>% select(foot_census) # good :)
+```
+
+### plotting leeds_joined with osm
+```{r}
+leeds_joined_lsoa %>% select(foot_census) %>% plot
+
+st_geometry(leeds_pct) %>% plot(reset = FALSE)
+leeds_joined_lsoa %>% select(foot_census) %>% plot(add = TRUE)
+wy_walking %>% filter(highway == "footway") %>% plot(add = TRUE,
+                                                     col = "white")
+
+# sf_col_table(leeds_joined_lsoa, "foot_census")
+
+```
+
+### pct + economically active (%)
+Source: https://observatory.leeds.gov.uk/economy-and-employment/map/
+
+What 'economically active' means?
+Economically active ->	Employed ->	Includes part-time work
+Economically active ->	Unemployed ->	Without a job - available and seeking work
+Economically inactive ->	Economically inactive ->	Not seeking work - includes sick, retired, full-time students, looking after family
+
+Question: 
+
+- how is "Economically active: In employment" measured? If it says that '60%' does it refer to the total population of an area or to its sample (i.e., the one which is economically active)? 
+
+```{r, message = FALSE}
+# working with lsoa data
+econ_active_leeds_lsoa <- read_csv("~/Desktop/Economically active % 2011 lsoa.csv")
+econ_active_leeds_lsoa
+
+# checking if leeds_pct$geo_code matches travel_foot_leeds_lsoa$NAME
+leeds_pct$geo_code %in% travel_foot_leeds_lsoa$NAME %>% table() # TRUE 482
+
+```
+
+```{r}
+# Cleaning data -- extracting digits from the `Economically active %|2011` column
+
+econ_active_leeds_lsoa1 <- econ_active_leeds_lsoa %>%
+  mutate(econ_active_census = readr::parse_number(econ_active_leeds_lsoa$"Economically active %|2011")) # using `parse_number` to extract digits, which will be added to a new column called "value"
+
+# there were 3 parsing failures. Let's check which ones failed
+econ_active_leeds_lsoa1 %>% filter(is.na(econ_active_census)) # It's interesting that the same rows failed to parse as in foot_census case. 
+  
+econ_active_leeds_lsoa1$econ_active_census[econ_active_leeds_lsoa1$NAME == "E01011375"] <- 63.7
+econ_active_leeds_lsoa1$econ_active_census[econ_active_leeds_lsoa1$NAME == "E01011564"] <- 75.2
+econ_active_leeds_lsoa1$econ_active_census[econ_active_leeds_lsoa1$NAME == "E01011670"] <- 50.6
+
+# double-checking if there are any NAs left
+econ_active_leeds_lsoa1 %>% filter(is.na(value)) # none
+```
+
+### joining leeds_joined + census on economically active %
+
+```{r, message = FALSE}
+# now we can join `leeds_joined` and `econ_active_leeds_lsoa1`
+
+leeds_joined_lsoa <- left_join(leeds_joined_lsoa,
+                          econ_active_leeds_lsoa1,
+                          by = c(geo_code = "NAME"))
+
+# saving data
+# saveRDS(leeds_joined_lsoa,
+#         "leeds_joined_lsoa.Rds")
+
+# checking if we have `value` column
+# leeds_joined_lsoa %>% select(econ_active_census) 
+
+```
+
+### plotting
+
+```{r}
+leeds_joined_lsoa %>% select(econ_active_census) %>% plot
+
+st_geometry(leeds_pct) %>% plot(reset = FALSE)
+leeds_joined_lsoa %>% select(econ_active_census) %>% plot(add = TRUE)
+wy_walking %>% filter(highway == "footway") %>% plot(add = TRUE,
+                                                     col = "white")
+```
+
+
+## Pedestrian infrastructure
+
+Making a function that returns an OSM data frame with a new variable called 'pedestrian' that is 'yes/no/maybe'.
+
+Next steps: adding a column regarding accessibility.
+
+```{r}
+# to make the computation faster, I'll drop the `geometry` column.
+wy_walking_nogeom <- wy_walking %>% st_drop_geometry()
+wy_walking_nogeom %>% ncol()
+```
+
+### recategorization: key:highway
+```{r}
+# I'll start recategorization from highway column.
+sf_col_table(wy_walking_nogeom, "highway") # unique values in a decreasing order
+# .
+#        service    residential        footway          track           path   unclassified 
+#          53446          44695          37086           7990           7352           6880 
+#       tertiary        primary       cycleway          trunk          steps      secondary 
+#           5202           3422           3325           2899           2705           1475 
+#      bridleway     pedestrian       motorway  living_street  motorway_link   construction 
+#           1268            808            577            395            393            339 
+#     trunk_link   primary_link  tertiary_link       proposed       corridor secondary_link 
+#            337            322            143             78             48             43 
+#           road        raceway   bus_guideway         busway             no       services 
+#             27             17             14              8              6              2 
+
+
+highway_pedestrian_yes <- c("footway",
+                                 "pedestrian",
+                                 "living_street") # tags indicating pedestrian friendly highways
+
+highway_pedestrian_maybe <- c("service",
+                              "residential",
+                              "track", # could also be yes but of poor quality?
+                              "path", # could also be yes but of poor quality?
+                              "unclassified",
+                              "cycleway",
+                              "steps", # friendly to pedestrians but not accessible?
+                              "bridleway",
+                              "corridor") # tags indicating *potentially* pedestrian friendly highways
+
+highway_pedestrian_no <- c("tertiary",  
+                           "primary",
+                           "trunk",
+                           "secondary",
+                           "motorway",
+                           "motorway_link",
+                           "construction",
+                           "trunk_link",
+                           "primary_link",
+                           "tertiary_link",
+                           "proposed",
+                           "secondary_link",
+                           "road", # treated as a tagging error 
+                           "raceway",
+                           "bus_guideway",
+                           "busway",
+                           "no", # I think it's a tagging error
+                           "services") 
+
+wy_walking_nogeom1 <- wy_walking_nogeom %>% 
+  mutate(pedestrian_friendly = case_when(
+    # highway=*
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_maybe ~ "maybe",
+    highway %in% highway_pedestrian_no ~ "no"
+         )
+         )
+
+## just a quick sanity check that numbers match
+wy_walking_nogeom1 %>% filter(pedestrian_friendly == "yes" | pedestrian_friendly == "maybe" | pedestrian_friendly == "no") %>% nrow() # 181302 rows that had been recoded
+wy_walking_nogeom1 %>% filter(is.na(highway)) %>% nrow() # 53311 rows that have NAs in key:highway =*, hence no recoding
+(181302 + 53311) == (wy_walking_nogeom %>% nrow()) # value must be TRUE
+
+```
+
+
+### recategorization: key:foot
+
+```{r}
+sf_col_table(wy_walking_nogeom, "foot")
+# .
+#         yes  designated  permissive          no     unknown     private   customers destination 
+#        7479        3741         516         387         151         123          38          34 
+# discouraged    delivery   emergency    informal     limited      permit 
+#           3           1           1           1           1           1 
+
+foot_pedestrian_yes <- c("yes",
+                         "designated"
+                         )
+
+foot_pedestrian_maybe <- c("permissive",
+                           "private",
+                           "customers",
+                           "destination", # or no?
+                           "discouraged",
+                           "delivery",
+                           "permit"
+                           )
+
+foot_pedestrian_no <- c("no",
+                        "unknown",
+                        "emergency",
+                        "informal", # not sure what it means
+                        "limited" # not sure what it means
+                        )
+
+wy_walking_nogeom2 <- wy_walking_nogeom %>% 
+  mutate(pedestrian_friendly = case_when(
+    highway %in% highway_pedestrian_yes 
+    ~ "yes",
+    highway %in% highway_pedestrian_no 
+    ~ "no",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_yes  
+    ~ "yes",
+    
+    highway %in% highway_pedestrian_maybe |
+      foot %in% foot_pedestrian_maybe
+    ~ "maybe",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_no 
+    ~ "no"
+  )
+  )
+
+
+# checking if any "maybe" highways were reclassified to "yes" because foot was added
+wy_walking_nogeom1 %>% filter(pedestrian_friendly == "yes") %>% nrow
+wy_walking_nogeom2 %>% filter(pedestrian_friendly == "yes") %>% nrow
+# pedestrian network expanded. Let's see how much
+wy_walking_nogeom2 %>% filter(highway %in% highway_pedestrian_maybe, foot %in% foot_pedestrian_yes) %>% nrow() 
+# 6080 rows
+# Let's see how many of them are because cycleways are (potentially) shared
+wy_walking_nogeom2 %>% filter(highway == "cycleway", foot %in% foot_pedestrian_yes) %>% nrow()
+# 2030 rows
+```
+
+### recategorization: key:footway=*
+
+```{r}
+sf_col_table(wy_walking_nogeom, "footway")
+# .
+#       sidewalk       crossing   access_aisle           left             no traffic_island 
+#           1546            512             77             11              9              6 
+#            yes           none          alley           link             np 
+#              5              3              1              1              1 
+
+footway_pedestrian_yes <- c("sidewalk",
+                            "crossing",
+                            "access_aisle",
+                            "left", # this is a depreciated way to indicate sidewalk on the left
+                            "yes"
+                            )
+
+footway_pedestrian_maybe <- c("traffic_island", # is it the same as safety island???
+                              "link",
+                              "alley") 
+
+footway_pedestrian_no <- c("no", # not sure what i
+                           "none",
+                           "np") # tagging error?
+
+
+# wy_walking_nogeom2 <- wy_walking_nogeom1 %>% 
+#   mutate(pedestrian = case_when(
+#     # highway=*
+#     highway %in% highway_pedestrian_yes ~ "yes",
+#     highway %in% highway_pedestrian_maybe ~ "maybe",
+#     highway %in% highway_pedestrian_no ~ "no",
+#     # foot=*
+#     highway %in% highway_pedestrian_maybe & foot %in% foot_pedestrian_yes ~ "yes", 
+#     highway %in% highway_pedestrian_maybe & foot %in% foot_pedestrian_maybe ~ "maybe",
+#     highway %in% highway_pedestrian_maybe & foot %in% foot_pedestrian_no ~ "no",
+#     # footway=*
+#     highway %in% highway_pedestrian_maybe & footway %in% footway_pedestrian_yes ~ "yes",
+#     highway %in% highway_pedestrian_maybe & footway %in% footway_pedestrian_no ~ "no"
+#          )
+#          )
+
+wy_walking_nogeom3 <- wy_walking_nogeom %>% 
+  mutate(pedestrian_friendly = case_when(
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_no ~ "no",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_yes | 
+      footway %in% footway_pedestrian_yes 
+    ~ "yes",
+    
+    highway %in% highway_pedestrian_maybe |
+      foot %in% foot_pedestrian_maybe |
+      footway %in% footway_pedestrian_maybe
+    ~ "maybe",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_no  | 
+      footway %in% footway_pedestrian_no 
+    ~ "no"
+  )
+  )
+
+# tracking the recategorization changes 
+# wy_walking_nogeom2 %>% filter(pedestrian_friendly == "yes") %>% nrow
+# wy_walking_nogeom2 %>% filter(pedestrian_friendly == "maybe") %>% nrow 
+# wy_walking_nogeom3 %>% filter(pedestrian_friendly == "yes") %>% nrow
+# wy_walking_nogeom3 %>% filter(pedestrian_friendly == "maybe") %>% nrow
+# wy_walking_nogeom2 %>% filter(pedestrian_friendly == "no") %>% nrow
+# wy_walking_nogeom3 %>% filter(pedestrian_friendly == "no") %>% nrow
+```
+
+### recategorization: key:sidewalk=*
+```{r}
+sf_col_table(wy_walking_nogeom, "sidewalk")
+# .
+#       both         no       left      right       none   separate     mapped        yes   crossing 
+#        833        452        432        201        163         79         23          6          1 
+# left;right 
+#          1 
+
+sidewalk_pedestrian_yes <- c("both",
+                             "left",
+                             "right",
+                             "separate",
+                             "mapped", # I assume it indicates sidewalk's presence?
+                             "yes",
+                             "crossing", # most probably should have been assigned to footway=*
+                             "left;right") 
+
+sidewalk_pedestrian_no <- c("no",
+                            "none")
+
+wy_walking_nogeom4 <- wy_walking_nogeom %>% 
+  mutate(pedestrian_friendly = case_when(
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_no ~ "no",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_yes | 
+      footway %in% footway_pedestrian_yes | 
+      sidewalk %in% sidewalk_pedestrian_yes 
+    ~ "yes",
+    
+    highway %in% highway_pedestrian_maybe |
+      foot %in% foot_pedestrian_maybe |
+      footway %in% footway_pedestrian_maybe # note, there's no "maybe" sidewalk
+    ~ "maybe",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_no  | 
+      footway %in% footway_pedestrian_no | 
+      sidewalk %in% sidewalk_pedestrian_no 
+    ~ "no"
+         )
+         )
+
+# wy_walking_nogeom4 %>% filter(pedestrian_friendly == "yes") %>% nrow()
+#> 45169 
+# wy_walking_nogeom4 %>% filter(pedestrian_friendly == "maybe") %>% nrow()
+#> 120834
+```
+
+### recategorization: key:pedestrian=*
+
+```{r}
+sf_col_table(wy_walking,"pedestrian")
+# crossing 
+#        2
+
+ped_pedestrian_yes <- c("crossing ")
+
+wy_walking_nogeom5 <- wy_walking_nogeom %>% 
+  mutate(pedestrian_friendly = case_when(
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_no ~ "no",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_yes | 
+      footway %in% footway_pedestrian_yes | 
+      sidewalk %in% sidewalk_pedestrian_yes |
+      pedestrian %in% ped_pedestrian_yes
+    ~ "yes",
+    
+    highway %in% highway_pedestrian_maybe |
+      foot %in% foot_pedestrian_maybe |
+      footway %in% footway_pedestrian_maybe # note: there's no "maybe" sidewalk
+    ~ "maybe",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_no  | 
+      footway %in% footway_pedestrian_no | 
+      sidewalk %in% sidewalk_pedestrian_no 
+    ~ "no"
+         )
+         )
+
+
+```
+
+### recategorization: key:path=*
+
+```{r}
+sf_col_table(wy_walking,"path")
+# .
+# footpath       no 
+#        1        1 
+
+path_pedestrian_yes <- c("footpath")
+
+path_pedestrian_no <- c("no")
+
+wy_walking_nogeom6 <- wy_walking_nogeom %>% 
+  mutate(pedestrian_friendly = case_when(
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_no ~ "no",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_yes | 
+      footway %in% footway_pedestrian_yes | 
+      sidewalk %in% sidewalk_pedestrian_yes |
+      pedestrian %in% ped_pedestrian_yes |
+      path %in% path_pedestrian_yes
+    ~ "yes",
+    
+    highway %in% highway_pedestrian_maybe |
+      foot %in% foot_pedestrian_maybe |
+      footway %in% footway_pedestrian_maybe # note: there's no "maybe" sidewalk
+    ~ "maybe",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_no  | 
+      footway %in% footway_pedestrian_no | 
+      sidewalk %in% sidewalk_pedestrian_no |
+      path %in% path_pedestrian_no
+    ~ "no"
+         )
+         )
+
+# let's see how how many "maybe" highways were recategorized to pedestrian_friendly = "yes" or "no"
+(wy_walking_nogeom6 %>% filter(pedestrian_friendly == "yes") %>% nrow()) - (wy_walking_nogeom1 %>% filter(pedestrian_friendly == "yes") %>% nrow())
+#> 6880
+(wy_walking_nogeom6 %>% filter(pedestrian_friendly == "maybe") %>% nrow()) - (wy_walking_nogeom1 %>% filter(pedestrian_friendly == "maybe") %>% nrow())
+#> -6875
+```
+
+## plotting pedestrian network in WY
+
+```{r}
+wy_walking_fr <- wy_walking %>% 
+  mutate(pedestrian_friendly = case_when(
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_no ~ "no",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_yes | 
+      footway %in% footway_pedestrian_yes | 
+      sidewalk %in% sidewalk_pedestrian_yes |
+      pedestrian %in% ped_pedestrian_yes |
+      path %in% path_pedestrian_yes
+    ~ "yes",
+    
+    highway %in% highway_pedestrian_maybe |
+      foot %in% foot_pedestrian_maybe |
+      footway %in% footway_pedestrian_maybe # note: there's no "maybe" sidewalk
+    ~ "maybe",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_no  | 
+      footway %in% footway_pedestrian_no | 
+      sidewalk %in% sidewalk_pedestrian_no |
+      path %in% path_pedestrian_no
+    ~ "no"
+         )
+         )
+
+st_geometry(leeds_pct) %>% plot(reset = FALSE)
+wy_walking_fr[leeds_pct, op = st_within] %>% select(pedestrian_friendly) %>% filter(pedestrian_friendly == "yes") %>% plot(add = TRUE)
+```
+
+
+## Greater Manchester
+```{r}
+man_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/walking_and_accessibility_manchester/man_pct.Rds")
+man_walking <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/walking_and_accessibility_manchester/man_walking.Rds")
+manchester_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/walking_and_accessibility_manchester/manchester_pct.Rds")
+```
+
+
+```{r}
+# recategorizing GM dataframe
+man_walking_fr <- man_walking %>% 
+  mutate(pedestrian_friendly = case_when(
+    highway %in% highway_pedestrian_yes ~ "yes",
+    highway %in% highway_pedestrian_no ~ "no",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_yes | 
+      footway %in% footway_pedestrian_yes | 
+      sidewalk %in% sidewalk_pedestrian_yes |
+      pedestrian %in% ped_pedestrian_yes |
+      path %in% path_pedestrian_yes
+    ~ "yes",
+    
+    highway %in% highway_pedestrian_maybe |
+      foot %in% foot_pedestrian_maybe |
+      footway %in% footway_pedestrian_maybe # note: there's no "maybe" sidewalk
+    ~ "maybe",
+    
+    highway %in% highway_pedestrian_maybe & 
+      foot %in% foot_pedestrian_no  | 
+      footway %in% footway_pedestrian_no | 
+      sidewalk %in% sidewalk_pedestrian_no |
+      path %in% path_pedestrian_no
+    ~ "no"
+         )
+         )
+```
+
+
+```{r}
+# preparing data for plotting by turning it from wide to long df
+
+man_ped_n_perc <- man_walking_fr %>% 
+  st_drop_geometry() %>% 
+  group_by(pedestrian_friendly) %>% 
+  summarise(n_man = n(),
+            percent_man = ((n_man / nrow(man_walking_fr) ) * 100) %>% signif(2)
+            )
+
+wy_ped_n_perc <- wy_walking_fr %>% 
+  st_drop_geometry() %>% 
+  group_by(pedestrian_friendly) %>% 
+  summarise(n_wy = n(),
+            percent_wy = ((n_wy / nrow(wy_walking_fr) ) * 100) %>% signif(2)
+            )
+
+joined_man_wy_ped_n_perc <- left_join(man_ped_n_perc,
+                                 wy_ped_n_perc)
+
+joined_man_wy_ped_perc_long <- joined_man_wy_ped_n_perc %>% 
+  pivot_longer(
+    col = c("percent_man",
+            "percent_wy"),
+    values_to = "percent"
+    ) %>% 
+  select(c(1, 4, 5))
+
+joined_man_wy_ped_n_long <- joined_man_wy_ped_n_perc %>%
+  pivot_longer(
+    col = c("n_man",
+            "n_wy"),
+    values_to = "n"
+  ) %>% 
+  select(1, 4, 5)
+
+joined_man_wy_ped_long <- left_join(joined_man_wy_ped_perc_long,
+                                    joined_man_wy_ped_n_long,
+                                    by = "pedestrian_friendly")
+
+
+# plotting 
+joined_man_wy_ped_long %>%   
+  ggplot(aes(
+    x = pedestrian_friendly,
+    y = percent,
+    fill = name.x
+  )) +
+  geom_bar(stat="identity",
+           position=position_dodge()) +
+  geom_text(aes(label=percent), 
+            color="black", size=3.5,
+            position = position_dodge(1)
+            ) 
+```
+
+
+```{r}
+wy_pedestrian <- recode_pedestrian(wy_walking)
+wy_pedestrian_leeds <- wy_pedestrian[leeds_pct, op = st_within]
+wy_pedestrian_leeds_yes <- wy_pedestrian_leeds %>% filter(pedestrian_friendly == "yes")
+
+wy_pedestrian_leeds %>%  select(osm_id, name, highway, pedestrian_friendly, foot, footway, sidewalk) %>% filter(!is.na(pedestrian_friendly)) %>% mapview(zcol = "pedestrian_friendly", burst = TRUE)
+```
+
+```{r}
+
+wy_pedestrian_leeds %>% filter(pedestrian_friendly == "yes" | pedestrian_friendly == "maybe") %>% select(osm_id, name, highway, pedestrian_friendly, foot, footway, sidewalk )%>% mapview(zcol = "pedestrian_friendly", burst = TRUE)
+```
+
+```{r}
+
+# wy_pedestrian_leeds %>% filter(pedestrian_friendly == "maybe") %>% mapview()
+```
+
+
+```{r}
+# wy_pedestrian_leeds %>% mutate(ped_yes = case_when(pedestrian_friendly == "yes" ~"yes")) %>% 
+#                                  mutate(ped_maybe = case_when(pedestrian_friendly == "maybe" ~"maybe")) %>%
+#  select(osm_id, name, highway, pedestrian_friendly, foot, footway, sidewalk, ped_yes, ped_maybe) %>%  filter(!is.na(ped_yes) | !is.na(ped_maybe)) %>%  mapview(zcol = c("ped_yes", "ped_maybe"), legend = TRUE, burst = TRUE)
+```
+
+
+
+
+
+```{r}
+wy_pedestrian_leeds %>% filter(osm_id == 257801955 | osm_id == 	1709451) %>% mapview()
+
+# osmextract::oe_get_keys(zone = "West Yorkshire")
+# 
+# wy_walking_testing <- osmextract::oe_get("West Yorkshire",
+#                                  force_vectortranslate = TRUE,
+#                                  extra_tags = "informal"
+#                                  )
+
+# wy_walking_testing %>% filter(!is.na(informal)) 
+# sf_col_table(wy_walking, x = "sidewalk") %>% sum() 
+# sf_col_table(wy_walking_testing, x = "informal") %>% sum() 
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
