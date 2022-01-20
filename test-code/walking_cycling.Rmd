@@ -81,14 +81,15 @@ Data is limited to West Yorkshire. `osmextract` was used to query the OSM databa
 
 ```{r}
 # note: you might have to indicate the path to the directory
-wy <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy.Rds") 
+wy <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy.Rds")
 # wy_short <- readRDS("wy_short.Rds")
 # wy_cycling_net <- readRDS("wy_cycling_net.Rds")
 # wy_cn_short <- readRDS("wy_cn_short.Rds")
 wy_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy_pct.Rds")
-leeds <- wy_pct %>% filter(lad_name == "Leeds")
+leeds_pct <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/leeds_pct.Rds")
 wy_walking <- readRDS("/Users/gretatimaite/Desktop/openinfra/test-code/wy_walking.Rds")
 # wy_walk_short <- readRDS("wy_walking.Rds")
+
 ```
 
 ## additional functions
@@ -153,6 +154,8 @@ sf_col_table <- function(df = dataframe,
 #                                  force_vectortranslate = TRUE,
 #                                  extra_tags = et_walking
 #                                  )
+# saveRDS(wy_walking,
+#         "wy_walking.Rds")
 
 # ============
 # `wy_walking` is the data we'll use in this section. 
@@ -549,6 +552,133 @@ ratios <- rbind(foot_perc,
 
 ratios
 ```
+
+## linking pct data with Leeds Census 2011
+```{r, message = FALSE}
+# working with lsoa data
+travel_foot_leeds_lsoa <- read_csv("~/Desktop/Method of travel to work On foot % 2011 lsoa.csv")
+travel_foot_leeds_lsoa
+
+# checking if leeds_pct$geo_code matches travel_foot_leeds_lsoa$NAME
+leeds_pct$geo_code %in% travel_foot_leeds_lsoa$NAME %>% table() # TRUE 482
+
+```
+
+### pct + traveling on foot (%)
+```{r}
+# Cleaning data -- extracting digits from the `Method of travel to work: On foot %|2011` column
+
+travel_foot_leeds_lsoa1 <- travel_foot_leeds_lsoa %>%
+  mutate(foot_census = readr::parse_number(travel_foot_leeds_lsoa$"Method of travel to work: On foot %|2011")) # using `parse_number` to extract digits, which will be added to a new column called "value"
+
+# there were 3 parsing failures. Let's check which ones failed
+travel_foot_leeds_lsoa1 %>% filter(is.na(foot_census)) # not sure why they failed as I don't see any differences compared to other rows
+# I'll fix this manually for now but I'll need to come up with more nuanced code to avoid parsing issues...
+  
+travel_foot_leeds_lsoa1$foot_census[travel_foot_leeds_lsoa1$NAME == "E01011375"] <- 7.2
+travel_foot_leeds_lsoa1$foot_census[travel_foot_leeds_lsoa1$NAME == "E01011564"] <- 1.7
+travel_foot_leeds_lsoa1$foot_census[travel_foot_leeds_lsoa1$NAME == "E01011670"] <- 12.7
+
+# double-checking if there are any NAs left
+travel_foot_leeds_lsoa1 %>% filter(is.na(value)) # none
+```
+
+### joining pct + census
+
+```{r, message = FALSE}
+# now we can join `leeds_pct` and `travel_foot_leeds_lsoa1` dataframes
+
+leeds_joined_lsoa <- left_join(leeds_pct,
+                          travel_foot_leeds_lsoa1,
+                          by = c(geo_code = "NAME"))
+# checking if we have `value` column
+leeds_joined_lsoa %>% select(foot_census) # good :)
+```
+
+### plotting leeds_joined with osm
+```{r}
+leeds_joined_lsoa %>% select(foot_census) %>% plot
+
+st_geometry(leeds_pct) %>% plot(reset = FALSE)
+leeds_joined_lsoa %>% select(foot_census) %>% plot(add = TRUE)
+wy_walking %>% filter(highway == "footway") %>% plot(add = TRUE,
+                                                     col = "white")
+
+# sf_col_table(leeds_joined_lsoa, "foot_census")
+
+```
+
+### pct + economically active (%)
+Source: https://observatory.leeds.gov.uk/economy-and-employment/map/
+
+What 'economically active' means?
+Economically active ->	Employed ->	Includes part-time work
+Economically active ->	Unemployed ->	Without a job - available and seeking work
+Economically inactive ->	Economically inactive ->	Not seeking work - includes sick, retired, full-time students, looking after family
+
+Question: 
+
+- how is "Economically active: In employment" measured? If it says that '60%' does it refer to the total population of an area or to its sample (i.e., the one which is economically active)? 
+
+```{r, message = FALSE}
+# working with lsoa data
+econ_active_leeds_lsoa <- read_csv("~/Desktop/Economically active % 2011 lsoa.csv")
+econ_active_leeds_lsoa
+
+# checking if leeds_pct$geo_code matches travel_foot_leeds_lsoa$NAME
+leeds_pct$geo_code %in% travel_foot_leeds_lsoa$NAME %>% table() # TRUE 482
+
+```
+
+```{r}
+# Cleaning data -- extracting digits from the `Economically active %|2011` column
+
+econ_active_leeds_lsoa1 <- econ_active_leeds_lsoa %>%
+  mutate(econ_active_census = readr::parse_number(econ_active_leeds_lsoa$"Economically active %|2011")) # using `parse_number` to extract digits, which will be added to a new column called "value"
+
+# there were 3 parsing failures. Let's check which ones failed
+econ_active_leeds_lsoa1 %>% filter(is.na(econ_active_census)) # It's interesting that the same rows failed to parse as in foot_census case. 
+  
+econ_active_leeds_lsoa1$econ_active_census[econ_active_leeds_lsoa1$NAME == "E01011375"] <- 63.7
+econ_active_leeds_lsoa1$econ_active_census[econ_active_leeds_lsoa1$NAME == "E01011564"] <- 75.2
+econ_active_leeds_lsoa1$econ_active_census[econ_active_leeds_lsoa1$NAME == "E01011670"] <- 50.6
+
+# double-checking if there are any NAs left
+econ_active_leeds_lsoa1 %>% filter(is.na(value)) # none
+```
+
+### joining leeds_joined + census on economically active %
+
+```{r, message = FALSE}
+# now we can join `leeds_joined` and `econ_active_leeds_lsoa1`
+
+leeds_joined_lsoa <- left_join(leeds_joined_lsoa,
+                          econ_active_leeds_lsoa1,
+                          by = c(geo_code = "NAME"))
+
+# saving data
+# saveRDS(leeds_joined_lsoa,
+#         "leeds_joined_lsoa.Rds")
+
+# checking if we have `value` column
+# leeds_joined_lsoa %>% select(econ_active_census) 
+
+```
+
+### plotting
+
+```{r}
+leeds_joined_lsoa %>% select(econ_active_census) %>% plot
+
+st_geometry(leeds_pct) %>% plot(reset = FALSE)
+leeds_joined_lsoa %>% select(econ_active_census) %>% plot(add = TRUE)
+wy_walking %>% filter(highway == "footway") %>% plot(add = TRUE,
+                                                     col = "white")
+```
+
+
+
+
 
 
 
