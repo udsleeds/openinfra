@@ -1,0 +1,313 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+---
+
+The goal of this notebook is no explore the usefulness of motor traffic count data in deciding which highways can be categorized as pedestrian friendly in OSM.
+NOTE: move to West Yorkshire example
+
+```{r}
+library(readr)
+library(tidyverse)
+library(sf)
+library(mapview)
+library(tmap)
+library(osmextract)
+library(pct)
+
+# piggyback::pb_download("leeds_pct.Rds")
+leeds_pct = readRDS("leeds_pct.Rds")
+# piggyback::pb_download("wy_pct.Rds")
+wy_pct = readRDS("wy_pct.Rds")
+# piggyback::pb_download("wy_walking.Rds")
+wy_walking = readRDS("wy_walking.Rds")
+dft_traffic = read_csv("~/Desktop/dft_traffic_counts_aadf.csv")
+
+# keeping 2019 data only
+dft_traffic_2019 = dft_traffic %>% filter(year == 2019)
+
+# convert to the `sf` object
+dft_traffic_2019_sf = sf::st_as_sf(dft_traffic_2019,
+                               coords = c("longitude",
+                                          "latitude"),
+                               crs = "WGS84"
+                               )
+
+```
+
+```{r}
+# figuring out how much data on traffic counts originate from Leeds
+leeds_traffic_2019 = dft_traffic_2019_sf[leeds_pct, op = st_intersects]
+```
+
+```{r}
+# downloading newest OSM data on West Yorkshire
+
+# et_walking <- c("wheelchair",
+# "kerb",
+# "disabled",
+# "mobility_scooter",
+# "handicap",
+# "foot",
+# "lit", # https://wiki.openstreetmap.org/wiki/Key:lit
+# "access",
+# "sidewalk",
+# "footway",
+# "incline",
+# "smoothness",
+# "est_width",
+# "ramp",
+# # "sidewalk_left",
+# # "sidewalk_right",
+# "ramp_wheelchair",
+# # "footway_left",
+# # "footway_right",
+# "footway_surface",
+# "priority",
+# # "sidewalk_both_surface",
+# "path",
+# "pedestrian" # ,
+# # "capacity_disabled",
+# # "sidewalk_left_width",
+# # "sidewalk_right_surface"
+# )
+
+# oe_match_pattern("Yorkshire")
+# region_name <- "West Yorkshire"
+# 
+# wy_walking <- osmextract::oe_get(region_name,
+#                                  force_vectortranslate = TRUE,
+#                                  extra_tags = et_walking
+#                                  )
+
+# saveRDS(wy_walking,
+#         "wy_walking.Rds")
+```
+
+# Leeds
+<!-- ```{r} -->
+<!-- # subsetting WY OSM data to Leeds to reduce case study size; keeping only rows that have non-NA highways -->
+<!-- leeds_walking = wy_walking[leeds_pct, op = st_intersects] %>% filter(!is.na(highway)) -->
+
+<!-- # applying function to return a column indicating if highway is pedestrian friendly -->
+<!-- leeds_ped = leeds_walking %>% recode_pedestrian()  -->
+
+<!-- # subsetting to friendly highways only -->
+<!-- leeds_ped_yes = leeds_ped %>% filter(pedestrian_friendly == "yes") -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # here I'll be joining traffic counts with OSM  -->
+<!-- # only a small fraction of all the highways have traffic counts -->
+<!-- # Firt I'll create a buffer zone around points in traffic counts sf because it's known that OSM data is not 100% geographically accurate. Haklay (2010) indicated that the error is about 6m, hence my buffer zone will be 6m -->
+
+<!-- leeds_traffic_2019_buffer = leeds_traffic_2019 %>% sf::st_buffer(dist = 6) -->
+
+<!-- # spatial join -->
+<!-- leeds_traffic_osm = sf::st_join(leeds_ped_yes,  -->
+<!--                                 leeds_traffic_2019_buffer, -->
+<!--                                 join = st_intersects, -->
+<!--                                 left = TRUE) -->
+
+<!-- # Let's have a look how data has been joined by exploring the annual average daily flows (AADF) for motor vehicles  -->
+<!-- leeds_traffic_osm %>% filter(!is.na(all_motor_vehicles)) %>% nrow()  -->
+<!-- # 355; this is less than leeds_traffic_2019 has rows (370). Most likely some where deleted because they did not intersect with any pedestrian friendly highways in Leeds (motorways are excluded by default) -->
+
+<!-- leeds_traffic_osm %>%  -->
+<!--   sf::st_drop_geometry() %>%  -->
+<!--   filter(!is.na(all_motor_vehicles)) %>%  -->
+<!--   group_by(osm_id) %>%  -->
+<!--   summarise(n = n()) %>%  -->
+<!--   arrange(.by_group = T) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # we can have a look at what has been gotten rid of -->
+
+<!-- # df without geometry for quicker computation -->
+<!-- leeds_traffic_osm_test = leeds_traffic_osm %>% filter(!is.na(all_motor_vehicles)) %>% sf::st_drop_geometry()  -->
+<!-- leeds_traffic_2019_test = leeds_traffic_2019 %>% sf::st_drop_geometry()  -->
+
+<!-- # setting a difference between the two DFs -->
+<!-- absent_ids = setdiff(leeds_traffic_2019_test$id, leeds_traffic_osm_test$id) -->
+<!-- absent_ids %>% length # interesting, it's 70 and not 15 as expected. -->
+
+<!-- # visualising the roads that are NA after the spatial join -->
+<!-- leeds_traffic_2019_buffer %>% filter(id %in% absent_ids) %>% mapview() # some of points fall outside of the roads, hence making 6m buffer not enough (Whitehall Road); some intersect with motorways (Inner Ring Road) that are excluded from the OSM pedestrian friendly network -->
+
+<!-- # The question remains why we have 70 excluded rows and not 15 -->
+<!-- # let's subset the joined sf to make analysis easier + quicker -->
+<!-- leeds_traffic_osm_subset = leeds_traffic_osm %>% filter(!is.na(id)) # we have dublicated (see 223 and 223.1 that both have osm_id == 4045653) -->
+<!-- leeds_traffic_osm_subset %>% filter(osm_id == 4045653) %>% slice(1) %>% mapview() -->
+<!-- leeds_traffic_osm_subset %>% filter(osm_id == 4045653) %>% slice(2) %>% mapview() -->
+<!-- ltos = leeds_traffic_osm_subset %>% filter(osm_id == 4045653) -->
+<!-- # it seems that there are two different traffic counts that intersect with the same OSM linestring -->
+<!-- lt407 = leeds_traffic_2019 %>% filter(id == 407)  -->
+<!-- lt27176 = leeds_traffic_2019 %>% filter(id == 27176)  -->
+<!-- tmap_mode("view") -->
+<!-- tm_shape(lt407)+ -->
+<!--   tm_dots("green")+ -->
+<!--   tm_shape(lt27176)+ -->
+<!--   tm_dots("red") + -->
+<!--   tm_shape(ltos)+ -->
+<!--   tm_lines("osm_id") -->
+<!-- # suspicion was right. there are two different traffic counts for the same road but for different road segments.  -->
+<!-- # question: should both be left or only one (perhaps the one with a higher count?) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # In this section we'll explore the association between highway types and total motor traffic volume -->
+
+<!-- # first, let's define highways of interest -->
+<!-- hi_interested = c("path", "primary", "residential", "secondary", "service", "tertiary", "track", "trunk", "unclassified") -->
+<!-- # subset sf object based on his_interested -->
+<!-- leeds_traffic_osm_subset_clean = leeds_traffic_osm_subset %>% filter(highway %in% hi_interested) -->
+<!-- boxplot_leeds_traffic_association = boxplot(leeds_traffic_osm_subset_clean$all_motor_vehicles ~ leeds_traffic_osm_subset_clean$highway) -->
+<!-- boxplot_leeds_traffic_association      -->
+
+<!-- # there is a tertiary road that stands out for its motor traffic volume over 80k -->
+<!-- leeds_traffic_osm_subset_clean %>% filter(highway == "tertiary" & all_motor_vehicles > 20000) %>% mapview  -->
+
+<!-- # in general, boxplots seem to reflect a general understanding of motor traffic distribution. Surprisingly, perhaps, trunk roads have positive skewness and higher dispersion than primary roads. Residential roads have the most outliers, which makes one wonder why -- perhaps it's an indication of rat running? Indeed, the dataset is also small, hence more prone to show skewed results. -->
+
+<!-- # boxplots show median, not mean, hence it might be useful to look at the mean and standard deviations to get a better understanding of distribution of the data. -->
+<!-- leeds_traffic_osm_subset_clean %>%  -->
+<!--   sf::st_drop_geometry() %>%  -->
+<!--   group_by(highway) %>%  -->
+<!--   summarise(mean_mtraffic = mean(all_motor_vehicles), -->
+<!--             sd_mtraffic = sd(all_motor_vehicles))  -->
+
+<!-- # relatively large SDs confirms that the data is dispersed. Indeed, for some highways SD is larger than the mean, which leads to negative traffic. It does implies a non-normal distrubution -->
+
+<!-- # Let plot the histogram of motor traffic in residential roads -->
+<!-- leeds_traffic_osm_subset_clean %>% sf::st_drop_geometry() %>% filter(highway == "residential") %>% pull(all_motor_vehicles) %>% hist() -->
+<!-- # it's strongly positively skewed; -->
+<!-- # indeed, this might have resulted from a small sample, yet large dispersion of data makes it hard to assume that certain roads have low motor traffic, hence can be categorized by default as "pedestrian friendly". -->
+
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- cor.test(leeds_traffic_osm_subset_clean$all_motor_vehicles, -->
+<!--          as.numeric(as.factor(leeds_traffic_osm_subset_clean$highway)), -->
+<!--          method = "spearman") -->
+<!-- ?cor.test -->
+<!-- ``` -->
+
+
+# West Yorkshire
+
+```{r}
+# validating geometries as I had an error saying that there's invalid spherical geometry
+# wy_pct_valid = sf::st_make_valid(wy_pct) 
+wy_traffic_2019 = dft_traffic_2019_sf[wy_pct_valid, op = st_intersects]
+
+tmap_mode("view")
+tm_shape(wy_traffic_2019)+
+  tm_dots("all_motor_vehicles")
+
+# applying function to return a column indicating if highway is pedestrian friendly
+# wy_ped = wy_walking %>% recode_pedestrian() 
+wy_nomot = wy_walking %>% filter(highway != "motorway" | highway != "motorway_link")
+
+# subsetting to friendly highways only
+# wy_ped_yes = wy_ped %>% filter(pedestrian_friendly == "yes")
+```
+
+```{r}
+# here I'll be joining traffic counts with OSM 
+# only a small fraction of all the highways have traffic counts
+# Firt I'll create a buffer zone around points in traffic counts sf because it's known that OSM data is not 100% geographically accurate. Haklay (2010) indicated that the error is about 6m, hence my buffer zone will be 6m
+
+wy_traffic_2019_buffer = wy_traffic_2019 %>% sf::st_buffer(dist = 6)
+
+# spatial join
+# wy_traffic_osm = sf::st_join(wy_ped_yes,
+#                                 wy_traffic_2019_buffer,
+#                                 join = st_intersects,
+#                                 left = TRUE)
+
+wy_traffic_osm = sf::st_join(wy_nomot,
+                                wy_traffic_2019_buffer,
+                                join = st_intersects,
+                                left = TRUE)
+```
+
+```{r}
+wy_traffic_osm_subset = wy_traffic_osm %>% filter(!is.na(id)) # we have dublicated (see 223 and 223.1 that both have osm_id == 4045653)
+
+hi_interested = c("path", "primary", "residential", "secondary", "service", "tertiary", "track", "trunk", "unclassified")
+# subset sf object based on his_interested
+wy_traffic_osm_subset_clean = wy_traffic_osm_subset %>% filter(highway %in% hi_interested)
+boxplot_leeds_traffic_association = boxplot(wy_traffic_osm_subset_clean$all_motor_vehicles ~ wy_traffic_osm_subset_clean$highway)
+
+
+
+```
+
+
+```{r}
+wy_traffic_osm_subset_recoded = wy_traffic_osm_subset_clean %>%
+  mutate(road_class = case_when(
+    highway == "trunk"~ 5,
+    highway == "primary" ~ 4,
+    highway == "secondary" ~ 3,
+    highway == "tertiary" ~ 2,
+    highway == "living_street" | highway == "residential"  | highway == "unclassified"  ~ 1
+  ) 
+         )
+wy_traffic_osm_subset_recoded = wy_traffic_osm_subset_recoded %>% filter(road)
+
+wy_traffic_osm_subset_recoded%>% pull(road_class) %>% table
+
+boxplot(wy_traffic_osm_subset_recoded$all_motor_vehicles~ wy_traffic_osm_subset_recoded$road_class)
+boxplot(wy_traffic_osm_subset_clean$all_motor_vehicles~ wy_traffic_osm_subset_clean$highway)
+
+wy_osm_traffic_boxplot = wy_traffic_osm_subset_recoded %>% filter(!is.na(road_class)) %>% group_by(road_class) %>% ggplot(
+ mapping =  aes(x = as.factor(road_class), 
+                     y = all_motor_vehicles,
+                color = road_class)) +
+  geom_boxplot()+
+  ylab("All motor vehicles")+
+  xlab("Road class")+
+  scale_x_discrete(labels = c("Residential",
+                              "Tertiary",
+                              "Secondary",
+                              "Primary",
+                              "Trunk"))+
+  theme(legend.position = "none")
+
+ggsave(filename = "wy_osm_traffic_boxplot.png",
+      plot = wy_osm_traffic_boxplot,
+      dpi = 700)
+
+cor.test(wy_traffic_osm_subset_recoded$all_motor_vehicles, wy_traffic_osm_subset_recoded$road_class,
+         method = "spearman")
+
+
+wy_traffic_osm_subset_recoded %>% 
+  sf::st_drop_geometry() %>% 
+  group_by(road_class) %>% 
+  summarise(mean_amv = mean(all_motor_vehicles),
+            median_amv = median(all_motor_vehicles),
+            n_amv = n())
+
+wy_nomot_geom = wy_nomot$geometry
+tmap_mode("plot")
+tmap_options(check.and.fix = TRUE)
+wy_high_allmot_plot = tm_shape(wy_pct_valid)+
+  tm_polygons()+
+  tm_shape(wy_nomot_geom)+
+  tm_lines(col = "black")+
+  tm_shape(wy_traffic_osm_subset_recoded)+
+  tm_dots("all_motor_vehicles",
+          size = 0.25)
+
+tmap_save(tm = wy_high_allmot_plot,
+          "wy_high_allmot_plot.png",
+          dpi = 700)
+```
+
