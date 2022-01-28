@@ -27,6 +27,8 @@ Set-up webite on GitHub actions...
 
 ```{r}
 ?usethis::use_github_action_check_standard
+?pkgdown::build_site_github_pages
+usethis::use_github_action_check_standard()
 ```
 
 When we have the standard actions working we'll set-up pkgdown with:
@@ -34,6 +36,8 @@ When we have the standard actions working we'll set-up pkgdown with:
 ```{r}
 use_github_action("pkgdown")
 ```
+
+Info on pkgs set-up: https://r-pkgs.org/
 
 
 
