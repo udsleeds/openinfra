@@ -8,3 +8,12 @@
 ^mers\.Rds$
 ^osm_highway_cycleway_left\.Rds$
 ^wy\.Rds$
+^README\.Rmd$
+^README_files$
+^code$
+^data-small$
+^docs$
+^figures$
+^mcr\.xcf$
+^wy_pct\.Rds$
+^wy_walking\.Rds$
