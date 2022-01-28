@@ -41,3 +41,4 @@ vignettes/*.pdf
 *.html
 *.xcf
 docs/
+inst/doc

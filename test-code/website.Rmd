@@ -40,10 +40,14 @@ usethis::use_build_ignore(files = c(
   "osm_highway_cycleway_left.Rds",
   "wy.Rds",
   "README.Rmd",
-  "",
-  "",
-  "",
-  "",
+  "README_files",
+  "code",
+  "data-small",
+  "docs",
+  "figures",
+  "mcr.xcf",
+  "wy_pct.Rds",
+  "wy_walking.Rds"
   )
   )
 ```
@@ -66,6 +70,13 @@ use_github_action("pkgdown")
 ```
 
 Info on pkgs set-up: https://r-pkgs.org/
+
+Create an article called Get Started:
+
+```{r}
+usethis::use_vignette(name = "openinfra", title = "Getting started with open data on transport infrastructure")
+```
+
 
 
 
