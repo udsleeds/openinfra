@@ -23,12 +23,20 @@ The previous version of the homepage can be found at:
 file.edit("test-code/README-website.Rmd")
 ```
 
+Test package locally:
+
+```{r}
+devtools::check()
+```
+
+
 Set-up webite on GitHub actions...
 
 ```{r}
 ?usethis::use_github_action_check_standard
 ?pkgdown::build_site_github_pages
 usethis::use_github_action_check_standard()
+usethis::use_tidy_description()
 ```
 
 When we have the standard actions working we'll set-up pkgdown with:
