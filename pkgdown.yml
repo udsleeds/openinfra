@@ -1,9 +1,8 @@
-pandoc: 2.11.2
-pkgdown: 1.6.1
+pandoc: 2.7.3
+pkgdown: 2.0.2
 pkgdown_sha: ~
-articles: {}
-last_built: 2021-11-30T08:06Z
-urls:
-  reference: https://udsleeds.github.io/openinfra/reference
-  article: https://udsleeds.github.io/openinfra/articles
+articles:
+  openinfra: openinfra.html
+  osmintro: osmintro.html
+last_built: 2022-01-28T11:14Z
 
