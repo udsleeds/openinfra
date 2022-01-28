@@ -1,7 +1,8 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- badges: start -->
 
-[![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
+[![R-CMD-check](https://github.com/udsleeds/openinfra/workflows/R-CMD-check/badge.svg)](https://github.com/udsleeds/openinfra/actions)
+<!-- badges: end -->
 
 # Open access data for transport research: tools, modelling and simulation
 
@@ -9,7 +10,7 @@
 
 Getting people walking and cycling has become a priority for many local,
 regional and national governments in recent years. Interventions
-boosting physical activity represent a ‘magic bullet,’ tackling obesity,
+boosting physical activity represent a ‘magic bullet’, tackling obesity,
 air pollution and wellbeing. Active travel is a rapidly growing topic of
 multi-disciplinary research but has received limited attention from data
 science perspectives, with a recent paper on modelling cycle network
@@ -168,6 +169,8 @@ lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
 #> www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
 #> Data (c) OpenStreetMap contributors, ODbL 1.0. https://www.openstreetmap.org/copyright.
 #> Check the package website, https://docs.ropensci.org/osmextract/, for more details.
+#> Warning in fun(libname, pkgname): rgeos: versions of GEOS runtime 3.10.1-CAPI-1.16.0
+#> and GEOS at installation 3.9.1-CAPI-1.14.2differ
 #> 
 #> Attaching package: 'od'
 #> The following objects are masked from 'package:stplanr':
