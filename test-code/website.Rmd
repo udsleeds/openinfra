@@ -1,8 +1,27 @@
 
+```{r, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
 
 # Get website working
 
 Currently we have a basic website at https://udsleeds.github.io/openinfra/
 
 Aim: make it better, add placeholder articles, make it autobuild.
+
+Starting point: get website built locally.
+
+```{r}
+pkgdown::build_site()
+pkgdown::preview_site()
+```
+
+The previous version of the homepage can be found at:
+
+```{r}
+file.edit("test-code/README-website.Rmd")
+```
+
+
 

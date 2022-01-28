@@ -40,3 +40,4 @@ vignettes/*.pdf
 .Renviron
 *.html
 *.xcf
+docs/
