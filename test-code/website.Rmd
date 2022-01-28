@@ -29,6 +29,26 @@ Test package locally:
 devtools::check()
 ```
 
+Make the package ignore files:
+
+```{r}
+usethis::use_build_ignore(files = "GISRUK_paper")
+usethis::use_build_ignore(files = "test-code")
+usethis::use_build_ignore(files = c(
+  "gm.Rds",
+  "mers.Rds",
+  "osm_highway_cycleway_left.Rds",
+  "wy.Rds",
+  "README.Rmd",
+  "",
+  "",
+  "",
+  "",
+  )
+  )
+```
+
+
 
 Set-up webite on GitHub actions...
 

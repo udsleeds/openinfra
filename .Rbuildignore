@@ -2,3 +2,9 @@
 ^\.Rproj\.user$
 ^\.github$
 ^LICENSE\.md$
+^GISRUK_paper$
+^test-code$
+^gm\.Rds$
+^mers\.Rds$
+^osm_highway_cycleway_left\.Rds$
+^wy\.Rds$
