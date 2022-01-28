@@ -3,9 +3,9 @@ output: github_document
 bibliography: references.bib
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-[![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/udsleeds/openinfra/workflows/R-CMD-check/badge.svg)](https://github.com/udsleeds/openinfra/actions)
+<!-- badges: end -->
 
 
 ```{r, include = FALSE}
@@ -17,8 +17,6 @@ knitr::opts_chunk$set(
 library(sf)
 library(tmap)
 ```
-
-test
 
 ```{r, eval=FALSE, echo=FALSE}
 # Generate citations (requires Zotero)
