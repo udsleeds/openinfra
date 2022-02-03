@@ -85,3 +85,19 @@ leeds_tn_test %>% dim()
 leeds_tn_subset %>% dim()
 leeds_tn_test2 %>% dim()
 leeds_tn_subset2 %>% dim()
+
+# Which rows are not being dropped?
+
+leeds_tn_subset2_nogeom = leeds_tn_subset2 %>% sf::st_drop_geometry()
+leeds_tn_test2_nogeom = leeds_tn_test2 %>% sf::st_drop_geometry()
+
+leeds_tn_subset2_nogeom %>% nrow
+leeds_tn_test2_nogeom %>% nrow
+
+leeds_difference = leeds_tn_subset2_nogeom$osm_id  %!in% leeds_tn_test2_nogeom$osm_id
+leeds_difference %>% table()
+leeds_missing = leeds_tn_subset2[leeds_difference, ]
+
+tmap::tmap_mode("view")
+tmap::tm_shape(leeds_missing)+
+  tmap::tm_lines()
