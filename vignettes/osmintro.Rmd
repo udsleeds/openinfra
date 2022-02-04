@@ -311,7 +311,7 @@ qtm(leeds_foot_tidy)
 
 In theory, it should be possible to use `mapshot()` function to save `mapview` plots as an .html, .png, .pdf, or .jpeg file, but in practice it does not always work as desired. 
 
-```{r}
+```{r, eval = FALSE}
 # an example of saving interactive map as html
 pretty_map = qtm(leeds_foot_tidy)
 tmap_save(pretty_map, "pretty_map.html")
