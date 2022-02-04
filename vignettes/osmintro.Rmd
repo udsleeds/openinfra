@@ -63,7 +63,7 @@ library(osmextract)
 
 oe_get() is perhaps the core function in the package and the one I would recommend starting from because it is quite straightforward once introduced, yet versatile enough to meet the needs of an advanced user.
 
-```{r, results = FALSE}
+```{r, results = "hide"}
 ?osmextract::oe_get() # Documentation of a function
 
 # The first step is to define the place. In this case it is Leeds.
@@ -82,7 +82,7 @@ leeds = osmextract::oe_get(
 ```
 
 - If you are curious, you can check out what happens when you input "leeds" instead of "Leeds" if the provider is not specified (uncomment `leeds_test` object in the code chunk below).
-```{r, results = FALSE}
+```{r, results = "hide"}
 # leeds_test = osmextract::oe_get(
 #   place = "leeds",
 #   force_download = TRUE, 
@@ -97,7 +97,7 @@ leeds = osmextract::oe_get(
 
 This function is a quick and useful way of returning a desired road network. However, it is important to point out that (compared to `oe_get()`) some filtering is being done before returning the network. Thus, it is important to understand *what* kind of network is exactly returned and if that suits your particular needs.
 
-```{r, results = FALSE}
+```{r, results = "hide"}
 leeds_net_walking = osmextract::oe_get_network(
   place = region_leeds,
   mode = "walking", # What mode of transport is to be returned? Default is cycling
@@ -133,14 +133,14 @@ In the following subsection we will learn how to get those extra tags (and many 
 
 Have you noticed "other_tags" column in the `leeds` and `leeds_net_walking` datasets? This is where various additional tags are stored that can be utilized. OSM has hundreds of them and there is a useful function in `osmextract` that allows you to browse through them. I would recommend spending some time exploring the variety of tags that you think might be relevant to your particular task.
 
-```{r, results = FALSE}
+```{r, results = "hide"}
 # checking the keys that are stored in the 'extra_tags' column
 osmextract::oe_get_keys(leeds)
 ```
 
 To download a dataset that has tags as columns (i.e., not stored in the 'extra_tags' column), we can take advantage of the 'extra_tags' argument.
 
-```{r, results = FALSE}
+```{r, results = "hide"}
 # The first step is to create a character vector with all the tags we want to be returned.
 tags_needed = c("access",
                 "foot",
@@ -226,7 +226,7 @@ leeds_tn_subset2 %>% dim()
 
 
 The `extra_tags` argument can also be used with `oe_get_network` function.
-```{r, results = FALSE}
+```{r, results = "hide"}
 tags_needed1 = c("footway")
 leeds_net_walking_tn1 = osmextract::oe_get_network(
   place = region_leeds,
@@ -362,7 +362,7 @@ Somewhat of an alternative is to use `webshot` package and take a photo of an in
 
 You have learned how to download the desired dataset but, most likely, you do not want to have to download it every single as it can be time-consuming (however, it is a good practice to update it constantly). Good news is that you can save a dataset as an RDS file and, if needed, share it with other (R) users. 
 
-```{r, echo = FALSE, results=FALSE}
+```{r, echo = FALSE, results="hide"}
 # to save in your working directory. If you do not know where your working directory is, type `getwd()` to your console.
 saveRDS(leeds, # name of an object in R
         "leeds.RDS") # name of a file (note the .RDS extension)
