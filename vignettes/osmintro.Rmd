@@ -367,7 +367,8 @@ You have learned how to download the desired dataset but, most likely, you do no
 saveRDS(leeds, # name of an object in R
         "leeds.RDS") # name of a file (note the .RDS extension)
 
-leeds_tn = readRDS("leeds_tn.RDS") # import and save as an object; 
+# import and save as an object; 
+# leeds_tn = readRDS("leeds_tn.RDS")
 ```
 
 Exercises:
