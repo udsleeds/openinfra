@@ -277,28 +277,38 @@ dev.off() # closes the file
 # the image should have been saved in your working directory
 ```
 
-## interactive maps with `mapview`
+## interactive maps with `tmap`
 
-`mapview` is a package that allows to quickly produce interactive spatial visualisations. Let's turn our static maps into the interactive ones.
+`tmap` is a package that allows to quickly produce interactive spatial visualisations. Let's turn our static maps into the interactive ones.
 
 ```{r}
-mapview::mapview(leeds_tn["foot"])
+library(tmap)
+tmap_mode("view")
 ```
 
+```{r, eval=FALSE}
+leeds_tn %>% 
+  sample_n(1000) %>% 
+  qtm()
+```
+
+See the output of the code above [here](https://rpubs.com/RobinLovelace/862114). 
+
 The function allows to examine data in the context which, again, aids one's understanding of the data at hand. What is immediately visible from the visualisation is that there is a great number of NAs, which means that the data is missing.
+
 ```{r}
 # Dropping missing values in the `foot` column
-mapview::mapview(na.omit(leeds_tn["foot"]))
+qtm(na.omit(leeds_tn["foot"]))
 
 # However the most human reader-friendly approach to plotting non-NA foot values might be to create a new object that will be fed to the `mapview()`
 leeds_foot_nt = na.omit(leeds_tn["foot"])
-mapview::mapview(leeds_foot_nt)
+qtm(leeds_foot_nt)
 
 # tidy approach would be:
 leeds_foot_tidy = leeds_tn %>% 
   filter(!is.na(foot)) %>% 
   select(foot)
-mapview::mapview(leeds_foot_tidy)
+qtm(leeds_foot_tidy)
 ```
 
 ### Saving
@@ -307,13 +317,8 @@ In theory, it should be possible to use `mapshot()` function to save `mapview` p
 
 ```{r}
 # an example of saving interactive map as html
-pretty_map = mapview::mapview(leeds_foot_tidy)
-mapview::mapshot(pretty_map, file = paste0(getwd(), "/pretty_map.pdf")
-                 )
-
-htmlwidgets::saveWidget(pretty_map@map,
-                        file = paste0(getwd(), "/pretty_map.html"),
-                        selfcontained = FALSE)
+pretty_map = qtm(leeds_foot_tidy)
+tmap_save(pretty_map, "pretty_map.html")
 
 # m <- mapview(breweries)
 # 
@@ -332,28 +337,29 @@ htmlwidgets::saveWidget(pretty_map@map,
 Somewhat of an alternative is to use `webshot` package and take a photo of an interactive map, which might still look nicer compared to the base R plots. 
 
 ```{r}
-webshot::webshot("http://localhost:15593/session/viewhtml3bbe19d3ee34/index.html",
-        file = "pretty_map.png")
-
-png(file = "pretty_map.png") # a name of an image to be created (not the .png extension)
-mapview::mapview(leeds_foot_tidy) # plot
-dev.off() # closes the file
+# webshot::webshot("http://localhost:15593/session/viewhtml3bbe19d3ee34/index.html",
+#         file = "pretty_map.png")
+# 
+# png(file = "pretty_map.png") # a name of an image to be created (not the .png extension)
+# qtm(leeds_foot_tidy) # plot
+# dev.off() # closes the file
 ```
 
 ```{r}
-library(mapview)
-breweries = breweries
-m <- mapview::mapview(breweries)
-
-## without creation of above folder
-htmlwidgets::saveWidget(m@map, 
-                        file = paste0(getwd(), "/map.html"), 
-                        selfcontained = TRUE)
-
-## this is where the above folder should be created
-htmlwidgets::saveWidget(m@map, 
-                        file = paste0(getwd(), "/map.html"), 
-                        selfcontained = FALSE)
+# commented out - can add link instead
+# library(mapview)
+# breweries = breweries
+# m <- mapview::mapview(breweries)
+# 
+# ## without creation of above folder
+# htmlwidgets::saveWidget(m@map, 
+#                         file = paste0(getwd(), "/map.html"), 
+#                         selfcontained = TRUE)
+# 
+# ## this is where the above folder should be created
+# htmlwidgets::saveWidget(m@map, 
+#                         file = paste0(getwd(), "/map.html"), 
+#                         selfcontained = FALSE)
 ```
 
 # Saving (and importing) OSM data as RDS files
