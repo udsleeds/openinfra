@@ -16,10 +16,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, echo = FALSE}
-# library(openinfra)
-```
-
 # Getting and using OSM data
 
 In this section we will focus on two aspects necessary to work with OpenStreetMap (OSM) data:
@@ -137,7 +133,7 @@ In the following subsection we will learn how to get those extra tags (and many 
 
 Have you noticed "other_tags" column in the `leeds` and `leeds_net_walking` datasets? This is where various additional tags are stored that can be utilized. OSM has hundreds of them and there is a useful function in `osmextract` that allows you to browse through them. I would recommend spending some time exploring the variety of tags that you think might be relevant to your particular task.
 
-```{r}
+```{r, results = FALSE}
 # checking the keys that are stored in the 'extra_tags' column
 osmextract::oe_get_keys(leeds)
 ```
@@ -371,12 +367,8 @@ You have learned how to download the desired dataset but, most likely, you do no
 saveRDS(leeds, # name of an object in R
         "leeds.RDS") # name of a file (note the .RDS extension)
 
-# to import
-readRDS("leeds_tn.RDS")
 leeds_tn = readRDS("leeds_tn.RDS") # import and save as an object; 
-leeds_net_walking_tn1 = readRDS("leeds_net_walking_tn1.RDS")
 ```
-
 
 Exercises:
 
