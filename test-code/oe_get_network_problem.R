@@ -229,9 +229,7 @@ sql_filters1 <- oe_get(
     AND
     (highway NOT IN ('abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
     'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-    'proposed', 'raceway', 'motorway', 'motorway_link') OR foot = 'yes')
-    OR 
-    (highway = 'cycleway' AND foot = 'yes')
+    'proposed', 'raceway', 'motorway', 'motorway_link', 'cycleway') OR foot = 'yes')
     AND
     (access NOT IN ('private', 'no') OR foot = 'yes')
     AND
@@ -242,9 +240,8 @@ sql_filters1 <- oe_get(
   ),
   quiet = TRUE
 )
-
 sql_filters1 %>% nrow()
-#> 133071
+#> 124163
 
 # sql method 2
 sql_filters2 <- oe_get(
@@ -257,7 +254,9 @@ sql_filters2 <- oe_get(
     AND
     (highway NOT IN ('abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
     'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-    'proposed', 'raceway', 'motorway', 'motorway_link', 'cycleway') OR foot = 'yes')
+    'proposed', 'raceway', 'motorway', 'motorway_link'))
+    OR 
+    (highway = 'cycleway' AND foot = 'yes')
     AND
     (access NOT IN ('private', 'no') OR foot = 'yes')
     AND
@@ -268,29 +267,12 @@ sql_filters2 <- oe_get(
   ),
   quiet = TRUE
 )
+
 sql_filters2 %>% nrow()
-#> 124163
+#> 133062
 
 # manual method 1
 manual_filters1 <- leeds %>%
-  filter(!is.na(highway)) %>%
-  filter(
-    ! highway %in% c(
-      'abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
-      'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-      'proposed', 'raceway', 'motorway', 'motorway_link') | foot %in% 'yes' | 
-      highway == 'cycleway' & foot %in% 'yes') %>%
-  filter(! access %in% c('private', 'no') | foot %in% "yes") %>%
-  filter(! foot %in% c('private', 'no', 'use_sidepath', 'restricted')) %>%
-  filter(! grepl("private", service) | foot %in% "yes")
-manual_filters1 %>% nrow()
-#> 126607
-sql_filters1 %>% nrow()
-#> 133071
-
-
-# manual method 2
-manual_filters2 <- leeds %>%
   filter(!is.na(highway)) %>%
   filter(
     ! highway %in% c(
@@ -302,82 +284,31 @@ manual_filters2 <- leeds %>%
   filter(! foot %in% c('private', 'no', 'use_sidepath', 'restricted')) %>%
   filter(! grepl("private", service) | foot %in% "yes")
 
+manual_filters1 %>% nrow()
+#> 124163
+sql_filters1 %>% nrow()
+#> 124163
+
+# manual method 2
+manual_filters2 <- leeds %>%
+  filter(!is.na(highway)) %>%
+  filter(
+    ! highway %in% c(
+      'abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
+      'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
+      'proposed', 'raceway', 'motorway', 'motorway_link') | 
+      highway == 'cycleway' & foot %in% 'yes') %>%
+  filter(! access %in% c('private', 'no') | foot %in% "yes") %>%
+  filter(! foot %in% c('private', 'no', 'use_sidepath', 'restricted')) %>%
+  filter(! grepl("private", service) | foot %in% "yes")
 manual_filters2 %>% nrow()
-#> 124163
+#> 126598
 sql_filters2 %>% nrow()
-#> 124163
+#> 133062
 
-leeds %>%
-  filter(!is.na(highway)) %>%
-  filter(
-   ! highway %in% c(
-      'abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
-      'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-      'proposed', 'raceway', 'motorway', 'motorway_link') | foot %in% 'yes' | 
-      highway == 'cycleway' & foot %in% 'yes') %>% nrow()
-
-sql_filters1_highway <- oe_get(
-  place = "Leeds",
-  never_skip_vectortranslate = TRUE,
-  extra_tags = c("access", "foot", "service"),
-  vectortranslate_options = c(
-    "-where", "
-    (highway IS NOT NULL)
-    AND
-    (highway NOT IN ('abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
+leeds_in_foot = leeds %>% filter(
+  highway %in%c(
+    'abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
     'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-    'proposed', 'raceway', 'motorway', 'motorway_link') OR foot = 'yes')
-    "
-  ),
-  quiet = TRUE
-)
-sql_filters1_highway %>% nrow
-#> 133071
-
-sql_filters1_highway_cycle <- oe_get(
-  place = "Leeds",
-  never_skip_vectortranslate = TRUE,
-  extra_tags = c("access", "foot", "service"),
-  vectortranslate_options = c(
-    "-where", "
-    (highway IS NOT NULL)
-    AND
-    (highway NOT IN ('abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
-    'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-    'proposed', 'raceway', 'motorway', 'motorway_link') OR foot = 'yes')
-    OR 
-    (highway = 'cycleway' AND foot = 'yes')
-    "
-  ),
-  quiet = TRUE
-)
-sql_filters1_highway_cycle %>% nrow
-#> 133071
-
-manual_filters1_nonna <- leeds %>%
-  filter(!is.na(highway)) 
-manual_filters1_nonna %>% nrow()
-#> 134343
-
-manual_filters1_highway <- leeds %>%
-  filter(!is.na(highway)) %>%
-  filter(
-    ! highway %in% c(
-      'abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
-      'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-      'proposed', 'raceway', 'motorway', 'motorway_link') | foot %in% 'yes')  
-manual_filters1_highway %>% nrow()
-#> 133071
-
-manual_filters1_highway_cycle <- leeds %>%
-  filter(!is.na(highway)) %>%
-  filter(
-    ! highway %in% c(
-      'abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
-      'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-      'proposed', 'raceway', 'motorway', 'motorway_link') | foot %in% 'yes' | 
-      highway == 'cycleway' & foot %in% 'yes')
-manual_filters1_highway_access %>% nrow()
-#> 126925
-
-
+    'proposed', 'raceway', 'motorway', 'motorway_link') & foot == "yes")
+leeds_in_foot %>% nrow()
