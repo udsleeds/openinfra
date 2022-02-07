@@ -1,8 +1,8 @@
 ---
-title: "An introduction to OSM data for transport planning"
+title: "An introduction to getting and using OSM data for transport planning"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{An introduction to OSM data for transport planning}
+  %\VignetteIndexEntry{An introduction to getting and using OSM data for transport planning}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,10 +18,10 @@ knitr::opts_chunk$set(
 
 # Getting and using OSM data
 
-In this section we will focus on two aspects necessary to work with OpenStreetMap (OSM) data:
+In this section we will focus on two aspects necessary to work with OpenStreetMap (OSM) data for transport research:
 
 1. Downloading OSM data using command line
-2. Plotting OSM data to understand what we downloaded
+2. Plotting OSM data as a method to grasp data and its structure
 
 The ability to download OSM data via command line might sound more intimidating compared to Graphical User Interface (GUI) but it can provide a much more flexible approach to working with OSM, including data analysis which will be covered in the later sections. 
 
@@ -50,6 +50,7 @@ In this section we will only touch upon the basics, so if you want to learn more
 library(tidyverse)
 library(sf)
 library(osmextract)
+library(tmap)
 
 # If you do not have these libraries installed, then run the following code (uncomment first) and load them again:
 # pkgs = c("tidyverse",
@@ -131,14 +132,14 @@ In the following subsection we will learn how to get those extra tags (and many 
 
 ## extra tags
 
-Have you noticed "other_tags" column in the `leeds` and `leeds_net_walking` datasets? This is where various additional tags are stored that can be utilized. OSM has hundreds of them and there is a useful function in `osmextract` that allows you to browse through them. I would recommend spending some time exploring the variety of tags that you think might be relevant to your particular task.
+Have you noticed "other_tags" column in the `leeds` and `leeds_net_walking` datasets? This is where various additional tags are stored that can be utilized for our analysis. OSM has hundreds of them and there is a useful function in `osmextract` that allows you to browse through them. I would recommend spending some time exploring the variety of tags that you think might be relevant to your particular task.
 
 ```{r, results = "hide"}
 # checking the keys that are stored in the 'extra_tags' column
 osmextract::oe_get_keys(leeds)
 ```
 
-To download a dataset that has tags as columns (i.e., not stored in the 'extra_tags' column), we can take advantage of the 'extra_tags' argument.
+To download a dataset that has tags as columns (i.e., not stored in the 'extra_tags' column), we can take advantage of the 'extra_tags' argument in the previously demonstrated functions.
 
 ```{r, results = "hide"}
 # The first step is to create a character vector with all the tags we want to be returned.
@@ -154,74 +155,30 @@ leeds_tn = osmextract::oe_get(
   force_vectortranslate = TRUE,
   extra_tags = tags_needed
 )
-leeds_tn_test = osmextract::oe_get(
-  place = region_leeds,
-  provider = "bbbike", 
-  layer = "lines", 
-  force_download = TRUE, 
-  force_vectortranslate = TRUE,
-  extra_tags = tags_needed,
-  vectortranslate_options = c(
-    "-where", "
-    ((highway IS NOT NULL AND highway NOT IN (
-    'abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
-    'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-    'proposed', 'raceway', 'motorway', 'motorway_link'
-    )) OR (
-    highway = 'cycleway' AND foot = 'yes'
-    ))
-    AND
-    (access IS NULL OR access NOT IN ('private', 'no') OR foot = 'yes')
-    "
-    )
-)
-leeds_tn_test2 = osmextract::oe_get(
-  place = region_leeds,
-  provider = "bbbike", 
-  layer = "lines", 
-  force_download = TRUE, 
-  force_vectortranslate = TRUE,
-  extra_tags = tags_needed,
-  vectortranslate_options = c(
-    "-where", "
-    ((highway IS NOT NULL AND highway NOT IN (
-    'abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
-    'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-    'proposed', 'raceway', 'motorway', 'motorway_link'
-    )) OR (
-    highway = 'cycleway' AND foot = 'yes'
-    ))
-    AND
-    (access IS NULL OR access NOT IN ('private', 'no') OR foot = 'yes')
-    AND
-    (foot IS NULL OR foot NOT IN ('private', 'no', 'use_sidepath', 'restricted'))
-    "
-    )
-)
 ```
 
 ```{r}
 # Let's check if we have those 3 tags as columns
 leeds_tn %>% names
-leeds_tn_test %>% nrow
 
 # right now we have the information needed to return a pedestrian network as defined by the `oe_get_network` function
-highway_not = c("abandonded", "bus_guideway", "byway", "construction", "corridor", "elevator", "fixme", "escalator", "gallop", "historic", "no", "planned", "platform", "proposed", "raceway", "motorway", "motorway_link")
-
-'%!in%' = Negate('%in%')                
-leeds_tn_subset = leeds_tn %>% 
-  filter(!is.na(highway) &  highway %!in% highway_not |  highway == "cycleway" & foot == "yes") %>% 
-  filter(is.na(access) | access %!in% c("no", "private") | foot == "yes") 
-
-leeds_tn_subset2 = leeds_tn %>% 
-  filter(!is.na(highway) &  highway %!in% highway_not |  highway == "cycleway" & foot == "yes") %>% 
-  filter(is.na(access) | access %!in% c("no", "private") | foot == "yes") %>% 
-  filter(is.na(foot) | foot %!in% c('private', 'no', 'use_sidepath', 'restricted'))
-
-leeds_tn_test %>% dim()
-leeds_tn_subset %>% dim()
-leeds_tn_test2 %>% dim()
-leeds_tn_subset2 %>% dim()
+# THE REST WILL HAVE TO BE FIXED
+# highway_not = c("abandonded", "bus_guideway", "byway", "construction", "corridor", "elevator", "fixme", "escalator", "gallop", "historic", "no", "planned", "platform", "proposed", "raceway", "motorway", "motorway_link")
+# 
+# '%!in%' = Negate('%in%')                
+# leeds_tn_subset = leeds_tn %>% 
+#   filter(!is.na(highway) &  highway %!in% highway_not |  highway == "cycleway" & foot == "yes") %>% 
+#   filter(is.na(access) | access %!in% c("no", "private") | foot == "yes") 
+# 
+# leeds_tn_subset2 = leeds_tn %>% 
+#   filter(!is.na(highway) &  highway %!in% highway_not |  highway == "cycleway" & foot == "yes") %>% 
+#   filter(is.na(access) | access %!in% c("no", "private") | foot == "yes") %>% 
+#   filter(is.na(foot) | foot %!in% c('private', 'no', 'use_sidepath', 'restricted'))
+# 
+# leeds_tn_test %>% dim()
+# leeds_tn_subset %>% dim()
+# leeds_tn_test2 %>% dim()
+# leeds_tn_subset2 %>% dim()
 ```
 
 
@@ -249,48 +206,51 @@ Plotting, or mapping, might seem like something done to visualize the end result
 
 ## static maps with base R
 
-Base R `plot` function is great for plotting on-the-go as it is quick and pretty intuitive. It is great to get a general sense of the data and its structure which, then, can be used to inform further decisions.
+Base R `plot` function is great for plotting on-the-go as it is pretty intuitive and quick as it can be added at the end of a pipe operation. It is great to get a general sense of the data and its structure which, then, can be used to inform further decisions.
 
 ```{r}
 # Let's plot all the highways that have a non-NA value in the `foot` column:
-plot(leeds_tn['foot'])
-# If we want to map only a specific value of a column:
-plot(leeds_tn[leeds_tn$foot == "yes", "foot"]) # returning only "yes" values in `foot`
-
-# the tidy approach would be:
 leeds_tn %>% select(foot) %>% plot() # all non_NA values 
 leeds_tn %>% filter(foot == "yes") %>% select(foot) %>% plot() # returning only "yes" values in `foot`
 ```
 
 ### saving
 
-You might want to save the images of a plot for later use. To do this, you can use "Export" functionality just above the image or use command line.
+You might want to save the images of a plot for later use (i.e., to show to others). To do this, you can use either "Export" functionality just above the plot displayed in the "Plots" tab or use command line.
 ```{r}
 # command line approach to saving base R plots in a png format
 png(file = "plot_foot.png") # a name of an image to be created (not the .png extension)
-plot(leeds_tn['foot']) # plot
+leeds_tn %>% select(foot) %>% plot() # plot
 dev.off() # closes the file
 # the image should have been saved in your working directory
 ```
 
 ## interactive maps with `tmap`
 
-`tmap` is a package that allows to quickly produce interactive spatial visualisations. Let's turn our static maps into the interactive ones.
+[`tmap`](https://r-tmap.github.io/tmap/) is a flexible package that allows to build both static and interactive maps in R. In this section I will show you how to use its one-liner `qtm()` function to build interactive maps (note: it might be code-efficient, but not always time-efficient! It might take time to build maps, especially the large ones).
 
 ```{r}
-library(tmap)
+# first, we need to set out tmap mode to interactive
 tmap_mode("view")
 ```
 
 ```{r, eval=FALSE}
 leeds_tn %>% 
-  sample_n(1000) %>% 
-  qtm()
+  sample_n(1000) %>%
+  filter(!is.na(foot)) %>% 
+  qtm(fill = "foot")
+
+leeds_tn %>% qtm()
+
+?tmap::qtm
+tmap_mode("plot")
+tm_shape(leeds_tn)+
+  tm_lines("foot")
 ```
 
 See the output of the code above [here](https://rpubs.com/RobinLovelace/862114). 
 
-The function allows to examine data in the context which, again, aids one's understanding of the data at hand. What is immediately visible from the visualisation is that there is a great number of NAs, which means that the data is missing.
+The function allows to examine data in the context which aids one's understanding of the data at hand. What is immediately visible from the visualisation is that there is a great number of NAs, which means that the data is missing.
 
 ```{r, eval=FALSE}
 # Dropping missing values in the `foot` column
