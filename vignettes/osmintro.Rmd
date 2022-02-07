@@ -231,53 +231,25 @@ dev.off() # closes the file
 
 ```{r}
 # first, we need to set out tmap mode to interactive
-tmap_mode("view")
+tmap::tmap_mode("view")
 ```
 
-```{r, eval=FALSE}
-leeds_tn %>% 
-  sample_n(1000) %>%
+```{r, results = "hide"}
+leeds_interactive = leeds_tn %>% 
   filter(!is.na(foot)) %>% 
-  qtm(fill = "foot")
-
-leeds_tn %>% qtm()
-
-?tmap::qtm
-tmap_mode("plot")
-tm_shape(leeds_tn)+
-  tm_lines("foot")
+  tmap::qtm(fill = "foot") # add `qtm()` at the end of to visualise your data
+leeds_interactive
 ```
 
-See the output of the code above [here](https://rpubs.com/RobinLovelace/862114). 
 
-The function allows to examine data in the context which aids one's understanding of the data at hand. What is immediately visible from the visualisation is that there is a great number of NAs, which means that the data is missing.
-
-```{r, eval=FALSE}
-# Dropping missing values in the `foot` column
-qtm(na.omit(leeds_tn["foot"]))
-
-# However the most human reader-friendly approach to plotting non-NA foot values might be to create a new object that will be fed to the `mapview()`
-leeds_foot_nt = na.omit(leeds_tn["foot"])
-qtm(leeds_foot_nt)
-
-# tidy approach would be:
-leeds_foot_tidy = leeds_tn %>% 
-  filter(!is.na(foot)) %>% 
-  select(foot)
-qtm(leeds_foot_tidy)
-```
 
 ### Saving
 
-In theory, it should be possible to use `mapshot()` function to save `mapview` plots as an .html, .png, .pdf, or .jpeg file, but in practice it does not always work as desired. 
-
-```{r, eval = FALSE}
-# an example of saving interactive map as html
-pretty_map = qtm(leeds_foot_tidy)
-tmap_save(pretty_map, "pretty_map.html")
-
+```{r}
+# to save a map as html in your working directory
+tmap::tmap_save(leeds_interactive, # a tmap object
+          "leeds_interactive.html") # a name of a new html file
 ```
-
 
 # Saving (and importing) OSM data as RDS files
 
