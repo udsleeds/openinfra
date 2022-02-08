@@ -427,3 +427,91 @@ manual_filters2 <- leeds %>%
 
 manual_filters2 %>% nrow()
 #> 126393
+
+
+
+# ==========
+# network
+leeds_network = osmextract::oe_get_network(
+  place = "Leeds",
+  mode = "walking",
+  provider = "bbbike",
+  force_download = TRUE,
+  force_vectortranslate = TRUE
+)
+
+leeds_network %>% nrow()
+#> 126782
+
+# SQL filters
+sql_filters <- oe_get(
+  place = "Leeds",
+  never_skip_vectortranslate = TRUE,
+  extra_tags = c("access", "foot", "service"),
+  vectortranslate_options = c(
+    "-where", "
+    (highway IS NOT NULL)
+    AND
+    (highway NOT IN ('abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
+    'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform', 'proposed', 'raceway',
+    'motorway', 'motorway_link'))
+    AND
+    (highway <> 'cycleway' OR foot IN ('yes', 'designated', 'permissive', 'destination'))
+    AND
+    (access NOT IN ('private', 'no'))
+    AND
+    (foot NOT IN ('private', 'no', 'use_sidepath', 'restricted'))
+    AND
+    (service NOT ILIKE 'private%')
+    "
+  ),
+  quiet = TRUE
+)
+
+# Rebuild the same process with manual filters
+leeds <- oe_get(
+  place = "Leeds",
+  never_skip_vectortranslate = TRUE,
+  extra_tags = c("access", "foot", "service"),
+  quiet = TRUE
+)
+
+manual_filters <- leeds %>%
+  filter(!is.na(highway)) %>%
+  filter(
+    ! highway %in% c(
+      'abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
+      'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
+      'proposed', 'raceway', 'motorway', 'motorway_link'
+    )
+  ) %>%
+  filter(highway != "cycleway" | foot %in% c('yes', 'designated', 'permissive', 'destination')) %>%
+  filter(! access %in% c('private', 'no')) %>%
+  filter(! foot %in% c('private', 'no', 'use_sidepath', 'restricted')) %>%
+  filter(! grepl("private", service))
+
+nrow(sql_filters)
+#> [1] 125395
+nrow(manual_filters)
+#> [1] 125395
+nrow(leeds_network)
+#> 126782
+
+'%!in%' = Negate('%in%')    
+leeds_network %>% 
+  filter(highway == 'cycleway' & foot %!in% c('yes', 'designated', 'permissive', 'destination')) %>% 
+  nrow()
+#> 999
+leeds_network %>% 
+  filter(highway == 'cycleway' & foot %in% c('yes', 'designated', 'permissive', 'destination')) %>% 
+  nrow()
+#> 1916
+leeds_network %>% 
+  filter(highway == 'cycleway') %>% 
+  nrow()
+#> 2915
+
+tmap::tmap_mode("view")
+leeds_network %>% 
+  filter(highway == 'cycleway' & foot %!in% c('yes', 'designated', 'permissive', 'destination')) %>% 
+  tmap::qtm()
