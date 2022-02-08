@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>An introduction to OSM data for transport planning • openinfra</title>
+<title>An introduction to getting and using OSM data for transport planning • openinfra</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="An introduction to OSM data for transport planning">
+<script src="../pkgdown.js"></script><meta property="og:title" content="An introduction to getting and using OSM data for transport planning">
 <meta property="og:description" content="openinfra">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -53,7 +53,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/osmintro.html">An introduction to OSM data for transport planning</a>
+      <a href="../articles/osmintro.html">An introduction to getting and using OSM data for transport planning</a>
     </li>
   </ul>
 </li>
@@ -71,7 +71,7 @@
       </header><script src="osmintro_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>An introduction to OSM data for transport planning</h1>
+      <h1 data-toc-skip>An introduction to getting and using OSM data for transport planning</h1>
             
       
       
@@ -81,13 +81,283 @@
 
     
     
+<div class="section level2">
+<h2 id="getting-and-using-osm-data">Getting and using OSM data<a class="anchor" aria-label="anchor" href="#getting-and-using-osm-data"></a>
+</h2>
+<p>In this section we will focus on two aspects necessary to work with OpenStreetMap (OSM) data for transport research:</p>
+<ol style="list-style-type: decimal">
+<li>Downloading OSM data using command line</li>
+<li>Plotting OSM data as a method to grasp data and its structure</li>
+</ol>
+<p>The ability to download OSM data via command line might sound more intimidating compared to Graphical User Interface (GUI) but it can provide a much more flexible approach to working with OSM, including data analysis which will be covered in the later sections.</p>
+<p>Before we begin, I want to remind the basic structure of OSM tags (if you need a more detailed refresher, see <strong>FINISH</strong>). A <em>tag</em> consists of a key and a value (key = value). A value can take both numeric and character values. The tags and their meanings that we will use in this notebook are outlined in the table below.</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>Tag</th>
+<th>Meaning</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Highway</td>
+<td>It indicates the road type (<a href="https://wiki.openstreetmap.org/wiki/Key:highway" class="external-link">link</a>)</td>
+</tr>
+<tr class="even">
+<td>Foot</td>
+<td>Provides information on the legal access for pedestrians (<a href="https://wiki.openstreetmap.org/wiki/Key:foot" class="external-link">link</a>)</td>
+</tr>
+<tr class="odd">
+<td>Access</td>
+<td>Provides information on the legal permissions and restrictions (<a href="https://wiki.openstreetmap.org/wiki/Key:access" class="external-link">link</a>)</td>
+</tr>
+<tr class="even">
+<td>Service</td>
+<td>Provides additional information on the services (roads, businesses) (<a href="https://wiki.openstreetmap.org/wiki/Key:service" class="external-link">link</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
+<h2 id="getting-osm-data">Getting OSM data<a class="anchor" aria-label="anchor" href="#getting-osm-data"></a>
+</h2>
+<p>Here we will learn how to download OSM data using <a href="https://docs.ropensci.org/osmextract/" class="external-link">osmextract package</a> in R. <code>osmextract</code> that has been developed to make OSM data more accessible. It returns a well-formatted OSM data that can be used as part of a reproducible research. Another advantage of <code>osmextract</code> over, for example, <code>osmdata</code> is its capability to download large datasets. To learn more about this, check out its <a href="https://docs.ropensci.org/osmextract/" class="external-link">website</a>.</p>
+<p><code>osmextract</code> offers several different functions to download, read, and translate OSM data, there is no one best function and the choice depends on, for example, whether you already have a dataset that needs to be translated. In this section it will be assumed that you want to download the OSM data. For this, two functions will be demonstrated:</p>
+<ol style="list-style-type: decimal">
+<li>oe_get()</li>
+<li>oe_get_network()</li>
+</ol>
+<p>In this section we will only touch upon the basics, so if you want to learn more about the package, go through the <a href="https://docs.ropensci.org/osmextract/articles/osmextract.html" class="external-link">Get Started</a> article published on the <code>osmextract</code> website.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">openinfra</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Before we start, we need to load the libraries that we will be using throughout the practical.</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/osmextract/" class="external-link">osmextract</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mtennekes/tmap" class="external-link">tmap</a></span><span class="op">)</span>
+
+<span class="co"># If you do not have these libraries installed, then run the following code (uncomment first) and load them again:</span>
+<span class="co"># pkgs = c("tidyverse",</span>
+<span class="co">#          "sf",</span>
+<span class="co">#          "osmextract")</span>
+<span class="co"># install.packages(pkgs)</span></code></pre></div>
+<div class="section level3">
+<h3 id="downloading-osm-network-with-osmextractoe_get">Downloading OSM network with osmextract::oe_get()<a class="anchor" aria-label="anchor" href="#downloading-osm-network-with-osmextractoe_get"></a>
+</h3>
+<p>oe_get() is perhaps the core function in the package and the one I would recommend starting from because it is quite straightforward once introduced, yet versatile enough to meet the needs of an advanced user.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">?</span><span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Documentation of a function</span>
+
+<span class="co"># The first step is to define the place. In this case it is Leeds.</span>
+<span class="co"># A useful function is oe_match_pattern() to search for patterns in a provider's database. It is helpful in indicating a correct region name for a given provider.</span>
+<span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_match_pattern.html" class="external-link">oe_match_pattern</a></span><span class="op">(</span><span class="st">"leeds"</span><span class="op">)</span> 
+<span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_match_pattern.html" class="external-link">oe_match_pattern</a></span><span class="op">(</span><span class="st">"yorkshire"</span><span class="op">)</span> <span class="co"># "yorkshire" is associated with several different geographic zones.</span>
+<span class="va">region_leeds</span> <span class="op">=</span> <span class="st">"Leeds"</span> <span class="co"># Note the capital L. The function in which the object will be used is not case sensitive but I would still recommend using the exact string to minimize the likelihood of an error.</span>
+
+<span class="va">leeds</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span>
+  place <span class="op">=</span> <span class="va">region_leeds</span>,
+  provider <span class="op">=</span> <span class="st">"bbbike"</span>, <span class="co"># Indicates the provider; default is geofabrik</span>
+  layer <span class="op">=</span> <span class="st">"lines"</span>, <span class="co"># Default; returns linestring geometries (highways, waterways, aerialways) </span>
+  force_download <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Updates the previously downloaded .osm.pbf file (default is FALSE)</span>
+  force_vectortranslate <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)</span>
+<span class="op">)</span></code></pre></div>
+<ul>
+<li>If you are curious, you can check out what happens when you input “leeds” instead of “Leeds” if the provider is not specified (uncomment <code>leeds_test</code> object in the code chunk below).</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># leeds_test = osmextract::oe_get(</span>
+<span class="co">#   place = "leeds",</span>
+<span class="co">#   force_download = TRUE, </span>
+<span class="co">#   force_vectortranslate = TRUE</span>
+<span class="co"># )</span>
+
+<span class="co">#&gt; No exact match found for place = leeds and provider = geofabrik. Best match is Laos. Checking the other providers. An exact string match was found using provider = bbbike.</span>
+<span class="co"># Even though there was no exact string match (i.e., leeds) in a default provider, it still returned the dataset we needed by switching the provider. In this case it is fine, but it could cause problems for, for instance, "yorkshire" (test it out if you are up for a little challenge).</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="downloading-osm-network-with-osmextractoe_get_network">Downloading OSM network with osmextract::oe_get_network()<a class="anchor" aria-label="anchor" href="#downloading-osm-network-with-osmextractoe_get_network"></a>
+</h3>
+<p>This function is a quick and useful way of returning a desired road network. However, it is important to point out that (compared to <code><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get()</a></code>) some filtering is being done before returning the network. Thus, it is important to understand <em>what</em> kind of network is exactly returned and if that suits your particular needs.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">leeds_net_walking</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get_network.html" class="external-link">oe_get_network</a></span><span class="op">(</span>
+  place <span class="op">=</span> <span class="va">region_leeds</span>,
+  mode <span class="op">=</span> <span class="st">"walking"</span>, <span class="co"># What mode of transport is to be returned? Default is cycling</span>
+  provider <span class="op">=</span> <span class="st">"bbbike"</span>,
+  force_download <span class="op">=</span> <span class="cn">TRUE</span>,
+  force_vectortranslate <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="comparing-both-approaches">Comparing both approaches<a class="anchor" aria-label="anchor" href="#comparing-both-approaches"></a>
+</h3>
+<p>If you have a look at both datasets, you will notice that <code>leeds</code> has more observations (rows). This is because of filtering done prior to returning the network. Yet, <code>leeds_net_walking</code> has more columns. This is because oe_get_network filtering relies on tags that are not, by default, returned as columns when oe_get() is used.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># checking out the dimensions of both datasets</span>
+<span class="va">leeds</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; [1] 159050     10</span>
+<span class="va">leeds_net_walking</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; [1] 126782     13</span>
+
+<span class="co"># returning column names</span>
+<span class="va">leeds_names</span> <span class="op">=</span> <span class="va">leeds</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">leeds_net_walking_names</span> <span class="op">=</span> <span class="va">leeds_net_walking</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># returning column names that are in the `leeds_net_walking` but not `leeds`</span>
+<span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="va">leeds_net_walking_names</span>, 
+     <span class="va">leeds_names</span><span class="op">)</span>
+<span class="co">#&gt; [1] "access"  "foot"    "service"</span></code></pre></div>
+<p>If you look at the <a href="https://github.com/ropensci/osmextract/blob/master/R/get-network.R" class="external-link">documentation</a>, you will notice that additional <em>access</em>, <em>foot</em>, and <em>service</em> tags are used to define a pedestrian network.</p>
+<p>In the following subsection we will learn how to get those extra tags (and many more) using <code>oe_get</code> function that would allow you to define your own network.</p>
+</div>
+<div class="section level3">
+<h3 id="extra-tags">extra tags<a class="anchor" aria-label="anchor" href="#extra-tags"></a>
+</h3>
+<p>Have you noticed “other_tags” column in the <code>leeds</code> and <code>leeds_net_walking</code> datasets? This is where various additional tags are stored that can be utilized for our analysis. OSM has hundreds of them and there is a useful function in <code>osmextract</code> that allows you to browse through them. I would recommend spending some time exploring the variety of tags that you think might be relevant to your particular task.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># checking the keys that are stored in the 'extra_tags' column</span>
+<span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get_keys.html" class="external-link">oe_get_keys</a></span><span class="op">(</span><span class="va">leeds</span><span class="op">)</span></code></pre></div>
+<p>To download a dataset that has tags as columns (i.e., not stored in the ‘extra_tags’ column), we can take advantage of the ‘extra_tags’ argument in the previously demonstrated functions.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># The first step is to create a character vector with all the tags we want to be returned.</span>
+<span class="va">tags_needed</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"access"</span>,
+                <span class="st">"foot"</span>,
+                <span class="st">"service"</span><span class="op">)</span>
+
+<span class="va">leeds_tn</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span>
+  place <span class="op">=</span> <span class="va">region_leeds</span>,
+  provider <span class="op">=</span> <span class="st">"bbbike"</span>, 
+  layer <span class="op">=</span> <span class="st">"lines"</span>, 
+  force_download <span class="op">=</span> <span class="cn">TRUE</span>, 
+  force_vectortranslate <span class="op">=</span> <span class="cn">TRUE</span>,
+  extra_tags <span class="op">=</span> <span class="va">tags_needed</span>
+<span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Let's check if we have those 3 tags as columns</span>
+<span class="va">leeds_tn</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">names</span>
+<span class="co">#&gt;  [1] "osm_id"     "name"       "highway"    "waterway"   "aerialway" </span>
+<span class="co">#&gt;  [6] "barrier"    "man_made"   "access"     "foot"       "service"   </span>
+<span class="co">#&gt; [11] "z_order"    "other_tags" "geometry"</span>
+
+<span class="co"># right now we have the information needed to return a pedestrian network as defined by the `oe_get_network` function</span>
+<span class="co"># THE REST WILL HAVE TO BE FIXED</span>
+<span class="co"># highway_not = c("abandonded", "bus_guideway", "byway", "construction", "corridor", "elevator", "fixme", "escalator", "gallop", "historic", "no", "planned", "platform", "proposed", "raceway", "motorway", "motorway_link")</span>
+<span class="co"># </span>
+<span class="co"># '%!in%' = Negate('%in%')                </span>
+<span class="co"># leeds_tn_subset = leeds_tn %&gt;% </span>
+<span class="co">#   filter(!is.na(highway) &amp;  highway %!in% highway_not |  highway == "cycleway" &amp; foot == "yes") %&gt;% </span>
+<span class="co">#   filter(is.na(access) | access %!in% c("no", "private") | foot == "yes") </span>
+<span class="co"># </span>
+<span class="co"># leeds_tn_subset2 = leeds_tn %&gt;% </span>
+<span class="co">#   filter(!is.na(highway) &amp;  highway %!in% highway_not |  highway == "cycleway" &amp; foot == "yes") %&gt;% </span>
+<span class="co">#   filter(is.na(access) | access %!in% c("no", "private") | foot == "yes") %&gt;% </span>
+<span class="co">#   filter(is.na(foot) | foot %!in% c('private', 'no', 'use_sidepath', 'restricted'))</span>
+<span class="co"># </span>
+<span class="co"># leeds_tn_test %&gt;% dim()</span>
+<span class="co"># leeds_tn_subset %&gt;% dim()</span>
+<span class="co"># leeds_tn_test2 %&gt;% dim()</span>
+<span class="co"># leeds_tn_subset2 %&gt;% dim()</span></code></pre></div>
+<p>The <code>extra_tags</code> argument can also be used with <code>oe_get_network</code> function.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">tags_needed1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"footway"</span><span class="op">)</span>
+<span class="va">leeds_net_walking_tn1</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get_network.html" class="external-link">oe_get_network</a></span><span class="op">(</span>
+  place <span class="op">=</span> <span class="va">region_leeds</span>,
+  mode <span class="op">=</span> <span class="st">"walking"</span>, <span class="co"># What mode of transport is to be returned? Default is cycling</span>
+  provider <span class="op">=</span> <span class="st">"bbbike"</span>,
+  force_download <span class="op">=</span> <span class="cn">TRUE</span>,
+  force_vectortranslate <span class="op">=</span> <span class="cn">TRUE</span>,
+  extra_tags <span class="op">=</span> <span class="va">tags_needed1</span>
+<span class="op">)</span></code></pre></div>
+<p>There is another way of adding tags – by re-creating the .gpkg file using <code><a href="https://docs.ropensci.org/osmextract/reference/oe_vectortranslate.html" class="external-link">oe_vectortranslate()</a></code> (see <a href="https://docs.ropensci.org/osmextract/articles/osmextract.html" class="external-link">here</a>) however this might be a less intuitive approach. So I would recommend, especially if you are a beginner, using ‘extra_tags’ argument as part of the <code>oe_get</code> or <code>oe_get_network</code> function.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="plotting-osm-data">Plotting OSM data<a class="anchor" aria-label="anchor" href="#plotting-osm-data"></a>
+</h2>
+<p>Plotting, or mapping, might seem like something done to visualize the end results, but it is also incredibly useful throughout the data science project. Indeed, Beenchman and Lovelace (2022) argue that visualizations can be central to making inferences in geographical analysis. Given that, this section aims to introduce you to two simple techniques for mapping:</p>
+<ol style="list-style-type: decimal">
+<li>static maps with base R</li>
+<li>interactive maps with <code>mapview</code> library</li>
+</ol>
+<div class="section level3">
+<h3 id="static-maps-with-base-r">static maps with base R<a class="anchor" aria-label="anchor" href="#static-maps-with-base-r"></a>
+</h3>
+<p>Base R <code>plot</code> function is great for plotting on-the-go as it is pretty intuitive and quick as it can be added at the end of a pipe operation. It is great to get a general sense of the data and its structure which, then, can be used to inform further decisions.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Let's plot all the highways that have a non-NA value in the `foot` column:</span>
+<span class="va">leeds_tn</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">foot</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># all non_NA values </span></code></pre></div>
+<p><img src="osmintro_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">leeds_tn</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">foot</span> <span class="op">==</span> <span class="st">"yes"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">foot</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># returning only "yes" values in `foot`</span></code></pre></div>
+<p><img src="osmintro_files/figure-html/unnamed-chunk-11-2.png" width="700"></p>
+<div class="section level4">
+<h4 id="saving">saving<a class="anchor" aria-label="anchor" href="#saving"></a>
+</h4>
+<p>You might want to save the images of a plot for later use (i.e., to show to others). To do this, you can use either “Export” functionality just above the plot displayed in the “Plots” tab or use command line.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># command line approach to saving base R plots in a png format</span>
+<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"plot_foot.png"</span><span class="op">)</span> <span class="co"># a name of an image to be created (not the .png extension)</span>
+<span class="va">leeds_tn</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">foot</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># plot</span>
+<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># closes the file</span>
+<span class="co">#&gt; agg_png </span>
+<span class="co">#&gt;       2</span>
+<span class="co"># the image should have been saved in your working directory</span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="interactive-maps-with-tmap">interactive maps with <code>tmap</code><a class="anchor" aria-label="anchor" href="#interactive-maps-with-tmap"></a>
+</h3>
+<p><a href="https://r-tmap.github.io/tmap/" class="external-link"><code>tmap</code></a> is a flexible package that allows to build both static and interactive maps in R. In this section I will show you how to use its one-liner <code><a href="https://rdrr.io/pkg/tmap/man/qtm.html" class="external-link">qtm()</a></code> function to build interactive maps (note: it might be code-efficient, but not always time-efficient! It might take time to build maps, especially the large ones).</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># first, we need to set out tmap mode to interactive</span>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_mode.html" class="external-link">tmap_mode</a></span><span class="op">(</span><span class="st">"view"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">leeds_interactive</span> <span class="op">=</span> <span class="va">leeds_tn</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">foot</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/qtm.html" class="external-link">qtm</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"foot"</span><span class="op">)</span> <span class="co"># add `qtm()` at the end of to visualise your data</span>
+<span class="va">leeds_interactive</span></code></pre></div>
+<div class="section level4">
+<h4 id="saving-1">Saving<a class="anchor" aria-label="anchor" href="#saving-1"></a>
+</h4>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># to save a map as html in your working directory</span>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_save.html" class="external-link">tmap_save</a></span><span class="op">(</span><span class="va">leeds_interactive</span>, <span class="co"># a tmap object</span>
+          <span class="st">"leeds_interactive.html"</span><span class="op">)</span> <span class="co"># a name of a new html file</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="saving-and-importing-osm-data-as-rds-files">Saving (and importing) OSM data as RDS files<a class="anchor" aria-label="anchor" href="#saving-and-importing-osm-data-as-rds-files"></a>
+</h2>
+<p>You have learned how to download the desired dataset but, most likely, you do not want to have to download it every single as it can be time-consuming (however, it is a good practice to update it constantly). Good news is that you can save a dataset as an RDS file and, if needed, share it with other (R) users.</p>
+<p>Exercises:</p>
+<ul>
+<li>download active travel network for your city or region (other than Leeds).</li>
+<li>save the other 3 downloaded datasets.</li>
+</ul>
+<p>to finish:</p>
+<ul>
+<li>add info on installing libraries (done)</li>
+<li>table (done)</li>
+<li>insert link to notebook 1 (what is osm?)</li>
+<li>explain why I’m using force_vectortranslate and force_download
+<ul>
+<li>to update the previously downloaded files (there is constantly new data being added to OSM so it’s important to keep our data updated to take advantage of crowdsourced nature of OSM) [chunk 4]</li>
+</ul>
+</li>
+<li>mention that other programming languages can also be used, such as Python and <a href="https://osmnx.readthedocs.io/en/stable/#" class="external-link">OSMnx package</a> or rust as in <a href="https://github.com/a-b-street/abstreet#ab-street" class="external-link">A/B Street</a>.</li>
+<li>references</li>
+<li>saving interactive maps</li>
+</ul>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
