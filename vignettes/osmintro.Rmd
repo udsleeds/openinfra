@@ -96,9 +96,10 @@ leeds = osmextract::oe_get(
 
 ## Downloading OSM network with osmextract::oe_get_network()
 
-This function is a quick and useful way of returning a desired road network. However, it is important to point out that (compared to `oe_get()`) some filtering is being done before returning the network. Thus, it is important to understand *what* kind of network is exactly returned and if that suits your particular needs.
+This function is a quick and useful way to return a desired road network. However, it is important to point out that (compared to `oe_get()`) some filtering is being done before returning the network. Thus, it is important to understand *what* kind of network is exactly returned and if that suits your particular needs.
 
 ```{r, results = "hide"}
+# downloading a walking network
 leeds_net_walking = osmextract::oe_get_network(
   place = region_leeds,
   mode = "walking", # What mode of transport is to be returned? Default is cycling
@@ -110,7 +111,7 @@ leeds_net_walking = osmextract::oe_get_network(
 
 ## Comparing both approaches
 
-If you have a look at both datasets, you will notice that `leeds` has more observations (rows). This is because of filtering done prior to returning the network. Yet, `leeds_net_walking` has more columns. This is because oe_get_network filtering relies on tags that are not, by default, returned as columns when oe_get() is used. 
+If you have a look at both datasets, you will notice that `leeds` has more observations (rows). This is because of filtering done prior to returning the network. Yet, `leeds_net_walking` has more columns. This is because `oe_get_network()` filtering relies on tags that are not, by default, returned as columns when `oe_get()` is used. 
 
 ```{r}
 # checking out the dimensions of both datasets
@@ -142,7 +143,7 @@ osmextract::oe_get_keys(leeds)
 To download a dataset that has tags as columns (i.e., not stored in the 'extra_tags' column), we can take advantage of the 'extra_tags' argument in the previously demonstrated functions.
 
 ```{r, results = "hide"}
-# The first step is to create a character vector with all the tags we want to be returned.
+# The recommended first step is to create a character vector with all the tags we want to be returned.
 tags_needed = c("access",
                 "foot",
                 "service")
@@ -153,14 +154,37 @@ leeds_tn = osmextract::oe_get(
   layer = "lines", 
   force_download = TRUE, 
   force_vectortranslate = TRUE,
-  extra_tags = tags_needed
+  extra_tags = tags_needed # indicating which additional tags we want to be returned
 )
 ```
 
 ```{r}
 # Let's check if we have those 3 tags as columns
-leeds_tn %>% names
+leeds_tn %>% names 
+```
 
+The leeds_tn dataset has all the information needed to manually define a pedestrian network.
+```{r}
+leeds_net_walking_manual = leeds_tn %>% 
+  filter(!is.na(highway)) %>% # returning only non-NA highways 
+  filter(
+    ! highway %in% c(
+      'abandonded', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
+      'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform', 'proposed', 'raceway',
+      'motorway', 'motorway_link'
+    ) # do not return rows if highway tag values are in this character vector
+  ) %>%
+  filter(highway != "cycleway" | foot %in% c('yes', 'designated', 'permissive', 'destination')) %>% # do not return rows if highway=='cycleway' unless foot == 'yes' 
+  filter(! access %in% c('private', 'no')) %>% # do not return rows with access value in a character vector
+  filter(! foot %in% c('private', 'no', 'use_sidepath', 'restricted')) %>%  # do not return rows with foot value in a character vector
+  filter(! grepl('private', service) ) # do not return rows if the service tag has a value containing 'private' 
+
+leeds_net_walking_manual %>% dim()
+leeds_net_walking %>% dim()
+```
+
+
+```{r}
 # right now we have the information needed to return a pedestrian network as defined by the `oe_get_network` function
 # THE REST WILL HAVE TO BE FIXED
 # highway_not = c("abandonded", "bus_guideway", "byway", "construction", "corridor", "elevator", "fixme", "escalator", "gallop", "historic", "no", "planned", "platform", "proposed", "raceway", "motorway", "motorway_link")
@@ -225,30 +249,46 @@ dev.off() # closes the file
 # the image should have been saved in your working directory
 ```
 
-## interactive maps with `tmap`
+## interactive maps with `tmap` package
 
-[`tmap`](https://r-tmap.github.io/tmap/) is a flexible package that allows to build both static and interactive maps in R. In this section I will show you how to use its one-liner `qtm()` function to build interactive maps (note: it might be code-efficient, but not always time-efficient! It might take time to build maps, especially the large ones).
+[`tmap`](https://r-tmap.github.io/tmap/) is a flexible package that allows to build both static and interactive maps in R. In this section I will show you how to use its one-liner `qtm()` (quick thematic maps) function to create interactive maps (note: it might be code-efficient, but not always time-efficient! It might take time to build maps, especially the large ones).
 
 ```{r}
 # first, we need to set out tmap mode to interactive
-tmap::tmap_mode("view")
+tmap::tmap_mode("view") # all the maps after this will be interactive
 ```
 
 ```{r, results = "hide"}
 leeds_interactive = leeds_tn %>% 
   filter(!is.na(foot)) %>% 
-  tmap::qtm(fill = "foot") # add `qtm()` at the end of to visualise your data
+  select(foot) %>% 
+  tmap::qtm() # add `qtm()` at the end of to visualise your data
 leeds_interactive
+
+# if you want to your map to represent different types of foot values, then an additional `lines.col` argument is needed
+leeds_interactive_color = leeds_tn %>% 
+  filter(!is.na(foot)) %>% 
+  select(foot) %>% 
+  tmap::qtm(lines.col = "foot") 
+leeds_interactive_color
 ```
 
+You might be wondering if you can plot static maps using `qtm()` and the answer is yes. 
 
+```{r, eval = FALSE}
+tmap_mode("plot") # all the maps after this will be static
+leeds_tn %>% 
+  filter(!is.na(foot)) %>% 
+  select(foot) %>% 
+  tmap::qtm(lines.col = "foot")
+```
 
 ### Saving
 
 ```{r}
 # to save a map as html in your working directory
 tmap::tmap_save(leeds_interactive, # a tmap object
-          "leeds_interactive.html") # a name of a new html file
+          "leeds_interactive.html") # a name of a new .html file
 ```
 
 # Saving (and importing) OSM data as RDS files
@@ -279,5 +319,5 @@ to finish:
   - to update the previously downloaded files (there is constantly new data being added to OSM so it's important to keep our data updated to take advantage of crowdsourced nature of OSM) [chunk 4]
 - mention that other programming languages can also be used, such as Python and [OSMnx package](https://osmnx.readthedocs.io/en/stable/#) or rust as in [A/B Street](https://github.com/a-b-street/abstreet#ab-street).
 - references
-- saving interactive maps
+- saving interactive maps (done)
 
