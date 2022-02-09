@@ -515,3 +515,53 @@ tmap::tmap_mode("view")
 leeds_network %>% 
   filter(highway == 'cycleway' & foot %!in% c('yes', 'designated', 'permissive', 'destination')) %>% 
   tmap::qtm()
+
+#======
+# walking
+leeds_network_walking = osmextract::oe_get_network(
+  place = "Leeds",
+  mode = "walking",
+  provider = "bbbike",
+  force_download = TRUE,
+  force_vectortranslate = TRUE
+)
+
+leeds_network_walking %>% nrow()
+#> 125581
+
+# cycling
+leeds_network_cycling = osmextract::oe_get_network(
+  place = "Leeds",
+  mode = "cycling",
+  provider = "bbbike",
+  force_download = TRUE,
+  force_vectortranslate = TRUE
+)
+leeds_network_cycling %>% nrow()
+#> 97707
+
+# cycling
+leeds_network_driving = osmextract::oe_get_network(
+  place = "Leeds",
+  mode = "driving",
+  provider = "bbbike",
+  force_download = TRUE,
+  force_vectortranslate = TRUE
+)
+leeds_network_driving %>% nrow()
+#> 88951
+
+
+sql_filters %>% nrow()
+#> 125581
+manual_filters %>% nrow()
+#> 125581
+leeds_network_walking %>% nrow()
+#> 125581
+
+# other modes
+leeds_network_cycling %>% nrow()
+#> 97707
+leeds_network_driving %>% nrow()
+#> 88951
+
