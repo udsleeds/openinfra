@@ -22,17 +22,25 @@ OpenStreetMap (OSM) has contributed to the shift in perception of who can map an
 - empowering citizens to represent their local environments
 - encouraging the participation of citizens in policy making
 
-The importance of local knowledge is also highlighted in the LTN 1/20 guide in the context of ensuring successful implementation of a scheme. Hence, OSM can be a tool to foster a bottom-up approach in active travel planning through the inclusion of citizens in the data generation process. This, consequently, can be used to vocalise their needs leading to an increased likelihood of achieving higher uptake levels.
+The importance of local knowledge is also highlighted in the LTN 1/20 guide in the context of ensuring successful implementation of a scheme. Hence, OSM can be a tool to foster a bottom-up approach in active travel planning through the inclusion of citizens in the data generation process. This, consequently, can be used to vocalise their needs leading to an increased likelihood of achieving higher uptake levels. 
 
 # What is the structure of OpenStreetMap data?
 
+**note that OSM has not strict protocols in place**
+
 The structure of OSM data is composed of three elements, or entities: 
 
-- nodes (points defined by latitude and longitude)
-- ways (linestrings that can also be used to represent polygons)
-- relations (define relationships between two or more data elements (e.g., nodes and ways))
+- nodes 
+- ways 
+- relations 
+
+In general, OSM can be described as a graph with edges and vertices that are connected or isolated (Bennett 2010). Tags (key-value pairs) are used to describe their geographical features.
 
 ## Nodes
+
+Nodes are points in space that are defined by latitude and longitude. They can be used on their own or as part of a way or a relation.
+
+An example of a point in active transport context would be a bicycle rental.
 ```{r, eval = FALSE, echo = FALSE}
 q = "SELECT * FROM 'points' WHERE amenity IN ('bicycle_rental')"
 extra_tags = "amenity"
@@ -47,7 +55,7 @@ bicycle_parking_points = oe_get(place = region_name,
 bicycle_parking_points %>% saveRDS("bicyle_parking_points.Rds")
 ```
 
-```{r, out.width="100%", echo=FALSE, message=FALSE, warning=FALSE}
+```{r, title = "bicycle rental", out.width="100%", echo=FALSE, message=FALSE, warning=FALSE}
 url = "http://github.com/udsleeds/openinfra/releases/download/v0.1/bicyle_parking_points.Rds"
 download.file(url = url,
               destfile = "bicyle_parking_points.Rds")
@@ -58,4 +66,47 @@ tmap::qtm(bicycle_parking_points,
     dots.col = "red"
     )
 ```
+
+## Ways
+
+Ways are lines formed by linking at least two nodes (i.e., representing two ends), however the node can belong to more than one way. They always have a direction, represented by the arrows in the editor, even if it is not meaningful (e.g., a wall). Thesse kinds of ways can be defined as open ways as they have different start and end nodes.
+
+Ways can also be closed if the start and end nodes are identical. This is usually used to represent areas, or polygons, but also roundabouts or closed barriers, such as a closed wall. 
+
+An example of a way is a cycleway in a park next to the bicycle rental.
+```{r}
+
+```
+
+
+
+A park itself is a good example of an area.
+```{r}
+
+```
+
+## Relations
+
+Relation is a list of nodes, ways, and/or relations. It is used to model geographic relationships between objects. These relations should not contain only closely connected elements, having no more than 300 elements per relation. 
+
+Most likely the most important relation in the context of active transport is route but there are also other relations, such as public transport schemes and restrictions. 
+
+
+
+
+A list of links:
+
+- https://wiki.openstreetmap.org/wiki/Types_of_relation
+- https://learnosm.org/en/josm/josm-relations/
+- https://wiki.openstreetmap.org/wiki/Elements
+- https://labs.mapbox.com/mapping/osm-data-model/
+
+
+
+
+
+
+
+
+
 
