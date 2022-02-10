@@ -34,7 +34,7 @@ The structure of OSM data is composed of three elements, or entities:
 - ways 
 - relations 
 
-In general, OSM can be described as a graph with edges and vertices that are connected or isolated (Bennett 2010). Tags (key-value pairs) are used to describe their geographical features.
+In general, OSM can be described as a graph with edges and vertices that are connected or isolated (Bennett 2010). Tags (key="value" pairs) are used to describe their geographical features.
 
 ## Nodes
 
@@ -91,6 +91,14 @@ Relation is a list of nodes, ways, and/or relations. It is used to model geograp
 
 Most likely the most important relation in the context of active transport is route but there are also other relations, such as public transport schemes and restrictions. 
 
+## Tags
+
+Tags are not *exactly* data structures but they play a vital role in OSM because they define geographic features. In other words, it would be without tags one would not know if a node represents a bicycle rental.
+
+A tag is a concept that refers to a key="value" pair. A key describes a topic while value is a specification of a key. For instance, highway="cycleway" indicates that it is a highway (i.e., a line) and, specifically, a cycleway. It is important to note that a value is not always unique in a sense that it can also be a key. For example, there is a "cycleway" tag, which is used to further detail cycling infrastructure. Hence, it is important to pay attention to the syntax of a tag to understand its meaning and use in a given context.
+
+Moreover, each OSM element can have multiple tags and the use of tags is not limited to certain data elements. Thus, theoretically, a point could be `highway="footway"`. The lack of restrictions is inherent in OSM. It relies on the mappers to make decisions that are the most sensible in their specific contexts. This does not mean, however, that there are no conventions about the most appropriate way of tagging something. A simple example would be a depreciation of a sidewalk="none" tag which should be changed to sidewalk="no". A more intricate example is a question regarding the mapping of sidewalks as currently there are two proposed schemes: one considering a sidewalk as a tag on a highway and another proposing to map footways as separate ways. 
+The table below outlines some relevant tags for active travel planning that should be intuitive enough to get started.
 
 
 
