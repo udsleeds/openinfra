@@ -59,7 +59,6 @@ library(tmap)
 # install.packages(pkgs)
 ```
 
-
 ## Downloading OSM network with osmextract::oe_get()
 
 oe_get() is perhaps the core function in the package and the one I would recommend starting from because it is quite straightforward once introduced, yet versatile enough to meet the needs of an advanced user.
@@ -280,21 +279,3 @@ saveRDS(leeds, # name of an object in R
 # import and save as an object (uncomment first); 
 leeds_tn = readRDS("leeds_tn.RDS")
 ```
-
-Exercises:
-
-- download active travel network for your city or region (other than Leeds).
-- save the other 3 downloaded datasets.
-
-
-to finish:
-
-- add info on installing libraries (done)
-- table (done)
-- insert link to notebook 1 (what is osm?)
-- explain why I'm using force_vectortranslate and force_download
-  - to update the previously downloaded files (there is constantly new data being added to OSM so it's important to keep our data updated to take advantage of crowdsourced nature of OSM) [chunk 4]
-- mention that other programming languages can also be used, such as Python and [OSMnx package](https://osmnx.readthedocs.io/en/stable/#) or rust as in [A/B Street](https://github.com/a-b-street/abstreet#ab-street).
-- references
-- saving interactive maps (done)
-
