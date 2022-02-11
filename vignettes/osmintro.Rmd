@@ -228,8 +228,8 @@ Base R `plot` function is great for plotting on-the-go as it is pretty intuitive
 
 ```{r}
 # Let's plot all the highways that have a non-NA value in the `foot` column:
-leeds_tn %>% select(foot) %>% plot() # all non_NA values 
-leeds_tn %>% filter(foot == "yes") %>% select(foot) %>% plot() # returning only "yes" values in `foot`
+leeds_central %>% select(foot) %>% plot() # all non_NA values 
+leeds_central %>% filter(foot == "yes") %>% select(foot) %>% plot() # returning only "yes" values in `foot`
 ```
 
 ### Saving
@@ -238,7 +238,7 @@ You might want to save the images of a plot for later use (i.e., to show to othe
 ```{r}
 # command line approach to saving base R plots in a png format
 png(file = "plot_foot.png") # a name of an image to be created (note the .png extension)
-leeds_tn %>% select(foot) %>% plot() # plot
+leeds_central %>% select(foot) %>% plot() # plot
 dev.off() # closes the file
 # the image should have been saved in your working directory
 ```
@@ -253,14 +253,14 @@ tmap::tmap_mode("view") # all the maps after this will be interactive
 ```
 
 ```{r}
-leeds_interactive = leeds_tn %>% 
+leeds_interactive = leeds_central %>% 
   filter(!is.na(foot)) %>% 
   select(foot) %>% 
   tmap::qtm() # add `qtm()` at the end of to visualise your data
 leeds_interactive
 
 # if you want to your map to represent different types of foot values, then an additional `lines.col` argument is needed
-leeds_interactive_color = leeds_tn %>% 
+leeds_interactive_color = leeds_central %>% 
   filter(!is.na(foot)) %>% 
   select(foot) %>% 
   tmap::qtm(lines.col = "foot") 
@@ -271,7 +271,7 @@ You might be wondering if you can plot static maps using `qtm()` and the answer 
 
 ```{r}
 tmap_mode("plot") # all the maps after this will be static
-leeds_tn %>% 
+leeds_central %>% 
   filter(!is.na(foot)) %>% 
   select(foot) %>% 
   tmap::qtm(lines.col = "foot")
