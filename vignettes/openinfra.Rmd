@@ -43,7 +43,7 @@ Nodes are points in space that are defined by latitude and longitude. They can b
 An example of a point in active transport context would be a bicycle rental.
 
 ![Bicycle rental in OSM in-browser editor ([link](https://www.openstreetmap.org/edit#map=19/53.75200/-1.55801))
-](/Users/gretatimaite/Desktop/openinfra/figures/bicycle_rental_node_edited.jpg)
+](openinfra/figures/bicycle_rental_node_edited.jpg)
 ```{r, eval = FALSE, echo = FALSE}
 q = "SELECT * FROM 'points' WHERE amenity IN ('bicycle_rental')"
 extra_tags = "amenity"
@@ -78,11 +78,11 @@ Ways can also be closed if the start and end nodes are identical. This is usuall
 
 An example of a way is a cycleway in a park next to the bicycle rental.
 ![Cycleway in OSM in-browser editor ([link](https://www.openstreetmap.org/edit#map=17/53.75158/-1.55801))
-](/Users/gretatimaite/Desktop/openinfra/figures/way_cycleway_edited.jpg)
+](/openinfra/figures/way_cycleway_edited.jpg)
 
 A park itself is a good example of an area.
 ![Park in OSM in-browser editor ([link](https://www.openstreetmap.org/edit#map=14/53.7587/-1.5471))
-](/Users/gretatimaite/Desktop/openinfra/figures/park_area_edited.jpg)
+](/openinfra/figures/park_area_edited.jpg)
 
 ## Relations
 
@@ -91,7 +91,7 @@ Relation is a list of nodes, ways, and/or relations. It is used to model geograp
 Most likely the most important relation in the context of active transport is route but there are also other relations, such as public transport schemes and restrictions. 
 
 ![Way as a member of a relation forming a cycleway route ([link](https://www.openstreetmap.org/edit#map=16/53.7568/-1.5410))
-](/Users/gretatimaite/Desktop/openinfra/figures/cycleway_relation_edited.jpg)
+](/openinfra/figures/cycleway_relation_edited.jpg)
 
 
 ## Tags
