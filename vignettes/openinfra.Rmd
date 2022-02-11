@@ -26,9 +26,9 @@ The importance of local knowledge is also highlighted in the LTN 1/20 guide in t
 
 # What is the structure of OpenStreetMap data?
 
-**note that OSM has not strict protocols in place**
+OSM relies on a simple data structure and flexible tagging to describe geographical objects. Indeed, OSM deliberately chose not to adapt the existing standards for geographic information (Halklay and Weber, 2008) as the goal was to simplify the use and maintenance of a project. 
 
-The structure of OSM data is composed of three elements, or entities: 
+The structure of OSM data is composed of three key elements (also called entities or primitives):
 
 - nodes 
 - ways 
