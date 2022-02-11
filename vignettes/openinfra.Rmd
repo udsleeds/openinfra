@@ -41,6 +41,9 @@ In general, OSM can be described as a graph with edges and vertices that are con
 Nodes are points in space that are defined by latitude and longitude. They can be used on their own or as part of a way or a relation.
 
 An example of a point in active transport context would be a bicycle rental.
+
+![Bicycle rental in OSM in-browser editor ([link](https://www.openstreetmap.org/edit#map=19/53.75200/-1.55801))
+](/Users/gretatimaite/Desktop/openinfra/figures/bicycle_rental_node_edited.jpg)
 ```{r, eval = FALSE, echo = FALSE}
 q = "SELECT * FROM 'points' WHERE amenity IN ('bicycle_rental')"
 extra_tags = "amenity"
@@ -69,27 +72,27 @@ tmap::qtm(bicycle_parking_points,
 
 ## Ways
 
-Ways are lines formed by linking at least two nodes (i.e., representing two ends), however the node can belong to more than one way. They always have a direction, represented by the arrows in the editor, even if it is not meaningful (e.g., a wall). Thesse kinds of ways can be defined as open ways as they have different start and end nodes.
+Ways are lines formed by linking at least two nodes (i.e., representing two ends), however the node can belong to more than one way. They always have a direction, represented by the arrows in the editor, even if it is not meaningful (e.g., a wall). These kinds of ways can be defined as open ways as they have different start and end nodes.
 
 Ways can also be closed if the start and end nodes are identical. This is usually used to represent areas, or polygons, but also roundabouts or closed barriers, such as a closed wall. 
 
 An example of a way is a cycleway in a park next to the bicycle rental.
-```{r}
-
-```
-
-
+![Cycleway in OSM in-browser editor ([link](https://www.openstreetmap.org/edit#map=17/53.75158/-1.55801))
+](/Users/gretatimaite/Desktop/openinfra/figures/way_cycleway_edited.jpg)
 
 A park itself is a good example of an area.
-```{r}
-
-```
+![Park in OSM in-browser editor ([link](https://www.openstreetmap.org/edit#map=14/53.7587/-1.5471))
+](/Users/gretatimaite/Desktop/openinfra/figures/park_area_edited.jpg)
 
 ## Relations
 
-Relation is a list of nodes, ways, and/or relations. It is used to model geographic relationships between objects. These relations should not contain only closely connected elements, having no more than 300 elements per relation. 
+Relation is a list of nodes, ways, and/or relations. It is used to model geographic relationships between objects. These relations should not contain only closely connected elements, having no more than 300 members (elements) per relation. 
 
 Most likely the most important relation in the context of active transport is route but there are also other relations, such as public transport schemes and restrictions. 
+
+![Way as a member of a relation forming a cycleway route ([link](https://www.openstreetmap.org/edit#map=16/53.7568/-1.5410))
+](/Users/gretatimaite/Desktop/openinfra/figures/cycleway_relation_edited.jpg)
+
 
 ## Tags
 
@@ -97,7 +100,7 @@ Tags are not *exactly* data structures but they play a vital role in OSM because
 
 A tag is a concept that refers to a key="value" pair. A key describes a topic while value is a specification of a key. For instance, highway="cycleway" indicates that it is a highway (i.e., a line) and, specifically, a cycleway. It is important to note that a value is not always unique in a sense that it can also be a key. For example, there is a "cycleway" tag, which is used to further detail cycling infrastructure. Hence, it is important to pay attention to the syntax of a tag to understand its meaning and use in a given context.
 
-Moreover, each OSM element can have multiple tags and the use of tags is not limited to certain data elements. Thus, theoretically, a point could be `highway="footway"`. The lack of restrictions is inherent in OSM. It relies on the mappers to make decisions that are the most sensible in their specific contexts. This does not mean, however, that there are no conventions about the most appropriate way of tagging something. A simple example would be a depreciation of a sidewalk="none" tag which should be changed to sidewalk="no". A more intricate example is a question regarding the mapping of sidewalks as currently there are two proposed schemes: one considering a sidewalk as a tag on a highway and another proposing to map footways as separate ways. 
+Moreover, each OSM element can have multiple tags and the use of tags is not limited to certain data elements. Thus, theoretically, a point could be `highway="footway"`. The lack of restrictions is inherent in OSM. It relies on the mappers to make decisions that are the most sensible in their specific contexts. This does not mean, however, that there are no conventions about the most appropriate way of tagging something. A simple example would be a depreciation of a sidewalk="none" tag which should be changed to sidewalk="no". A more intricate example is a question concerning the mapping of sidewalks as currently there are two proposed schemes: one considering a sidewalk as a tag on a highway and another proposing to map footways as separate ways. 
 The table below outlines some relevant tags for active travel planning that should be intuitive enough to get started.
 
 
@@ -108,6 +111,7 @@ A list of links:
 - https://learnosm.org/en/josm/josm-relations/
 - https://wiki.openstreetmap.org/wiki/Elements
 - https://labs.mapbox.com/mapping/osm-data-model/
+- https://wiki.openstreetmap.org/wiki/Forward_%26_backward,_left_%26_right#Identifying_the_direction_of_a_.27way.27
 
 
 
