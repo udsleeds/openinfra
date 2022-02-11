@@ -174,7 +174,7 @@ leeds_net_walking_manual = leeds_tn %>%
       'motorway', 'motorway_link'
     ) # do not return rows if highway tag values are in this character vector
   ) %>%
-  filter(highway != "cycleway" | foot %in% c('yes', 'designated', 'permissive', 'destination')) %>% # do not return rows if highway=='cycleway' unless foot == 'yes' 
+  filter(highway != "cycleway" | foot %in% c('yes', 'designated', 'permissive', 'destination')) %>% # do not return rows if highway is equal to 'cycleway' unless foot is equal to 'yes' 
   filter(! access %in% c('private', 'no')) %>% # do not return rows with access value in a character vector
   filter(! foot %in% c('private', 'no', 'use_sidepath', 'restricted')) %>%  # do not return rows with foot value in a character vector
   filter(! grepl('private', service) ) # do not return rows if the service tag has a value containing 'private' 
@@ -183,33 +183,10 @@ leeds_net_walking_manual %>% dim()
 leeds_net_walking %>% dim()
 ```
 
-
-```{r}
-# right now we have the information needed to return a pedestrian network as defined by the `oe_get_network` function
-# THE REST WILL HAVE TO BE FIXED
-# highway_not = c("abandonded", "bus_guideway", "byway", "construction", "corridor", "elevator", "fixme", "escalator", "gallop", "historic", "no", "planned", "platform", "proposed", "raceway", "motorway", "motorway_link")
-# 
-# '%!in%' = Negate('%in%')                
-# leeds_tn_subset = leeds_tn %>% 
-#   filter(!is.na(highway) &  highway %!in% highway_not |  highway == "cycleway" & foot == "yes") %>% 
-#   filter(is.na(access) | access %!in% c("no", "private") | foot == "yes") 
-# 
-# leeds_tn_subset2 = leeds_tn %>% 
-#   filter(!is.na(highway) &  highway %!in% highway_not |  highway == "cycleway" & foot == "yes") %>% 
-#   filter(is.na(access) | access %!in% c("no", "private") | foot == "yes") %>% 
-#   filter(is.na(foot) | foot %!in% c('private', 'no', 'use_sidepath', 'restricted'))
-# 
-# leeds_tn_test %>% dim()
-# leeds_tn_subset %>% dim()
-# leeds_tn_test2 %>% dim()
-# leeds_tn_subset2 %>% dim()
-```
-
-
 The `extra_tags` argument can also be used with `oe_get_network` function.
 ```{r, results = "hide"}
 tags_needed1 = c("footway")
-leeds_net_walking_tn1 = osmextract::oe_get_network(
+leeds_net_walking_tn = osmextract::oe_get_network(
   place = region_leeds,
   mode = "walking", # What mode of transport is to be returned? Default is cycling
   provider = "bbbike",
@@ -243,7 +220,7 @@ leeds_tn %>% filter(foot == "yes") %>% select(foot) %>% plot() # returning only 
 You might want to save the images of a plot for later use (i.e., to show to others). To do this, you can use either "Export" functionality just above the plot displayed in the "Plots" tab or use command line.
 ```{r}
 # command line approach to saving base R plots in a png format
-png(file = "plot_foot.png") # a name of an image to be created (not the .png extension)
+png(file = "plot_foot.png") # a name of an image to be created (note the .png extension)
 leeds_tn %>% select(foot) %>% plot() # plot
 dev.off() # closes the file
 # the image should have been saved in your working directory
@@ -258,7 +235,7 @@ dev.off() # closes the file
 tmap::tmap_mode("view") # all the maps after this will be interactive
 ```
 
-```{r, results = "hide"}
+```{r}
 leeds_interactive = leeds_tn %>% 
   filter(!is.na(foot)) %>% 
   select(foot) %>% 
@@ -275,7 +252,7 @@ leeds_interactive_color
 
 You might be wondering if you can plot static maps using `qtm()` and the answer is yes. 
 
-```{r, eval = FALSE}
+```{r}
 tmap_mode("plot") # all the maps after this will be static
 leeds_tn %>% 
   filter(!is.na(foot)) %>% 
@@ -301,7 +278,7 @@ saveRDS(leeds, # name of an object in R
         "leeds.RDS") # name of a file (note the .RDS extension)
 
 # import and save as an object (uncomment first); 
-# leeds_tn = readRDS("leeds_tn.RDS")
+leeds_tn = readRDS("leeds_tn.RDS")
 ```
 
 Exercises:
