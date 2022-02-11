@@ -195,7 +195,7 @@ leeds_net_walking_tn = osmextract::oe_get_network(
 )
 ```
 
-There is another way of adding tags -- by re-creating the .gpkg file using `oe_vectortranslate()` (see [here](https://docs.ropensci.org/osmextract/articles/osmextract.html)) however this might be a less intuitive approach. So I would recommend, especially if you are a beginner, using 'extra_tags' argument as part of the `oe_get` or `oe_get_network` function.
+There is another way of adding tags -- by re-creating the .gpkg file using `oe_vectortranslate()` (see [here](https://docs.ropensci.org/osmextract/articles/osmextract.html)) however this might be a less intuitive approach. So I would recommend, especially if you are a beginner, using 'extra_tags' argument as part of the `oe_get()` or `oe_get_network()` function.
 
 # Plotting OSM data
 
@@ -203,6 +203,24 @@ Plotting, or mapping, might seem like something done to visualize the end result
 
 1. static maps with base R
 2. interactive maps with `mapview` library
+
+Before you move on to plotting, download an OSM dataset representing central Leeds. A smaller dataset requires less computational power, hence reducing the plotting time. If you want to plot all Leeds, go ahead but you will have to adjust the code accordingly.
+```{r}
+url = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central.RDS"
+download.file(url, 
+              destfile = "leeds_central.RDS") # downloading the file to the working directory; if you do not know where your working directory is, type `getwd()` to your console.
+
+leeds_central = readRDS("leeds_central.RDS") # reading the file
+```
+
+If you want to save the datasets you have downloaded earlier, then you can do so by `saveRDS()`. Yet, it is important to bear in mind that OSM data is constantly updated, hence it is recommended to update your datasets regularly so it is up-to-date.
+
+```{r}
+# the function below will save the dataset as an RDS file in your working directory
+saveRDS(leeds, # name of an object in R
+        "leeds.RDS") # name of a file (note the .RDS extension)
+```
+
 
 ## Static maps with base R
 
@@ -265,17 +283,4 @@ leeds_tn %>%
 # to save a map as html in your working directory
 tmap::tmap_save(leeds_interactive, # a tmap object
           "leeds_interactive.html") # a name of a new .html file
-```
-
-# Saving (and importing) OSM data as RDS files
-
-You have learned how to download the desired dataset but, most likely, you do not want to have to download it every single as it can be time-consuming (however, it is a good practice to update it constantly). Good news is that you can save a dataset as an RDS file and, if needed, share it with other (R) users. 
-
-```{r, echo = FALSE, results="hide"}
-# to save in your working directory. If you do not know where your working directory is, type `getwd()` to your console.
-saveRDS(leeds, # name of an object in R
-        "leeds.RDS") # name of a file (note the .RDS extension)
-
-# import and save as an object (uncomment first); 
-leeds_tn = readRDS("leeds_tn.RDS")
 ```
