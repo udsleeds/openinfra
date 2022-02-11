@@ -130,7 +130,7 @@ If you look at the [documentation](https://github.com/ropensci/osmextract/blob/m
 
 In the following subsection we will learn how to get those extra tags (and many more) using `oe_get` function that would allow you to define your own network.
 
-## extra tags
+## Extra tags
 
 Have you noticed "other_tags" column in the `leeds` and `leeds_net_walking` datasets? This is where various additional tags are stored that can be utilized for our analysis. OSM has hundreds of them and there is a useful function in `osmextract` that allows you to browse through them. I would recommend spending some time exploring the variety of tags that you think might be relevant to your particular task.
 
@@ -204,7 +204,7 @@ Plotting, or mapping, might seem like something done to visualize the end result
 1. static maps with base R
 2. interactive maps with `mapview` library
 
-## static maps with base R
+## Static maps with base R
 
 Base R `plot` function is great for plotting on-the-go as it is pretty intuitive and quick as it can be added at the end of a pipe operation. It is great to get a general sense of the data and its structure which, then, can be used to inform further decisions.
 
@@ -214,7 +214,7 @@ leeds_tn %>% select(foot) %>% plot() # all non_NA values
 leeds_tn %>% filter(foot == "yes") %>% select(foot) %>% plot() # returning only "yes" values in `foot`
 ```
 
-### saving
+### Saving
 
 You might want to save the images of a plot for later use (i.e., to show to others). To do this, you can use either "Export" functionality just above the plot displayed in the "Plots" tab or use command line.
 ```{r}
@@ -225,7 +225,7 @@ dev.off() # closes the file
 # the image should have been saved in your working directory
 ```
 
-## interactive maps with `tmap` package
+## Interactive maps with `tmap` package
 
 [`tmap`](https://r-tmap.github.io/tmap/) is a flexible package that allows to build both static and interactive maps in R. In this section I will show you how to use its one-liner `qtm()` (quick thematic maps) function to create interactive maps (note: it might be code-efficient, but not always time-efficient! It might take time to build maps, especially the large ones).
 
