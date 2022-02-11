@@ -284,3 +284,233 @@ leeds_central %>%
 tmap::tmap_save(leeds_interactive, # a tmap object
           "leeds_interactive.html") # a name of a new .html file
 ```
+<<<<<<< HEAD
+=======
+
+# Saving (and importing) OSM data as RDS files
+
+You have learned how to download the desired dataset but, most likely, you do not want to have to download it every single as it can be time-consuming (however, it is a good practice to update it constantly). Good news is that you can save a dataset as an RDS file and, if needed, share it with other (R) users. 
+
+```{r, echo = FALSE, results="hide"}
+# to save in your working directory. If you do not know where your working directory is, type `getwd()` to your console.
+saveRDS(leeds, # name of an object in R
+        "leeds.RDS") # name of a file (note the .RDS extension)
+
+# import and save as an object (uncomment first); 
+leeds_tn = readRDS("leeds_tn.RDS")
+```
+
+
+## Downloading OSM network with osmextract::oe_get()
+
+oe_get() is perhaps the core function in the package and the one I would recommend starting from because it is quite straightforward once introduced, yet versatile enough to meet the needs of an advanced user.
+
+```{r, results = "hide"}
+?osmextract::oe_get() # Documentation of a function
+# The first step is to define the place. In this case it is Leeds.
+# A useful function is oe_match_pattern() to search for patterns in a provider's database. It is helpful in indicating a correct region name for a given provider.
+osmextract::oe_match_pattern("leeds") 
+osmextract::oe_match_pattern("yorkshire") # "yorkshire" is associated with several different geographic zones.
+region_leeds = "Leeds" # Note the capital L. The function in which the object will be used is not case sensitive but I would still recommend using the exact string to minimize the likelihood of an error.
+leeds = osmextract::oe_get(
+  place = region_leeds,
+  provider = "bbbike", # Indicates the provider; default is geofabrik
+  layer = "lines", # Default; returns linestring geometries (highways, waterways, aerialways) 
+  force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
+  force_vectortranslate = TRUE # Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)
+)
+```
+
+- If you are curious, you can check out what happens when you input "leeds" instead of "Leeds" if the provider is not specified (uncomment `leeds_test` object in the code chunk below).
+```{r, results = "hide"}
+# leeds_test = osmextract::oe_get(
+#   place = "leeds",
+#   force_download = TRUE, 
+#   force_vectortranslate = TRUE
+# )
+#> No exact match found for place = leeds and provider = geofabrik. Best match is Laos. Checking the other providers. An exact string match was found using provider = bbbike.
+# Even though there was no exact string match (i.e., leeds) in a default provider, it still returned the dataset we needed by switching the provider. In this case it is fine, but it could cause problems for, for instance, "yorkshire" (test it out if you are up for a little challenge).
+```
+
+## Downloading OSM network with osmextract::oe_get_network()
+
+This function is a quick and useful way of returning a desired road network. However, it is important to point out that (compared to `oe_get()`) some filtering is being done before returning the network. Thus, it is important to understand *what* kind of network is exactly returned and if that suits your particular needs.
+
+```{r, results = "hide"}
+leeds_net_walking = osmextract::oe_get_network(
+  place = region_leeds,
+  mode = "walking", # What mode of transport is to be returned? Default is cycling
+  provider = "bbbike",
+  force_download = TRUE,
+  force_vectortranslate = TRUE
+)
+```
+
+## Comparing both approaches
+
+If you have a look at both datasets, you will notice that `leeds` has more observations (rows). This is because of filtering done prior to returning the network. Yet, `leeds_net_walking` has more columns. This is because oe_get_network filtering relies on tags that are not, by default, returned as columns when oe_get() is used. 
+
+```{r}
+# checking out the dimensions of both datasets
+leeds %>% dim()
+leeds_net_walking %>% dim()
+# returning column names
+leeds_names = leeds %>% names()
+leeds_net_walking_names = leeds_net_walking %>% names()
+# returning column names that are in the `leeds_net_walking` but not `leeds`
+setdiff(leeds_net_walking_names, 
+     leeds_names)
+```
+
+If you look at the [documentation](https://github.com/ropensci/osmextract/blob/master/R/get-network.R), you will notice that additional *access*, *foot*, and *service* tags are used to define a pedestrian network.
+
+In the following subsection we will learn how to get those extra tags (and many more) using `oe_get` function that would allow you to define your own network.
+
+## extra tags
+
+Have you noticed "other_tags" column in the `leeds` and `leeds_net_walking` datasets? This is where various additional tags are stored that can be utilized for our analysis. OSM has hundreds of them and there is a useful function in `osmextract` that allows you to browse through them. I would recommend spending some time exploring the variety of tags that you think might be relevant to your particular task.
+
+```{r, results = "hide"}
+# checking the keys that are stored in the 'extra_tags' column
+osmextract::oe_get_keys(leeds)
+```
+
+To download a dataset that has tags as columns (i.e., not stored in the 'extra_tags' column), we can take advantage of the 'extra_tags' argument in the previously demonstrated functions.
+
+```{r, results = "hide"}
+# The first step is to create a character vector with all the tags we want to be returned.
+tags_needed = c("access",
+                "foot",
+                "service")
+leeds_tn = osmextract::oe_get(
+  place = region_leeds,
+  provider = "bbbike", 
+  layer = "lines", 
+  force_download = TRUE, 
+  force_vectortranslate = TRUE,
+  extra_tags = tags_needed
+)
+```
+
+```{r}
+# Let's check if we have those 3 tags as columns
+leeds_tn %>% names
+# right now we have the information needed to return a pedestrian network as defined by the `oe_get_network` function
+# THE REST WILL HAVE TO BE FIXED
+# highway_not = c("abandonded", "bus_guideway", "byway", "construction", "corridor", "elevator", "fixme", "escalator", "gallop", "historic", "no", "planned", "platform", "proposed", "raceway", "motorway", "motorway_link")
+# 
+# '%!in%' = Negate('%in%')                
+# leeds_tn_subset = leeds_tn %>% 
+#   filter(!is.na(highway) &  highway %!in% highway_not |  highway == "cycleway" & foot == "yes") %>% 
+#   filter(is.na(access) | access %!in% c("no", "private") | foot == "yes") 
+# 
+# leeds_tn_subset2 = leeds_tn %>% 
+#   filter(!is.na(highway) &  highway %!in% highway_not |  highway == "cycleway" & foot == "yes") %>% 
+#   filter(is.na(access) | access %!in% c("no", "private") | foot == "yes") %>% 
+#   filter(is.na(foot) | foot %!in% c('private', 'no', 'use_sidepath', 'restricted'))
+# 
+# leeds_tn_test %>% dim()
+# leeds_tn_subset %>% dim()
+# leeds_tn_test2 %>% dim()
+# leeds_tn_subset2 %>% dim()
+```
+
+
+The `extra_tags` argument can also be used with `oe_get_network` function.
+```{r, results = "hide"}
+tags_needed1 = c("footway")
+leeds_net_walking_tn1 = osmextract::oe_get_network(
+  place = region_leeds,
+  mode = "walking", # What mode of transport is to be returned? Default is cycling
+  provider = "bbbike",
+  force_download = TRUE,
+  force_vectortranslate = TRUE,
+  extra_tags = tags_needed1
+)
+```
+
+There is another way of adding tags -- by re-creating the .gpkg file using `oe_vectortranslate()` (see [here](https://docs.ropensci.org/osmextract/articles/osmextract.html)) however this might be a less intuitive approach. So I would recommend, especially if you are a beginner, using 'extra_tags' argument as part of the `oe_get` or `oe_get_network` function.
+
+# Plotting OSM data
+
+Plotting, or mapping, might seem like something done to visualize the end results, but it is also incredibly useful throughout the data science project. Indeed, Beenchman and Lovelace (2022) argue that visualizations can be central to making inferences in geographical analysis. Given that, this section aims to introduce you to two simple techniques for mapping:
+
+1. static maps with base R
+2. interactive maps with `mapview` library
+
+## static maps with base R
+
+Base R `plot` function is great for plotting on-the-go as it is pretty intuitive and quick as it can be added at the end of a pipe operation. It is great to get a general sense of the data and its structure which, then, can be used to inform further decisions.
+
+```{r}
+# Let's plot all the highways that have a non-NA value in the `foot` column:
+leeds_tn %>% select(foot) %>% plot() # all non_NA values 
+leeds_tn %>% filter(foot == "yes") %>% select(foot) %>% plot() # returning only "yes" values in `foot`
+```
+
+### saving
+
+You might want to save the images of a plot for later use (i.e., to show to others). To do this, you can use either "Export" functionality just above the plot displayed in the "Plots" tab or use command line.
+```{r}
+# command line approach to saving base R plots in a png format
+png(file = "plot_foot.png") # a name of an image to be created (not the .png extension)
+leeds_tn %>% select(foot) %>% plot() # plot
+dev.off() # closes the file
+# the image should have been saved in your working directory
+```
+
+## interactive maps with `tmap`
+
+[`tmap`](https://r-tmap.github.io/tmap/) is a flexible package that allows to build both static and interactive maps in R. In this section I will show you how to use its one-liner `qtm()` function to build interactive maps (note: it might be code-efficient, but not always time-efficient! It might take time to build maps, especially the large ones).
+
+```{r}
+# first, we need to set out tmap mode to interactive
+tmap::tmap_mode("view")
+```
+
+```{r, results = "hide"}
+leeds_interactive = leeds_tn %>% 
+  filter(!is.na(foot)) %>% 
+  tmap::qtm(fill = "foot") # add `qtm()` at the end of to visualise your data
+leeds_interactive
+```
+
+
+
+### Saving
+
+```{r}
+# to save a map as html in your working directory
+tmap::tmap_save(leeds_interactive, # a tmap object
+          "leeds_interactive.html") # a name of a new html file
+```
+
+# Saving (and importing) OSM data as RDS files
+
+You have learned how to download the desired dataset but, most likely, you do not want to have to download it every single as it can be time-consuming (however, it is a good practice to update it constantly). Good news is that you can save a dataset as an RDS file and, if needed, share it with other (R) users. 
+
+```{r, echo = FALSE, results="hide"}
+# to save in your working directory. If you do not know where your working directory is, type `getwd()` to your console.
+saveRDS(leeds, # name of an object in R
+        "leeds.RDS") # name of a file (note the .RDS extension)
+# import and save as an object (uncomment first); 
+# leeds_tn = readRDS("leeds_tn.RDS")
+```
+
+Exercises:
+
+- download active travel network for your city or region (other than Leeds).
+- save the other 3 downloaded datasets.
+
+
+to finish:
+
+- add info on installing libraries (done)
+- table (done)
+- insert link to notebook 1 (what is osm?)
+- explain why I'm using force_vectortranslate and force_download
+  - to update the previously downloaded files (there is constantly new data being added to OSM so it's important to keep our data updated to take advantage of crowdsourced nature of OSM) [chunk 4]
+- mention that other programming languages can also be used, such as Python and [OSMnx package](https://osmnx.readthedocs.io/en/stable/#) or rust as in [A/B Street](https://github.com/a-b-street/abstreet#ab-street).
+- references
+- saving interactive maps
+>>>>>>> main
