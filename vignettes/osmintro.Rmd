@@ -64,16 +64,19 @@ Another important note: to increase the reproducibility of the results, we use p
 ```{r, results="hide"}
 url1 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_net_walking.RDS"
 download.file(url1,
-              destfile = "leeds_net_walking.RDS")
+              destfile = "leeds_net_walking.RDS",
+              mode = "wb")
 leeds_net_walking = readRDS("leeds_net_walking.RDS")
 
 url2 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds.RDS"
 download.file(url2,
-              destfile = "leeds.RDS")
+              destfile = "leeds.RDS",
+              mode = "wb")
 leeds = readRDS("leeds.RDS")
 url3 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_tn.RDS"
 download.file(url3,
-              destfile = "leeds_tn.RDS")
+              destfile = "leeds_tn.RDS",
+              mode = "wb")
 leeds_tn = readRDS("leeds_tn.RDS")
 ```
 
@@ -227,9 +230,11 @@ Before you move on to plotting, download an OSM dataset representing central Lee
 ```{r, results = "hide"}
 url = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central.RDS"
 download.file(url, 
-              destfile = "leeds_central.RDS") # downloading the file to the working directory; if you do not know where your working directory is, type `getwd()` to your console.
+              destfile = "leeds_central.RDS",
+              mode = "wb") # downloading the file to the working directory; if you do not know where your working directory is, type `getwd()` to your console.
 
-leeds_central = readRDS("leeds_central.RDS") # reading the file
+leeds_central = readRDS("leeds_central.RDS",
+                        mode = "wb") # reading the file
 ```
 
 If you want to save the datasets you have downloaded earlier, then you can do so by `saveRDS()`. Yet, it is important to bear in mind that OSM data is constantly updated, hence it is recommended to update your datasets regularly so it is up-to-date.
