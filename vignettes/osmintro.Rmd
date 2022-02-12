@@ -61,23 +61,38 @@ library(tmap)
 
 Another important note: to increase the reproducibility of the results, we use pre-downloaded datasets throughout this codebook. Hence, the size of your dataset might differ (be more up-to-date) than the one used here. If you want to reproduce the same results, use the chunk of code below to get your data, otherwise skip it and proceed to "Downloading OSM network..." sections.
 
-```{r, results="hide"}
+```{r, eval=FALSE, echo=FALSE}
+# Convert .RDS to .geojson and upload
+# test with:
 url1 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_net_walking.RDS"
-download.file(url1,
-              destfile = "leeds_net_walking.RDS",
-              mode = "wb")
-leeds_net_walking = readRDS("leeds_net_walking.RDS")
-
 url2 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds.RDS"
-download.file(url2,
-              destfile = "leeds.RDS",
-              mode = "wb")
-leeds = readRDS("leeds.RDS")
 url3 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_tn.RDS"
-download.file(url3,
-              destfile = "leeds_tn.RDS",
-              mode = "wb")
-leeds_tn = readRDS("leeds_tn.RDS")
+url4 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central.RDS"
+
+rds_to_json = function(u) {
+  u_geojson = gsub(pattern = ".RDS|.Rds", replacement = ".geojson", x = u)
+  f_geojson = basename(u_geojson)
+  sf_object = readRDS(url(u))
+  sf::write_sf(sf_object, f_geojson)
+  piggyback::pb_upload(f_geojson)
+  piggyback::pb_download_url(f_geojson)
+}
+rds_to_json(url1)
+rds_to_json(url2)
+rds_to_json(url3)
+rds_to_json(url4)
+```
+
+
+```{r, results="hide"}
+url1 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_net_walking.geojson"
+leeds_net_walking = sf::read_sf(url1)
+
+url2 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds.geojson"
+leeds = sf::read_sf(url2)
+
+url3 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_tn.geojson"
+leeds_tn = sf::read_sf(url3)
 ```
 
 ## Downloading OSM network with osmextract::oe_get()
@@ -228,12 +243,8 @@ Plotting, or mapping, might seem like something done to visualize the end result
 
 Before you move on to plotting, download an OSM dataset representing central Leeds. A smaller dataset requires less computational power, hence reducing the plotting time. If you want to plot all Leeds (i.e., `leeds_tn`), go ahead, but you will have to change the code accordingly.
 ```{r, results = "hide"}
-url = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central.RDS"
-download.file(url, 
-              destfile = "leeds_central.RDS",
-              mode = "wb") # downloading the file to the working directory; if you do not know where your working directory is, type `getwd()` to your console.
-
-leeds_central = readRDS("leeds_central.RDS") # reading the file
+url4 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central.geojson"
+leeds_central = sf::read_sf(url4) # reading the file
 ```
 
 If you want to save the datasets you have downloaded earlier, then you can do so by `saveRDS()`. Yet, it is important to bear in mind that OSM data is constantly updated, hence it is recommended to update your datasets regularly so it is up-to-date.
@@ -241,7 +252,7 @@ If you want to save the datasets you have downloaded earlier, then you can do so
 ```{r, results="hide"}
 # the function below will save the dataset as an RDS file in your working directory
 saveRDS(leeds, # name of an object in R
-        "leeds.RDS") # name of a file (note the .RDS extension)
+        "leeds.Rds") # name of a file (note the .Rds extension)
 ```
 
 
