@@ -45,26 +45,25 @@ An example of a point in active transport context would be a bicycle rental.
 <img src="https://github.com/udsleeds/openinfra/blob/main/figures/bicycle_rental_node_edited.jpg?raw=true" alt="Bicycle Rental" width="100%"/>
 
 
-```{r, eval = FALSE, echo = FALSE}
+```{r, eval=FALSE, echo=FALSE}
 q = "SELECT * FROM 'points' WHERE amenity IN ('bicycle_rental')"
 extra_tags = "amenity"
 region_name = "Leeds"
 bicycle_parking_points = oe_get(place = region_name, 
                                query = q, 
                                extra_tags = extra_tags,
-                               layer = "points",
                                provider = "bbbike",
                                force_vectortranslate = TRUE,
                                force_download = TRUE)
 bicycle_parking_points %>% saveRDS("bicyle_parking_points.Rds")
+u = "http://github.com/udsleeds/openinfra/releases/download/v0.1/bicyle_parking_points.Rds"
+# see function in osmintro.Rmd
+rds_to_json(u)
 ```
 
 ```{r, title = "bicycle rental", out.width="100%", echo=FALSE, message=FALSE, warning=FALSE}
-url = "http://github.com/udsleeds/openinfra/releases/download/v0.1/bicyle_parking_points.Rds"
-download.file(url = url,
-              destfile = "bicyle_parking_points.Rds")
-
-bicycle_parking_points = readRDS("bicyle_parking_points.Rds")
+u = "http://github.com/udsleeds/openinfra/releases/download/v0.1/bicyle_parking_points.geojson"
+bicycle_parking_points = sf::read_sf(u)
 tmap::tmap_mode("view")
 tmap::qtm(bicycle_parking_points,
     dots.col = "red"
