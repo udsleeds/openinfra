@@ -233,8 +233,7 @@ download.file(url,
               destfile = "leeds_central.RDS",
               mode = "wb") # downloading the file to the working directory; if you do not know where your working directory is, type `getwd()` to your console.
 
-leeds_central = readRDS("leeds_central.RDS",
-                        mode = "wb") # reading the file
+leeds_central = readRDS("leeds_central.RDS") # reading the file
 ```
 
 If you want to save the datasets you have downloaded earlier, then you can do so by `saveRDS()`. Yet, it is important to bear in mind that OSM data is constantly updated, hence it is recommended to update your datasets regularly so it is up-to-date.
