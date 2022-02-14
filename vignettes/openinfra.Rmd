@@ -44,33 +44,6 @@ An example of a point in active transport context would be a bicycle rental.
 
 <img src="https://github.com/udsleeds/openinfra/blob/main/figures/bicycle_rental_node_edited.jpg?raw=true" alt="Bicycle Rental" width="100%"/>
 
-
-```{r, eval = FALSE, echo = FALSE}
-q = "SELECT * FROM 'points' WHERE amenity IN ('bicycle_rental')"
-extra_tags = "amenity"
-region_name = "Leeds"
-bicycle_parking_points = oe_get(place = region_name, 
-                               query = q, 
-                               extra_tags = extra_tags,
-                               layer = "points",
-                               provider = "bbbike",
-                               force_vectortranslate = TRUE,
-                               force_download = TRUE)
-bicycle_parking_points %>% saveRDS("bicyle_parking_points.Rds")
-```
-
-```{r, title = "bicycle rental", out.width="100%", echo=FALSE, message=FALSE, warning=FALSE}
-url = "http://github.com/udsleeds/openinfra/releases/download/v0.1/bicyle_parking_points.Rds"
-download.file(url = url,
-              destfile = "bicyle_parking_points.Rds")
-
-bicycle_parking_points = readRDS("bicyle_parking_points.Rds")
-tmap::tmap_mode("view")
-tmap::qtm(bicycle_parking_points,
-    dots.col = "red"
-    )
-```
-
 ## Ways
 
 Ways are lines formed by linking at least two nodes (i.e., representing two ends), however the node can belong to more than one way. They always have a direction, represented by the arrows in the editor, even if it is not meaningful (e.g., a wall). These kinds of ways can be defined as open ways as they have different start and end nodes.
@@ -99,6 +72,31 @@ A tag is a concept that refers to a key="value" pair. A key describes a topic wh
 
 Moreover, each OSM element can have multiple tags and the use of tags is not limited to certain data elements. Thus, theoretically, a point could be `highway="footway"`. The lack of restrictions is inherent in OSM. It relies on the mappers to make decisions that are the most sensible in their specific contexts. This does not mean, however, that there are no conventions about the most appropriate way of tagging something. A simple example would be a depreciation of a sidewalk="none" tag which should be changed to sidewalk="no". A more intricate example is a question concerning the mapping of sidewalks as currently there are two proposed schemes: one considering a sidewalk as a tag on a highway and another proposing to map footways as separate ways. 
 The table below outlines some relevant tags for active travel planning that should be intuitive enough to get started.
+
+```{r, results="hide", echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(tmap)
+url = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central.RDS"
+download.file(url, 
+              destfile = "leeds_central.RDS") # downloading the file to the working directory; if you do not know where your working directory is, type `getwd()` to your console.
+
+leeds_central = readRDS("leeds_central.RDS") # reading the file
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width="90%"}
+tmap_mode("view")
+cl_highways = leeds_central %>%
+  select(highway)
+cl_access = leeds_central %>% 
+  select(access)
+
+tm_shape(cl_highways)+
+  tm_lines("highway",
+           palette = "viridis")+
+  tm_shape(cl_access)+
+  tm_lines("access")
+```
+
 
 # OSM and transport research
 
