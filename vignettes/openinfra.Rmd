@@ -66,7 +66,7 @@ Most likely the most important relation in the context of active transport is ro
 
 ## Tags
 
-Tags are not *exactly* data structures but they play a vital role in OSM because they define geographic features. In other words, it would be without tags one would not know if a node represents a bicycle rental.
+Tags are not *exactly* data structures but they play a vital role in OSM because they define geographic features. In other words, without tags one would not know if a node represents a bicycle rental.
 
 A tag is a concept that refers to a key="value" pair. A key describes a topic while value is a specification of a key. For instance, highway="cycleway" indicates that it is a highway (i.e., a line) and, specifically, a cycleway. It is important to note that a value is not always unique in a sense that it can also be a key. For example, there is a "cycleway" tag, which is used to further detail cycling infrastructure. Hence, it is important to pay attention to the syntax of a tag to understand its meaning and use in a given context.
 
@@ -76,26 +76,52 @@ The table below outlines some relevant tags for active travel planning that shou
 ```{r, results="hide", echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(tmap)
-url = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central.RDS"
-download.file(url, 
-              destfile = "leeds_central.RDS") # downloading the file to the working directory; if you do not know where your working directory is, type `getwd()` to your console.
 
-leeds_central = readRDS("leeds_central.RDS") # reading the file
+url = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central_14-02-2022.RDS"
+download.file(url, 
+              destfile = "leeds_central_14-02-2022.RDS") # downloading the file to the working directory; if you do not know where your working directory is, type `getwd()` to your console.
+
+leeds_central = readRDS("leeds_central_14-02-2022.RDS") # reading the file
 ```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width="90%"}
-tmap_mode("view")
+```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+tmap::tmap_mode("view")
+
 cl_highways = leeds_central %>%
   select(highway)
-cl_access = leeds_central %>% 
-  select(access)
+cl_cycleways = leeds_central %>%
+  select(cycleway)
+cl_footways = leeds_central %>%
+  select(footway)
+cl_maxspeed = leeds_central %>% 
+  select(maxspeed)
+cl_kerb = leeds_central %>% 
+  select(kerb)
+cl_wheelchair = leeds_central %>% 
+  select(wheelchair)
+cl_width = leeds_central %>% 
+  select(width)
+cl_lit = leeds_central %>% 
+  select(lit)
 
 tm_shape(cl_highways)+
-  tm_lines("highway",
-           palette = "viridis")+
-  tm_shape(cl_access)+
-  tm_lines("access")
+  tm_lines("highway")+
+  tm_shape(cl_cycleways)+
+  tm_lines("cycleway")+
+  tm_shape(cl_footways)+
+  tm_lines("footway")+
+  tm_shape(cl_maxspeed)+
+  tm_lines("maxspeed")+
+  tm_shape(cl_kerb)+
+  tm_lines("kerb")+
+  tm_shape(cl_wheelchair)+
+  tm_lines("wheelchair")+
+  tm_shape(cl_width)+
+  tm_lines("width")+
+  tm_shape(cl_lit)+
+  tm_lines("lit")
 ```
+Important: No highways in central Leeds have width tagged.
 
 
 # OSM and transport research
