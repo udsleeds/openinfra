@@ -225,8 +225,8 @@ Plotting, or mapping, might seem like something done to visualize the end result
 
 Before you move on to plotting, download an OSM dataset representing central Leeds. A smaller dataset requires less computational power, hence reducing the plotting time. If you want to plot all Leeds (i.e., `leeds_tn`), go ahead, but you will have to change the code accordingly.
 ```{r, results = "hide"}
-url = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central.RDS"
-download.file(url, 
+url4 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central.RDS"
+download.file(url4, 
               destfile = "leeds_central.RDS") # downloading the file to the working directory; if you do not know where your working directory is, type `getwd()` to your console.
 
 leeds_central = readRDS("leeds_central.RDS") # reading the file
