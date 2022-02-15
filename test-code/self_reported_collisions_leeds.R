@@ -124,4 +124,8 @@ tm_shape(leeds_central_cycle_buffer)+
 tm_shape(collid_lc_cycle)+
   tm_dots(col = "red")
 
+# Final thoughts: this analysis more of an illustration and findings should be taken with a grain of salt.
+# For instance, collisions happened in 2015 but we don't know if cycleways were there in 2015 or were built 
+# later (maybe because these segments caused a lot of collisions and/or near misses).
+
 
