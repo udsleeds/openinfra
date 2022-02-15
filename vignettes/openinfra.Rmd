@@ -134,12 +134,14 @@ OSM was also used in the context of pedestrian network planning. For example, Ka
 
 ## Why OSM?
 
+So far, we have outlined what is OSM and how it was used in transport research. However, what kind of benefits would the adoption of OSM yield? 
 
+The first one, already mentioned, is the potential of OSM to reduce costs of the tools and systems that rely, to some extent, on geospatial data (Bouldarouk et al. 2017). Second, crowdsourced nature of OSM might ease the engagement of the public in policy decision-making as mappers as OSM mappers tend to be highly engaged with their local communities  (**reference**). Third, open data increases the transparency of (geospatial) analytics.   
 
 
 
 Discuss how OSM can be useful to do large-scale comparative analysis.
-thought: it seems that accessibility is not much considered in cycling but is important in when discussing pedestrian infrastructure. But in general it seems that cycling gets more coverage compared to walking.
+thou
 
 
 
