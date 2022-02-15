@@ -9,7 +9,10 @@ library(osmextract)
 library(pct)
 library(tmap)
 
-collid = read.csv("/Users/gretatimaite/Desktop/collideoscope-data.csv") # change the path as needed
+url = "https://www.collideoscope.org.uk/collideoscope-data.csv"
+download.file(url = url,
+              destfile = "collideoscope-data.csv")
+collid = read.csv("collideoscope-data.csv") # change the path as needed
 
 collid %>% glimpse()
 
@@ -80,8 +83,8 @@ ggplot2::ggplot(collid_leeds_grouped,
 # Finally, let's have a look if these accidents happened where cycling lanes and/or tracks are present.
 # For this we'll need OSM data. To reduce the need for computational power, we'll focus only on central Leeds.
 
-url = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central_15-02-2022.RDS"
-download.file(url, 
+url2 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central_15-02-2022.RDS"
+download.file(url2, 
               destfile = "leeds_central_15-02-2022.RDS") # downloading the file to the working directory; if you do not know where your working directory is, type `getwd()` to your console.
 
 leeds_central = readRDS("leeds_central_15-02-2022.RDS") # reading the file
