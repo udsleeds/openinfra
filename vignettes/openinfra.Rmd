@@ -132,16 +132,15 @@ While there seems to be no research similar to that conducted by Ferster et al. 
 
 OSM was also used in the context of pedestrian network planning. For example, Kasemsuppakorn and Karimi (2013) examined OSM for pedestrian network construction, Graser (2016) used OSM to evaluate different approaches to integrating open spaces in pedestrian routing systems while Novack et al. (2018) developed a customized pleasant pedestrian routing system. Differently from cycling, however, pedestrian networks appear to be examined more in relation to accessibility. Recently Cohen and Dalyot used OSM to develop a wayfinding algorithm for planning accessible and safe routes to blind pedestrians. Boularouk et al. (2017) argued that the use of OSM could help to develop cheaper assistive technologies for people with disabilities who, compared to people without disabilites, have lower median incomes in the UK (Francis-Devine 2021). However, neither of the mentioned projects have been done in the context of the UK. It seems that, at least in the academic research, there is more attention paid to the use of OSM for cycling network planning rather than walking or wheeling.
 
-## Why OSM?
+## Why use OSM?
 
-So far, we have outlined what is OSM and how it was used in transport research. However, what kind of benefits would the adoption of OSM yield? 
+So far, we have outlined what is OSM and how it was used in transport research. However, what kind of benefits would the adoption of open data yield? 
 
-The first one, already mentioned, is the potential of OSM to reduce costs of the tools and systems that rely, to some extent, on geospatial data (Bouldarouk et al. 2017). Second, crowdsourced nature of OSM might ease the engagement of the public in policy decision-making as mappers as OSM mappers tend to be highly engaged with their local communities  (**reference**). Third, open data increases the transparency of (geospatial) analytics.   
+The first one, already mentioned, is the potential of OSM to reduce costs of the tools and systems that rely on geospatial data (Bouldarouk et al. 2017). Second, OSM could be used for conducting comparative analysis between different countries and/or regions, especially in the absence of national geographic dataset (**reference**). Third, the use of OSM data could increase the transparency, reproducibility, and replicability of (geospatial) research and, thus, its robustness (Brunsdon and Comber 2020). Moreover, opening spatial analyses in general, and the data used in particular, would unveil the "black box" algorithms that, in the age of Big Data, constitute a part in the daily lives of citizens (Brunsdon and Comber 2020). Fourth, it fosters citizen science and citizen participation in democratic processes by empowering citizens to engage in (local) geographic knowledge production (see Peters 2019). Given that OSM mappers tend to be highly engaged with their local communities (**reference**), adoption of OSM could lead to increased accountability and promotion of evidence-based decision making in transport research (Lovelace 2021).
 
 
 
-Discuss how OSM can be useful to do large-scale comparative analysis.
-thou
+
 
 
 
