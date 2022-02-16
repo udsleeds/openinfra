@@ -150,7 +150,7 @@ tm_shape(osm_data_region) +
 tmap_save(.Last.value, "osm_highway_map.png")
 ```
 
-![](figures/osm_highway_map.png)
+![](man/figures/osm_highway_map.png)
 
 The same approach can be used to get building polygons:
 
