@@ -90,6 +90,8 @@ library(tidyverse)
 library(tmap)
 
 url = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central_15-02-2022.geojson"
+download.file(url,
+              destfile = "leeds_central_15-02-2022.geojson")
 leeds_central = sf::read_sf(url) # reading the file
 
 ```

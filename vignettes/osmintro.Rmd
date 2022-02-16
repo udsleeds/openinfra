@@ -63,8 +63,14 @@ Another important note: to increase the reproducibility of the results, we use p
 
 ```{r, results="hide"}
 url1 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_net_walking.geojson"
+download.file(url1,
+              destfile = "leeds_net_walking.geojson")
 url2 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds.geojson"
+download.file(url2, 
+              destfile = "leeds.geojson")
 url3 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_tn.geojson"
+download.file(url3,
+              destfile = "leeds_tn.geojson")
 
 leeds_net_walking = sf::read_sf(url1)
 leeds = sf::read_sf(url2)
