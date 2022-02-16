@@ -86,38 +86,38 @@ leeds_central = sf::read_sf(url) # reading the file
 tmap::tmap_mode("view")
 
 cl_highways = leeds_central %>%
-  select(highway)
+  dplyr::select(highway)
 cl_cycleways = leeds_central %>%
-  select(cycleway)
+  dplyr::select(cycleway)
 cl_footways = leeds_central %>%
-  select(footway)
+  dplyr::select(footway)
 cl_maxspeed = leeds_central %>% 
-  select(maxspeed)
+  dplyr::select(maxspeed)
 cl_kerb = leeds_central %>% 
-  select(kerb)
+  dplyr::select(kerb)
 cl_wheelchair = leeds_central %>% 
-  select(wheelchair)
+  dplyr::select(wheelchair)
 cl_width = leeds_central %>% 
-  select(width)
+  dplyr::select(width)
 cl_lit = leeds_central %>% 
-  select(lit)
+  dplyr::select(lit)
 
-tm_shape(cl_highways)+
-  tm_lines("highway")+
-  tm_shape(cl_cycleways)+
-  tm_lines("cycleway")+
-  tm_shape(cl_footways)+
-  tm_lines("footway")+
-  tm_shape(cl_maxspeed)+
-  tm_lines("maxspeed")+
-  tm_shape(cl_kerb)+
-  tm_lines("kerb")+
-  tm_shape(cl_wheelchair)+
-  tm_lines("wheelchair")+
-  tm_shape(cl_width)+
-  tm_lines("width")+
-  tm_shape(cl_lit)+
-  tm_lines("lit")
+tmap::tm_shape(cl_highways)+
+  tmap::tm_lines("highway")+
+  tmap::tm_shape(cl_cycleways)+
+  tmap::tm_lines("cycleway")+
+  tmap::tm_shape(cl_footways)+
+  tmap::tm_lines("footway")+
+  tmap::tm_shape(cl_maxspeed)+
+  tmap::tm_lines("maxspeed")+
+  tmap::tm_shape(cl_kerb)+
+  tmap::tm_lines("kerb")+
+  tmap::tm_shape(cl_wheelchair)+
+  tmap::tm_lines("wheelchair")+
+  tmap::tm_shape(cl_width)+
+  tmap::tm_lines("width")+
+  tmap::tm_shape(cl_lit)+
+  tmap::tm_lines("lit")
 ```
 Important: No highways in central Leeds have width tagged.
 
