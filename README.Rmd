@@ -150,10 +150,7 @@ tm_shape(osm_data_region) +
 tmap_save(.Last.value, "osm_highway_map.png")
 ```
 
-```{r, echo=FALSE}
-url_image = "https://github.com/udsleeds/openinfra/blob/main/figures/osm_highway_map.png"
-```
-![image](`r url_image`)
+![](figures/osm_highway_map.png)
 
 The same approach can be used to get building polygons:
 
