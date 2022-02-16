@@ -10,7 +10,7 @@
 
 Getting people walking and cycling has become a priority for many local,
 regional and national governments in recent years. Interventions
-boosting physical activity represent a ‘magic bullet,’ tackling obesity,
+boosting physical activity represent a ‘magic bullet’, tackling obesity,
 air pollution and wellbeing. Active travel is a rapidly growing topic of
 multi-disciplinary research but has received limited attention from data
 science perspectives, with a recent paper on modelling cycle network
@@ -169,6 +169,8 @@ lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
 #> www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
 #> Data (c) OpenStreetMap contributors, ODbL 1.0. https://www.openstreetmap.org/copyright.
 #> Check the package website, https://docs.ropensci.org/osmextract/, for more details.
+#> Warning in fun(libname, pkgname): rgeos: versions of GEOS runtime 3.10.1-CAPI-1.16.0
+#> and GEOS at installation 3.9.1-CAPI-1.14.2differ
 #> 
 #> Attaching package: 'od'
 #> The following objects are masked from 'package:stplanr':
@@ -215,8 +217,6 @@ lida_buffer = stplanr::geo_buffer(c_m_desire_line, dist = 2000)
 qtm(lida_buffer)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
-
 ``` r
 sf::st_write(lida_buffer, "lida_buffer.geojson")
 ```
@@ -237,7 +237,7 @@ tm_shape(osm_data_region) +
 tmap_save(.Last.value, "osm_highway_map.png")
 ```
 
-![](figures/osm_highway_map.png)
+![](man/figures/osm_highway_map.png)
 
 The same approach can be used to get building polygons:
 
