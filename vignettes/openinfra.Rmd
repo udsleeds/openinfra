@@ -77,11 +77,9 @@ The table below outlines some relevant tags for active travel planning that shou
 library(tidyverse)
 library(tmap)
 
-url = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central_15-02-2022.RDS"
-download.file(url, 
-              destfile = "leeds_central_15-02-2022.RDS") # downloading the file to the working directory; if you do not know where your working directory is, type `getwd()` to your console.
+url = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central_15-02-2022.geojson"
+leeds_central = sf::read_sf(url) # reading the file
 
-leeds_central = readRDS("leeds_central_15-02-2022.RDS") # reading the file
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
