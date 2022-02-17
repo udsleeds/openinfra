@@ -220,6 +220,7 @@ qtm(lida_buffer)
 ``` r
 sf::st_write(lida_buffer, "lida_buffer.geojson")
 ```
+![](unnamed-chunk-8-1.png)
 
 ## Transport infrastructure data from osmextract
 
@@ -237,7 +238,7 @@ tm_shape(osm_data_region) +
 tmap_save(.Last.value, "osm_highway_map.png")
 ```
 
-![](man/figures/osm_highway_map.png)
+![](osm_highway_map.png)
 
 The same approach can be used to get building polygons:
 
