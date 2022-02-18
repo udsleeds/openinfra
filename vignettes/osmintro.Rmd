@@ -298,7 +298,9 @@ leeds_interactive = leeds_central %>%
   select(foot) %>% 
   tmap::qtm() # add `qtm()` at the end of to visualise your data
 leeds_interactive
+```
 
+```{r}
 # if you want to your map to represent different types of foot values, then an additional `lines.col` argument is needed
 leeds_interactive_color = leeds_central %>% 
   filter(!is.na(foot)) %>% 
