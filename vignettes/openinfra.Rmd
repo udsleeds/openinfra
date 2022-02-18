@@ -89,6 +89,7 @@ Figure 1 shows 8 different tags that are important in transport research and the
 ```{r, results="hide", echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(tmap)
+library(kableExtra)
 
 url = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central_15-02-2022.RDS"
 leeds_central = readRDS(url(url)) # reading the file
@@ -102,8 +103,8 @@ cl_highways = leeds_central %>%
   dplyr::select(highway)
 cl_cycleways = leeds_central %>%
   dplyr::select(cycleway)
-cl_footways = leeds_central %>%
-  dplyr::select(footway)
+cl_foot = leeds_central %>%
+  dplyr::select(foot)
 cl_maxspeed = leeds_central %>% 
   dplyr::select(maxspeed)
 cl_kerb = leeds_central %>% 
@@ -119,8 +120,8 @@ tmap::tm_shape(cl_highways)+
   tmap::tm_lines("highway")+
   tmap::tm_shape(cl_cycleways)+
   tmap::tm_lines("cycleway")+
-  tmap::tm_shape(cl_footways)+
-  tmap::tm_lines("footway")+
+  tmap::tm_shape(cl_foot)+
+  tmap::tm_lines("foot")+
   tmap::tm_shape(cl_maxspeed)+
   tmap::tm_lines("maxspeed")+
   tmap::tm_shape(cl_kerb)+
@@ -135,7 +136,7 @@ tmap::tm_shape(cl_highways)+
 ```
 <br>
 
-The most important tag for transport research is `highway` as it indicates the type of road. Table 1 shows a list of highway values to work with.
+The most important tag for transport research is `highway` as it indicates the type of a road. Table 1 shows a list of highway values to work with. Table 2 shows a list of 8 tags which are useful to get started.
 
 ```{r, results = "asis", echo=FALSE}
 library(tidyverse)
@@ -172,7 +173,7 @@ highway_table = data.frame("Highway" = c("cycleway",
                                        "Roads in residential areas",
                                        "Roads in residential areas",
                                        "Secondary roads, typically regional",
-                                       "Service roads for access to buildings, parking lots, gas station, etc.",
+                                       "Service roads for access to buildings, parking lots, gas stations, etc.",
                                        "Flights of steps on footpaths",
                                        "Tertiary roads, typically local",
                                        "Tertiary roads, typically local",
@@ -184,9 +185,43 @@ highway_table = data.frame("Highway" = c("cycleway",
 kableExtra::kbl(highway_table,
                 caption = "Table 1. Values of highway=*") %>% 
   kableExtra::kable_styling(position = "center",
-                            fixed_thead = T
-                            ) %>% 
+                            fixed_thead = T) %>% 
   kableExtra::footnote(general = "This table has been adapted from Chan and Cooper (2019).")
+```
+<br>
+```{r, results = "asis", echo=FALSE}
+tag_table = data.frame(Tag = c("highway",
+                               "cycleway",
+                               "foot",
+                               "maxspeed",
+                               "kerb",
+                               "wheelchair",
+                               "width",
+                               "lit"),
+                       Meaning = c("It indicates the road type.",
+                                   "Used for mapping cycling infrastructure.",
+                                   "Provides information on  the legal access for pedestrians.",
+                                   "Maximum speed limit for a particular road, railway, or waterway.",
+                                   "Indicates the presence (or absence) and height of a kerb.",
+                                   "Indicates places and ways suitable for wheelchair users.",
+                                   "Actual width of a way",
+                                   "Indicates presence of lighting"
+                                   ))
+
+kableExtra::kable(tag_table,
+                  caption = "Table 1.") %>% 
+  kableExtra::kable_styling(position = "center",
+                            fixed_thead = T) %>% 
+  kableExtra::footnote(general= "Links to relevant OSM wiki pages:",
+                           number = c("highway: https://wiki.openstreetmap.org/wiki/Key:highway",
+                                      "cycleway: https://wiki.openstreetmap.org/wiki/Key:cycleway",
+                                      "foot: https://wiki.openstreetmap.org/wiki/Key:foot",
+                                      "maxspeed: https://wiki.openstreetmap.org/wiki/Key:maxspeed",
+                                      "kerb: https://wiki.openstreetmap.org/wiki/Key:kerb",
+                                      "wheelchair: https://wiki.openstreetmap.org/wiki/Key:wheelchair",
+                                      "width: https://wiki.openstreetmap.org/wiki/Key:width",
+                                      "lit: https://wiki.openstreetmap.org/wiki/Key:lit"
+                                      ))
 ```
 
 # OSM in transport research
