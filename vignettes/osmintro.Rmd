@@ -26,8 +26,9 @@ In this section we will focus on two aspects necessary to work with OpenStreetMa
 The ability to download OSM data via command line might sound more intimidating compared to Graphical User Interface (GUI) but it can provide a much more flexible approach to working with OSM, including data analysis which will be covered in the later sections. 
 
 Before we begin, I want to remind the basic structure of OSM tags (if you need a more detailed refresher, see "Getting started with open data on transport infrastructure"). A *tag* consists of a key and a value (key = value). A value can take both numeric and character values. The tags and their meanings that will be used in this notebook are outlined in the Table 1.
-
+<br>
 ```{r, results = "asis", echo=FALSE}
+library(tidyverse)
 tag_table = data.frame(Tag = c("highway",
                                "foot",
                                "access",
@@ -48,6 +49,7 @@ kableExtra::kable(tag_table,
                                       "service: https://wiki.openstreetmap.org/wiki/Key:service"
                                       ))
 ```
+<br>
 
 # Getting OSM data
 
