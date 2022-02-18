@@ -25,14 +25,29 @@ In this section we will focus on two aspects necessary to work with OpenStreetMa
 
 The ability to download OSM data via command line might sound more intimidating compared to Graphical User Interface (GUI) but it can provide a much more flexible approach to working with OSM, including data analysis which will be covered in the later sections. 
 
-Before we begin, I want to remind the basic structure of OSM tags (if you need a more detailed refresher, see **FINISH**). A *tag* consists of a key and a value (key = value). A value can take both numeric and character values. The tags and their meanings that we will use in this notebook are outlined in the table below.
+Before we begin, I want to remind the basic structure of OSM tags (if you need a more detailed refresher, see "Getting started with open data on transport infrastructure"). A *tag* consists of a key and a value (key = value). A value can take both numeric and character values. The tags and their meanings that will be used in this notebook are outlined in the Table 1.
 
-|Tag |Meaning|
----|---|
-|Highway |It indicates the road type ([link](https://wiki.openstreetmap.org/wiki/Key:highway))|
-|Foot| Provides information on  the legal access for pedestrians ([link](https://wiki.openstreetmap.org/wiki/Key:foot))|
-|Access| Provides information on the legal permissions and restrictions  ([link](https://wiki.openstreetmap.org/wiki/Key:access))|
-|Service| Provides additional information on the services (roads, businesses)  ([link](https://wiki.openstreetmap.org/wiki/Key:service)|
+```{r, results = "asis", echo=FALSE}
+tag_table = data.frame(Tag = c("highway",
+                               "foot",
+                               "access",
+                               "service"),
+                       Meaning = c("It indicates the road type.",
+                                   "Provides information on  the legal access for pedestrians.",
+                                   "Provides information on the legal permissions and restrictions.",
+                                   "Provides additional information on the services (roads, businesses)."
+                                   ))
+
+kableExtra::kable(tag_table,
+                  caption = "Table 1.") %>% 
+  kableExtra::kable_styling(position = "center") %>% 
+  kableExtra::footnote(general= "Links to relevant OSM wiki pages:",
+                           number = c("highway: https://wiki.openstreetmap.org/wiki/Key:highway",
+                                      "foot: https://wiki.openstreetmap.org/wiki/Key:foot",
+                                      "access: https://wiki.openstreetmap.org/wiki/Key:access",
+                                      "service: https://wiki.openstreetmap.org/wiki/Key:service"
+                                      ))
+```
 
 # Getting OSM data
 
