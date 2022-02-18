@@ -45,7 +45,7 @@ An example of a point in active transport context would be a bicycle rental.
 ```{r, echo=FALSE}
 url_image1 = "https://github.com/udsleeds/openinfra/blob/main/figures/bicycle_rental_node_edited.jpg?raw=true"
 ```
-![](`r url_image1`)
+![](`r url_image1`){width=100%}
 
 ## Ways
 
@@ -56,13 +56,13 @@ Ways can also be closed if the start and end nodes are identical. This is usuall
 ```{r, echo=FALSE}
 url_image2 = "https://github.com/udsleeds/openinfra/blob/main/figures/way_cycleway_edited.jpg?raw=true"
 ```
-![](`r url_image2`)
+![](`r url_image2`){width=100%}
 
 A park itself is a good example of an area.
-```{r, echo=FALSE}
+```{r, echo=FALSE, out.width="100%"}
 url_image3 = "https://github.com/udsleeds/openinfra/blob/main/figures/park_area_edited.jpg?raw=true"
 ```
-![](`r url_image3`)
+![](`r url_image3`){width=100%}
 
 
 ## Relations
@@ -71,10 +71,10 @@ Relation is a list of nodes, ways, and/or relations. It is used to model geograp
 
 Most likely the most important relation in the context of active transport is route but there are also other relations, such as public transport schemes and restrictions. 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, out.width="100%"}
 url_image4 = "https://github.com/udsleeds/openinfra/blob/main/figures/cycleway_relation_edited.jpg?raw=true"
 ```
-![](`r url_image4`)
+![](`r url_image4`){width=100%}
 
 ## Tags
 
@@ -95,7 +95,7 @@ leeds_central = readRDS(url(url)) # reading the file
 
 ```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.cap="Figure 1. Note: no highways in central Leeds have width tagged."}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 tmap::tmap_mode("view")
 
 cl_highways = leeds_central %>%
@@ -130,9 +130,64 @@ tmap::tm_shape(cl_highways)+
   tmap::tm_shape(cl_width)+
   tmap::tm_lines("width")+
   tmap::tm_shape(cl_lit)+
-  tmap::tm_lines("lit")
+  tmap::tm_lines("lit")+
+  tmap::tm_layout(title = "Figure 1. Tags in OSM. Note: no highways in central Leeds have width tagged.")
 ```
+<br>
 
+The most important tag for transport research is `highway` as it indicates the type of road. Table 1 shows a list of highway values to work with.
+
+```{r, results = "asis", echo=FALSE}
+library(tidyverse)
+highway_table = data.frame("Highway" = c("cycleway",
+                                       "footway",
+                                       "living_street",
+                                       "motorway",
+                                       "motorway_link",
+                                       "path",
+                                       "pedestrian",
+                                       "primary",
+                                       "primary_link",
+                                       "residential",
+                                       "road",
+                                       "secondary",
+                                       "service",
+                                       "steps",
+                                       "tertiary",
+                                       "tertiary_link",
+                                       "track",
+                                       "trunk",
+                                       "trunk_link",
+                                       "unclassified"
+                                       ),
+                           Meaning = c("Pats for cycling",
+                                       "Footpaths",
+                                       "Streets where pedestrians have priority over cars",
+                                       "Motorways or freeways",
+                                       "Motorways or freeways",
+                                       "Unspecified paths",
+                                       "Pedestrian only streets",
+                                       "Primary roads",
+                                       "Primary roads",
+                                       "Roads in residential areas",
+                                       "Roads in residential areas",
+                                       "Secondary roads, typically regional",
+                                       "Service roads for access to buildings, parking lots, gas station, etc.",
+                                       "Flights of steps on footpaths",
+                                       "Tertiary roads, typically local",
+                                       "Tertiary roads, typically local",
+                                       "For agricultural use",
+                                       "Important roads, typically divided",
+                                       "Important roads, typically divided",
+                                       "Smaller local roads"))
+
+kableExtra::kbl(highway_table,
+                caption = "Table 1. Values of highway=*") %>% 
+  kableExtra::kable_styling(position = "center",
+                            fixed_thead = T
+                            ) %>% 
+  kableExtra::footnote(general = "This table has been adapted from Chan and Cooper (2019).")
+```
 
 # OSM in transport research
 
@@ -157,12 +212,12 @@ So far, we have outlined what is OSM and how it was used in transport research. 
 The first one, already mentioned, is the potential of OSM to reduce costs of the tools and systems that rely on geospatial data (Bouldarouk et al. 2017). Second, OSM could be used for conducting comparative analysis between different countries and/or regions, especially in the absence of national geographic dataset (**reference**). Third, the use of OSM data could increase the transparency, reproducibility, and replicability of (geospatial) research and, thus, its robustness (Brunsdon and Comber 2020). Moreover, opening spatial analyses in general, and the data used in particular, would aid in unveiling the "black box" algorithms that, in the age of Big Data, constitute a part in the decision-making processes in the daily lives of citizens (Brunsdon and Comber 2020). Fourth, it fosters citizen science and citizen participation in democratic processes by empowering citizens to engage in (local) geographic knowledge production (see Peters 2019). Given that OSM mappers tend to be highly engaged with their local communities (**reference**), adoption of OSM could lead to increased accountability and promotion of evidence-based decision making in transport research (Lovelace 2021). This, consequently, could lead to an increased uptake in cycling, walking, and wheeling as a prefered modal choice.
 
 
-# The role of OpenInfra for using OSM in transport research
+# The role of OpenInfra in transport research
 
 ```{r, echo=FALSE}
-url_image5 = "https://github.com/udsleeds/openinfra/blob/main/figures/openinfra.png"
+url_image5 = "https://raw.githubusercontent.com/udsleeds/openinfra/main/figures/openinfra.png"
 ```
-![](`r url_image5`)
+![](`r url_image5`){width=100%}
 
 The adoption of OSM brings a number of benefits to transport research, however it might not always be clear on how to use, or even download, OSM data. OpenInfra aims to ease the use of OSM in transport research for those who would benefit from it the most - citizens and policy makers. The emphasis is also added on inclusivity and accessibility; not only is the goal to improve the accessibility of OSM data but also demonstrate how it can be used to plan inclusive infrastructures for cycling, walking, and wheeling. To achieve this, the package contains a number of functions to make OSM data processing easier as well as hands-on articles, or vignettes, to get started. 
 
