@@ -1,11 +1,16 @@
 ---
 title: "An introduction to getting and using OSM data for transport planning"
+bibliography: osmintro.bib 
+nocite: '@*'
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{An introduction to getting and using OSM data for transport planning}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+```{r, eval=FALSE, echo=FALSE}
+rbbt::bbt_update_bib(path_rmd = "osmintro.Rmd", path_bib = "osmintro.bib")
+```
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -18,7 +23,7 @@ knitr::opts_chunk$set(
 
 # Getting and using OSM data
 
-In this section we will focus on two aspects necessary to work with OpenStreetMap (OSM) data for transport research:
+In this section we will focus on two basic aspects necessary to work with OpenStreetMap (OSM) data for transport research:
 
 1. Downloading OSM data using command line
 2. Plotting OSM data as a method to grasp data and its structure
@@ -319,3 +324,6 @@ leeds_central %>%
 tmap::tmap_save(leeds_interactive, # a tmap object
           "leeds_interactive.html") # a name of a new .html file
 ```
+<br>
+
+**Bibliography**
