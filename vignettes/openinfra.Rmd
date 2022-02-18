@@ -24,7 +24,7 @@ OpenStreetMap (OSM) has contributed to the shift in perception of who can map an
 - empowering citizens to represent their local environments;
 - encouraging the participation of citizens in policy making;
 
-The importance of local knowledge is also highlighted in the (LTN 1/20 guide)[https://www.gov.uk/government/publications/cycle-infrastructure-design-ltn-120] in the context of ensuring successful implementation of a scheme. Hence, OSM can be a tool to foster a bottom-up approach in active travel planning through the inclusion of citizens in the data generation process. This, consequently, can be used to vocalise their needs leading to an increased likelihood of achieving higher uptake levels. 
+The importance of local knowledge is also highlighted in the [LTN 1/20 guide](https://www.gov.uk/government/publications/cycle-infrastructure-design-ltn-120) in the context of ensuring successful implementation of a scheme. Hence, OSM can be a tool to foster a bottom-up approach in active travel planning through the inclusion of citizens in the data generation process. This, consequently, can be used to vocalise their needs leading to an increased likelihood of achieving higher uptake levels. 
 
 # What is the structure of OpenStreetMap data?
 
