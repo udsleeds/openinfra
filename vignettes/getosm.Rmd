@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 # Getting and using OSM data
 
-In this section we will focus on two basic aspects necessary to work with OpenStreetMap (OSM) data for transport research:
+In this section we will focus on two basic yet necessary steps to work with OpenStreetMap (OSM) data for transport research:
 
 1. Downloading OSM data using command line
 2. Plotting OSM data as a method to grasp data and its structure
@@ -101,7 +101,7 @@ leeds_tn = sf::read_sf("leeds_tn.geojson")
 
 ## Downloading OSM network with osmextract::oe_get()
 
-oe_get() is perhaps the core function in the package and the one I would recommend starting from because it is quite straightforward once introduced, yet versatile enough to meet the needs of an advanced user.
+`oe_get()` is perhaps the core function in the package and the one I would recommend starting from because it is quite straightforward once introduced, yet versatile enough to meet the needs of an advanced user.
 
 
 ```{r, results = "hide", eval=FALSE}
@@ -169,7 +169,7 @@ setdiff(leeds_net_walking_names,
 
 If you look at the [documentation](https://github.com/ropensci/osmextract/blob/master/R/get-network.R), you will notice that additional *access*, *foot*, and *service* tags are used to define a pedestrian network.
 
-In the following subsection we will learn how to get those extra tags (and many more) using `oe_get` function that would allow you to define your own network.
+In the following subsection we will learn how to get those extra tags (and many more) using `oe_get()` function that would allow you to define your own network.
 
 ## Extra tags
 
@@ -245,7 +245,8 @@ Plotting, or mapping, might seem like something done to visualize the end result
 1. static maps with base R
 2. interactive maps with `mapview` library
 
-Before you move on to plotting, download an OSM dataset representing central Leeds. A smaller dataset requires less computational power, hence reducing the plotting time. If you want to plot all Leeds (i.e., `leeds_tn`), go ahead, but you will have to change the code accordingly.
+Before moving to plotting, download an OSM dataset representing central Leeds^[Code for central Leeds can be found here: https://github.com/udsleeds/openinfra/blob/main/test-code/central%20leeds.R]. A smaller dataset requires less computational power, hence reducing the plotting time. If you want to plot all Leeds (i.e., `leeds_tn`), go ahead, but you will have to change the code accordingly.
+
 ```{r, results = "hide"}
 url5 = "https://github.com/udsleeds/openinfra/releases/download/v0.1/leeds_central_15-02-2022.geojson"
 download.file(url5,
@@ -261,10 +262,9 @@ saveRDS(leeds, # name of an object in R
         "leeds.RDS") # name of a file (note the .RDS extension)
 ```
 
-
 ## Static maps with base R
 
-Base R `plot` function is great for plotting on-the-go as it is pretty intuitive and quick as it can be added at the end of a pipe operation. It is great to get a general sense of the data and its structure which, then, can be used to inform further decisions.
+Base R `plot()` function is great for plotting on-the-go because it is pretty intuitive, quick and can be added at the end of a pipe operation. It is great to get a general sense of the data and its structure which, then, can be used to inform further decisions.
 
 ```{r}
 # Let's plot all the highways that have a non-NA value in the `foot` column:
