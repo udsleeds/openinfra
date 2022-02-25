@@ -1,6 +1,6 @@
 ---
 title: "Getting and using OSM data with the R package osmextract"
-bibliography: osmintro.bib 
+bibliography: getosm.bib 
 nocite: '@*'
 output: rmarkdown::html_vignette
 vignette: >
@@ -328,4 +328,10 @@ tmap::tmap_save(leeds_interactive, # a tmap object
 ```
 <br>
 
-**Bibliography**
+# Further reading
+
+- [Geocomputation with R](https://geocompr.robinlovelace.net/) for introduction to spatial analysis in R
+- ["Introducing osmextract"](Introducing osmextract) vignette for downloading OSM data
+- ["tmap: get started!"](https://r-tmap.github.io/tmap/articles/tmap-getstarted.html) vignette or [book-in-progress](https://r-tmap.github.io/tmap-book/) on mapping with `tmap` package
+
+# Bibliography
