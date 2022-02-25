@@ -1,5 +1,5 @@
 ---
-title: "An introduction to getting and using OSM data for transport planning"
+title: "Getting and using OSM data with the R package osmextract"
 bibliography: osmintro.bib 
 nocite: '@*'
 output: rmarkdown::html_vignette
