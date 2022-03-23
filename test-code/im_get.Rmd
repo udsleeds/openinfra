@@ -101,7 +101,7 @@ wy_points = readRDS(url("https://github.com/udsleeds/openinfra/releases/download
 # setdiff(names_points, names_lines)
 
 wy_lines_short = wy_lines %>% select(-c("waterway",  "aerialway", "z_order"))
-wy_points_short = wy_points %>% select(-c("ref", "address", "is_in",   "place"))
+wy_points_short = wy_points %>% select(-c("ref", "address", "is_in", "place"))
 
 wy_joined = rbind(wy_lines_short, wy_points_short)
 ```
@@ -234,6 +234,42 @@ wy_im %>% pull(im_tactile) %>% table()
 
 ## footways
 
+*Inclusive mobility*: pavements adjacent to roads
+
+*OSM*:
+
+- Highway = footway: used for mapping minor pathways which are used mainly or exclusively by pedestrians. 
+	- If the footway is associated with a road then add a footway=sidewalk tag. 
+		○ https://wiki.openstreetmap.org/wiki/Tag:highway%3Dfootway
+- Add the cycleway=* tag to a highway=* to map cycling infrastructure that is an inherent part of the road.
+---> If it's part of the road and it's permitted to walk/wheel on, then it's a sidewalk as there's an implication for the sidewalk running next to the carriageway 
+- The highway=cycleway tag indicates a separate way for the use of cyclists. 
+---> is not clear if highway=cycleway goes adjacent to roads
+- There are two main ways of mapping footways, cycleways, and bridleways in the UK
+---> see https://wiki.openstreetmap.org/wiki/Classic_vs_Alternative_tagging_schemes_in_use_in_the_United_Kingdom
+- Segregated might be used to indicate shared space 
+	- https://wiki.openstreetmap.org/wiki/Key:sidewalk
+In such cases — where the footway is considered an integral part of the combined foot- and cycleway — sidewalk=* tends to be omitted in favour of segregated=yes 
+
+*Hence*, it can be assumed key:footway and key:sidewalk are associated with the footways going adjacent to the road. Also, given that key:cycleway is supposed to be an inherent part of the road, then it should go adjacent to the road, which implies that if one can wheel/walk on it, then it's a footway too. Moreover, key:segregated might be used instead of sidewalk tag for shared spaces.
+
+## footpaths
+
+*Inclusive Mobility*:
+
+- Any other right of way and not adjacent to roads;
+
+*OSM*:
+
+- Highway = path: This tag is used for paths for which all and any of highway=footway, highway=cycleway and highway=bridleway would be inappropriate or inadequate.
+- UK tagging scheme implies that highway values of footways, cycleways, and bridleways are foot = designated
+---> https://wiki.openstreetmap.org/wiki/Classic_vs_Alternative_tagging_schemes_in_use_in_the_United_Kingdom
+
+*So*, footpaths should be all the paths that are not footways. 
+
+## implied footways
+
+Sidewalk can be considered a negative tag because it is implied that roads have sidewalks. Yet, given that it is not explicitly mapped so, there is an assumption that might not always be correct. For this reason, a separate column was created to account for that and indicate which highways might have sidewalks but the user, in the end, can make a decision based on the need.
 
 
 notes:
@@ -244,4 +280,5 @@ notes:
 - [] can illumination level be mapped?
 - [] overlaps between points and lines (e.g., adding lit to a highway but then also highway = street_lamp)
 - [x] add key:smoothness
+- [x] add key:width
 - [] im_surface_paved looks bad to me
