@@ -139,7 +139,7 @@ inclusive_mobility_get = function(osm_sf) {
     TRUE ~ "no"
     )
     ) %>%
-    # presence of a crossing: give-way, signal controlled, or none
+    # presence of a crossing: give-way, signal controlled, none, or yes (but the type is unknown)
     dplyr::mutate(im_crossing = dplyr::case_when(
       stringr::str_detect(crossing, "zebra|uncontr|marked")~ "give-way",
       stringr::str_detect(crossing, "toucan|pedex|puffin|equestrian|light|signal")~ "signal-controlled",
@@ -269,6 +269,25 @@ In such cases — where the footway is considered an integral part of the combin
 
 Sidewalk can be considered a negative tag because it is implied that roads have sidewalks. Yet, given that it is not explicitly mapped so, there is an assumption that might not always be correct. For this reason, a separate column was created to account for that and indicate which highways might have sidewalks but the user, in the end, can make a decision based on the need.
 
+## crossings
+
+*Inclusive Mobility*:
+
+- refers to Traffic Signs Manual
+- highlights give-way and signal controlled crossings
+- notes that the key qualities of a crossing are safety, convenience, and accessibility
+---> it must improve all of them to some extent
+
+*OSM*:
+
+- Can be mapped as nodes with highway=crossing (sidewalks part of the road)
+    - https://wiki.openstreetmap.org/wiki/Tag:highway%3Dcrossing
+- Can be linestrings with footway = crossing (sidewalks mapped as separate from the road)
+		- https://wiki.openstreetmap.org/wiki/Tag:footway%3Dcrossing
+- Mapping techniques depend on how the sidewalk was mapped (part of the road or not)
+
+OSM allows to specify the type of a crossing, yet the three approved tags are traffic_lights, uncontrolled, or none. Given this, OSM was recategorized based on the broad categorization of crossings in the IM guide. If the type of a crossing is unknown but it's mapped as present, "yes" value was used, if it is explicitly known that there is no crossing, then "no" value is present.
+
 ## tactile paving 
 
 *Inclusive Mobility*:
@@ -291,7 +310,6 @@ Sidewalk can be considered a negative tag because it is implied that roads have 
 - Should be: even, firm, and slip-resistant 
 ---> There are requirements for the joint width (i.e., cobbles unlikely to be suitable) 
 
-
 *OSM*:
 
 - https://wiki.openstreetmap.org/wiki/Key:surface
@@ -300,7 +318,8 @@ Sidewalk can be considered a negative tag because it is implied that roads have 
 
 *So*, it is hard to determine if a given surface matches the requirements of IM guide, especially if it's slip-resistant. For this reason, a simple recategorization was used to only indicate if the surface is even. A basic assumption is that all surfaces, except asphalt and concrete, are not unless they have an excellent or good smoothness level tagged. 
 
-notes:
+
+## Notes:
 
 - [x] im_footway_pot needs to be updated to exclude crossings
 - [] is it possible to download both lines and points at the same time so I don't have to join them?
@@ -310,3 +329,4 @@ notes:
 - [x] add key:smoothness
 - [x] add key:width
 - [] im_surface_paved looks bad to me
+- [] add warning if tags are missing
