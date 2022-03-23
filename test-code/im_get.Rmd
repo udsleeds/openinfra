@@ -165,12 +165,12 @@ inclusive_mobility_get = function(osm_sf) {
       ) %>% 
     # recategorize speed
     dplyr::mutate(im_maxspeed = maxspeed %>% 
-      parse_number(),
-    im_maxspeed = dplyr::case_when(
-      im_maxspeed > 1 & im_maxspeed <= 20 ~ "1-20", # up to 20 mph
-      im_maxspeed > 20 & im_maxspeed <= 40 ~ "21-40", # 21 - 40 mph
-      im_maxspeed > 40 & im_maxspeed <= 60 ~ "41-60", # 41 - 60 mph
-      im_maxspeed > 60 ~ "61", # over 60 mph
+      parse_number() %>% 
+        dplyr::case_when(
+          im_maxspeed > 1 & im_maxspeed <= 20 ~ "1-20", # up to 20 mph
+          im_maxspeed > 20 & im_maxspeed <= 40 ~ "21-40", # 21 - 40 mph
+          im_maxspeed > 40 & im_maxspeed <= 60 ~ "41-60", # 41 - 60 mph
+          im_maxspeed > 60 ~ "61", # over 60 mph
     )
   ) %>% 
     # tactile paving: yes, no
@@ -208,6 +208,15 @@ inclusive_mobility_get = function(osm_sf) {
       ~ "even",
       ! is.na(im_surface_paved) 
       ~ "uneven"
+    )
+  ) %>% 
+    # width: under 1.5 meters, 1.5-2 meters, or over 2 meters
+  dplyr::mutate(
+    im_width =  width %>% parse_number(),
+    width_cat = case_when(
+      width_cl > 0 & width_cl < 1.5 ~ " 1.5",
+      width_cl <= 1.5 & width_cl <= 2 ~ "1.5 - 2",
+      width_cl > 2 ~ "2 "
     )
   )
 }
