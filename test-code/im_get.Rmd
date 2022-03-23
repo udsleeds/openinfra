@@ -228,8 +228,6 @@ wy_im = inclusive_mobility_get(wy_joined)
 wy_im %>% pull(im_tactile) %>% table()
 ```
 
-
-
 # Justification
 
 ## footways
@@ -271,6 +269,36 @@ In such cases — where the footway is considered an integral part of the combin
 
 Sidewalk can be considered a negative tag because it is implied that roads have sidewalks. Yet, given that it is not explicitly mapped so, there is an assumption that might not always be correct. For this reason, a separate column was created to account for that and indicate which highways might have sidewalks but the user, in the end, can make a decision based on the need.
 
+## tactile paving 
+
+*Inclusive Mobility*:
+
+- outlines 6 different tactile paving surfaces
+
+
+*OSM*:
+
+- https://wiki.openstreetmap.org/wiki/Key:tactile_paving
+- https://wiki.openstreetmap.org/wiki/Talk:Proposed_features/Tactile_paving
+- No default value (i.e. existence is not implied)
+
+*So*, OSM does not seem to support the categorization of tactile paving as outlines in the IM guide. For this reason simplified approach was taken in which only the presence or absence of tactile paving is determined.
+
+## Surface
+
+*Inclusive Mobility*:
+
+- Should be: even, firm, and slip-resistant 
+---> There are requirements for the joint width (i.e., cobbles unlikely to be suitable) 
+
+
+*OSM*:
+
+- https://wiki.openstreetmap.org/wiki/Key:surface
+- Two main groups:
+---> Paved and Unpaved
+
+*So*, it is hard to determine if a given surface matches the requirements of IM guide, especially if it's slip-resistant. For this reason, a simple recategorization was used to only indicate if the surface is even. A basic assumption is that all surfaces, except asphalt and concrete, are not unless they have an excellent or good smoothness level tagged. 
 
 notes:
 
