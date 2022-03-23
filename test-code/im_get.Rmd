@@ -64,7 +64,7 @@ library(sf)
 # saveRDS(wy_lines,
 #         "wy_lines_21-03-2022.RDS")
 
-wy_lines = readRDS("wy_lines_21-03-2022.RDS")
+wy_lines = readRDS(url("https://github.com/udsleeds/openinfra/releases/download/v0.1/wy_lines_21-03-2022.RDS"))
 
 # wy_points = osmextract::oe_get(
 #   place = region_wy,
@@ -77,7 +77,7 @@ wy_lines = readRDS("wy_lines_21-03-2022.RDS")
 # saveRDS(wy_points,
 #         "wy_points_21-03-2022.RDS")
 
-wy_points = readRDS("wy_points_21-03-2022.RDS")
+wy_points = readRDS(url("https://github.com/udsleeds/openinfra/releases/download/v0.1/wy_points_21-03-2022.RDS"))
 
 # osm_query = "SELECT * FROM 'lines', 'points'"
 # 
