@@ -5,6 +5,10 @@ editor_options:
   chunk_output_type: console
 ---
 
+The purpose of the `inclusive_mobility_get` function is to recategorize OSM data based on the recent Inclusive Mobility (IM) guide UK. The goal behind this is to encourage the use of crowd-sourced open data in the inclusive infrastructure planning. Indeed, the function has been written to encourage discussions around the applicability of open data and act as a starting point.
+
+It has to be noted that this function is a simplification of all the requirements outlined in guide. There are a couple of reasons for this. First, while there is a large number of tags in OSM to create detailed maps, but the values imputed are not always IM guide-friendly. For example, in the guide 6 different types of tactile paving are outlines, yet those types are not key values in the OSM as it seems to only be focused on the presence/absence of tactile paving. This, then, leads not only to the idea that not all OSM data can be sensibly recategorized based on the IM guide but also that it is highly unlikely that a single function could capture the detailed specifications outlined in the IM guide. 
+
 # get osm
 ```{r}
 # libraries
@@ -340,5 +344,13 @@ OSM allows to specify the type of a crossing, yet the three approved tags are tr
 - [x] add key:smoothness
 - [x] add key:width
 - [] im_surface_paved looks bad to me
-- [] add warning if tags are missing
+- [] add warning if tags are missing 
 - [] parsing warning 
+
+
+
+think about:
+
+- measure of completeness
+- linking to social outcomes/phenomenon
+- 
