@@ -238,6 +238,71 @@ inclusive_mobility_get = function(osm_sf) {
 ```
 
 ```{r}
+inclusive_mobility_get_test = function(osm_sf) {
+  im_footway_tags = c("footway","sidewalk","cycleway","foot","segregated")
+  
+  osm_sf_im = if("kerb" %in% colnames(osm_sf)){
+    osm_sf %>%
+      dplyr::mutate(im_kerb = dplyr::if_else(kerb == "flush", "flush", "other"))
+  } else{
+    warning("'kerb' column is missing")
+  } 
+  # footway is a ‘pavement’ adjacent to a road
+  if(all(im_footway_tags %in% colnames(osm_sf))){
+    osm_sf %>%
+        dplyr::mutate(im_footway = dplyr::case_when(
+        footway %in% c("left", "right", "both", "sidewalk") |
+        sidewalk %in% c("left", "right", "both", "yes", "separate") |
+          # trying to capture footways shared with cyclists
+          !is.na(cycleway) & # map cycling infrastructure that is an inherent part of the road
+          foot %in% c("yes", "designated") |
+          segregated %in% "yes"
+      ~ "yes",
+      TRUE ~ "no"
+    )
+    )
+  } else {
+    warning("A column is missing, hence recategorization cannot be completed.")
+  }
+  
+    # 
+    # # footway is a ‘pavement’ adjacent to a road
+    # dplyr::mutate(im_footway = dplyr::case_when(
+    #     footway %in% c("left", "right", "both", "sidewalk") |
+    #     sidewalk %in% c("left", "right", "both", "yes", "separate") |
+    #       # trying to capture footways shared with cyclists
+    #       !is.na(cycleway) & # map cycling infrastructure that is an inherent part of the road
+    #       foot %in% c("yes", "designated") |
+    #       segregated %in% "yes"
+    #   ~ "yes",
+    #   TRUE ~ "no"
+    # )
+    # )
+}  
+
+```
+
+```{r}
+if(all(im_footway_tags %in% colnames(wy_joined))){
+    wy_joined %>%
+        dplyr::mutate(im_footway = dplyr::case_when(
+        footway %in% c("left", "right", "both", "sidewalk") |
+        sidewalk %in% c("left", "right", "both", "yes", "separate") |
+          # trying to capture footways shared with cyclists
+          !is.na(cycleway) & # map cycling infrastructure that is an inherent part of the road
+          foot %in% c("yes", "designated") |
+          segregated %in% "yes"
+      ~ "yes",
+      TRUE ~ "no"
+    )
+    )
+  } else {
+    warning("A column is missing, hence recategorization cannot be done.")
+  } %>% pull(im_footway) %>% table()
+```
+
+
+```{r}
 wy_im = inclusive_mobility_get(wy_joined)
 
 wy_im %>% pull(im_tactile) %>% table()
