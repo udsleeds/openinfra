@@ -41,7 +41,7 @@ wy_pct_geom = wy_pct %>% rename(geom = geometry,
                                 bicycle_census = bicycle) %>% 
   select(foot_census, bicycle_census, all, car_driver, geo_code, geom, geo_name)
 
-# census for the North
+# census for WY
 
 census = read_csv("~/Desktop/deprivation_wy/Data_deprivation_wy.csv") %>% dplyr::select(-c(GEO_TYP2, GEO_TYPE))
 
@@ -78,15 +78,61 @@ sf::sf_use_s2(FALSE)
 
 wy_pct_census_int = wy_im[census_pct, op = sf::st_intersects]
 
+# join osm and census+pct
 wy_joined = sf::st_join(wy_pct_census_int,
                         census_pct,
                         left = TRUE)
 
 
-
+# grouping highways by geocode
 wy_highway_n = wy_joined %>% 
   group_by(GEO_CODE) %>% 
   summarize(n_lsoa = n())
 
-tmap::tmap_mode("plot")
-wy_highway_n %>% tmap::qtm()
+tmap::tmap_mode("view")
+# wy_highway_n %>% select(n_lsoa) %>% tmap::qtm()
+
+# join grouped highways with census data
+wy_joined2 = sf::st_join(wy_highway_n,
+                         census_pct
+                         )
+
+# create deprivation variable 
+wy_joined2 = wy_joined2 %>% mutate(
+  deprivation = (as.numeric(wy_joined2$F996) / as.numeric(wy_joined2$F2384)) * 100
+) 
+
+cor.test(wy_joined2$deprivation, wy_joined2$n_lsoa)
+
+# grouping 
+wy_footway_n = wy_joined %>% 
+  group_by(GEO_CODE, im_footway) %>% 
+  summarize(n_footway_lsoa = n())
+
+wy_joined3 = sf::st_join(wy_footway_n,
+                         census_pct
+)
+
+# create deprivation variable 
+wy_joined3 = wy_joined3 %>% 
+  select(-1) %>% 
+  mutate(
+  deprivation = (as.numeric(wy_joined3$F996) / as.numeric(wy_joined3$F2384)) *100
+) 
+
+# join the two
+wy_joined2_sample = wy_joined2 %>% select(n_lsoa)
+wy_joined4 = sf::st_join(wy_joined3,
+                         wy_joined2_sample)
+
+# correlation
+cor.test(wy_joined3$deprivation, wy_joined3$n_lsoa)
+table(wy_joined3$deprivation, wy_joined3$im_footway)
+
+# linear regression model
+model = lm(n_footway_lsoa ~ n_lsoa + deprivation + foot_census, data = wy_joined4)
+summary(model)
+par(mfrow = c(2, 2))
+plot(model)
+
+
