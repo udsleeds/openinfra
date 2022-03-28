@@ -7,7 +7,7 @@ editor_options:
 
 The purpose of the `inclusive_mobility_get` function is to recategorize OSM data based on the recent Inclusive Mobility (IM) guide UK. The goal behind this is to encourage the use of crowd-sourced open data in the inclusive infrastructure planning. Indeed, the function has been written to encourage discussions around the applicability of open data and act as a starting point.
 
-It has to be noted that this function is a simplification of all the requirements outlined in guide. There are a couple of reasons for this. First, while there is a large number of tags in OSM to create detailed maps, but the values imputed are not always IM guide-friendly. For example, in the guide 6 different types of tactile paving are outlines, yet those types are not key values in the OSM as it seems to only be focused on the presence/absence of tactile paving. This, then, leads not only to the idea that not all OSM data can be sensibly recategorized based on the IM guide but also that it is highly unlikely that a single function could capture the detailed specifications outlined in the IM guide. 
+It has to be noted that this function is a simplification of all the requirements outlined in the guide. There are a couple of reasons for this. First, while there is a large number of tags in OSM to create detailed maps, but the values imputed are not always IM guide-friendly. For example, in the guide 6 different types of tactile paving are outlined, yet those types are not key values in the OSM as it focused on the presence/absence of tactile paving. This, then, leads not only to the fact that not all OSM data can be sensibly recategorized based on the IM guide but also that it is highly unlikely that a single function could capture the detailed specifications outlined in the IM guide. 
 
 # get osm
 ```{r}
@@ -112,6 +112,16 @@ wy_joined = rbind(wy_lines_short, wy_points_short)
 
 
 ## Function
+
+There are two requirements for a function:
+
+1. it must be an `sf` (simple features) object. It can easily be obtained using `osmextract` package
+2. it needs to have *all* the tags needed for recategorization, otherwise an error will be given. 
+
+The following tags are used: highway, kerb, footway, path, cycleway, sidewalk, foot, segregated, access, crossing, lit, maxspeed, tactile_paving, surface, width, est_width.
+
+To learn how to get extra tags, see lines 20-94 of this notebook or [this vignette](https://udsleeds.github.io/openinfra/articles/getosm.html).
+
 ```{r}
 inclusive_mobility_get = function(osm_sf) {
   osm_sf_im = osm_sf %>% 
@@ -161,7 +171,7 @@ inclusive_mobility_get = function(osm_sf) {
   ) %>% 
     # lighting: yes or no
     dplyr::mutate(im_light = dplyr::case_when( 
-      highway %in% "street_lamp" |
+      # highway %in% "street_lamp" |
         ! lit %in% c("no", "disused") & ! is.na(lit)
       ~ "yes",
       TRUE ~ "no"
@@ -239,16 +249,18 @@ inclusive_mobility_get = function(osm_sf) {
 
 ```{r}
 inclusive_mobility_get_test = function(osm_sf) {
-  im_footway_tags = c("footway","sidewalk","cycleway","foot","segregated")
+  im_footway_tag = c("footway","sidewalk","cycleway","foot","segregated")
+  im_kerb_tag = "kerb"
+  im_footpath_tag = c("highway", "foot", "access", "segregated")
   
-  osm_sf_im = if("kerb" %in% colnames(osm_sf)){
+  osm_sf = if(im_kerb_tag %in% colnames(osm_sf)){
     osm_sf %>%
       dplyr::mutate(im_kerb = dplyr::if_else(kerb == "flush", "flush", "other"))
   } else{
-    warning("'kerb' column is missing")
-  } 
+    warning("'kerb' column is missing.")
+  }
   # footway is a ‘pavement’ adjacent to a road
-  if(all(im_footway_tags %in% colnames(osm_sf))){
+  osm_sf = if(all(im_footway_tag %in% colnames(osm_sf))){
     osm_sf %>%
         dplyr::mutate(im_footway = dplyr::case_when(
         footway %in% c("left", "right", "both", "sidewalk") |
@@ -262,43 +274,39 @@ inclusive_mobility_get_test = function(osm_sf) {
     )
     )
   } else {
-    warning("A column is missing, hence recategorization cannot be completed.")
+    warning("A column is missing, hence recategorization cannot be completed. See documentation for details.")
   }
-  
-    # 
-    # # footway is a ‘pavement’ adjacent to a road
-    # dplyr::mutate(im_footway = dplyr::case_when(
-    #     footway %in% c("left", "right", "both", "sidewalk") |
-    #     sidewalk %in% c("left", "right", "both", "yes", "separate") |
-    #       # trying to capture footways shared with cyclists
-    #       !is.na(cycleway) & # map cycling infrastructure that is an inherent part of the road
-    #       foot %in% c("yes", "designated") |
-    #       segregated %in% "yes"
-    #   ~ "yes",
-    #   TRUE ~ "no"
-    # )
-    # )
+   # footpath is any other right of way for pedestrians, that does not run adjacent to a road.
+  osm_sf = if(all(im_footpath_tag %in% colnames(osm_sf))){
+    osm_sf %>% 
+      dplyr::mutate(im_footpath = dplyr::case_when(
+        highway %in% "footway" & 
+      im_footway %in% "no" | 
+      # not (always) an inherent part of the road
+      highway %in% c("cycleway", "bridleway", "path") & # foot = "designated" is implied
+      im_footway %in% "no" &
+      ! foot %in% c("no", "private") | 
+      ! access %in% c("no", "private") &
+      segregated %in% "no" # shared space
+    ~ "yes",
+    TRUE ~ "no"
+    )
+    ) 
+  } else {
+    warning("A column is missing, hence recategorization cannot be completed. See documentation for details.")
+  }
 }  
 
 ```
 
 ```{r}
-if(all(im_footway_tags %in% colnames(wy_joined))){
-    wy_joined %>%
-        dplyr::mutate(im_footway = dplyr::case_when(
-        footway %in% c("left", "right", "both", "sidewalk") |
-        sidewalk %in% c("left", "right", "both", "yes", "separate") |
-          # trying to capture footways shared with cyclists
-          !is.na(cycleway) & # map cycling infrastructure that is an inherent part of the road
-          foot %in% c("yes", "designated") |
-          segregated %in% "yes"
-      ~ "yes",
-      TRUE ~ "no"
-    )
-    )
-  } else {
-    warning("A column is missing, hence recategorization cannot be done.")
-  } %>% pull(im_footway) %>% table()
+wy_im_test = inclusive_mobility_get_test(wy_joined)
+wy_im_test %>% pull(im_kerb) %>% table()
+wy_im_test %>% pull(im_footway) %>% table()
+
+wy_im_test1 = inclusive_mobility_get_test(wy_sample)
+wy_im_test1 %>% pull(im_kerb) %>% table()
+wy_im_test %>% pull(im_footway) %>% table()
 ```
 
 
@@ -310,7 +318,7 @@ wy_im %>% pull(im_tactile) %>% table()
 
 # Justification
 
-## footways
+## Footways
 
 *Inclusive mobility*: pavements adjacent to roads
 
@@ -331,7 +339,7 @@ In such cases — where the footway is considered an integral part of the combin
 
 *Hence*, it can be assumed key:footway and key:sidewalk are associated with the footways going adjacent to the road. Also, given that key:cycleway is supposed to be an inherent part of the road, then it should go adjacent to the road, which implies that if one can wheel/walk on it, then it's a footway too. Moreover, key:segregated might be used instead of sidewalk tag for shared spaces.
 
-## footpaths
+## Footpaths
 
 *Inclusive Mobility*:
 
@@ -345,11 +353,11 @@ In such cases — where the footway is considered an integral part of the combin
 
 *So*, footpaths should be all the paths that are not footways. 
 
-## implied footways
+## Implied footways
 
 Sidewalk can be considered a negative tag because it is implied that roads have sidewalks. Yet, given that it is not explicitly mapped so, there is an assumption that might not always be correct. For this reason, a separate column was created to account for that and indicate which highways might have sidewalks but the user, in the end, can make a decision based on the need.
 
-## crossings
+## Crossings
 
 *Inclusive Mobility*:
 
@@ -368,7 +376,7 @@ Sidewalk can be considered a negative tag because it is implied that roads have 
 
 OSM allows to specify the type of a crossing, yet the three approved tags are traffic_lights, uncontrolled, or none. Given this, OSM was recategorized based on the broad categorization of crossings in the IM guide. If the type of a crossing is unknown but it's mapped as present, "yes" value was used, if it is explicitly known that there is no crossing, then "no" value is present.
 
-## tactile paving 
+## Tactile paving 
 
 *Inclusive Mobility*:
 
@@ -377,8 +385,10 @@ OSM allows to specify the type of a crossing, yet the three approved tags are tr
 
 *OSM*:
 
-- https://wiki.openstreetmap.org/wiki/Key:tactile_paving
-- https://wiki.openstreetmap.org/wiki/Talk:Proposed_features/Tactile_paving
+- tactile_paving: 
+  - https://wiki.openstreetmap.org/wiki/Key:tactile_paving
+- additional proposal: 
+  - https://wiki.openstreetmap.org/wiki/Talk:Proposed_features/Tactile_paving
 - No default value (i.e. existence is not implied)
 
 *So*, OSM does not seem to support the categorization of tactile paving as outlines in the IM guide. For this reason simplified approach was taken in which only the presence or absence of tactile paving is determined.
@@ -392,12 +402,52 @@ OSM allows to specify the type of a crossing, yet the three approved tags are tr
 
 *OSM*:
 
-- https://wiki.openstreetmap.org/wiki/Key:surface
+- surface: 
+  - https://wiki.openstreetmap.org/wiki/Key:surface
 - Two main groups:
 ---> Paved and Unpaved
 
 *So*, it is hard to determine if a given surface matches the requirements of IM guide, especially if it's slip-resistant. For this reason, a simple recategorization was used to only indicate if the surface is even. A basic assumption is that all surfaces, except asphalt and concrete, are not unless they have an excellent or good smoothness level tagged. 
 
+## Lighting
+
+*Inclusive Mobolity*:
+
+- lighting might increase a sense of security, improve the ability to read signs, and navigate the space in general.
+- it is important for both people with and without disabilities
+- different illumination levels for different spaces
+
+*OSM*:
+
+- Key:lit
+  - https://wiki.openstreetmap.org/wiki/Key:lit
+- Highway=street_lamp
+  - https://wiki.openstreetmap.org/wiki/Tag:highway%3Dstreet_lamp#Special_tagging_used_in_D.C3.BCsseldorf_for_gas_lamps
+  - Point data
+- Two different schemes seem to be present -- either add lit as a highway attribute or as an element of its own. Overlaps are present, hence this should be handled with care
+
+*So*, OSM does not seem to provide an ability to tag illumination levels. Given that, a simple present/absent recategorization has been done. To account for potential overlaps between different tagging schemes, only key:lit has been used. However, for a more in-depth examination of lighting, both approaches should, ideally, be taken into consideration.
+
+## Speed
+
+*Inclusive Mobility*:
+
+- does not explicitly outline (max) speed requirements
+- note that vehicle speed (and volume) have impact on pedestrian's ability to cross a street given that there are no traffic-control mechanisms
+
+*OSM*:
+
+- key:maxspeed
+  - https://wiki.openstreetmap.org/wiki/Key:maxspeed
+  
+*So*, the speed was categorized into 4 groups: 1 to 20, 21 to 40, and 41 to 60, and over 60 mph. The main focus here might be on the roads with up to 20 mph speed limit as it has a positive effect on increasing active modes of travel.
+
+## Kerb
+
+*Inclusive Mobility*:
+
+- 
+  
 
 ## Notes:
 
@@ -409,8 +459,9 @@ OSM allows to specify the type of a crossing, yet the three approved tags are tr
 - [x] add key:smoothness
 - [x] add key:width
 - [] im_surface_paved looks bad to me
-- [] add warning if tags are missing 
-- [] parsing warning 
+- [CANCELLED] add warning if tags are missing 
+- [CANCELLED] parsing warning 
+- [] should maxspeed be here? I don't think it's in the guide
 
 
 
