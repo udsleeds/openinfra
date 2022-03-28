@@ -122,11 +122,16 @@ The following tags are used: highway, kerb, footway, path, cycleway, sidewalk, f
 
 To learn how to get extra tags, see lines 20-94 of this notebook or [this vignette](https://udsleeds.github.io/openinfra/articles/getosm.html).
 
+Finally, it is important to highlight what this function does not do:
+
+- it does not pre-define a walking/cycling/wheeling network. You can do this manually or rely on, for example, `osmextract` to download a pre-defined waking or cycling network
+- it does not provide a ground truth evaluation of OSM data. It is important to stay critical of the data and what is being returned (e.g., a negative OSM width value should be suspicious)
+
 ```{r}
 inclusive_mobility_get = function(osm_sf) {
   osm_sf_im = osm_sf %>% 
     # kerb: flush or not
-    dplyr::mutate(im_kerb = dplyr::if_else(kerb == "flush", "flush", "other")) %>% 
+    dplyr::mutate(im_kerb = dplyr::if_else(kerb == "flush" | kerb == "no", "flush", "other")) %>% 
     # footway is a ‘pavement’ adjacent to a road
     dplyr::mutate(im_footway = dplyr::case_when(
         footway %in% c("left", "right", "both", "sidewalk") |
@@ -446,8 +451,40 @@ OSM allows to specify the type of a crossing, yet the three approved tags are tr
 
 *Inclusive Mobility*:
 
-- 
+- dropped flush kerbs are essential for wheelchair users
+- flush kerbs should be used with tactile paving
+- dropped kerbs should be flush with the road with a maximum of 6mm tolerance (or a rounded bullnose is provided at the change of level)
+
+
+*OSM*:
+
+- key:kerb
+  - https://wiki.openstreetmap.org/wiki/Key:kerb
+- different categorizations of kerbs depending on their height, e.g.:
+  - flush ~ 0cm 
+  - lowered ~3cm
+  - raised >3cm
   
+*So*, while there is an implication in OSM tagging scheme that kerbs of ~ 3cm height are wheelchair-friendly, it is not a case in the IM guide. Therefore, only kerbs having values of 'flush' or 'no' have been categorized as "flush".
+
+## Width
+
+*Inclusive Mobility*:
+
+- as wide as practicable
+- the width of 2m should be the minimum
+  - absolute minimum of footway width should be 1.5m
+  - if there is an obstruction (e.g., a tree) absolute minimum width can be 1m but the max length of this should not exceed 6m
+
+*OSM*:
+
+- key:width 
+  - https://wiki.openstreetmap.org/wiki/Key:width
+- key:est_width
+  - https://wiki.openstreetmap.org/wiki/Key:est_width
+- default values are implied to be meters
+
+*So*, the function recategorizes OSM data into 3 groups: width under 1.5 m, between 1.5 and 2m, and above 2 meters. The same is done for the key:est_width. It's important to note that two new columns are returned -- one for the estimated and another for the *actual* width. Finally, because of OSM tagging scheme, it is not always easy to differentiate (unless it is explicitly tagged) if the width refers to the carriageway, sidewalk, or include both. The function here does not provide this differentiation either, thus bear in mind that this column might be misleading. To avoid this, it is recommended to process the data further so only sidewalks and/or footways remain in the dataset as much as it is possible given the limitations of OSM.
 
 ## Notes:
 
