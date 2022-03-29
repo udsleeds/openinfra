@@ -21,6 +21,11 @@ Positioning motor modes of travel as primary has been linked to adverse physical
 
 <!-- Outline the; who, what, when, where and how of the study.. -->
 
+OSM data is open, thus it is free to use regardless of the purpose as long as the source is credited. To query OSM database, an `osmextract` package (reference 3) in R has been used. Three metropolitan counties - West Yorkshire, Greater Manchester, and Merseyside - and an administrative area - Greater London - have been chosen as a case study.
+
+To explore OSM data, exploratory data analysis (EDA) was applied. EDA was used to understand the potential and limitations of data. Bar charts have been chosen as a visual tool to show the proportion of a tag to all the highways in a given metropolitan county. The size of data per area can be seen in Table 1. It is important to note, however, that OSM data is constantly being updated, hence the size of data might fluctuate depending on when it was downloaded.
+
+The project has a [GitHub repository](https://github.com/udsleeds/openinfra) with an aim to promote the reproducibility of project outputs. In order to encourage engagement with OSM data, a [website](https://udsleeds.github.io/openinfra/articles/openinfra.html) has been developed which currently contains two articles introducing OSM data.
 
 ## Key findings
 
@@ -62,7 +67,7 @@ Positioning motor modes of travel as primary has been linked to adverse physical
 
 <!-- Funded by? -->
 
-## Images + other notes
+## Images + o
 
 Please send a couple of high res images that can be used for the case study (e.g. graph, visualisation).
 
