@@ -65,7 +65,7 @@ The project has a [GitHub repository](https://github.com/udsleeds/openinfra) wit
 
 ## Funders
 
-<!-- Funded by? -->
+This work was supported by the ESRC funded Consumer Data Research Centre (CDRC) under grant references ES/S007164/1 and ES/L011891/1.
 
 ## Images + o
 
@@ -74,6 +74,8 @@ Please send a couple of high res images that can be used for the case study (e.g
 links:
 
 https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/523460/Working_Together_to_Promote_Active_Travel_A_briefing_for_local_authorities.pdf
+
+https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1033990/net-zero-strategy-beis.pdf
 
 
 
