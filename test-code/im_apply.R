@@ -43,7 +43,7 @@ wy_pct_geom = wy_pct %>% rename(geom = geometry,
 
 # census for WY
 
-census = read_csv("~/Desktop/deprivation_wy/Data_deprivation_wy.csv") %>% dplyr::select(-c(GEO_TYP2, GEO_TYPE))
+census = read_csv("https://github.com/udsleeds/openinfra/releases/download/v0.1/census_deprivation_wy.csv") %>% dplyr::select(-c(GEO_TYP2, GEO_TYPE))
 
 census_pct = dplyr::full_join(census,
                               wy_pct_geom,
