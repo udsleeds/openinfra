@@ -1,0 +1,81 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+--------- Guidelines
+
+Introductory sentence: try to get to the bottom of your research in one sentence, this is your elevator pitch.
+
+Project overview
+
+Sticking to one paragraph (3-4 sentences) give the background of the project including project aims. Is there anything new or unique about this research?
+
+Data and methods
+
+Outline the; who, what, when, where and how of the study.
+
+Key findings
+
+Outline the results of the research project. Aim to stick to 2-3 paragraphs. Use imagery (clearly labelled) where appropriate.
+
+Value of the research
+
+What is the impact, how will this benefit xyz? How could the research be applied to real-world problems or what is the usage/benefit?
+
+Quote from project partner
+
+“One sentence or two approved by an industry partner or collaborator.” Include name, job title and organisation.
+
+Insights
+
+· If you can try to pull out a few key points
+
+· That can be used as bullet points
+
+· These can serve as fast facts about the study.
+
+Research theme
+
+Identify which research theme this sits under:
+
+- Health informatics
+
+- Urban analytics
+
+- Statistical and mathematical methods
+
+People
+
+Who was involved, their job title and institution. 
+
+Partners
+
+Are there any partners?
+
+Funders
+
+Funded by?
+
+Images
+
+Please send a couple of high res images that can be used for the case study (e.g. graph, visualisation).
+
+-----------
+
+# Open access data for transport research: tools, modelling and simulation (OpenInfra)
+
+Positioning motor modes of travel as primary has been linked to adverse physical, mental, and environmental health (reference 1)(image 1). A shift towards a more sustainable - active - transport, such as walking, wheeling, and cycling might help to tackle health problems (reference 2). However, to encourage the uptake of active modes of travel, it is important to consider the needs of citizens -- the active travel infrastructure must meet their needs. 
+
+
+
+
+
+links:
+
+https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/523460/Working_Together_to_Promote_Active_Travel_A_briefing_for_local_authorities.pdf
+
+
+
