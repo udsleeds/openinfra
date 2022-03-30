@@ -31,7 +31,9 @@ The project has a [GitHub repository](https://github.com/udsleeds/openinfra) wit
 
 <!-- Outline the results of the research project. Aim to stick to 2-3 paragraphs. Use imagery (clearly labelled) where appropriate.. -->
 
-The analysis of the chosen areas has shown that footways and cycleways constitute about 1/3 of all the mapped highways in OSM. Greater London stands out as the proportion reaches 1/2 mark. This is not surprising given London's investment in active travel (reference 4). Surprisingly, however, Greater Manchester has very similar network proportion even though it has, in 2018, proposed an ambition to deliver the
+The analysis of the chosen areas has shown that footways and cycleways constitute about 1/3 of all the mapped highways in OSM. Greater London stands out as the proportion reaches 1/2 mark (Table 2). This is not surprising given London's investment in active travel (reference 4). Surprisingly, however, Greater Manchester has very similar network proportion to other two metropolitan counties even though it has, in 2018, proposed an ambition to deliver the most comprehensive active travel network in the England (reference 5). <!---Also, it is important to note that, for example, footways in OSM take a specific semantic meaning - representing minor pathways - thus do not reflect an entire pedestrian network. As a result, it is likely that more comprehensive --->
+
+Arguably the most important characteristic of OSM is not its ability to represent various highways but rather attributes about them. 
 
 ## Value of the research
 
