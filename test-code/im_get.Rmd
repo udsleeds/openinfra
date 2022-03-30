@@ -422,10 +422,10 @@ Note: if you want to include `highway=street_lamp` in your analysis, you will ha
 ## Notes:
 
 - [x] im_footway_pot needs to be updated to exclude crossings
-- [] is it possible to download both lines and points at the same time so I don't have to join them?
+- [x] is it possible to download both lines and points at the same time so I don't have to join them?
 - [] addressing potential overlaps of crossings (see Park Lane - Westgate)
 - [] can illumination level be mapped?
-- [] overlaps between points and lines (e.g., adding lit to a highway but then also highway = street_lamp)
+- [x] overlaps between points and lines (e.g., adding lit to a highway but then also highway = street_lamp)
 - [x] add key:smoothness
 - [x] add key:width
 - [] im_surface_paved looks bad to me

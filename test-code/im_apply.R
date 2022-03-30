@@ -127,7 +127,6 @@ wy_joined4 = sf::st_join(wy_joined3,
 
 # correlation
 cor.test(wy_joined3$deprivation, wy_joined3$n_lsoa)
-table(wy_joined3$deprivation, wy_joined3$im_footway)
 
 # linear regression model
 model = lm(n_footway_lsoa ~ n_lsoa + deprivation + foot_census, data = wy_joined4)
