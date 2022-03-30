@@ -31,32 +31,32 @@ The project has a [GitHub repository](https://github.com/udsleeds/openinfra) wit
 
 <!-- Outline the results of the research project. Aim to stick to 2-3 paragraphs. Use imagery (clearly labelled) where appropriate.. -->
 
+Analysis of the 
+
 ## Value of the research
 
 <!-- What is the impact, how will this benefit xyz? How could the research be applied to real-world problems or what is the usage/benefit? -->
+
+It is essential to meet the needs of citizens if active travel is to become a primary modal choice. OpenInfra project explores 
+
+Value of research:
+- focus on accessibility
+- explore the limitations and benefits of OSM in transport research, specifically accessible infrastructure planning
+- improve the the accessibility of OSM data -> vignettes, functions, etc
 
 ## Quote from project partner 
 
 <!--  “One sentence or two approved by an industry partner or collaborator.” Include name, job title and organisation.-->
 
 ## Insights
-<!--
-· If you can try to pull out a few key points
 
-· That can be used as bullet points
 
-· These can serve as fast facts about the study.
--->
+- OSM has a great potential to become a go-to (open) dataset in the accessible infrastructure planning.
+- Currently OSM does not live up to its potential because of the missing information on the specifics of a highway that are essential for accessible infrastructure planning.
 
 ## Research theme
 
-<!-- Identify which research theme this sits under:
-
-- Health informatics
-
-- Urban analytics
-
-- Statistical and mathematical methods -->
+Urban analytics
 
 ## People
 
