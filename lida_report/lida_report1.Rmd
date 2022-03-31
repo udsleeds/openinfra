@@ -11,6 +11,8 @@ editor_options:
 
 <!-- try to get to the bottom of your research in one sentence, this is your elevator pitch. -->
 
+Can open crowd-sourced data transform how we think about and do transport research? Yes, but we're not here yet 
+
 ## Project overview
 
 <!---Sticking to one paragraph (3-4 sentences) give the background of the project including project aims. Is there anything new or unique about this research? --->
@@ -27,7 +29,7 @@ Moreover, it is important to understand the data structure of OSM in order to ut
 
 To explore OSM data, exploratory data analysis (EDA) was applied. EDA was used to understand the potential and limitations of the OSM data. Bar charts have been chosen as a visual tool to demonstrate the presence/absence of data. In particular, bar charts in this report are used to present the proportions of (some of) the tags relevant to active transport research to all the mapped highways in a given case study. The size of data per area can be seen in Table 1. It is important to note that OSM data is constantly being updated, hence the size of data might fluctuate depending on when it was downloaded.
 
-The project has a [GitHub repository](https://github.com/udsleeds/openinfra) with an aim to promote the reproducibility of project outputs. In order to encourage engagement with OSM data, a [website](https://udsleeds.github.io/openinfra/articles/openinfra.html) has been developed which currently contains two articles: one introducing OSM data from a theoretical point of view and another one demonstrates how to download and start working with OSM data in R.
+The project has a [GitHub repository](https://github.com/udsleeds/openinfra) with an aim to promote the reproducibility of project outputs. In order to encourage engagement with OSM data, a [website](https://udsleeds.github.io/openinfra/) has been developed which currently contains two articles: one introducing OSM data from a theoretical point of view and another one demonstrates how to download and start working with OSM data in R.
 
 ## Key findings
 
@@ -42,6 +44,10 @@ The lack of data is especially evident in the highway features relevant for acce
 ## Value of the research
 
 <!-- What is the impact, how will this benefit xyz? How could the research be applied to real-world problems or what is the usage/benefit? -->
+
+OpenInfra project contributes to the field of transport research empirically and theoretically as well as aiming to engage non-academic community (e.g., citizens and policy-makers) with OSM data.
+
+First, it 
 
 It is essential to meet the needs of citizens if active travel is to become a primary modal choice. OpenInfra project explores 
 
