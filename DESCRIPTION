@@ -10,7 +10,6 @@ Authors@R: c(
 Description: This package contains code and example data to explore the utility of
   open data for transport planning.
 License: MIT + file LICENSE
-URL: https://github.com/udsleeds/openinfra
 Imports: 
     dplyr,
     od,
