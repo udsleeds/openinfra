@@ -35,7 +35,7 @@ The analysis of the chosen areas has shown that footways and cycleways constitut
 
 Arguably the most important characteristic of OSM is not its ability to represent various highways but rather attributes about them. For example, it is possible to refine `highway=footway` tag using `footway` tag to indicate that it is a sidewalk rather than a crossing (coded as "other" in Table 2). Nevertheless, given the high proportion of mapped footways, it is surprising that not many of them are refined to permit a better understanding of the highway network. This is not only limited to footways but cycleways as well (see Table 3), thus limiting the applicability of OSM data in transport, and specifically active travel, research.
 
-
+git 
 
 ## Value of the research
 
