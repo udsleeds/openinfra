@@ -11,7 +11,7 @@ editor_options:
 
 <!-- try to get to the bottom of your research in one sentence, this is your elevator pitch. -->
 
-Can open crowd-sourced data transform how we think about and do transport research? Yes, but we're not here yet 
+OpenStreetMap data has the potential to transform how transport infrastructure planning is done, yet currently it fails to meet the needs of (accessible) active travel infrastructure planning due to the lack of more refined information on highway attributes.
 
 ## Project overview
 
@@ -35,21 +35,16 @@ The project has a [GitHub repository](https://github.com/udsleeds/openinfra) wit
 
 <!-- Outline the results of the research project. Aim to stick to 2-3 paragraphs. Use imagery (clearly labelled) where appropriate.. -->
 
-The analysis of the chosen areas has shown that footways and cycleways constitute about 1/3 of all the mapped highways in OSM. Greater London stands out as the proportion reaches 1/2 mark (Table 2). This is not surprising given London's investment in active travel (reference 4). Surprisingly, however, Greater Manchester has very similar network proportion to other two metropolitan counties even though it has, in 2018, proposed an ambition to deliver the most comprehensive active travel network in the England (reference 5). <!---Also, it is important to note that, for example, footways in OSM take a specific semantic meaning - representing minor pathways - thus do not reflect an entire pedestrian network. As a result, it is likely that more comprehensive --->
+The analysis of the chosen areas has shown that `highway=footway` and `highway=cycleways` tags constitute about 1/3 of all the mapped highways in OSM. Greater London stands out as the proportion reaches 1/2 mark (Table 2). This is not surprising given London's investment in active travel (reference 4). Surprisingly, however, Greater Manchester (still) has a very similar network proportion to other two metropolitan counties even though it has, in 2018, proposed an ambition to deliver the most comprehensive active travel network in the England (reference 5). Also, it it important to note that the proportions shown in Table 2 might be underestimated because of the existing [alternative method](https://wiki.openstreetmap.org/wiki/Classic_vs_Alternative_tagging_schemes_in_use_in_the_United_Kingdom) to mapping footpaths and cycleways that relies on a different highway value - path. 
 
-Arguably the most important characteristic of OSM is not its ability to represent various highways but rather attributes about them. For example, it is possible to refine `highway=footway` tag using `footway` tag to indicate that it is a sidewalk rather than a crossing (coded as "other" in Table 2). Nevertheless, given the high proportion of mapped footways, it is surprising that not many of them are refined to permit a better understanding of the highway network. This is not only limited to footways but cycleways as well (see Table 3), thus limiting the applicability of OSM data in transport, and specifically active travel, research.
+Arguably the most important characteristic of OSM is not its ability to represent various types of highways but rather attributes about them. For example, it is possible to refine `highway=footway` tag using additional `footway` tag to indicate that it is a sidewalk rather than a crossing (coded as "other" in Table 2). Nevertheless, given the high proportion of mapped footways, it is surprising that not many of them are refined to permit a better understanding of the highway network. This echoes Mobasheri et al's (2018 reference 6) observation on the limited availability of sidewalk data in OSM, thus allowing to argue for the persistence of the issue.
 
-The lack of data is especially evident in the highway features relevant for accessible infrastructure planning.
+Limited information on sidewalks and their attributes demonstrates OSM's currently restricted potential to be utilized in planning accessible active travel infrastructure. Scarcity of data relevant to accessible planning can be exemplified via other tags too. Table 3 shows how information on, for instance, kerbs and width is barely present, yet these street elements are essential for accessible infrastructure (see Inclusive Mobility 2021 reference 7). On the other hand, the flexibility of OSM data holds potential to be used to support the examination of inclusivity as outlined in the Inclusive Mobility guide (2021). In other words, OSM data could be recategorized. This does not mean that all the intricacies of the requirements would be captured but that it could, perhaps joined with other (open) datasets too, be used to help to determine which streets are inclusive and where improvements are needed. Some of this work has started being done, namely writing a function in R (hyperlink to the code), that returns recategorised OSM data. <!--- add a table with recategorized values --->
 
 ## Value of the research
 
 <!-- What is the impact, how will this benefit xyz? How could the research be applied to real-world problems or what is the usage/benefit? -->
 
-OpenInfra project contributes to the field of transport research empirically and theoretically as well as aiming to engage non-academic community (e.g., citizens and policy-makers) with OSM data.
-
-First, it 
-
-It is essential to meet the needs of citizens if active travel is to become a primary modal choice. OpenInfra project explores 
 
 Value of research:
 - focus on accessibility
@@ -62,9 +57,19 @@ Value of research:
 
 ## Insights
 
+Advantages of using OSM data in transport research:
 
-- OSM has a great potential to become a go-to (open) dataset in the accessible infrastructure planning.
-- Currently OSM does not live up to its potential because of the missing information on the specifics of a highway that are essential for accessible infrastructure planning.
+- high-level overview;
+- provides a (comprehensive?) active travel network;
+- tags are flexible enough to represent cycling and walking infrastructure (e.g., cycling tracks, shared spaces);
+- up-to-dateness;
+- encourages citizen science and bottom-up approach to planning
+
+Limitations:
+
+- the more specific highway attribute is, the less data there is;
+- tag values lack homogeneity (e.g., width = -1 (!) in WY but also 20cm, 2m, 1-1.5m);
+- not straightforward to recategorise;
 
 ## Research theme
 
@@ -72,7 +77,11 @@ Urban analytics
 
 ## People
 
-<!-- Who was involved, their job title and institution. -->
+Robin Lovelace, University of Leeds
+Victoria Houlden, University of Leeds
+Ed Manley, University of Leeds
+Dustin Carlino, A/B Street
+<!--- add the rest of the steering group --->
 
 
 ## Funders
