@@ -13,7 +13,7 @@ editor_options:
 
 <!-- try to get to the bottom of your research in one sentence, this is your elevator pitch. -->
 
-OpenStreetMap data has the potential to transform how transport infrastructure planning is done, yet currently it fails to meet the needs of (accessible) active travel infrastructure planning due to the lack of more refined information on highway attributes.
+OpenStreetMap data has the potential to transform how transport infrastructure planning is done, yet currently it does not provide enough data for (accessible) active travel infrastructure planning due to the lack of more refined information about highway attributes.
 
 ## Project overview
 
