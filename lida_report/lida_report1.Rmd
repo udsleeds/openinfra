@@ -116,7 +116,9 @@ https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attac
 
 https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1033990/net-zero-strategy-beis.pdf
 
-
+Notes:
+- for inclusive mobility filter it out so only pedestrian network is left
+- greater manchester looks suspicious compared to GISRUK paper
 
 
 
