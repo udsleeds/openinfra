@@ -811,3 +811,132 @@ mers_plot3 = mers_tagged_grouped_prop_im %>% filter(key %in% tags_plot_im) %>% s
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5, hjust=1)) 
 mers_plot3
+
+# All plots joined
+
+all_tagged = rbind(wy_tagged,
+                   gm_tagged,
+                   mers_tagged,
+                   gl_tagged)
+all_tagged_im = rbind(wy_tagged_im,
+                   gm_tagged_im,
+                   mers_tagged_im,
+                   gl_tagged_im)
+
+all_tagged_grouped = all_tagged %>% 
+  group_by(key, value, name) %>% 
+  mutate(n = n()) %>% 
+  ungroup() 
+all_tagged_grouped_im = all_tagged_im %>% 
+  group_by(key, value, name) %>% 
+  mutate(n = n()) %>% 
+  ungroup() 
+
+# plot 1
+
+gm_tagged_grouped_prop_name = gm_tagged_grouped_prop %>% mutate(name = "gm")
+wy_tagged_grouped_prop_name = wy_tagged_grouped_prop %>% mutate(name = "wy")
+mers_tagged_grouped_prop_name = mers_tagged_grouped_prop %>% mutate(name = "mers")
+gl_tagged_grouped_prop_name = gl_tagged_grouped_prop %>% mutate(name = "gl")
+
+joined = rbind(gm_tagged_grouped_prop_name,
+               wy_tagged_grouped_prop_name,
+               mers_tagged_grouped_prop_name,
+               gl_tagged_grouped_prop_name)
+
+joined_plot1 = joined %>%  filter(str_detect(highway, "foot|cycle|ped|steps|living"))   %>% 
+  ggplot(aes(x = highway,
+             y = Proportion,
+             fill = name)) +
+  geom_bar(stat = "identity",
+           position=position_dodge() ) + 
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=.5)) +
+  geom_text(aes(label=round(Proportion * 100)), 
+            color="black", size=3,
+            position = position_dodge(1), vjust = 0.02)+
+  scale_y_continuous(labels = scales::percent, name = "Percentage") +
+  scale_fill_discrete(name = "Case Study",
+                      labels = c("Greater London", "Greater Manchester", "Merseyside", "West Workshire")
+                      )+
+  xlab("Type of highway")+
+  ylab("Proportion")+
+  theme(legend.position = "top",
+        legend.direction = "horizontal")
+joined_plot1
+saveRDS(joined_plot1, "lida_report/joined_plot1.Rds")
+
+# plot 2
+
+### plot 3 ====
+
+gm_tagged_grouped_prop_name2 = gm_tagged_grouped_prop2 %>% mutate(name = "gm")
+wy_tagged_grouped_prop_name2 = wy_tagged_grouped_prop2 %>% mutate(name = "wy")
+mers_tagged_grouped_prop_name2 = mers_tagged_grouped_prop2 %>% mutate(name = "mers")
+gl_tagged_grouped_prop_name2 = gl_tagged_grouped_prop2 %>% mutate(name = "gl")
+
+joined2 = rbind(gm_tagged_grouped_prop_name2,
+                wy_tagged_grouped_prop_name2,
+                mers_tagged_grouped_prop_name2,
+                gl_tagged_grouped_prop_name2)
+
+joined_plot2 = joined2  %>% filter (key %in% tags_plot) %>% 
+  ggplot(aes(x = value,
+             y = Proportion,
+             fill = name)) +
+  geom_bar(stat = "identity",
+           position=position_dodge() ) + 
+  theme_bw() +
+  facet_wrap(~key, scales = "free_x") +
+  geom_text(aes(label=round(Proportion * 100)), 
+            color="black", size=3,
+            position = position_dodge(1), vjust = 0.02)+
+  scale_y_continuous(labels = scales::percent, name = "Percentage") +
+  scale_fill_discrete(name = "Case Study", 
+                      labels = c("Greater London", "Greater Manchester", "Merseyside", "West Workshire")
+                      )+
+  xlab("Tag type")+
+  ylab("Proportion")+
+  theme(legend.position = "top",
+        legend.direction = "horizontal")
+joined_plot2
+
+saveRDS(joined_plot2, "lida_report/joined_plot2.Rds")
+
+# plot 3
+
+gm_tagged_grouped_prop_name_im = gm_tagged_grouped_prop_im %>% mutate(name = "gm")
+wy_tagged_grouped_prop_name_im = wy_tagged_grouped_prop_im %>% mutate(name = "wy")
+mers_tagged_grouped_prop_name_im = mers_tagged_grouped_prop_im %>% mutate(name = "mers")
+gl_tagged_grouped_prop_name_im = gl_tagged_grouped_prop_im %>% mutate(name = "gl")
+
+joined_im = rbind(gm_tagged_grouped_prop_name_im,
+                wy_tagged_grouped_prop_name_im,
+                mers_tagged_grouped_prop_name_im,
+                gl_tagged_grouped_prop_name_im)
+
+joined_plot_im = joined_im  %>% filter (key %in% tags_plot_im) %>% 
+  ggplot(aes(x = value,
+             y = Proportion,
+             fill = name)) +
+  geom_bar(stat = "identity",
+           position=position_dodge() ) + 
+  theme_bw() +
+  facet_wrap(~key, scales = "free_x") +
+  geom_text(aes(label=round(Proportion * 100)), 
+            color="black", size=3,
+            position = position_dodge(1), vjust = 0.02)+
+  scale_y_continuous(labels = scales::percent, name = "Percentage") +
+  scale_fill_discrete(name = "Case Study", 
+                      labels = c("Greater London", "Greater Manchester", "Merseyside", "West Workshire")
+  )+
+  xlab("Tag type")+
+  ylab("Proportion")+
+  theme(legend.position = "top",
+        legend.direction = "horizontal")
+joined_plot_im
+
+saveRDS(joined_plot_im, "lida_report/joined_plot_im.Rds")
+
+
+
