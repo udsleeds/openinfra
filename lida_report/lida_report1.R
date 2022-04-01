@@ -95,7 +95,6 @@ gm = osmextract::oe_get(place = region_gm,
 saveRDS(gm,
         "gm-01-04-2022.Rds")
 
-
 # inclusive_mobility_get function
 
 inclusive_mobility_get = function(osm_sf) {
@@ -937,6 +936,3 @@ joined_plot_im = joined_im  %>% filter (key %in% tags_plot_im) %>%
 joined_plot_im
 
 saveRDS(joined_plot_im, "lida_report/joined_plot_im.Rds")
-
-
-
