@@ -113,8 +113,21 @@ Ed Manley, University of Leeds
 
 *Steering group*:
 
+Rachel Cookson, Ordnance Survey
+
+Ben Taylor, Open Innovation Team, policy side
+
+Brian Deegan, transport consultant
+
 Dustin Carlino, A/B Street
-<!--- add the rest of the steering group --->
+
+Kit Allwinter, Active Travel in West Yorkshire Combined Authority
+
+Graham Kirkby, Transport for the North 
+
+Kayley Vanlint, Department for Transport
+
+Paul Downey, Transport for the North
 
 
 ## Funders
