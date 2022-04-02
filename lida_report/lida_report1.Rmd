@@ -19,17 +19,33 @@ OpenStreetMap data has the potential to transform how transport infrastructure p
 
 <!---Sticking to one paragraph (3-4 sentences) give the background of the project including project aims. Is there anything new or unique about this research? --->
 
-Dependence on motor modes of travel has been associated with adverse physical, mental, and environmental health (reference 1)(image 1). A shift towards a more sustainable - active - transport, such as walking, wheeling, and cycling might help to tackle health problems (reference 2). However, to encourage the uptake of active modes of travel, it is important to meet the infrastructural needs of citizens. For this, citizen participation in the planning process is essential. A potential way to foster engagement is to encourage citizens to generate data of their local communities which, consequently, could be used make local context and data informed decisions. In this case, open crowd-sourced data might become invaluable. Given this, the project aims to explore how open crowd-sourced data, specifically OpenStreetMap(OSM) data, can be used to *understand*, *prioritise*, and *design* active travel infrastructure. 
+Dependence on motor modes of travel has been associated with adverse physical, mental, and environmental health (reference 1)(image 1). A shift towards a more sustainable - active - transport, such as walking, wheeling, and cycling, might help to tackle the aforementioned problems (reference 2). However, to encourage the uptake of active modes of travel, it is important to meet the infrastructural needs of citizens. For this, citizen participation in the planning process might be essential. A potential way to foster engagement is to encourage citizens to generate data about their local communities which, consequently, could be used make decisions informed by both data and local contexts. Given this, the project aims to explore how open crowd-sourced data, specifically OpenStreetMap (OSM), can be used to *understand*, *prioritise*, and *design* active travel infrastructure^[For a detailed outline of project goals, visit [GitHub repository](https://github.com/udsleeds/openinfra) or a [website](https://udsleeds.github.io/openinfra/)]. 
 
 ## Data and methods
 
 <!-- Outline the; who, what, when, where and how of the study.. -->
 
-OSM data is open, thus free to use regardless of the purpose as long as the source is credited. To query OSM database, an `osmextract` package (reference 3) in R has been used. Three metropolitan counties - West Yorkshire, Greater Manchester, and Merseyside - and an administrative area - Greater London - have been chosen as case studies in the first 6 months of the project with a goal to scale it up to the entire England in months 7-12. 
+OSM data is open, thus free to use regardless of the purpose as long as the source is credited. To query OSM database, an `osmextract` package (reference 3) in R has been used. Three metropolitan counties - West Yorkshire, Greater Manchester, and Merseyside - and an administrative area - Greater London - have been chosen as case studies for the first 6 months of the project with a goal to scale it up to the entire England in months 7-12. 
 
-Moreover, it is important to understand the data structure of OSM in order to utilize it. Essentially, OSM data is composed of three key elements: nodes, ways, and relations. To describe geographic features, *tags*, or key=value pairs, are utilized. For more details on each of the aspects, read an [introductory article](https://udsleeds.github.io/openinfra/articles/openinfra.html) written on the subject matter as part of the project.
+It is important to understand the data structure of OSM in order to utilize it. Essentially, OSM data is composed of three key elements: nodes, ways, and relations. To describe geographic features, *tags*, or key=value pairs, are utilized. For more details on OSM data structure, read an [introductory article](https://udsleeds.github.io/openinfra/articles/openinfra.html) written on the subject as part of the project.
 
-To explore OSM data, exploratory data analysis (EDA) was applied. EDA was used to understand the potential and limitations of the OSM data. Bar charts have been chosen as a visual tool to demonstrate the presence/absence of data. In particular, bar charts in this report are used to present the proportions of (some of) the tags relevant to active transport research to all the mapped highways in a given case study. The size of data per area can be seen in Table 1. It is important to note that OSM data is constantly being updated, hence the size of data might fluctuate depending on when it was downloaded.
+To explore OSM data, exploratory data analysis (EDA) was applied. EDA was used to understand the potential and limitations of the OSM data. Bar charts have been chosen as a visual tool to demonstrate the presence/absence of data. In particular, bar charts in this report are used to demonstrate the proportions of (some of) the tags relevant to active transport research to all the mapped highways in a given case study^[It should be mentioned that motorways and motorway links have been excluded as neither pedestrians nor cyclists are legally allowed to use them.]. The size of data per area can be seen in Table 1. It is important to note that OSM data is constantly being updated, hence the size of data might fluctuate depending on when it was downloaded.
+
+\begin{table}[!htbp] \centering 
+  \caption{Number of highways as of 1 April 2022} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+Case study & Number of highways \\ 
+\hline \\[-1.8ex] 
+Greater London & 381590
+Greater Manchester & 179976 \\ 
+Merseyside & 75090 \\
+West Yorkshire & 183112 \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
 
 The project has a [GitHub repository](https://github.com/udsleeds/openinfra) with an aim to promote the reproducibility of project outputs. In order to encourage engagement with OSM data, a [website](https://udsleeds.github.io/openinfra/) has been developed which currently contains two articles: one introducing OSM data from a [theoretical](https://udsleeds.github.io/openinfra/articles/openinfra.html) point of view and another one demonstrates how to [download and start working](https://udsleeds.github.io/openinfra/articles/getosm.html) with OSM data in R.
 
