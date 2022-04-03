@@ -1,8 +1,10 @@
 ---
-title: "R Notebook"
-output: html_notebook
-editor_options: 
-  chunk_output_type: console
+title: "contains a function and documentation for Inclusive Mobility guide (2021)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{An introduction to getting and using OSM data for transport planning}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 The purpose of the `inclusive_mobility_get` function is to recategorize OSM data based on the recent Inclusive Mobility (IM) guide UK. The goal behind this is to encourage the use of crowd-sourced open data in the inclusive infrastructure planning. Indeed, the function has been written to encourage discussions around the applicability of open data and act as a starting point.
