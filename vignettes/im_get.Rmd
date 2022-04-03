@@ -1,8 +1,8 @@
 ---
-title: "contains a function and documentation for Inclusive Mobility guide (2021)"
+title: "Function and documentation for Inclusive Mobility guide (2021)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{An introduction to getting and using OSM data for transport planning}
+  %\VignetteIndexEntry{Function and documentation for Inclusive Mobility guide (2021)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
