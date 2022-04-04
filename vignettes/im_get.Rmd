@@ -12,7 +12,7 @@ The purpose of the `inclusive_mobility_get` function is to recategorize OSM data
 It has to be noted that this function is a simplification of all the requirements outlined in the guide. There are a couple of reasons for this. First, while there is a large number of tags in OSM to create detailed maps, but the values imputed are not always IM guide-friendly. For example, in the guide 6 different types of tactile paving are outlined, yet those types are not key values in the OSM as it focused on the presence/absence of tactile paving. This, then, leads not only to the fact that not all OSM data can be sensibly recategorized based on the IM guide but also that it is highly unlikely that a single function could capture the detailed specifications outlined in the IM guide. 
 
 # get osm
-```{r, eval = F, results='asis'}
+```{r, eval = F}
 # libraries
 library(tidyverse)
 library(osmextract)
@@ -434,7 +434,7 @@ Note: if you want to include `highway=street_lamp` in your analysis, you will ha
 - [CANCELLED] add warning if tags are missing 
 - [CANCELLED] parsing warning 
 - [x] should maxspeed be here? I don't think it's in the guide
-- [] accounting for mph in speed
+- [] accounting for mph/km in speed
 - [] note that not all OSM data is recategorized. E.g., key:smootheness is good as it is
 
 
