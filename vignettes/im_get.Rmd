@@ -12,14 +12,14 @@ The purpose of the `inclusive_mobility_get` function is to recategorize OSM data
 It has to be noted that this function is a simplification of all the requirements outlined in the guide. There are a couple of reasons for this. First, while there is a large number of tags in OSM to create detailed maps, but the values imputed are not always IM guide-friendly. For example, in the guide 6 different types of tactile paving are outlined, yet those types are not key values in the OSM as it focused on the presence/absence of tactile paving. This, then, leads not only to the fact that not all OSM data can be sensibly recategorized based on the IM guide but also that it is highly unlikely that a single function could capture the detailed specifications outlined in the IM guide. 
 
 # get osm
-```{r}
+```{r, eval = F, results='asis'}
 # libraries
 library(tidyverse)
 library(osmextract)
 library(sf)
 ```
 
-```{r}
+```{r, eval = F}
 # region_wy = "West Yorkshire"
 # tags_needed = c("cycleway",
 #                 "bicycle",
@@ -97,7 +97,7 @@ wy_points = readRDS(url("https://github.com/udsleeds/openinfra/releases/download
 
 ```
 
-```{r}
+```{r, eval = F}
 # join points and lines into one df
 
 # homogenizing columns
@@ -129,7 +129,7 @@ Finally, it is important to highlight what this function does not do:
 - it does not pre-define a walking/cycling/wheeling network. You can do this manually or rely on, for example, `osmextract` to download a pre-defined waking or cycling network
 - it does not provide a ground truth evaluation of OSM data. It is important to stay critical of the data and what is being returned (e.g., a negative OSM width value should be suspicious)
 
-```{r}
+```{r, eval = F}
 inclusive_mobility_get = function(osm_sf) {
   osm_sf_im = osm_sf %>% 
     # kerb: flush or not
