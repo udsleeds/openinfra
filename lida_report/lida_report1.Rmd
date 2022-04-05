@@ -8,7 +8,7 @@ editor_options:
 bibliography: lida_report.bib
 ---
 
-# Introductory sentence
+# Introduction
 
 <!-- try to get to the bottom of your research in one sentence, this is your elevator pitch. -->
 
