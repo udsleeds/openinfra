@@ -61,6 +61,8 @@ gl = osmextract::oe_get(place = region_gl,
 saveRDS(gl,
         "gl-01-04-2022.Rds")
 
+gl = readRDS("gl-01-04-2022.Rds")
+
 ## West Yorkshire 
 osmextract::oe_match_pattern("west yorkshire")
 region_wy = "West Yorkshire"
@@ -72,6 +74,7 @@ wy = osmextract::oe_get(place = region_wy,
 
 saveRDS(wy,
         "wy-01-04-2022.Rds")
+wy = readRDS("wy-01-04-2022.Rds")
 
 ## Merseyside
 # osmextract::oe_match_pattern("Merseyside")
@@ -84,6 +87,8 @@ mers = osmextract::oe_get(place = region_mers,
 saveRDS(mers,
         "mers-01-04-2022.Rds")
 
+mers = readRDS("mers-01-04-2022.Rds")
+
 ## Greater Manchester
 osmextract::oe_match_pattern("Greater Manchester")
 region_gm = "Greater Manchester"
@@ -94,6 +99,8 @@ gm = osmextract::oe_get(place = region_gm,
                           extra_tags = tags_needed)
 saveRDS(gm,
         "gm-01-04-2022.Rds")
+
+gm = readRDS("gm-01-04-2022.Rds")
 
 # inclusive_mobility_get function
 
@@ -358,7 +365,7 @@ gm_plot2 = gm_tagged_grouped_prop2 %>% filter(key %in% tags_plot) %>% select(key
 gm_plot2
 
 # plot 3
-tags_plot_im = c("footway", "footpath", "kerb", "maxspeed")
+tags_plot_im = c("footway", "footpath", "kerb", "surface")
 gm_tagged_grouped_prop_im = gm_tagged_grouped_im %>% 
   group_by(value, key) %>% 
   summarize(n = n(),
@@ -504,7 +511,7 @@ wy_plot2 = gm_tagged_grouped_prop2 %>% filter(key %in% tags_plot) %>% select(key
 wy_plot2
 
 # plot 3
-tags_plot_im = c("footway", "footpath", "kerb", "maxspeed")
+tags_plot_im = c("footway", "footpath", "kerb", "surface")
 wy_tagged_grouped_prop_im = wy_tagged_grouped_im %>% 
   group_by(value, key) %>% 
   summarize(n = n(),
@@ -650,7 +657,7 @@ gl_plot2 = gl_tagged_grouped_prop2 %>% filter(key %in% tags_plot) %>% select(key
 gl_plot2
 
 # plot 3
-tags_plot_im = c("footway", "footpath", "kerb", "maxspeed")
+tags_plot_im = c("footway", "footpath", "kerb", "surface")
 gl_tagged_grouped_prop_im = gl_tagged_grouped_im %>% 
   group_by(value, key) %>% 
   summarize(n = n(),
@@ -796,7 +803,7 @@ mers_plot2 = mers_tagged_grouped_prop2 %>% filter(key %in% tags_plot) %>% select
 mers_plot2
 
 # plot 3
-tags_plot_im = c("footway", "footpath", "kerb", "maxspeed")
+tags_plot_im = c("footway", "footpath", "kerb", "surface")
 mers_tagged_grouped_prop_im = mers_tagged_grouped_im %>% 
   group_by(value, key) %>% 
   summarize(n = n(),
@@ -867,8 +874,6 @@ saveRDS(joined_plot1, "lida_report/joined_plot1.Rds")
 
 # plot 2
 
-### plot 3 ====
-
 gm_tagged_grouped_prop_name2 = gm_tagged_grouped_prop2 %>% mutate(name = "gm")
 wy_tagged_grouped_prop_name2 = wy_tagged_grouped_prop2 %>% mutate(name = "wy")
 mers_tagged_grouped_prop_name2 = mers_tagged_grouped_prop2 %>% mutate(name = "mers")
@@ -901,6 +906,42 @@ joined_plot2 = joined2  %>% filter (key %in% tags_plot) %>%
 joined_plot2
 
 saveRDS(joined_plot2, "lida_report/joined_plot2.Rds")
+
+# plot 2.1
+
+tags_plot1 = c("cycleway", "footway", "kerb", "width")
+gm_tagged_grouped_prop_name2 = gm_tagged_grouped_prop2 %>% mutate(name = "gm")
+wy_tagged_grouped_prop_name2 = wy_tagged_grouped_prop2 %>% mutate(name = "wy")
+mers_tagged_grouped_prop_name2 = mers_tagged_grouped_prop2 %>% mutate(name = "mers")
+gl_tagged_grouped_prop_name2 = gl_tagged_grouped_prop2 %>% mutate(name = "gl")
+
+joined2 = rbind(gm_tagged_grouped_prop_name2,
+                wy_tagged_grouped_prop_name2,
+                mers_tagged_grouped_prop_name2,
+                gl_tagged_grouped_prop_name2)
+
+joined_plot2.1 = joined2  %>% filter (key %in% tags_plot1) %>% 
+  ggplot(aes(x = value,
+             y = Proportion,
+             fill = name)) +
+  geom_bar(stat = "identity",
+           position=position_dodge() ) + 
+  theme_bw() +
+  facet_wrap(~key, scales = "free_x") +
+  geom_text(aes(label=round(Proportion * 100)), 
+            color="black", size=3,
+            position = position_dodge(1), vjust = 0.02)+
+  scale_y_continuous(labels = scales::percent, name = "Percentage") +
+  scale_fill_discrete(name = "Case Study", 
+                      labels = c("Greater London", "Greater Manchester", "Merseyside", "West Workshire")
+  )+
+  xlab("Tag type")+
+  ylab("Proportion")+
+  theme(legend.position = "top",
+        legend.direction = "horizontal")
+joined_plot2.1
+
+saveRDS(joined_plot2.1, "lida_report/joined_plot2.1.Rds")
 
 # plot 3
 
@@ -936,3 +977,80 @@ joined_plot_im = joined_im  %>% filter (key %in% tags_plot_im) %>%
 joined_plot_im
 
 saveRDS(joined_plot_im, "lida_report/joined_plot_im.Rds")
+
+
+# 
+
+wy1 = wy %>% 
+  filter(!is.na(highway) & highway != "motorway" & highway != "motorway_link") %>%
+  inclusive_mobility_get() %>% 
+  mutate(
+    bicycle_cat = case_when(
+      str_detect(bicycle, "designated|yes")  ~ "yes/designated",
+      str_detect(bicycle, "no|dismount")  ~ "no",
+      str_detect(bicycle, "destin|permis|priva|unknown")~ "maybe"),
+    
+    wheelchair_cat = case_when(
+      str_detect(wheelchair, "bad|limit|permis") ~ ",aybe",
+      str_detect(wheelchair, "desig|yes") ~ "yes",
+      str_detect(wheelchair, "no") ~ "no"
+    ),
+    foot_cat = case_when(
+      str_detect(foot, "designated|yes")  ~ "yes/designated",
+      str_detect(foot, "no|disc")  ~ "no",
+      str_detect(foot, "cust|deli|dest|emerg|limit|permis|permit|priv|unknown")  ~ "maybe"
+    ),
+    footway_cat = case_when(
+      str_detect(footway, "access|alley|left|link|traffic") ~ "other",
+      str_detect(footway, "no") ~ "no",
+      str_detect(footway, "yes|sidewalk") ~ "yes/sidewalk",
+    ),
+    lit_cat = case_when(
+      str_detect(lit, "af|auto|dis|interval|sep|suns|sunr")~ "other",
+      str_detect(lit, "limit")~ "limited",
+      str_detect(lit, "yes")~ "yes",
+      str_detect(lit, "no")~ "no"
+    ),
+    maxspeed_cl = maxspeed %>% 
+      parse_number(),
+    maxspeed_cat = case_when(
+      maxspeed_cl > 1 & maxspeed_cl <= 20 ~ "1-20 mph",
+      maxspeed_cl > 20 & maxspeed_cl <= 40~ "21-40 mph",
+      maxspeed_cl > 40 & maxspeed_cl <= 60~ "41-60 mph",
+      maxspeed_cl > 60 ~ "61 mph <"
+    ),
+    cycleway_cat = case_when(
+      str_detect(cycleway, "buff|lane|segr|sep|track") ~ "separate",
+      str_detect(cycleway, "no") ~ "no",
+      str_detect(cycleway, "share") ~ "shared",
+      str_detect(cycleway, "cross|cyclestreet|left|opp|path|side|yes|unm") ~ "other"
+    ),
+    kerb_cat = case_when(
+      str_detect(kerb, "fl")~ "flush",
+      str_detect(kerb, "low")~ "lowered",
+      str_detect(kerb, "raise")~ "raised",
+      str_detect(kerb, "yes|no")~ "other"
+    ),
+    width_cl = width %>% parse_number(),
+    width_cat = case_when(
+      width_cl > 0 & width_cl < 1.5 ~ "< 1.5m",
+      width_cl <= 1.5 & width_cl <= 2 ~ "1.5m - 2m",
+      width_cl > 2 ~ "2m <"
+    ),
+    sidewalk_cat = case_when(
+      str_detect(sidewalk, "both")~ "both",
+      str_detect(sidewalk, "left")~ "left",
+      str_detect(sidewalk, "right")~ "right",
+      str_detect(sidewalk, "no|none")~ "no",
+      str_detect(sidewalk, "separate")~ "separated",
+      str_detect(sidewalk, "yes|mapped")~ "yes",
+      str_detect(sidewalk, "cross")~ "other")
+  )
+
+
+tmap::tmap_mode("view")
+tmap::tm_shape(wy1 %>% filter(im_footpath == "yes"))+
+  tmap::tm_lines(col = "blue")+
+tmap::tm_shape(wy1 %>% filter(im_footway == "yes"))+
+  tmap::tm_lines(col = "red") 
+
