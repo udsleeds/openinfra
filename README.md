@@ -26,7 +26,7 @@ walking and cycling over the next 5 years in the UK alone.
 
 New policies and investment programs such as the ATF have led to
 increased demand for local evidence to inform interventions ranging from
-new cycleways to improved pavement quality. This project will the
+new cycleways to improved pavement quality. This project will explore the
 potential of open access transport sources such as OpenStreetMap (OSM)
 and Ordnance Survey Open Roads (OSOR) datasets, and associated tools,
 for transport planning to meet active travel objectives. Specifically,
