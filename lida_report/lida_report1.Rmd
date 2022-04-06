@@ -18,7 +18,7 @@ OpenStreetMap data has the potential to transform how transport infrastructure p
 
 <!---Sticking to one paragraph (3-4 sentences) give the background of the project including project aims. Is there anything new or unique about this research? --->
 
-Dependence on motorised modes of travel is associated with adverse physical, mental, and environmental health. Shifts to more sustainable and active modes such as walking, wheeling, and cycling, can tackle these issues [@phe_2016]. However, to encourage the uptake of active modes of travel, it is important to meet the infrastructural needs of *all* citizens. For example, @Aldred_etal_2016 found that a boost in cycling does not necessarily lead to an increase in diversity of cyclists. Therefore, it might be key to engage citizens from a variety of backgrounds in the planning process in order to incentivize a modal shift. A potential way to foster engagement is to encourage citizens to generate data about their local environments which, consequently, could be used make interventions informed by both data and local contexts. Given this, the project aims to explore how open crowd-sourced data, specifically OpenStreetMap (OSM), can be used to *understand*, *prioritise*, and *design* active travel infrastructure^[For a detailed outline of project goals, visit GitHub repository (https://github.com/udsleeds/openinfra) or website (https://udsleeds.github.io/openinfra/).]. 
+Dependence on motorised modes of travel is associated with adverse physical, mental, and environmental health. Shifts to more sustainable and active modes, such as walking, wheeling, and cycling, can tackle these issues [@phe_2016]. However, to encourage the uptake of active modes of travel, it is important to meet the infrastructural needs of *all* citizens. For example, @Aldred_etal_2016 found that a boost in cycling does not necessarily lead to an increase in diversity of cyclists. Therefore, it might be key to engage citizens from a variety of backgrounds in the planning process in order to incentivize a modal shift. A potential way to foster engagement is to encourage citizens to generate data about their local environments which, consequently, could be used make interventions informed by both data and local contexts. Given this, the project aims to explore how open crowd-sourced data, specifically OpenStreetMap (OSM), can be used to *understand*, *prioritise*, and *design* active travel infrastructure^[For a detailed outline of project goals, visit GitHub repository (https://github.com/udsleeds/openinfra) or website (https://udsleeds.github.io/openinfra/).]. 
 
 ## Data and methods
 
@@ -72,7 +72,7 @@ readRDS("joined_plot_im.Rds")
 
 <!-- What is the impact, how will this benefit xyz? How could the research be applied to real-world problems or what is the usage/benefit? -->
 
-OpenInfra is a 12 month project, thus its actual impact is yet to be determined. Nevertheless, the project has already contributed to the empirical examination of OSM data, which has resulted in the accepted [extended abstract](http://liverpool.gisruk.org/conference-programme/). One of the key contributions of the project has been the consideration of OSM data from the perspective of *accessibility*, a central characteristic in designing cycling and pedestrian infrastructures [@ltn1/20, @inclusive_mobility_dft_2021] (reference LTN1/20 and IM). 
+OpenInfra is a 12 month project, thus its actual impact is yet to be determined. Nevertheless, the project has already contributed to the empirical examination of OSM data, which has resulted in the accepted [extended abstract](http://liverpool.gisruk.org/conference-programme/). One of the key contributions of the project has been the consideration of OSM data from the perspective of *accessibility*, a central characteristic in designing cycling and pedestrian infrastructures [@ltn1_20; @inclusive_mobility_dft_2021]. 
 
 Another output of the project is a [website](https://udsleeds.github.io/openinfra/). The aim is to introduce OSM data, demonstrate how it can be downloaded and used in transport research in a manner that is understandable and accessible to everyone. So far the content has attracted considerable attention on [Twitter](https://twitter.com/robinlovelace/status/1498952906015264769) showing the need for such a project. The expectation is that it will encourage the adoption of OSM data in active travel infrastructure while taking into account its (current) limitations. Indeed, it is likely that a more nuanced understanding of OSM data and its potential applications and benefits could motivate more citizens to become mappers and more mappers to add data needed for accessible planning.
 
@@ -83,7 +83,7 @@ Finally, it should be emphasized that the project has a [GitHub repository](http
 Advantages of using OSM data in transport research:
 
 - provides a (comprehensive?) active travel network;
-- data structure and tags are flexible enough to represent cycling and walking infrastructures (e.g., cycling lanes and tracks, shared spaces);
+- data structure and tags are flexible enough to represent cycling and walking infrastructures (e.g., cycle lanes and tracks, shared spaces);
 - up-to-dateness;
 - encourages citizen science and bottom-up approach to planning;
 
