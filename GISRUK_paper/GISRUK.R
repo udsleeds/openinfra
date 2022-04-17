@@ -5,20 +5,10 @@ library(tmap)
 library(ggplot2)
 
 # GETTING DATA  =================
-# piggyback::pb_download("wy.RDS")
-# piggyback::pb_download("gm.Rds")
-# piggyback::pb_download("mers.Rds")
 
-wy = readRDS("wy.RDS")
-gm = readRDS("gm.Rds")
-mers = readRDS("mers.Rds")
-
-file.copy("wy.RDS", "GISRUK_paper/wy.Rds")
-file.copy("gm.Rds", "GISRUK_paper")
-file.copy("mers.Rds", "GISRUK_paper")
-wy = readRDS("GISRUK_paper/wy.Rds")
-gm = readRDS("GISRUK_paper/gm.Rds")
-mers = readRDS("GISRUK_paper/mers.Rds")
+wy = sf::st_read("https://github.com/udsleeds/openinfra/releases/download/v0.1/wy.geojson")
+gm = sf::st_read("https://github.com/udsleeds/openinfra/releases/download/v0.1/gm.geojson")
+mers_geoj = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.1/wy.geojson")
 
 
 # EDA =====================
