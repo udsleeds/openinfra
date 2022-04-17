@@ -8,7 +8,7 @@ library(ggplot2)
 
 wy = sf::st_read("https://github.com/udsleeds/openinfra/releases/download/v0.1/wy.geojson")
 gm = sf::st_read("https://github.com/udsleeds/openinfra/releases/download/v0.1/gm.geojson")
-mers_geoj = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.1/wy.geojson")
+mers_geoj = sf::st_read("https://github.com/udsleeds/openinfra/releases/download/v0.1/wy.geojson")
 
 
 # EDA =====================
