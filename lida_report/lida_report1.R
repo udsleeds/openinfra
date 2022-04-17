@@ -10,97 +10,90 @@ library(osmextract)
 
 ## london
 
-osmextract::oe_match_pattern("London")
-region_gl = "Greater London"
-tags_needed = c("cycleway",
-                "bicycle",
-                "wheelchair",
-                "kerb",
-                "disabled",
-                "mobility_scooter",
-                "handicap",
-                "foot",
-                "lit",
-                "access",
-                "sidewalk",
-                "footway",
-                "incline",
-                "smoothness",
-                "est_width",
-                "width",
-                "ramp",
-                "sidewalk_left",
-                "sidewalk_right",
-                "ramp_wheelchair",
-                "footway_left",
-                "footway_right",
-                "footway_surface",
-                "priority",
-                "sidewalk_both_surface",
-                "sidewalk_both_width",
-                "path",
-                "pedestrian",
-                "sidewalk_left_width",
-                "sidewalk_right_width",
-                "sidewalk_right_surface",
-                "sidewalk_left_surface",
-                "maxspeed",
-                "segregated",
-                "sloped_curb",
-                "surface",
-                "tactile_paving",
-                "crossing"
-                )
+# osmextract::oe_match_pattern("London")
+# region_gl = "Greater London"
+# tags_needed = c("cycleway",
+#                 "bicycle",
+#                 "wheelchair",
+#                 "kerb",
+#                 "disabled",
+#                 "mobility_scooter",
+#                 "handicap",
+#                 "foot",
+#                 "lit",
+#                 "access",
+#                 "sidewalk",
+#                 "footway",
+#                 "incline",
+#                 "smoothness",
+#                 "est_width",
+#                 "width",
+#                 "ramp",
+#                 "sidewalk_left",
+#                 "sidewalk_right",
+#                 "ramp_wheelchair",
+#                 "footway_left",
+#                 "footway_right",
+#                 "footway_surface",
+#                 "priority",
+#                 "sidewalk_both_surface",
+#                 "sidewalk_both_width",
+#                 "path",
+#                 "pedestrian",
+#                 "sidewalk_left_width",
+#                 "sidewalk_right_width",
+#                 "sidewalk_right_surface",
+#                 "sidewalk_left_surface",
+#                 "maxspeed",
+#                 "segregated",
+#                 "sloped_curb",
+#                 "surface",
+#                 "tactile_paving",
+#                 "crossing"
+#                 )
+# 
+# gl = osmextract::oe_get(place = region_gl,
+#                          layer = "lines",
+#                          force_download = TRUE,
+#                          force_vectortranslate = TRUE,
+#                          extra_tags = tags_needed)
 
-gl = osmextract::oe_get(place = region_gl,
-                         layer = "lines",
-                         force_download = TRUE,
-                         force_vectortranslate = TRUE,
-                         extra_tags = tags_needed)
 
-saveRDS(gl,
-        "gl-01-04-2022.Rds")
-
-gl = readRDS("gl-01-04-2022.Rds")
+gl = sf::st_read("https://github.com/udsleeds/openinfra/releases/download/v0.1/gl-01-04-2022.geojson")
 
 ## West Yorkshire 
-osmextract::oe_match_pattern("west yorkshire")
-region_wy = "West Yorkshire"
-wy = osmextract::oe_get(place = region_wy,
-                         layer = "lines",
-                         force_download = TRUE,
-                         force_vectortranslate = TRUE,
-                         extra_tags = tags_needed)
+# osmextract::oe_match_pattern("west yorkshire")
+# region_wy = "West Yorkshire"
+# wy = osmextract::oe_get(place = region_wy,
+#                          layer = "lines",
+#                          force_download = TRUE,
+#                          force_vectortranslate = TRUE,
+#                          extra_tags = tags_needed)
 
-saveRDS(wy,
-        "wy-01-04-2022.Rds")
-wy = readRDS("wy-01-04-2022.Rds")
+
+wy = sf::st_read("https://github.com/udsleeds/openinfra/releases/download/v0.1/wy-01-04-2022.geojson")
 
 ## Merseyside
 # osmextract::oe_match_pattern("Merseyside")
-region_mers = "Merseyside"
-mers = osmextract::oe_get(place = region_mers,
-                         layer = "lines",
-                         force_download = TRUE,
-                         force_vectortranslate = TRUE,
-                         extra_tags = tags_needed)
-saveRDS(mers,
-        "mers-01-04-2022.Rds")
+# region_mers = "Merseyside"
+# mers = osmextract::oe_get(place = region_mers,
+#                          layer = "lines",
+#                          force_download = TRUE,
+#                          force_vectortranslate = TRUE,
+#                          extra_tags = tags_needed)
 
-mers = readRDS("mers-01-04-2022.Rds")
+mers = sf::st_read("https://github.com/udsleeds/openinfra/releases/download/v0.1/mers-01-04-2022.geojson")
 
 ## Greater Manchester
-osmextract::oe_match_pattern("Greater Manchester")
-region_gm = "Greater Manchester"
-gm = osmextract::oe_get(place = region_gm,
-                          layer = "lines",
-                          force_download = TRUE,
-                          force_vectortranslate = TRUE,
-                          extra_tags = tags_needed)
-saveRDS(gm,
-        "gm-01-04-2022.Rds")
+# osmextract::oe_match_pattern("Greater Manchester")
+# region_gm = "Greater Manchester"
+# gm = osmextract::oe_get(place = region_gm,
+#                           layer = "lines",
+#                           force_download = TRUE,
+#                           force_vectortranslate = TRUE,
+#                           extra_tags = tags_needed)
 
-gm = readRDS("gm-01-04-2022.Rds")
+gm = sf::st_read("https://github.com/udsleeds/openinfra/releases/download/v0.1/gm-01-04-2022.geojson")
 
 # inclusive_mobility_get function
 
@@ -872,6 +865,12 @@ joined_plot1 = joined %>%  filter(str_detect(highway, "foot|cycle|ped|steps|livi
 joined_plot1
 saveRDS(joined_plot1, "lida_report/joined_plot1.Rds")
 
+ggplot2::ggsave(filename= "joined_plot1",
+                plot = joined_plot1,
+                device = png,
+                path = paste0(getwd(), "/lida_report"))
+
+
 # plot 2
 
 gm_tagged_grouped_prop_name2 = gm_tagged_grouped_prop2 %>% mutate(name = "gm")
@@ -906,6 +905,11 @@ joined_plot2 = joined2  %>% filter (key %in% tags_plot) %>%
 joined_plot2
 
 saveRDS(joined_plot2, "lida_report/joined_plot2.Rds")
+
+ggplot2::ggsave(filename= "joined_plot2",
+                plot = joined_plot2,
+                device = png,
+                path = paste0(getwd(), "/lida_report"))
 
 # plot 2.1
 
@@ -943,6 +947,11 @@ joined_plot2.1
 
 saveRDS(joined_plot2.1, "lida_report/joined_plot2.1.Rds")
 
+ggplot2::ggsave(filename= "joined_plot2.1",
+                plot = joined_plot2.1,
+                device = png,
+                path = paste0(getwd(), "/lida_report"))
+
 # plot 3
 
 gm_tagged_grouped_prop_name_im = gm_tagged_grouped_prop_im %>% mutate(name = "gm")
@@ -977,6 +986,11 @@ joined_plot_im = joined_im  %>% filter (key %in% tags_plot_im) %>%
 joined_plot_im
 
 saveRDS(joined_plot_im, "lida_report/joined_plot_im.Rds")
+
+ggplot2::ggsave(filename= "joined_plot_im",
+                plot = joined_plot_im,
+                device = png,
+                path = paste0(getwd(), "/lida_report"))
 
 
 # 
