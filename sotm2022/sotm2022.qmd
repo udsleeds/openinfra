@@ -10,4 +10,22 @@ The importance of crowdsourced, including OSM, data has become even more importa
 
 Even though OSM data is flexible enough to represent active travel infrastructure, its potential in this context is yet be more researched (see Nelson et al 2021). For example, Ferster et al (2019) have examined and compared OSM cycling infrastructure in Canada, but did not, for instance, consider the infrastructure from the perspective of accessibility. There seems to be no equivalent study using OSM data in the context of pedestrian infrastructure planning. 
 
-OpenInfra project, run at the University of Leeds (UK), aims to address the gap of literature on the potential of OSM in transport research with a focus on active travel infrastructure planning. While the primary context is UK, it is expected that the developed methods and tools will be applicable to other contexts. 
+OpenInfra project, run at the University of Leeds (UK), aims to address the gap of literature on the potential of open-access data, specifically, OpenStreetMap, in transport research with a focus on active travel infrastructure planning. OSM 
+
+
+The need to consider active travel infrastructure has been highlighted by the shifting focus from motorized towards active modes of travel.
+
+
+increasing demands to consider the needs of local communities
+
+
+While the project context is UK, it is expected that the developed methods and tools will be applicable to other contexts. The project has been developed in the 
+
+=========
+
+One of the key domains in which OpenSteetMap (OSM) data has been utilized is transport research (Arsanjani et al 2015). OSM has been used in agent-based transport simulation (Ziemke et al 2019) and routing (Schmitz et al 2008; Luxen and Vetter 2011), including cycling (Yeboah and Alvanides 2015), walking (Zielstra and Hochmair 2015), wheeling (Neis 2014), and blind pedestrian routing (Cohen and Dalyot 2020). Another application of OSM data is in transport infrastructure planning. Nelson et al. (2021) argue that OSM has the potential to become a primary source of data on infrastructure across the globe. 
+
+The availability of open-access data on transport infrastructure becomes especially important in the context of the shifting focus from provision for motorised towards more sustainable active modes of travel, such as walking, wheeling, and cycling. 
+
+
+
