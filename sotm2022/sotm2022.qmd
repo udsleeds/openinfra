@@ -21,11 +21,24 @@ increasing demands to consider the needs of local communities
 
 While the project context is UK, it is expected that the developed methods and tools will be applicable to other contexts. The project has been developed in the 
 
-=========
+### draft 2
 
 One of the key domains in which OpenSteetMap (OSM) data has been utilized is transport research (Arsanjani et al 2015). OSM has been used in agent-based transport simulation (Ziemke et al 2019) and routing (Schmitz et al 2008; Luxen and Vetter 2011), including cycling (Yeboah and Alvanides 2015), walking (Zielstra and Hochmair 2015), wheeling (Neis 2014), and blind pedestrian routing (Cohen and Dalyot 2020). Another application of OSM data is in transport infrastructure planning. Nelson et al. (2021) argue that OSM has the potential to become a primary source of data on infrastructure across the globe. 
 
-The availability of open-access data on transport infrastructure becomes especially important in the context of the shifting focus from provision for motorised towards more sustainable active modes of travel, such as walking, wheeling, and cycling. 
+The availability of open-access data on transport infrastructure becomes crucial in the context of shifting focus from the provision for motorised towards more sustainable active modes of travel, such as walking, wheeling, and cycling. It is argued that for the interventions to be effective in encouraging the modal transition, it is essential to localize interventions so that they meet the needs of local communities. A potential way to engage citizens in the decision-making is to encourage them to become "prosumers" (ref) -- producers and users of open-access data, such as OSM. 
+
+Regardless of OSM's potential to become a primary source of data on infrastructure, its potential in this context is yet to be more researched (see Nelson et al 2021). For example, Ferster et al (2019) have examined and compared OSM cycling infrastructure in Canada, but did not, for instance, consider the infrastructure from the perspective of accessibility. There seems to exist no equivalent study using OSM data in the context of pedestrian infrastructure planning. 
+
+OpenInfra project, run at the University of Leeds (UK), aims to address the gap of literature regarding the potential of open-access data, specifically, OpenStreetMap, in transport research. The project started by examining the existing OSM tags relevant to active travel infrastructure in England with a focus on West Yorkshire, Greater Manchester, Greater London, and Merseyside. The data has been queried using `osmextract`, a package in R, and explored using exploratory data analysis (EDA) approach.
+
+It was found that while OSM seems to provide a comprehensive active travel network, there is a lack of specification in terms of the type of infrastructure that is present (e.g. is it a cycle lane or a cycle track?). For instance, cycleways and footways constitute about 1/3 of all the mapped highways on which one can legally walk or cycle but only a few percent of the cycleways and footways have tags detailing their type. The data gets even scarcer in the context of accessible infrastructure planning. For example, there is a lot of missing information on the presence and type of kerbs -- a street element that might make the movement of a wheelchair user more challenging (Timaite et al 2022). 
+
+The missing data currently limit the use of OSM data in active travel planning, however this does mean that the use of OSM data should be dismissed. Indeed, it is probable that by demonstrating the potential of OSM data in the policy-making contexts, citizens and policy makers would be incentivised to contribute to OSM data and encourage its use in an attempt to promote bottom-up approach to planning. Keeping this in mind, we decided to recategorize OSM data based on Inclusive Mobility guide (ref) in an attempt to make OSM more accessible and actionable from a policy-making perspective. 
+
+ 
+
+
+
 
 
 
