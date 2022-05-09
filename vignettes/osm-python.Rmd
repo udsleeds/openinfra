@@ -1,0 +1,21 @@
+---
+title: "Getting and using osm data in Python"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting and using osm data in Python}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{python}
+# start by importing your packages
+import pyrosm
+```

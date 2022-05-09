@@ -16,4 +16,19 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(openinfra)
+library(sf)
 ```
+
+```{r}
+url_regions_lad = "https://github.com/udsleeds/openinfra/raw/main/data-small/lads_joined_2021.geojson"
+regions_lad = read_sf(url_regions_lad)
+plot(regions_lad)
+```
+
+```{r}
+url_transport_regions = "https://github.com/udsleeds/openinfra/raw/main/data-small/regions_new.geojson"
+
+```
+
+
+
