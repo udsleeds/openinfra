@@ -1,0 +1,22 @@
+This file documents set-up commands for working with R
+
+```{r}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+```{r}
+plot(1:9)
+```
+
+Install the usethis package
+
+```{r}
+install.packages("usethis")
+```
+
+Create vignette
+```{r}
+usethis::use_vignette(name = 'regions', title = 'Transport regions in the UK')
+```
+
+
