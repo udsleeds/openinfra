@@ -18,22 +18,15 @@ knitr::opts_chunk$set(
 # Getting and using OSM data within Python
 In this section we will
 
-```{python}
+```python
 # start by importing your packages
 import pyrosm
 import matplotlib
 ```
 
-```{python}
+```python
 print('Hello World')
 
 print([num for num in range(11)])
-
-import os
-try:
-    user_paths = os.environ['PYTHONPATH'].split(os.pathsep)
-except KeyError:
-    user_paths = []
-print(user_paths)
 ```
 
