@@ -13,9 +13,11 @@ knitr::opts_chunk$set(
   comment = "#>",
   eval = FALSE
 )
+library(reticulate)
 ```
 
 ```{python}
 # start by importing your packages
 import pyrosm
 ```
+
