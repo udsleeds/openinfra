@@ -13,7 +13,6 @@ knitr::opts_chunk$set(
   comment = "#>",
   eval = FALSE
 )
-library(reticulate)
 ```
 
 # Getting and using OSM data within Python
@@ -29,5 +28,12 @@ import matplotlib
 print('Hello World')
 
 print([num for num in range(11)])
+
+import os
+try:
+    user_paths = os.environ['PYTHONPATH'].split(os.pathsep)
+except KeyError:
+    user_paths = []
+print(user_paths)
 ```
 
