@@ -16,8 +16,16 @@ knitr::opts_chunk$set(
 library(reticulate)
 ```
 
-```{python}
+# Getting and using OSM data within Python
+In this section we will
+
+```python
 # start by importing your packages
 import pyrosm
+import matplotlib
+```
+
+```python
+
 ```
 
