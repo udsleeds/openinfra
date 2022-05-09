@@ -8,6 +8,11 @@ knitr::opts_chunk$set(eval = FALSE)
 plot(1:9)
 ```
 
+```{r}
+install.packages("sf")
+```
+
+
 Install the usethis package
 
 ```{r}
@@ -17,6 +22,7 @@ install.packages("usethis")
 Create vignette
 ```{r}
 usethis::use_vignette(name = 'regions', title = 'Transport regions in the UK')
+usethis::use_vignette(name = 'osm-python', title = 'Getting and using osm data in Python')
 ```
 
 
