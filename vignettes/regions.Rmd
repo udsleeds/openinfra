@@ -14,14 +14,23 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Info
+
+Within this vignette we show the Local Authority Districts (LADs) within the UK & Northern Ireland along with the transport regions for England
+
 ## Required imports for analysis
+
 ```{r setup}
-library(openinfra)
-library(sf)
+#library(openinfra)
+library(sf)    # Simple features library for storing data 
+library(tmap)  # tmap library for interactive plots
+library(dplyr) 
 ```
 
 ## Local authorities of the UK
+
 Downloading, reading and plotting the local authority districts of the UK
+
 ```{r}
 # Download data from the openinfra repo
 url_regions_lad = "https://github.com/udsleeds/openinfra/raw/main/data-small/lads_joined_2021.geojson"
@@ -30,10 +39,24 @@ regions_lad = read_sf(url_regions_lad)
 # Visualise the local authority districts of the UK
 plot(regions_lad)
 ```
-<br>[Interactive](https://github.com/udsleeds/openinfra/blob/main/data-small/lads_joined_2021.geojson) plot of the local authorites within the UK
-<br><br>
+
+```{r}
+# Set our tmap package mode to _interactive_ to create interactive plots
+tmap::tmap_mode('view') # After this call all qtm plots will be interactive 
+```
+
+```{r}
+# Here we create the  interactive plots
+sf::sf_use_s2(use_s2 = FALSE)
+regions_lad %>% select('geometry') %>% tmap::qtm()
+```
+
+<br>[Interactive](https://github.com/udsleeds/openinfra/blob/main/data-small/lads_joined_2021.geojson) plot of the local authorities within the UK <br>
+
 ## Transport regions within England
+
 Downloading, reading and plotting the transport regions of England
+
 ```{r}
 # Download data from the openinfra repo
 url_transport_regions = "https://github.com/udsleeds/openinfra/raw/main/data-small/regions_new.geojson"
@@ -42,6 +65,11 @@ transport_regions = read_sf(url_transport_regions)
 # Visualise transport regions of England
 plot(transport_regions)
 ```
+
+```{r}
+# Here we create the interactive plot of Englands transport regions
+transport_regions %>% select(geometry) %>% tmap::qtm()
+```
+
+
 <br>[Interactive](https://github.com/udsleeds/openinfra/blob/main/data-small/regions_new.geojson) plot of transport regions within England
-
-
