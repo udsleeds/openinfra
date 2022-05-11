@@ -48,7 +48,8 @@ tmap::tmap_mode('view') # After this call all qtm plots will be interactive
 ```{r}
 # Here we create the  interactive plots
 sf::sf_use_s2(use_s2 = FALSE)
-regions_lad %>% select('geometry') %>% tmap::qtm()
+regions_lad %>% tmap::qtm()
+regions_lad %>% tmap::qtm(fill = 'Region_name')
 ```
 
 <br>[Interactive](https://github.com/udsleeds/openinfra/blob/main/data-small/lads_joined_2021.geojson) plot of the local authorities within the UK <br>
