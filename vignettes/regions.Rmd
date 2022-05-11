@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 10,
+  fig.height = 8
 )
 ```
 
@@ -42,7 +44,8 @@ plot(regions_lad)
 
 ```{r}
 # Set our tmap package mode to _interactive_ to create interactive plots
-tmap::tmap_mode('view') # After this call all qtm plots will be interactive 
+tmap::tmap_mode('view') # After this call all qtm plots will be interactive
+tmap_options(max.categories = 78) 
 ```
 
 ```{r}
@@ -50,7 +53,14 @@ tmap::tmap_mode('view') # After this call all qtm plots will be interactive
 sf::sf_use_s2(use_s2 = FALSE)
 regions_lad %>% tmap::qtm()
 regions_lad %>% tmap::qtm(fill = 'Region_name')
+regions_lad %>% tmap::qtm(fill = 'Level')
 ```
+
+
+```{r}
+tm_shape(regions_lad) + tm_polygons('Level')
+```
+
 
 <br>[Interactive](https://github.com/udsleeds/openinfra/blob/main/data-small/lads_joined_2021.geojson) plot of the local authorities within the UK <br>
 
@@ -69,7 +79,8 @@ plot(transport_regions)
 
 ```{r}
 # Here we create the interactive plot of Englands transport regions
-transport_regions %>% select(geometry) %>% tmap::qtm()
+#transport_regions %>% select(geometry) %>% tmap::qtm()
+transport_regions %>% tmap::qtm()
 ```
 
 
