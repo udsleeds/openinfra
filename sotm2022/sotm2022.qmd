@@ -15,15 +15,18 @@ Acknowledging the potential of OSM to boost citizen participation, OpenInfra pro
 
 Given the extensive use of OSM data in transport research, it is not surprising that OSM provides a comprehensive active travel network, yet there is a lack of specification concerning the type of infrastructure that is present (e.g. is it a cycle lane or a cycle track?). For instance, cycleways and footways constitute about 1/3 of all the mapped highways on which one can legally walk or cycle but only a few percents of the cycleways and footways have tags detailing their type. The data gets even scarcer in the context of accessible infrastructure planning. For example, there is a lot of missing information on the presence and type of kerbs -- a street element that might make the movement of a wheelchair user more challenging (Timaite et al 2022). 
 
-The missing data currently limit the use of OSM data in active travel planning, however this does mean that the use of OSM data should be dismissed. Following Nelson et al's (2021) argument regarding the need to make crowdsourced data more actionable, we decided to recategorize OSM data based on Inclusive Mobility guide (ref), a guide that outlines the best practices in creating inclusive transport. Indeed, it could be reasoned that by demonstrating the potential of OSM data in the policy-making contexts, citizens and policy makers would be incentivised to contribute to OSM data and encourage its use in bottom-up approach to planning.
+The missing data currently limit the use of OSM data in active travel planning, however this does mean that the use of OSM data should be dismissed. Following Nelson et al's (2021) argument regarding the need to make crowdsourced data more actionable, we decided to recategorize OSM data based on Inclusive Mobility (IM) guide (ref), a guide that outlines the best practices in creating inclusive transport. For this, a function has been written (documentation can be found here: https://udsleeds.github.io/openinfra/articles/im_get.html). It is important to note the function provides a simplification of the IM guide mainly for a couple of reasons. The first one could be considered as definitional discrepencies. For instance, the guide defines footways as "pavements adjacent to roads", yet this is not directly compatible to OSM's definition and, thus, needs to be derived through conditional filtering. Another is linked to assigned values. For example, the guide identifies six tactile paving surfaces but OSM focuses on the presence/absence of tactile paving, thus limiting how much information can be extracted from data. 
+
+
+
 
 Next:
-
-- apply IM to a region
-- discuss results
-- join maybe with another dataset? 
+[x] limitations of the function
+[] apply IM to a region
+[] discuss results
+[] join maybe with another dataset? 
   - idea: Leeds footfall
-- discuss next steps
+[] discuss next steps
 
 <!-- ==== draft, don't read -->
 
