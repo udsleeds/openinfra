@@ -5,11 +5,58 @@ library(mapview)
 library(tmap)
 library(osmextract)
 
-# download OSM highway data for West Yorkshire (downloaded 2022-04-01)
-wy = sf::st_read("https://github.com/udsleeds/openinfra/releases/download/v0.1/wy-01-04-2022.geojson")
+# downloaded 2022-05-16
+# tags_needed = c("cycleway",
+#                 "bicycle",
+#                 "wheelchair",
+#                 "kerb",
+#                 "disabled",
+#                 "mobility_scooter",
+#                 "handicap",
+#                 "foot",
+#                 "lit",
+#                 "access",
+#                 "sidewalk",
+#                 "footway",
+#                 "incline",
+#                 "smoothness",
+#                 "est_width",
+#                 "width",
+#                 "ramp",
+#                 "sidewalk_left",
+#                 "sidewalk_right",
+#                 "ramp_wheelchair",
+#                 "footway_left",
+#                 "footway_right",
+#                 "footway_surface",
+#                 "priority",
+#                 "sidewalk_both_surface",
+#                 "sidewalk_both_width",
+#                 "path",
+#                 "pedestrian",
+#                 "sidewalk_left_width",
+#                 "sidewalk_right_width",
+#                 "sidewalk_right_surface",
+#                 "sidewalk_left_surface",
+#                 "maxspeed",
+#                 "segregated",
+#                 "sloped_curb",
+#                 "surface",
+#                 "tactile_paving",
+#                 "crossing"
+# )
+# 
+# osmextract::oe_match_pattern("west yorkshire")
+# region_wy = "West Yorkshire"
+# wy = osmextract::oe_get(place = region_wy,
+#                         layer = "lines",
+#                         force_download = TRUE,
+#                         force_vectortranslate = TRUE,
+#                         extra_tags = tags_needed)
 
-mers = sf::st_read("https://github.com/udsleeds/openinfra/releases/download/v0.1/mers-01-04-2022.geojson")
-
+saveRDS(wy,
+        "wy.RDS")
+wy = readRDS("wy.RDS")
 
 # Inclusive Mobility function
 
@@ -136,70 +183,112 @@ inclusive_mobility_get = function(osm_sf) {
     )
 }
 
-wy_im = inclusive_mobility_get(wy)
+# downloaded 2022-05-16
+# tags_needed = c("cycleway",
+#                 "bicycle",
+#                 "wheelchair",
+#                 "kerb",
+#                 "disabled",
+#                 "mobility_scooter",
+#                 "handicap",
+#                 "foot",
+#                 "lit",
+#                 "access",
+#                 "sidewalk",
+#                 "footway",
+#                 "incline",
+#                 "smoothness",
+#                 "est_width",
+#                 "width",
+#                 "ramp",
+#                 "sidewalk_left",
+#                 "sidewalk_right",
+#                 "ramp_wheelchair",
+#                 "footway_left",
+#                 "footway_right",
+#                 "footway_surface",
+#                 "priority",
+#                 "sidewalk_both_surface",
+#                 "sidewalk_both_width",
+#                 "path",
+#                 "pedestrian",
+#                 "sidewalk_left_width",
+#                 "sidewalk_right_width",
+#                 "sidewalk_right_surface",
+#                 "sidewalk_left_surface",
+#                 "maxspeed",
+#                 "segregated",
+#                 "sloped_curb",
+#                 "surface",
+#                 "tactile_paving",
+#                 "crossing"
+#                 )
+# 
+# osmextract::oe_match_pattern("west yorkshire")
+# region_wy = "West Yorkshire"
+# wy = osmextract::oe_get(place = region_wy,
+#                          layer = "lines",
+#                          force_download = TRUE,
+#                          force_vectortranslate = TRUE,
+#                          extra_tags = tags_needed)
 
-
-tmap::tmap_mode("plot")
-tmap::tm_shape(wy %>% filter(highway == "cycleway"))+
-  tmap::tm_lines()
-
-
-tags_needed = c("cycleway",
-                "bicycle",
-                "wheelchair",
-                "kerb",
-                "disabled",
-                "mobility_scooter",
-                "handicap",
-                "foot",
-                "lit",
-                "access",
-                "sidewalk",
-                "footway",
-                "incline",
-                "smoothness",
-                "est_width",
-                "width",
-                "ramp",
-                "sidewalk_left",
-                "sidewalk_right",
-                "ramp_wheelchair",
-                "footway_left",
-                "footway_right",
-                "footway_surface",
-                "priority",
-                "sidewalk_both_surface",
-                "sidewalk_both_width",
-                "path",
-                "pedestrian",
-                "sidewalk_left_width",
-                "sidewalk_right_width",
-                "sidewalk_right_surface",
-                "sidewalk_left_surface",
-                "maxspeed",
-                "segregated",
-                "sloped_curb",
-                "surface",
-                "tactile_paving",
-                "crossing"
-                )
-
-
-osmextract::oe_match_pattern("west yorkshire")
-region_wy = "West Yorkshire"
-wy = osmextract::oe_get(place = region_wy,
-                         layer = "lines",
-                         force_download = TRUE,
-                         force_vectortranslate = TRUE,
-                         extra_tags = tags_needed)
-
-saveRDS(wy,
-        "wy.RDS")
-
-wy_df = wy %>% sf::st_drop_geometry() %>% filter(!is.na(highway) & highway != "motorway" & highway != "motorway_link") %>%  inclusive_mobility_get() 
+# filter out motorways + apply IM function
 wy_im = wy %>% filter(!is.na(highway) & highway != "motorway" & highway != "motorway_link") %>%  inclusive_mobility_get() 
 
+# proportions
+## proportion function
+im_proportion_yes = function(osm_im, im_col){
+  (osm_im %>% filter(im_col == "yes") %>% nrow()) / osm_im %>% nrow()
+}
 
-wy_im %>% filter(im_footway == "yes") %>% 
-  tmap::tm_shape()+
-  tmap::tm_lines()
+footpath_prop = im_proportion_yes(wy_im, wy_im$im_footpath) %>%
+  cbind("footpath") %>% 
+  as.data.frame() %>% 
+  setNames(c("prop", "value"))
+
+footway_prop = im_proportion_yes(wy_im, wy_im$im_footway) %>%
+  cbind("footway") %>% 
+  as.data.frame() %>% 
+  setNames(c("prop", "value"))
+
+joined = rbind(footpath_prop,
+               footway_prop) %>% 
+  as.data.frame() 
+
+# visualizations
+## plot a histogram
+ggplot2::ggplot(joined,
+                aes(x = value,
+                    y = prop))+
+  geom_bar(stat = "identity")
+
+## plot an interactive
+tmap::tmap_mode("view")
+tmap::tm_shape(wy_im %>% filter(im_footpath == "yes"))+
+  tmap::tm_lines(col = "red")+
+  tmap::tm_shape(wy_im %>% filter(im_footway == "yes"))+
+  tmap::tm_lines(col = "blue")
+
+# get LCC footfall data
+
+footfall = read.csv("~/Desktop/lcc_footfall.csv")
+footfall %>% names()
+footfall %>% select(Location) %>% unique()
+footfall %>% str()
+
+wy_im %>% names()
+
+# a list of unique locations
+footfall %>% select(Location) %>% unique() %>% unlist() %>% as.vector()
+# excluding Dortmund Square as it's not the highway
+location_list = c("Albion Street",
+                  "Briggate",
+                  "Commercial Street",
+                  "The Headrow",
+                  "Park Row")
+
+# plotting those locations based on OSM name tag
+tmap::tmap_mode("view")
+wy_im %>% filter(name %in% location_list) %>% nrow()
+wy_im %>% filter(name %in% "Park Row") %>% nrow()
+wy_im %>% filter(name %in% location_list) %>% tmap::qtm()
