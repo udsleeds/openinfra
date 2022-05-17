@@ -264,3 +264,21 @@ lcc_locations = lcc %>%
   filter(name %in% location_list)
 lcc_locations %>% tmap::qtm()
 
+## check if the streets have data needed for IM and if so, what
+lcc_locations %>% 
+  sf::st_drop_geometry() %>% 
+  dplyr::filter(!is.na(im_surface)) %>% 
+  dplyr::select(im_surface) %>% 
+  table()
+
+lcc_locations %>% 
+  sf::st_drop_geometry() %>% 
+  dplyr::filter(!is.na(im_tactile)) %>% 
+  dplyr::select(im_tactile) %>% 
+  table()
+
+tmap::tm_shape(lcc_locations)+
+  tmap::tm_lines('im_surface')
+
+tmap::tm_shape(lcc_locations)+
+  tmap::tm_lines('im_tactile')
