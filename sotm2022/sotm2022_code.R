@@ -6,6 +6,8 @@ library(tmap)
 library(osmextract)
 
 # downloaded 2022-05-16
+wy = readRDS("wy.RDS")
+
 # tags_needed = c("cycleway",
 #                 "bicycle",
 #                 "wheelchair",
@@ -54,9 +56,8 @@ library(osmextract)
 #                         force_vectortranslate = TRUE,
 #                         extra_tags = tags_needed)
 
-saveRDS(wy,
-        "wy.RDS")
-wy = readRDS("wy.RDS")
+# saveRDS(wy,
+#         "wy.RDS")
 
 # Inclusive Mobility function
 
@@ -183,54 +184,6 @@ inclusive_mobility_get = function(osm_sf) {
     )
 }
 
-# downloaded 2022-05-16
-# tags_needed = c("cycleway",
-#                 "bicycle",
-#                 "wheelchair",
-#                 "kerb",
-#                 "disabled",
-#                 "mobility_scooter",
-#                 "handicap",
-#                 "foot",
-#                 "lit",
-#                 "access",
-#                 "sidewalk",
-#                 "footway",
-#                 "incline",
-#                 "smoothness",
-#                 "est_width",
-#                 "width",
-#                 "ramp",
-#                 "sidewalk_left",
-#                 "sidewalk_right",
-#                 "ramp_wheelchair",
-#                 "footway_left",
-#                 "footway_right",
-#                 "footway_surface",
-#                 "priority",
-#                 "sidewalk_both_surface",
-#                 "sidewalk_both_width",
-#                 "path",
-#                 "pedestrian",
-#                 "sidewalk_left_width",
-#                 "sidewalk_right_width",
-#                 "sidewalk_right_surface",
-#                 "sidewalk_left_surface",
-#                 "maxspeed",
-#                 "segregated",
-#                 "sloped_curb",
-#                 "surface",
-#                 "tactile_paving",
-#                 "crossing"
-#                 )
-# 
-# osmextract::oe_match_pattern("west yorkshire")
-# region_wy = "West Yorkshire"
-# wy = osmextract::oe_get(place = region_wy,
-#                          layer = "lines",
-#                          force_download = TRUE,
-#                          force_vectortranslate = TRUE,
-#                          extra_tags = tags_needed)
 
 # filter out motorways + apply IM function
 wy_im = wy %>% filter(!is.na(highway) & highway != "motorway" & highway != "motorway_link") %>%  inclusive_mobility_get() 
@@ -279,16 +232,35 @@ footfall %>% str()
 wy_im %>% names()
 
 # a list of unique locations
-footfall %>% select(Location) %>% unique() %>% unlist() %>% as.vector()
-# excluding Dortmund Square as it's not the highway
+location_vec = footfall %>% 
+  select(Location) %>% 
+  unique() %>% 
+  unlist() %>% 
+  as.vector()
+### excluding Dortmund Square as it's not the highway
 location_list = c("Albion Street",
                   "Briggate",
                   "Commercial Street",
                   "The Headrow",
                   "Park Row")
 
+## filter based on location_list
+osm_locations = wy_im %>%
+  filter(name %in% location_list)
+osm_locations %>% nrow()
 # plotting those locations based on OSM name tag
+
 tmap::tmap_mode("view")
-wy_im %>% filter(name %in% location_list) %>% nrow()
-wy_im %>% filter(name %in% "Park Row") %>% nrow()
-wy_im %>% filter(name %in% location_list) %>% tmap::qtm()
+osm_locations %>% tmap::qtm()
+
+# defining central Leeds as that's the area we need
+# there are sterets with the names in `osm_locations` which are not in Leeds. We need Leeds only to match footfall data
+map_locations = mapview::mapview(osm_locations)
+map_leeds_locations = mapedit::editMap(map_locations)
+box = sf::st_bbox(map_leeds_locations$drawn$geometry)
+lcc = wy_im[map_leeds_locations$drawn$geometry, op=sf::st_within]
+lcc %>% tmap::qtm()
+lcc_locations = lcc %>% 
+  filter(name %in% location_list)
+lcc_locations %>% tmap::qtm()
+
