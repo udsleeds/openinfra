@@ -6,6 +6,7 @@ This is a temporary script file.
 """
 
 import pyrosm
+import time
 #import osmnx 
 #import geemap
 #import folium 
@@ -39,6 +40,7 @@ print(keys)
 
 # Plotting the total network for Leeds
 leeds_total_network.plot()
+time.sleep(60)
 
 # Plot the dirving network of Leeds
 leeds_driving_network = osm.get_network(network_type='driving')
