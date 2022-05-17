@@ -294,7 +294,7 @@ tmap::tm_shape(lcc_locations)+
 # create a preliminary index
 
 lcc_locations_index = lcc_locations %>% 
-  sf::st_drop_geometry() %>% 
+  # sf::st_drop_geometry() %>% 
   dplyr::mutate(
     foot_index = dplyr::case_when(
       im_footway == "yes" |
@@ -324,7 +324,8 @@ lcc_locations_index = lcc_locations %>%
       TRUE ~ 0 
     )
       )  %>% 
-  select(contains("_index")) %>% 
-  mutate(index = rowSums(.))
+  dplyr::select(dplyr::contains("_index")) %>% 
+  dplyr::mutate(index = rowSums(.[,1:5, drop = T])) # issue that helped me here: https://github.com/r-spatial/sf/issues/497
 
+lcc_locations_index %>% dplyr::pull(index) %>% table()
 
