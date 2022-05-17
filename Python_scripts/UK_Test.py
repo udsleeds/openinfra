@@ -3,6 +3,8 @@
 """
 Created on Fri May 13 11:44:37 2022
 
+This script tests the ability of the latptop by requesting and plotting the network of England
+
 @author: james
 """
 def get_OSM_data(place_name, network_type):
