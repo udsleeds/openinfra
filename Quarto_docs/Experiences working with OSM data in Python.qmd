@@ -1,0 +1,39 @@
+---
+title: "Experiences working with OSM data in Python"
+author: "James Hulse"
+format:
+  html:
+    code-link: true
+    code-tools: true
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+
+```{python}
+import numpy 
+import pyrosm
+
+new_list = [num for num in range(10)]
+
+print(new_list)
+```
+
+
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
