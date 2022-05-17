@@ -237,7 +237,7 @@ location_vec = footfall %>%
   unique() %>% 
   unlist() %>% 
   as.vector()
-### excluding Dortmund Square as it's not the highway
+### excluding Dortmund Square as it's not a highway
 location_list = c("Albion Street",
                   "Briggate",
                   "Commercial Street",
@@ -253,8 +253,8 @@ osm_locations %>% nrow()
 tmap::tmap_mode("view")
 osm_locations %>% tmap::qtm()
 
-# defining central Leeds as that's the area we need
-# there are sterets with the names in `osm_locations` which are not in Leeds. We need Leeds only to match footfall data
+### defining central Leeds as that's the area we need
+### there are sterets with the names in `osm_locations` which are not in Leeds. We need Leeds only to match footfall data
 map_locations = mapview::mapview(osm_locations)
 map_leeds_locations = mapedit::editMap(map_locations)
 box = sf::st_bbox(map_leeds_locations$drawn$geometry)
@@ -278,7 +278,53 @@ lcc_locations %>%
   table()
 
 tmap::tm_shape(lcc_locations)+
-  tmap::tm_lines('im_surface')
+  tmap::tm_lines('im_surface',
+                 palette = "Dark2",
+                 colorNA = "black",
+                 lwd = 2)
 
 tmap::tm_shape(lcc_locations)+
+  tmap::tm_lines('im_surface_paved',
+                 palette = "Dark2",
+                 colorNA = "black",
+                 lwd = 2)
+tmap::tm_shape(lcc_locations)+
   tmap::tm_lines('im_tactile')
+
+# create a preliminary index
+
+lcc_locations_index = lcc_locations %>% 
+  sf::st_drop_geometry() %>% 
+  dplyr::mutate(
+    foot_index = dplyr::case_when(
+      im_footway == "yes" |
+        im_footpath == "yes" |
+        im_footway_imp == "yes"
+      ~ 1,
+      TRUE~ 0
+    ),
+    kerb_index = dplyr::case_when(
+      im_kerb == "flush"
+      ~ 1,
+      TRUE ~ 0
+      ),
+    surface_index = dplyr::case_when(
+      im_surface == "even" 
+      ~ 1,
+      TRUE ~ 0
+    ),
+    tactile_index = dplyr::case_when(
+      im_tactile == "yes"
+      ~ 1,
+      TRUE ~ 0
+    ),
+    width_index = dplyr::case_when(
+      !is.na(im_width) |
+        !is.na(im_width_est) ~ 1,
+      TRUE ~ 0 
+    )
+      )  %>% 
+  select(contains("_index")) %>% 
+  mutate(index = rowSums(.))
+
+
