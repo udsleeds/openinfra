@@ -329,3 +329,9 @@ lcc_locations_index = lcc_locations %>%
 
 lcc_locations_index %>% dplyr::pull(index) %>% table()
 
+## mapping index
+tmap::tm_shape(lcc_locations_index)+
+  tm_lines("index",
+           palette = "Dark2",
+           as.count = TRUE,
+           lwd = 2)
