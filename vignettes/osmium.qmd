@@ -1,0 +1,217 @@
+---
+title: "Using Osmium"
+author: "James Hulse"
+format: html
+editor: visual
+---
+
+## Quarto
+
+This document follows the `osmium-tool` manual available [here](https://osmcode.org/osmium-tool/manual.html) and has been created as an interactive notepad for future reference
+
+### The Osmium Command
+
+Calling osmium allows us to see if the tool is installed correctly
+
+    osmium
+
+    Usage: osmium COMMAND [ARG...]
+           osmium --version
+
+    COMMANDS:
+      add-locations-to-ways   Add node locations to ways
+      apply-changes           Apply OSM change files to OSM data file
+      cat                     Concatenate OSM files and convert to different formats
+      changeset-filter        Filter OSM changesets by different criteria
+      check-refs              Check referential integrity of an OSM file
+      create-locations-index  Create node locations index on disk
+      derive-changes          Create OSM change files from two OSM data files
+      diff                    Display differences between OSM files
+      export                  Export OSM data
+      extract                 Create geographic extract
+      fileinfo                Show information about OSM file
+      getid                   Get objects with given ID from OSM file
+      getparents              Get parents of objects from OSM file
+      help                    Show osmium help
+      merge                   Merge several sorted OSM files into one
+      merge-changes           Merge several OSM change files into one
+      query-locations-index   Query node locations index on disk
+      renumber                Renumber IDs in OSM file
+      show                    Show OSM file contents
+      sort                    Sort OSM data files
+      tags-filter             Filter OSM data based on tags
+      time-filter             Filter OSM data from a point in time or a time span out of a history file
+
+    TOPICS:
+      file-formats           File formats supported by Osmium
+      index-types            Index types for storing node locations
+
+    Use 'osmium COMMAND -h' for short usage information.
+    Use 'osmium help COMMAND' for detailed information on a specific command.
+    Use 'osmium help TOPIC' for detailed information on a specific topic.
+
+### Showing OSM Files
+
+We can look at OSM file contents with `fileinfo`
+
+    osmium fileinfo wales-latest.osm.pbf
+
+This will show the contents of the file in the *debug* format (more on the different formats below) using your favorite pager (`less` by default):
+
+`osmium show wales-latest.osm.pbf`
+
+### Converting Between OSM File Formats
+
+Osmium supports all popular OSM file formats (and some more): XML, PBF, O5M/O5C, OPL. Some formats can only be read or only be written. Often you need to convert OSM data files from one format to another. This is easily done with the `osmium cat` command.
+
+To convert the Wales PBF file into XML format compressed with `bzip2`, use this command:
+
+`osmium cat wales-latest.osm.pbf -o wales-latest-converted.osm.bz2`
+
+Which results in a duplicate file of the desired format being created.
+
+![](https://i.imgur.com/1fEmoo6.png)
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+Most file formats have special options to change the details of the file format. You can set those special options with the same command line options. For instance, if you want a bz2ip-compressed XML file without metadata use this:
+
+```{osmium cat wales-latest.osm.pbf -o wales-latest-no-meta.osm.bz2 -f osm.bz2,add_metadata=false}
+```
+
+The output file will not have the `version`, `timestamp`, etc. fields and so it is much more compact than the usual XML format.
+
+As you can see, you can add the options to the format separated by commas, multiple options are possible. Some options are available for several or all formats (`add_metadata` for instance), others are specific to one of the formats, `pbf_dense_nodes` for instance only works on the PBF format. Note that unknown options are silently ignored, so if you mistype an option, you will not get an error message!
+
+See the [osmium-file-formats](https://docs.osmcode.org/osmium/latest/osmium-file-formats.html) man page for all the details.
+
+The above command has created a new wales-latest.osm.bz2 file but with no metadata attached. Removing the metadata from this file has reduced the file size by 11MB (6% reduction).
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+There is one additional option of the `osmium cat` command that often comes handy. With `-t TYPE` it can be instructed to only copy objects of the given type. So
+
+```{osmium cat wales-latest.osm.pbf -t node -o wales-latest-node-only.osm.pbf}
+```
+
+will only copy the nodes, not the ways, or relations. The output file from this operation is 66MB for nodes only, implying 40MB is used by ways and relations.
+
+### Verbose Mode
+
+Most Osmium commands support the `-v` or `--verbose` command line option to enable *verbose* mode. Osmium will then display information about its command line parameters and about what it is doing to STDERR.
+
+Each line of the output is started with the elapsed time in minutes and seconds. This is especially useful when Osmium is run in scripts and the output is logged, you can immediately see where the time went.
+
+In verbose mode, most Osmium commands will also display the memory used. This is handy because Osmium command often need a lot of memory to efficiently do their job. There is also a `MEMORY` section in each of the man pages that tells you about memory use of this particular command.
+
+### Getting OSM objects by ID
+
+Sometimes you have the ID of a node, way or relation (or a bunch of IDs) and want to get the objects with those IDs from a file. That's what the `getid` command is for. The following command will get the nodes 17 and 18, the way 42, and the relation 3 out of the file:
+
+```{osmium getid wales-latest.osm.pbf n17 n18 w42 r3 -o wales-latest-ids.osm.pbf}
+```
+
+As you can see the IDs are written with a one-letter prefix denoting the type. IDs without this prefix are understood to be node IDs (but this can be changed with the `--default-type` option).
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+If you have more than a few IDs you can put them into a file, one ID per line and use the `-i` option to read them from that file:
+
+```{osmium getid wales-latest.osm.pbf -i ids -o wales-id-from-file.osm.pbf}
+```
+
+where ids is a document containing feature IDs per line:
+
+```{ids document contents}
+n17
+n18
+w42
+r3
+```
+
+Empty lines and everything after a space or hash (#) sign is ignored. And you can read from STDIN. So this command
+
+    echo "r123 foo bar" | osmium getid input.osm.pbf -i - -f debug
+
+will find the relation with the ID 123 in `input.osm.pbf` and output it to STDOUT in debug format.
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+Often you need not only the OSM objects with the given IDs but also all objects referenced by those objects. So for ways you need the nodes in it and for relations the members. Use the `-r` or `--add-referenced` option to add them to the output:
+
+    osmium getid -r input.osm.pbf w222 -o output.osm.pbf
+
+The output will contain first all nodes references by way 222 and then the way. The `getid` command will read the input file up to three times to follow all the references. Output will be sorted in the usual fashion: first nodes ordered by ID, then ways, then relations.
+
+### Checking References
+
+A full planet dump is referentially complete. All objects referenced by other objects are in the file. So if a relation has a member way 123, then this way will also be in the file. This is not always true for geographical extracts or other partial OSM files.
+
+This often leads to confusion. Many programs that use OSM data will fail in unexpected ways when something is missing in its input data. If you have a situation like this you can use the `check-refs` command to find out whether your OSM file is referentially complete:
+
+```{osmium check-refs wales-latest.osm.pbf}
+```
+
+`There are 13069788 nodes, 1275834 ways, and 8866 relations in this file. Nodes in ways missing: 0`
+
+This command will check that all nodes referenced in the ways are in the input file. If you want to check relation members, too, use the `-r` or `--check-relations` option.
+
+```{osmium check-refs -r wales-latest.osm.pbf}
+```
+
+    There are 13069788 nodes, 1275834 ways, and 8866 relations in this file.
+    Nodes     in ways      missing: 0
+    Nodes     in relations missing: 885
+    Ways      in relations missing: 25564
+    Relations in relations missing: 794
+
+```{osmium check-refs -r england-latest.osm.pbf}
+```
+
+    There are 125443403 nodes, 18847906 ways, and 201277 relations in this file.
+    Nodes     in ways      missing: 0
+    Nodes     in relations missing: 718
+    Ways      in relations missing: 33470
+    Relations in relations missing: 746
+
+### Creating Geographic Extracts
+
+There is often the need to create a geographical extract of OSM data that only contains the data for a specific region. Instead of working with the huge amount of data for the whole planet, further work can then be done with much less data.
+
+##### Creating an Extract
+
+Osmium can create such an extract with the `osmium extract` command. Here is a simple example that will cut (from the file called `france.pbf`) everything inside the given bounding box, in this case the city of Paris roughly inside the ring road and write it out into the file `paris.pbf`:
+
+```{osmium extract -b 2.25,48.81,2.42,48.91 france.pbf -o paris.pbf}
+```
+
+If you happen to have a polygon describing Paris, you can use it instead:
+
+```{osmium extract -p paris-polygon.geojson france.pbf -o paris.pbf}
+```
+
+This assumes you have the polygon in [GeoJSON format](https://geojson.org/) in the file `paris-polygon.geojson`. Osmium also understands the [`POLY` format](https://wiki.openstreetmap.org/wiki/Osmosis/Polygon_Filter_File_Format), a text-based format popularized first by Osmosis and sometimes used in the OSM world to specify such polygons:
+
+```{osmium extract -p paris-polygon.poly france.pbf -o paris.pbf}
+```
+
+Osmium can also read an OSM file with a (multi)polygon in it that specifies the area to cut out. If you know the relation ID of such a multipolygon, you can download it from the OSM server using a URL such as this:
+
+``` {https://www.openstreetmap.org/api/0.6/relation/relation-id/full}
+```
+
+For Paris this could be:
+
+``` {https://www.openstreetmap.org/api/0.6/relation/7444/full}
+```
+
+THIS WILL NOT ALWAYS WORK - see fix below.
+
+This works well for smaller multipolygons (such as city boundaries), but for very large multipolygons (such as a whole country) chances are you'll get a timeout from the API. If you have an OSM file lying around that contains the boundary, you can use osmium to get the relation and all the nodes and ways used in that relation:
+
+```{osmium getid -r -t france.pbf r7444 -o paris-boundary.osm}
+```
+
+The options are important here: `-r` makes sure you get all the members of the relation and all the nodes in the member ways. `-t` removes the tags from all objects except the relation 7444 itself. This way only the relation itself is turned into a (multi)polygon and not other relations or closed ways that happen to be in the data.
+
+And now using `paris-boundary.osm` we can create the extract we desire:
