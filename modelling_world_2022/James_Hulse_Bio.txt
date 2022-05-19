@@ -1,0 +1,17 @@
+James Hulse 
+
+ 
+
+Data Scientist, LIDA 
+
+ 
+
+James Hulse is a data scientist for the Leeds institute for Data Analytics (LIDA) on the Data Scientist Development Programme. James is currently working on the openinfra project looking to add value to open access datasets, with a specific focus on transport infrastructure data from the OpenStreetMap (OSM) database. OSM is a collaborative, open project to create a free, editable geographic database of the world. 
+
+ 
+
+James completed an integrated master’s for the study of Aerospace Engineering at the University of Sheffield, conducting a thesis on an investigation into event and topic detection algorithms using social media streams under supervision of the Natural Language Processing (NLP) research group within the Department of Computer Science.
+
+
+
+(openinfra link: https://udsleeds.github.io/openinfra/)
