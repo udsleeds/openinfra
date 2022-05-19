@@ -99,4 +99,4 @@ transport_regions %>% tmap::qtm(title = 'Transport regions of England')
 transport_regions %>% tmap::qtm(title = 'Coloured transport regions of England', fill = 'Region_name')
 ```
 
-
+# SF to GeoJson: https://cran.r-project.org/web/packages/geojsonsf/vignettes/geojson-sf-conversions.html 
