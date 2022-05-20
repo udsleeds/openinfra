@@ -1,6 +1,6 @@
 ---
-title: "sotm2022"
-format: html
+title: "OSM for transport infrastructure planning "
+format: docx
 editor: source
 bibliography: sotm2022.bib
 csl: apa-numeric-brackets.csl
