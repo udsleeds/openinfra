@@ -271,7 +271,8 @@ osm_locations %>% tmap::qtm()
 # map_leeds_locations = mapedit::editMap(map_locations)
 
 ## create a bounding box
-bbox = sf::st_bbox(map_leeds_locations$drawn$geometry)
+# bbox = sf::st_bbox(map_leeds_locations$drawn$geometry)
+
 ## crop the df based on bbox
 lcc = sf::st_crop(wy_im,
                    xmin = -1.552045,
