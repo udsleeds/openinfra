@@ -5,9 +5,11 @@ library(mapview)
 library(tmap)
 library(osmextract)
 
-# downloaded 2022-05-16
+# read OSM data
+##downloaded 2022-05-21
 wy = readRDS("wy.RDS")
 
+## code example
 # tags_needed = c("cycleway",
 #                 "bicycle",
 #                 "wheelchair",
@@ -47,7 +49,7 @@ wy = readRDS("wy.RDS")
 #                 "tactile_paving",
 #                 "crossing"
 # )
-# 
+
 # osmextract::oe_match_pattern("west yorkshire")
 # region_wy = "West Yorkshire"
 # wy = osmextract::oe_get(place = region_wy,
@@ -56,8 +58,8 @@ wy = readRDS("wy.RDS")
 #                         force_vectortranslate = TRUE,
 #                         extra_tags = tags_needed)
 
-# saveRDS(wy,
-#         "wy.RDS")
+# sf::st_write(wy,
+#              "wy-2022-05-21.geojson")
 
 # Inclusive Mobility function
 
@@ -222,44 +224,54 @@ tmap::tm_shape(wy_im %>% filter(im_footpath == "yes"))+
   tmap::tm_shape(wy_im %>% filter(im_footway == "yes"))+
   tmap::tm_lines(col = "blue")
 
-# get LCC footfall data
+# get Leeds Central Council footfall data
+## LCC data is open and can be downloaded from the CDRC website (registration may be needed): 
+## https://data.cdrc.ac.uk/dataset/leeds-city-council-footfall-camera-aggregated-data
+## LCC data has also been uploaded to the project's GH repository to improve 
+## accessibility and reproducibility of this code. 
 
-footfall = read.csv("~/Desktop/lcc_footfall.csv")
-footfall %>% names()
-footfall %>% select(Location) %>% unique()
-footfall %>% str()
+footfall = read.csv(url("https://github.com/udsleeds/openinfra/releases/download/v0.1/lcc_footfall.csv"))
 
-wy_im %>% names()
-
-# a list of unique locations
+# a character vector of unique locations
 location_vec = footfall %>% 
   select(Location) %>% 
   unique() %>% 
   unlist() %>% 
   as.vector()
+
 ### excluding Dortmund Square as it's not a highway
+### also aggregating multiple footfall count locations on the same street 
+### as the focus in on streets
 location_list = c("Albion Street",
                   "Briggate",
                   "Commercial Street",
                   "The Headrow",
                   "Park Row")
 
-## filter based on location_list
+## filter OSM data based on location_list
 osm_locations = wy_im %>%
   filter(name %in% location_list)
 osm_locations %>% nrow()
-# plotting those locations based on OSM name tag
 
+# plotting these locations based on OSM name tag
 tmap::tmap_mode("view")
 osm_locations %>% tmap::qtm()
 
 ### defining central Leeds as that's the area we need
 ### there are sterets with the names in `osm_locations` which are not in Leeds. We need Leeds only to match footfall data
-map_locations = mapview::mapview(osm_locations)
-map_leeds_locations = mapedit::editMap(map_locations)
-box = sf::st_bbox(map_leeds_locations$drawn$geometry)
-lcc = wy_im[map_leeds_locations$drawn$geometry, op=sf::st_within]
-lcc %>% tmap::qtm()
+## define a box (central Leeds)
+# map_locations = mapview::mapview(osm_locations)
+# map_leeds_locations = mapedit::editMap(map_locations)
+
+## create a bounding box
+bbox = sf::st_bbox(map_leeds_locations$drawn$geometry)
+## crop the df based on bbox
+lcc = sf::st_crop(wy_im,
+                   xmin = -1.552045,
+                   ymin = 53.794796,
+                   xmax = -1.536274,
+                   ymax = 53.801433)
+
 lcc_locations = lcc %>% 
   filter(name %in% location_list)
 lcc_locations %>% tmap::qtm()
