@@ -5,10 +5,9 @@ library(mapview)
 library(tmap)
 library(osmextract)
 
-# read OSM data
-##downloaded 2022-05-21
-wy = readRDS("wy.RDS")
-
+# read OSM data (might time some time)
+## downloaded 2022-05-21
+wy = sf::st_read("https://github.com/udsleeds/openinfra/releases/download/v0.1/wy-2022-05-21.geojson")
 ## code example
 # tags_needed = c("cycleway",
 #                 "bicycle",
@@ -191,12 +190,20 @@ inclusive_mobility_get = function(osm_sf) {
 wy_im = wy %>% filter(!is.na(highway) & highway != "motorway" & highway != "motorway_link") %>%  inclusive_mobility_get() 
 
 # proportions
+## to see code behind proportions (referenced as Timaite et al 2022 in the abstract), see 
+## code for GISRUK (GISRUK.R) here:
+## https://github.com/udsleeds/openinfra/tree/main/GISRUK_paper
+
+## Below I demonstrate how to find out and plot the proportions of tags created by the IM function, 
+## yet this is not discussed in the submitted abstract. Code can be adjusted to return
+## proportions for any tag
+
 ## proportion function
 im_proportion_yes = function(osm_im, im_col){
   (osm_im %>% filter(im_col == "yes") %>% nrow()) / osm_im %>% nrow()
 }
 
-footpath_prop = im_proportion_yes(wy_im, wy_im$im_footpath) %>%
+footpath_prop = im_proportion_yes(wy_im, wy_im$im_footpath) %>% 
   cbind("footpath") %>% 
   as.data.frame() %>% 
   setNames(c("prop", "value"))
@@ -210,14 +217,14 @@ joined = rbind(footpath_prop,
                footway_prop) %>% 
   as.data.frame() 
 
-# visualizations
-## plot a histogram
+## visualizations
+### plot a histogram
 ggplot2::ggplot(joined,
                 aes(x = value,
                     y = prop))+
   geom_bar(stat = "identity")
 
-## plot an interactive
+### plot an interactive
 tmap::tmap_mode("view")
 tmap::tm_shape(wy_im %>% filter(im_footpath == "yes"))+
   tmap::tm_lines(col = "red")+
@@ -303,7 +310,7 @@ tmap::tm_shape(lcc_locations)+
 tmap::tm_shape(lcc_locations)+
   tmap::tm_lines('im_tactile')
 
-# create a preliminary index
+# create a basic index
 
 lcc_locations_index = lcc_locations %>% 
   # sf::st_drop_geometry() %>% 
@@ -341,9 +348,10 @@ lcc_locations_index = lcc_locations %>%
 
 lcc_locations_index %>% dplyr::pull(index) %>% table()
 
-## mapping index
+## mapping index (interactive)
 tmap::tm_shape(lcc_locations_index)+
   tm_lines("index",
            palette = "Dark2",
            as.count = TRUE,
            lwd = 2)
+
