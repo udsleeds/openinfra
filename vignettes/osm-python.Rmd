@@ -15,18 +15,271 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Getting and using OSM data within Python
-In this section we will see how to download and visualise data from Open Street Maps (OSM) using the python programming language
+# Getting and Using OSM Data in Python
 
-```python
+In this section we focus on two python packages commonly utilised to obtain and assess **Open Street Map** ([OSM](https://www.openstreetmap.org/)) data, namely [OSMnx](https://osmnx.readthedocs.io/en/stable/#) and [Pyrosm](https://pyrosm.readthedocs.io/en/latest/#), to complete nescessary processing steps to work with OSM data for transport research comprising:
+
+1.  Downloading OSM data, for both pre-defined areas and user specified areas
+2.  Plotting OSM data, to understand the data and its structure as well as visualising it
+
+## Package Installs and Imports
+
+First we must install the required packages for our analysis.
+
+This analysis has been conducted in an interactive notebook running Python 3.7.13 (you can check your current version by running `!python --version` in a new code cell) Packages can be installed using the pip package manager as shown below.
+
+If you are running Python on a local machine (your own computer, rather than colab) within a conda environment you must install packages from the conda servers using the `conda` package manager. Example: `conda install -c conda-forge pyrosm` rather than the pip `!pip install pyrosm`
+
+To see if your desired package is supported by the conda package installer you can [search](https://anaconda.org/) for your package using the search bar in the centre of the anaconda homepage.
+
+Package install from terminal *(if required)*
+
+``` terminal
+conda install -c conda-forge pyrosm
+conda install -c conda-forge osmnx
+```
+
+``` python
 # start by importing your packages
 import pyrosm
 import matplotlib
 ```
 
-```python
-print('Hello World')
+## Analysis
 
-print([num for num in range(11)])
+Now that we have installed and imported our desired packages we can continue with our analysis. Within this document we show how to obtain network data-packs of OSM infrastructure in Python using the `pyrosm` and `osmnx` packages.
+
+### Pyrosm Package
+
+Here we show the functionality of the [pyrosm](https://pyrosm.readthedocs.io/en/latest/) package. The main difference between OSMnx and pyrosm is best described by the pyrosm [documentation](https://pyrosm.readthedocs.io/en/latest/) itself
+
+"*the main difference between pyrosm and OSMnx is that OSMnx reads the data using an [OverPass API](https://wiki.openstreetmap.org/wiki/Overpass_API), whereas pyrosm reads the data from local OSM data dumps that are downloaded from the PBF data providers ([Geofabrik](http://download.geofabrik.de/), [BBBike](https://download.bbbike.org/osm/bbbike/)). This makes it possible to parse OSM data faster and make it more feasible to extract data covering large regions.*"
+
+As we are based in Leeds (the University of Leeds) we will use `'Leeds'` as our query.
+
+We can check if our query is stored by pyrosm providers with `pyrosm.data.available`, a number of regions, sub-regions and cities are available.
+
+``` python
+# Store available places, check Leeds is in stored places
+available_places = pyrosm.data.available
+print(available_places.keys())
+print('Leeds available from providers:','Leeds' in available_places['cities'])
 ```
 
+``` output
+dict_keys(['test_data', 'regions', 'subregions', 'cities'])
+Leeds available from providers: True
+```
+
+As Leeds is available from pyrosm providers, we will use this.
+
+``` python
+# Gets data from pyrosm providers (BBBike or Geofabrik) and stores in /temp directory - file can be saved to a user specified
+# location with additional argument directory i.e. get_data(place_name, directory='save_path')
+place_name = 'Leeds'
+file_path = pyrosm.get_data(place_name)
+print('Data downloaded to:', file_path)
+```
+
+``` output
+Data downloaded to: /tmp/pyrosm/Leeds.osm.pbf
+```
+
+This has downloaded the OSM data in the Protocolbuffer Binary Format ([pbf](https://wiki.openstreetmap.org/wiki/PBF_Format#:~:text=PBF%20Format%20(%22Protocolbuffer%20Binary%20Format,read%20than%20a%20gzipped%20planet.)')) file format ready to be parsed by the pyrosm OSM file reader.
+
+``` python
+# Initialises the OSM object that parses .osm.pbf files
+osm = pyrosm.OSM(file_path)
+print('osm type:', type(osm))
+```
+
+``` output
+osm type: <class 'pyrosm.pyrosm.OSM'>
+```
+
+Notice that the osm (lower case) variable is actually the reader instance (type: `<class 'pyrosm.pyrosm.OSM'>`) for the given .osm.pbf dataset. As such this (osm) variable should always be used to make the calls for fetching different network datasets from the OSM pbf file.
+
+There are a number of ways to request network data from the osm.pbf file, most notable and of use in this demonstration are
+
+-   get_network() and
+-   get_data_by_custom_criteria()
+
+The functionality of OSM.get_network() is demonstrated below first. For assistance with this function we can call for the documentation with `help`.
+
+``` python
+# Calling the help function on OSM.get_network() to see documentation. 
+help(pyrosm.OSM.get_network)
+```
+
+``` output
+Help on function get_network in module pyrosm.pyrosm:
+
+get_network(self, network_type='walking', extra_attributes=None, nodes=False)
+    Parses street networks from OSM
+    for walking, driving, and cycling.
+    
+    Parameters
+    ----------
+    
+    network_type : str
+        What kind of network to parse.
+        Possible values are:
+          - `'walking'`
+          - `'cycling'`
+          - `'driving'`
+          - `'driving+service'`
+          - `'all'`.
+    
+    extra_attributes : list (optional)
+        Additional OSM tag keys that will be converted into columns in the resulting GeoDataFrame.
+    
+    nodes : bool (default: False)
+        If True, 1) the nodes associated with the network will be returned in addition to edges,
+        and 2) every segment of a road constituting a way is parsed as a separate row
+        (to enable full connectivity in the graph).
+    
+    Returns
+    -------
+    
+    gdf_edges or (gdf_nodes, gdf_edges)
+    
+    Return type
+    -----------
+    
+    geopandas.GeoDataFrame or tuple
+    
+    See Also
+    --------
+    
+    Take a look at the OSM documentation for further details about the data:
+    `https://wiki.openstreetmap.org/wiki/Key:highway <https://wiki.openstreetmap.org/wiki/Key:highway>`__
+```
+
+As can be seen above, the `get_network` function accepts a number of `network_type` parameters depending on the network you are trying to analyse, including:
+
+-   `'all'`
+-   `'driving'`
+-   `'cycling'`
+-   `'walking'`
+-   `'driving+service'`
+
+where `'service'` generally implies an access road to a building, service station, campsite, industrial estate, fuel station, wind turbine site etc.
+
+Lets first obtain the network for all of Leeds, examine the data structure returned from our get_network() request, and visualise the network we have retrieved.
+
+``` python
+# Obtaining the total network for 'Leeds'
+leeds_total_network = osm.get_network(network_type = 'all')
+print('Variable shape:',leeds_total_network.shape, 'and type:', type(leeds_total_network), '\n')
+leeds_total_network.head(2)
+```
+
+``` output
+Variable shape: (136372, 39) and type: <class 'geopandas.geodataframe.GeoDataFrame'> 
+(leeds_total_network.head(2) shown as image below)
+```
+
+![](https://i.imgur.com/OmN6gYO.png)
+
+``` python
+leeds_total_network['geom_type'] = leeds_total_network['geometry'].geom_type
+print(leeds_total_network['geom_type'].value_counts())
+```
+
+``` output
+MultiLineString    136372
+Name: geom_type, dtype: int64
+```
+
+We have saved the output from our `get_network` request as the variable `leeds_total_network`.
+
+We can see this variable (`leeds_total_network`) is a [geopandas](https://geopandas.org/en/stable/docs.html) GeoDataFrame (analogous to an Excel spreadsheet) with shape `(135,546, 39)`, implying this DataFrame contains 135,546 rows and 39 columns.
+
+Each row corresponds to a unique feature (such as a way - a road, path, cyclepath etc.) and each column corresponds to a tag for that feature (such as feature geometry, osmid, pedestrian access etc.)
+
+We can observe all keys have been returned by calling for the column names of the DataFrame (`leeds_total_network`) below.
+
+``` python
+keys = leeds_total_network.columns
+print(keys)
+```
+
+``` outpu
+Index(['access', 'area', 'bicycle', 'bicycle_road', 'bridge', 'busway',
+       'cycleway', 'est_width', 'foot', 'footway', 'highway', 'int_ref',
+       'junction', 'lanes', 'lit', 'maxspeed', 'motorcar', 'motor_vehicle',
+       'name', 'oneway', 'overtaking', 'psv', 'ref', 'service', 'segregated',
+       'sidewalk', 'smoothness', 'surface', 'tracktype', 'tunnel', 'turn',
+       'width', 'id', 'timestamp', 'version', 'tags', 'osm_type', 'geometry',
+       'length'],
+      dtype='object')
+```
+
+These are all the default keys (returned as columns) when a network is requested from the osm.pbf file with `get_network`. We can see there is a column named `'geometry'` which stores the linestring geometries of features we have requested used in the visualisation of our networks.
+
+However, it should be noted that in some instances a number of extra tags are returned within the *`tags`* column, in instances where specific OSM features have more information attributed to them. We can take a look at them here.
+
+``` python
+# Removes any features from the DataFrame which have no additional tags within the 'tags' column (i.e no additional tags are returned) and shows the first 4 features
+leeds_total_network_noNA = leeds_total_network.loc[leeds_total_network.tags.isna() == False]
+leeds_total_network_noNA.head(4)
+```
+
+``` output
+output as image below
+```
+
+![](https://i.imgur.com/UJ2W5Wo.png)
+
+As can be seen the feature with index **20** (the 4th row above) has a number of additional tags within the `'tags'` column - lets take a closer look.
+
+``` python
+leeds_total_network_noNA.tags.iloc[3]
+```
+
+``` output
+{"gritting":"priority_1","maintenance":"gritting","maxweight":"7.5"}
+```
+
+Through some reverse searching of these additional tags using [Tag Finder](http://tagfinder.herokuapp.com/), we can see the feature being described is likely a well used public road as the local authorities are required to grit it in icy conditions (maintenance:gritting).
+
+Furthermore, we know this is likely a well used road due to the highest gritting priority (gritting:priority_1) with a maximum permissible weight of 7.5 tonnes.
+
+Obtaining the feature osm id `id` and feature type `osm_type` provides more context:
+
+``` python
+leeds_total_network_noNA.id.iloc[3], leeds_total_network_noNA.osm_type.iloc[3]
+```
+
+``` output
+(2340358, 'way')
+```
+
+Having accessed the feature ID and osm_type field above, we can search for this feature using the OSM [Nominatim](https://nominatim.openstreetmap.org/ui/details.html) search by ID field which uses osm_type + ID as the query argument.
+
+So, for a way (W) with ID 2340358 our query becomes W2340358
+
+Passing [this query](https://nominatim.openstreetmap.org/ui/details.html?osmtype=W&osmid=2340358) to Nominatim we find that this way corresponds to a road within central Wakefield. As such, and as hypothesised, it is likely a well used important road thus the high gritting priority in icy conditions.
+
+#### Network Visualisation
+
+Here we look to plot the networks we have requested using the `get_network` function.
+
+Remember that within the GeoDataFrame returned there was a column named `'geometry'` which stores the geometries of returned features used for visualisation of requested networks.
+
+Calling the `plot` method on the returned GeoDataFrame automatically detects the column containing feature geometry and plots them, as shown below.
+
+``` python
+# Plotting the total network for Leeds
+leeds_total_network.plot()
+```
+
+![](https://i.imgur.com/wUmwcsu.png)
+
+``` python
+# Requesting and plotting the drivable network for Leeds
+leeds_total_walking = osm.get_network(network_type='driving')
+leeds_total_walking.plot()
+```
+
+![](https://i.imgur.com/H6n1ZoO.png)
