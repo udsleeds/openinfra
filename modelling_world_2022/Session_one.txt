@@ -1,0 +1,15 @@
+Session Title: Open Source Software in transport modelling
+
+Format: Suggested that 5-6 minute presentation for each speaker (7!) followed by 30 minute Q&A discussion session
+
+Speaker Breif: MW suggest that talks/presentations address these issues; 
+               - How does your won work involve open source software or open data?
+               - How was your work funded?
+               - What have the benefits been of operating in an open environment?
+               - Give a tangible example of success
+               
+Questions for discussion include: 
+               - If you maintain an open source project, what kind of contributions have you seen? Have you had any issues building or organising a community of volunteers to collaborate on your project?
+               - How the modelling community can support public agencies who can't afford licenses for proprietary software
+               - How can industry and the open source community collaborate in "data commons" like OpenStreetMap? Coding networks and fixing problems from automatic imports in proprietary tools takes lots of time; is there a way to share the effort?
+               - Should transportation models be reproducible by the general public? What concerns have you heard about public trust? What're the dangers of people without proper training misinterpreting results from a model?
