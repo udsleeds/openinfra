@@ -15,9 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Getting and Using OSM Data in Python
-
-In this section we focus on two python packages commonly utilised to obtain and assess **Open Street Map** ([OSM](https://www.openstreetmap.org/)) data, namely [OSMnx](https://osmnx.readthedocs.io/en/stable/#) and [Pyrosm](https://pyrosm.readthedocs.io/en/latest/#), to complete necessary processing steps to work with OSM data for transport research comprising:
+In this vignette we focus on two python packages commonly utilised to obtain and assess **Open Street Map** ([OSM](https://www.openstreetmap.org/)) data, namely [OSMnx](https://osmnx.readthedocs.io/en/stable/#) and [Pyrosm](https://pyrosm.readthedocs.io/en/latest/#), to complete necessary processing steps to work with OSM data for transport research comprising:
 
 1.  Downloading OSM data, for both pre-defined areas and user specified areas
 2.  Plotting OSM data, to understand the data and its structure as well as visualising it
@@ -57,6 +55,8 @@ Here we show the functionality of the [pyrosm](https://pyrosm.readthedocs.io/en/
 
 As we are based in Leeds (the University of Leeds) we will use `'Leeds'` as our query.
 
+#### Data Download
+
 We can check if our query is stored by pyrosm providers with `pyrosm.data.available`, a number of regions, sub-regions and cities are available.
 
 ``` python
@@ -87,8 +87,54 @@ Data downloaded to: /tmp/pyrosm/Leeds.osm.pbf
 
 This has downloaded the OSM data in the Protocolbuffer Binary Format ([pbf](https://wiki.openstreetmap.org/wiki/PBF_Format#:~:text=PBF%20Format%20(%22Protocolbuffer%20Binary%20Format,read%20than%20a%20gzipped%20planet.)')) file format ready to be parsed by the pyrosm OSM file reader.
 
+##### Reproducable Data
+
+As OSM data is constantly updated as mappers continually add/update features the data you request from pyrosm providers may have more features than within our example.
+
+If you would like to use the same dataset as us (Leeds.osm.pbf - 06/06/2022) this can be downloaded from our repository releases using the following code:
+
+Note that you will need to set your own desired download location with the `save_to` variable:
+``` python
+#____________Function__________________________________________________________
+def download_file(url, save_to) :
+    # url     - url of downloadable file
+    # save_to - directory to save the file to
+    
+    from os import chdir, getcwd
+    from requests import get
+    
+    print("downloading from url:", url)       
+    req = get(url)
+    filename = req.headers['Content-Disposition'].split("filename=")[1]
+    chdir(save_to)
+    
+    print("writing", filename)
+    with open(filename, 'wb') as file: 
+        for chunk in req.iter_content(chunk_size=(8192)):
+            if chunk:
+                file.write(chunk)
+    file.close()
+    print(filename, "has been downloaded to", getcwd())
+#______________________________________________________________________________
+
+url = "https://github.com/udsleeds/openinfra/releases/download/v0.2/Leeds_06_06_22.osm.pbf"
+
+# Change this to your desired download directory.
+save_to = "/home/james/Desktop/Python_Downloads"
+
+download_file(url, save_to)
+```
+
+#### Data Loading
+Now we have downloaded the most up-to-date (or the reproducible) OSM dataset we can continue by loading our data and observing it's structure:
+
+If you are following this guide using the reproducible dataset then `file_path` will simply be the `save_to` path + the file name.
+
+For me that is `file_path = /home/james/Desktop/Python_Downloads/Leeds_06_06_22.osm.pbf`
+
 ``` python
 # Initialises the OSM object that parses .osm.pbf files
+
 osm = pyrosm.OSM(file_path)
 print('osm type:', type(osm))
 ```
@@ -103,6 +149,8 @@ There are a number of ways to request network data from the osm.pbf file, most n
 
 -   get_network() and
 -   get_data_by_custom_criteria()
+
+#### Pre-defined Networks from get_network()
 
 The functionality of OSM.get_network() is demonstrated below first. For assistance with this function we can call for the documentation with `help`.
 
@@ -215,9 +263,11 @@ Index(['access', 'area', 'bicycle', 'bicycle_road', 'bridge', 'busway',
       dtype='object')
 ```
 
-These are all the default keys (returned as columns) when a network is requested from the osm.pbf file with `get_network`. We can see there is a column named `'geometry'` which stores the linestring geometries of features we have requested used in the visualisation of our networks.
+These are all the default keys (returned as columns) when a network is requested from the osm.pbf file with `get_network`. We can see there is a column named `'geometry'` which stores the linestring geometries of features we have requested, and is used in the visualisation of our networks.
 
-However, it should be noted that in some instances a number of extra tags are returned within the *`tags`* column, in instances where specific OSM features have more information attributed to them. We can take a look at them here.
+However, it should be noted that in some instances a number of extra tags are returned within the *`tags`* column, in instances where specific OSM features have more information attributed to them. We can take a look at them below.
+
+Should we wish for any of these additional tags to be returned as columns in the DataFrame, rather than being stored within the *`tags`* column, we can specify this with the `extra_attributes` argument for the `get_network` function. i.e. `get_network(network_type='walking', extra_attributes=["description", "crossing"])` would return all vlaues for the tags [description](https://wiki.openstreetmap.org/wiki/Key:description#:~:text=The%20description%20%3D*%20tag%20can,to%20three%20sentences%20at%20most.) and [crossing](https://wiki.openstreetmap.org/wiki/Key:crossing) as their own columns.
 
 ``` python
 # Removes any features from the DataFrame which have no additional tags within the 'tags' column (i.e no additional tags are returned) and shows the first 4 features
@@ -261,14 +311,13 @@ So, for a way (W) with ID 2340358 our query becomes W2340358
 
 Passing [this query](https://nominatim.openstreetmap.org/ui/details.html?osmtype=W&osmid=2340358) to Nominatim we find that this way corresponds to a road within central Wakefield. As such, and as hypothesised, it is likely a well used important road thus the high gritting priority in icy conditions.
 
-
 #### Network Visualisation
 
 Here we look to plot the networks we have requested using the `get_network` function.
 
 Remember that within the GeoDataFrame returned there was a column named `'geometry'` which stores the geometries of returned features used for visualisation of requested networks.
 
-Calling the `plot` method on the returned GeoDataFrame automatically detects the column containing feature geometry and plots them, as shown below.
+Calling the `.plot` method on the returned GeoDataFrame automatically detects the column containing feature geometry and plots them, as shown below.
 
 ``` python
 # Plotting the total network for Leeds
@@ -285,96 +334,119 @@ leeds_total_walking.plot()
 
 ![](https://i.imgur.com/H6n1ZoO.png)
 
+#### Custom networks with get_data_by_custom_criteria()
 
-### Networks from custom criteria
-
-There exists the [option](https://pyrosm.readthedocs.io/en/latest/custom_filter.html) in pyrosm to request custom networks using the `get_data_by_custom_criteria` function  
+There exists the [option](https://pyrosm.readthedocs.io/en/latest/custom_filter.html) in pyrosm to request custom networks using the `get_data_by_custom_criteria` function
 
 As preivously described the `get_network` function has five pre-defined network configurations: `walking`, `driving`, `cycling`, `all`, `driving+service`.
 
 Here we will have a brief view of the `get_data_by_custom_criteria` function before re-creating one of the pre-defined `network_type=` filters by copying filtering steps from the `get_network` [documentation](https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1).
 
+Specifically, we will recreate the cycling network for Leeds. From function documentation we know:
 
-Specifically, we will recreate the cycling network for Leeds.
-From function documentation we know:
+    def cycling_filter():
+        """
+        Cycling filters for different tags as in OSMnx for 'bike'.
+        Filter out foot ways, motor ways, private ways, and anything
+        specifying biking=no.
+        Applied filters:
+            '["area"!~"yes"]["highway"!~"footway|steps|corridor|elevator|escalator|motor|proposed|'
+            'construction|abandoned|platform|raceway"]'
+            '["bicycle"!~"no"]["service"!~"private"
+        """
+        return dict(
+            area=["yes"],
+            highway=[
+                "footway",
+                "steps",
+                "corridor",
+                "elevator",
+                "escalator",
+                "motor",
+                "proposed",
+                "construction",
+                "abandoned",
+                "platform",
+                "raceway",
+                "motorway",
+                "motorway_link",
+            ],
+            bicycle=["no"],
+            service=["private"],
+        )
 
-```
-def cycling_filter():
-    """
-    Cycling filters for different tags as in OSMnx for 'bike'.
-    Filter out foot ways, motor ways, private ways, and anything
-    specifying biking=no.
-    Applied filters:
-        '["area"!~"yes"]["highway"!~"footway|steps|corridor|elevator|escalator|motor|proposed|'
-        'construction|abandoned|platform|raceway"]'
-        '["bicycle"!~"no"]["service"!~"private"
-    """
-    return dict(
-        area=["yes"],
-        highway=[
-            "footway",
-            "steps",
-            "corridor",
-            "elevator",
-            "escalator",
-            "motor",
-            "proposed",
-            "construction",
-            "abandoned",
-            "platform",
-            "raceway",
-            "motorway",
-            "motorway_link",
-        ],
-        bicycle=["no"],
-        service=["private"],
-    )
-```
+From "Applied filters:" we know that features containing any tag values pairs contained within the returned dictionary will be excluded from our network rather than left in.
 
-From "Applied filters:" we know that features containing any tag values pairs contained within the returned dictionary will be excluded from our network rather than left in. 
-
-This is due to the `!` operator within the filter which implies `does not equal`. 
+This is due to the `!` operator within the filter which implies `does not equal`.
 
 i.e. to create a cycling network, remove features from the network if they have the highway tag with any of the values: `"footway", "steps", "corridor", "elevator", etc.`. Intuitively these are all features that are not accessible when cycling.
 
+<br><br>
+We can see which features are removed from networks from the following pre-defined filters in tabular form below constructed from [documentation](https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1): <br><br>
+**Cycling Filter** removed tags
 
-We will now take a look at the `get _data_by_custom_criteria` function documentation
+| Tag | Values|
+|:----:|:----:|
+|area| "yes" |
+|highway|"footway", "steps", "corridor", "elevator", "escalator", "motor", "proposed", "construction", "abandoned", "platform", "raceway", "motorway", "motorway_link"|
+|bicycle|"no"|
+|service|"private"|
 
-```
-Help on function get_data_by_custom_criteria in module pyrosm.pyrosm:
+**Driving Filter** removed tags
 
-get_data_by_custom_criteria(self, custom_filter, osm_keys_to_keep=None, filter_type='keep', tags_as_columns=None, keep_nodes=True, keep_ways=True, keep_relations=True, extra_attributes=None)
-    `
-    Parse OSM data based on custom criteria.
-    
-    Parameters
-    ----------
-    
-    custom_filter : dict (required)
-        A custom filter to filter only specific POIs from OpenStreetMap.
-    
-    osm_keys_to_keep : str | list
-        A filter to specify which OSM keys should be kept.
-    
-    filter_type : str
-        "keep" | "exclude"
-        Whether the filters should be used to keep or exclude the data from OSM.
-    
-    tags_as_columns : list
-        Which tags should be kept as columns in the resulting GeoDataFrame.
-    
-    keep_nodes : bool
-        Whether or not the nodes should be kept in the resulting GeoDataFrame if they are found.
-    
-    keep_ways : bool
-        Whether or not the ways should be kept in the resulting GeoDataFrame if they are found.
-    
-    keep_relations : bool
-        Whether or not the relations should be kept in the resulting GeoDataFrame if they are found.
-    
-    extra_attributes : list (optional)
-        Additional OSM tag keys that will be converted into columns in the resulting GeoDataFrame.
-```
+| Tag | Values|
+|:----:|:----:|
+|area| "yes" |
+|highway| "cycleway", "footway", "path", "pedestrian", "steps", "track", "corridor", "elevator", "escalator", "proposed", "construction", "bridleway", "abandoned", "platform", "raceway"|
+|motor_vehicle| "no"|
+|motorcar| "no"|
+|service| "parking", "parking_aisle", "private", "emergency_access"|
+
+**Walking Filter** removed tags
+
+| Tag | Values|
+|:----:|:----:|
+|area| "yes" |
+|highway| "cycleway", "motor", "proposed", "construction", "abandoned", "platform", "raceway", "motorway", "motorway_link"|
+|foot| "no"|
+|service|"private"|
+
+<br><br>
+We will now take a look at the `get _data_by_custom_criteria` function documentation to see how to define a custom network.
+
+    Help on function get_data_by_custom_criteria in module pyrosm.pyrosm:
+
+    get_data_by_custom_criteria(self, custom_filter, osm_keys_to_keep=None, filter_type='keep', tags_as_columns=None, keep_nodes=True, keep_ways=True, keep_relations=True, extra_attributes=None)
+        `
+        Parse OSM data based on custom criteria.
+        
+        Parameters
+        ----------
+        
+        custom_filter : dict (required)
+            A custom filter to filter only specific POIs from OpenStreetMap.
+        
+        osm_keys_to_keep : str | list
+            A filter to specify which OSM keys should be kept.
+        
+        filter_type : str
+            "keep" | "exclude"
+            Whether the filters should be used to keep or exclude the data from OSM.
+        
+        tags_as_columns : list
+            Which tags should be kept as columns in the resulting GeoDataFrame.
+        
+        keep_nodes : bool
+            Whether or not the nodes should be kept in the resulting GeoDataFrame if they are found.
+        
+        keep_ways : bool
+            Whether or not the ways should be kept in the resulting GeoDataFrame if they are found.
+        
+        keep_relations : bool
+            Whether or not the relations should be kept in the resulting GeoDataFrame if they are found.
+        
+        extra_attributes : list (optional)
+            Additional OSM tag keys that will be converted into columns in the resulting GeoDataFrame.
 
 Studying the docmentation we see that we can create a dictionary of tags to either `'exclude'` or `'keep'` within our network, this is decided by the `filter_type=` paramater.
 
@@ -382,82 +454,77 @@ If we want to keep data on only roads *(rather than footpaths etc.)* we can do s
 
 We will define our custom cycling network below:
 
-```
-# Specifying desired keys to be kept - this is our first level of filtering
-keys_to_keep = "highway"
+    # Specifying desired keys to be kept - this is our first level of filtering
+    keys_to_keep = "highway"
 
-# Specifying key:value pairs to be filtered - this is the second level of filtering. 
-cycling_filter = dict(area=["yes"],
-        highway=[
-            "footway",
-            "steps",
-            "corridor",
-            "elevator",
-            "escalator",
-            "motor",
-            "proposed",
-            "construction",
-            "abandoned",
-            "platform",
-            "raceway",
-            "motorway",
-            "motorway_link",
-        ],
-        bicycle=["no"],
-        service=["private"])
+    # Specifying key:value pairs to be filtered - this is the second level of filtering. 
+    cycling_filter = dict(area=["yes"],
+            highway=[
+                "footway",
+                "steps",
+                "corridor",
+                "elevator",
+                "escalator",
+                "motor",
+                "proposed",
+                "construction",
+                "abandoned",
+                "platform",
+                "raceway",
+                "motorway",
+                "motorway_link",
+            ],
+            bicycle=["no"],
+            service=["private"])
 
-# Specifying if the above tags should be kept or removed
-filter_type = "exclude"
+    # Specifying if the above tags should be kept or removed
+    filter_type = "exclude"
 
-# Filter the network: 
-# From the docuemtnation on get_network() function, nodes and relations are set False as default so we do so here too.
-leeds_custom_cycling = osm.get_data_by_custom_criteria(custom_filter = cycling_filter, 
-                                                       osm_keys_to_keep = keys_to_keep,
-                                                       filter_type = filter_type,
-                                                       keep_nodes = False,
-                                                       keep_relations = False)
+    # Filter the network: 
+    # From the docuemtnation on get_network() function, nodes and relations are set False as default so we do so here too.
+    leeds_custom_cycling = osm.get_data_by_custom_criteria(custom_filter = cycling_filter, 
+                                                           osm_keys_to_keep = keys_to_keep,
+                                                           filter_type = filter_type,
+                                                           keep_nodes = False,
+                                                           keep_relations = False)
 
-# Visualisation and stats
-leeds_custom_cycling.plot()
-print(leeds_custom_cycling.shape)
+    # Visualisation and stats
+    leeds_custom_cycling.plot()
+    print(leeds_custom_cycling.shape)
 
-leeds_custom_cycling['geom_type'] = leeds_custom_cycling['geometry'].geom_type
-print(leeds_custom_cycling.geom_type.value_counts())
-```
-```
-(105460, 38)
-MultiLineString    77219
-LineString         28241
-dtype: int64
-```
+    leeds_custom_cycling['geom_type'] = leeds_custom_cycling['geometry'].geom_type
+    print(leeds_custom_cycling.geom_type.value_counts())
+
+    (105460, 38)
+    MultiLineString    77219
+    LineString         28241
+    dtype: int64
+
 ![](https://i.imgur.com/8x4zvUC.png)
 
 Comparing to the default cycling network
-```
-leeds_cycling = osm.get_network(network_type = "cycling")
-leeds_cycling['geom_type'] = leeds_cycling.geometry.geom_type
-leeds_cycling.plot()
-print(leeds_cycling.shape)
-print(leeds_cycling.geom_type.value_counts())
-```
-```
-(105460, 39)
-MultiLineString    105460
-dtype: int64
-```
+
+    leeds_cycling = osm.get_network(network_type = "cycling")
+    leeds_cycling['geom_type'] = leeds_cycling.geometry.geom_type
+    leeds_cycling.plot()
+    print(leeds_cycling.shape)
+    print(leeds_cycling.geom_type.value_counts())
+
+    (105460, 39)
+    MultiLineString    105460
+    dtype: int64
+
 ![](https://i.imgur.com/v6UoiNR.png)
 
-As can be seen we have recreated the `get_network` cycling filter with our custom query. 
+As can be seen we have recreated the `get_network` cycling filter with our custom query.
 
 Both of the returned networks contain 105460 features, differing only in the number of columns returned.
 
-We an find the difference in returned columns by calculating the set difference of each networks columns as follows: 
-```
-set(leeds_custom_cycling.keys()).difference(set(leeds_cycling.keys()))
-set(leeds_cycling.keys()).difference(set(leeds_custom_cycling.keys()))
-```
-```
-{'length'}
-```
+We an find the difference in returned columns by calculating the set difference of each networks columns as follows:
 
-Only one output is returned, the additional column within the `leeds_cycling` network. This is because every column within `leeds_custom_cycling` is already within `leeds_cycling` and so nothing is returned. 
+    set(leeds_custom_cycling.keys()).difference(set(leeds_cycling.keys()))
+    set(leeds_cycling.keys()).difference(set(leeds_custom_cycling.keys()))
+
+    {'length'}
+
+Only one output is returned, the additional column within the `leeds_cycling` network. This is because every column within `leeds_custom_cycling` is already within `leeds_cycling` and so nothing is returned.
