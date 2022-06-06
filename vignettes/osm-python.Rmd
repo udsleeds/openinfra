@@ -425,14 +425,14 @@ leeds_custom_cycling['geom_type'] = leeds_custom_cycling['geometry'].geom_type
 print(leeds_custom_cycling.geom_type.value_counts())
 ```
 ```
-(105460, 37)
+(105460, 38)
 MultiLineString    77219
 LineString         28241
 dtype: int64
 ```
 ![](https://i.imgur.com/8x4zvUC.png)
 
-Comparing to the default cycling network (`get_network(network_type='cycling')`)
+Comparing to the default cycling network
 ```
 leeds_cycling = osm.get_network(network_type = "cycling")
 leeds_cycling['geom_type'] = leeds_cycling.geometry.geom_type
@@ -440,3 +440,24 @@ leeds_cycling.plot()
 print(leeds_cycling.shape)
 print(leeds_cycling.geom_type.value_counts())
 ```
+```
+(105460, 39)
+MultiLineString    105460
+dtype: int64
+```
+![](https://i.imgur.com/v6UoiNR.png)
+
+As can be seen we have recreated the `get_network` cycling filter with our custom query. 
+
+Both of the returned networks contain 105460 features, differing only in the number of columns returned.
+
+We an find the difference in returned columns by calculating the set difference of each networks columns as follows: 
+```
+set(leeds_custom_cycling.keys()).difference(set(leeds_cycling.keys()))
+set(leeds_cycling.keys()).difference(set(leeds_custom_cycling.keys()))
+```
+```
+{'length'}
+```
+
+Only one output is returned, the additional column within the `leeds_cycling` network. This is because every column within `leeds_custom_cycling` is already within `leeds_cycling` and so nothing is returned. 
