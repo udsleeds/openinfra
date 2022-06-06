@@ -11,7 +11,7 @@ import time
 #import geemap
 #import folium 
 
-print('Hellow World!')
+print('Hello World!')
 
 
 # View available places  for analysis
