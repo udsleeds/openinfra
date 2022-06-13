@@ -26,11 +26,12 @@ library(sf)    # Simple Features (sf) library for storing geospatial data
 library(tmap)  # tmap library for interactive plots
 library(dplyr) 
 ```
-Note that these packages must already be installed before importing. To install these packages you can run the following lines: 
-```
-pkgs = c('sf', 'tmap', 'dplyr')
-lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
-```
+
+Note that these packages must already be installed before importing. To install these packages you can run the following lines:
+
+    pkgs = c('sf', 'tmap', 'dplyr')
+    lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
+
 ## Local authorities of the UK
 
 Downloading, reading and plotting the Local Authority Districts (LADs) of the UK
@@ -45,32 +46,39 @@ regions_lad = read_sf(url_regions_lad)
 # Visualise the data
 plot(regions_lad)
 ```
-<br>
-As can be seen the data contains a number of columns for each LAD including: 
 
-* LAD21NM:      The name of each LAD
-* Region_name:  The name of the region each LAD resides in
-* Level:        The Authority level - either County, Combined authority or Unitary authority
+<br> As can be seen the data contains a number of columns for each LAD including:
+
+-   LAD21NM: The name of each LAD
+-   Region_name: The name of the region each LAD resides in
+-   Level: The Authority level - either County, Combined authority or Unitary authority
 
 <br>
 
 ### Interactive map of local authorities
-Here we look to create an interactive plot of all local authority districts within UK & NI whereby clicking on each local authority brings up additional information associated with that local authority. <br> We can do this by changing the ```tmap_mode()``` from `'plot'` to `'view'`. Note that when in `tmap_mode('plot')` plots are not interactive
+
+Here we look to create an interactive plot of all local authority districts within UK & NI whereby clicking on each local authority brings up additional information associated with that local authority. <br> We can do this by changing the `tmap_mode()` from `'plot'` to `'view'`. Note that when in `tmap_mode('plot')` plots are not interactive
+
 ```{r}
 # Set tmap mode to interactive
 tmap::tmap_mode('view') # After this, all qtm() plots will be interactive
 ```
+
 <br> Due to a [change](https://github.com/r-spatial/sf/issues/1649#issuecomment-860231045) in the spherical coordinates (S2) within the sf package that is known to cause issues ([1](https://github.com/r-tmap/tmap/issues/577), [2](https://github.com/r-tmap/tmap/issues/571)) when plotting geospatial data we make use of a known [fix](https://github.com/r-spatial/sf/issues/1649#issuecomment-860231045) to use the old coordinate system by setting `sf::sf_use_s2(use_s2 = FALSE)`
+
 ```{r}
 # Here we create the  interactive plots
 sf::sf_use_s2(use_s2 = FALSE)
 regions_lad %>% tmap::qtm(title = 'LADs of UK & NI')
 ```
+
 <br> Here we call another interactive map of all the LADs, but this time we have colour coded the LADs based on the region they reside in
+
 ```{r, fig.height=15.25, fig.width=9}
 tmap_options(max.categories = 78) # We increase max categories so that every transport region has its own colour
 regions_lad %>% tmap::qtm(fill = 'Region_name', title = 'LADs of UK & NI coloured by region')
 ```
+
 <br><br>
 
 ## Transport regions within England
@@ -89,7 +97,9 @@ plot(transport_regions)
 ```
 
 ### Interactive map of transport regions within England
+
 Here we look to create an interactive plot of all local transport regions within England. Again clicking on each transport region will highlight additional information, such as the specific LADs that reside within each transport region.
+
 ```{r}
 transport_regions %>% tmap::qtm(title = 'Transport regions of England')
 ```
@@ -99,4 +109,4 @@ transport_regions %>% tmap::qtm(title = 'Transport regions of England')
 transport_regions %>% tmap::qtm(title = 'Coloured transport regions of England', fill = 'Region_name')
 ```
 
-# SF to GeoJson: https://cran.r-project.org/web/packages/geojsonsf/vignettes/geojson-sf-conversions.html 
+# SF to GeoJson: <https://cran.r-project.org/web/packages/geojsonsf/vignettes/geojson-sf-conversions.html>
