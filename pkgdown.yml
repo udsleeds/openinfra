@@ -1,5 +1,5 @@
-pandoc: 2.7.3
-pkgdown: 2.0.3
+pandoc: 2.14.2
+pkgdown: 2.0.4
 pkgdown_sha: ~
 articles:
   getosm: getosm.html
@@ -7,5 +7,5 @@ articles:
   openinfra: openinfra.html
   osm-python: osm-python.html
   regions: regions.html
-last_built: 2022-05-24T11:57Z
+last_built: 2022-06-13T17:09Z
 

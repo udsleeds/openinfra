@@ -84,7 +84,7 @@
 
       
 
-      </header><script src="osm-python_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting and using osm data in Python</h1>
@@ -97,16 +97,458 @@
 
     
     
+<p>In this vignette we focus on two python packages commonly utilised to obtain and assess <strong>Open Street Map</strong> (<a href="https://www.openstreetmap.org/" class="external-link">OSM</a>) data, namely <a href="https://osmnx.readthedocs.io/en/stable/#" class="external-link">OSMnx</a> and <a href="https://pyrosm.readthedocs.io/en/latest/#" class="external-link">Pyrosm</a>, to complete necessary processing steps to work with OSM data for transport research comprising:</p>
+<ol style="list-style-type: decimal">
+<li>Downloading OSM data, for both pre-defined areas and user specified areas</li>
+<li>Plotting OSM data, to understand the data and its structure as well as visualising it</li>
+</ol>
 <div class="section level2">
-<h2 id="getting-and-using-osm-data-within-python">Getting and using OSM data within Python<a class="anchor" aria-label="anchor" href="#getting-and-using-osm-data-within-python"></a>
+<h2 id="package-installs-and-imports">Package Installs and Imports<a class="anchor" aria-label="anchor" href="#package-installs-and-imports"></a>
 </h2>
-<p>In this section we will see how to download and visualise data from Open Street Maps (OSM) using the python programming language</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># start by importing your packages</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> pyrosm</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="im">import</span> matplotlib</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="bu">print</span>(<span class="st">'Hello World'</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="bu">print</span>([num <span class="cf">for</span> num <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">11</span>)])</span></code></pre></div>
+<p>First we must install the required packages for our analysis.</p>
+<p>This analysis has been conducted in an interactive notebook running Python 3.7.13 (you can check your current version by running <code>!python --version</code> in a new code cell) Packages can be installed using the pip package manager as shown below.</p>
+<p>If you are running Python on a local machine (your own computer, rather than colab) within a conda environment you must install packages from the conda servers using the <code>conda</code> package manager. Example: <code>conda install -c conda-forge pyrosm</code> rather than the pip <code>!pip install pyrosm</code></p>
+<p>To see if your desired package is supported by the conda package installer you can <a href="https://anaconda.org/" class="external-link">search</a> for your package using the search bar in the centre of the anaconda homepage.</p>
+<p>Package install from terminal <em>(if required)</em></p>
+<pre class="terminal"><code>conda install -c conda-forge pyrosm
+conda install -c conda-forge osmnx</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># start by importing your packages</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyrosm</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a>
+</h2>
+<p>Now that we have installed and imported our desired packages we can continue with our analysis. Within this document we show how to obtain network data-packs of OSM infrastructure in Python using the <code>pyrosm</code> and <code>osmnx</code> packages.</p>
+<div class="section level3">
+<h3 id="pyrosm-package">Pyrosm Package<a class="anchor" aria-label="anchor" href="#pyrosm-package"></a>
+</h3>
+<p>Here we show the functionality of the <a href="https://pyrosm.readthedocs.io/en/latest/" class="external-link">pyrosm</a> package. The main difference between OSMnx and pyrosm is best described by the pyrosm <a href="https://pyrosm.readthedocs.io/en/latest/" class="external-link">documentation</a> itself</p>
+<p>“<em>the main difference between pyrosm and OSMnx is that OSMnx reads the data using an <a href="https://wiki.openstreetmap.org/wiki/Overpass_API" class="external-link">OverPass API</a>, whereas pyrosm reads the data from local OSM data dumps that are downloaded from the PBF data providers (<a href="http://download.geofabrik.de/" class="external-link">Geofabrik</a>, <a href="https://download.bbbike.org/osm/bbbike/" class="external-link">BBBike</a>). This makes it possible to parse OSM data faster and make it more feasible to extract data covering large regions.</em>”</p>
+<p>As we are based in Leeds (the University of Leeds) we will use <code>'Leeds'</code> as our query.</p>
+<div class="section level4">
+<h4 id="data-download">Data Download<a class="anchor" aria-label="anchor" href="#data-download"></a>
+</h4>
+<p>We can check if our query is stored by pyrosm providers with <code>pyrosm.data.available</code>, a number of regions, sub-regions and cities are available.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Store available places, check Leeds is in stored places</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>available_places <span class="op">=</span> pyrosm.data.available</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(available_places.keys())</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Leeds available from providers:'</span>,<span class="st">'Leeds'</span> <span class="kw">in</span> available_places[<span class="st">'cities'</span>])</span></code></pre></div>
+<pre class="output"><code>dict_keys(['test_data', 'regions', 'subregions', 'cities'])
+Leeds available from providers: True</code></pre>
+<p>As Leeds is available from pyrosm providers, we will use this.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gets data from pyrosm providers (BBBike or Geofabrik) and stores in /temp directory - file can be saved to a user specified</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># location with additional argument directory i.e. get_data(place_name, directory='save_path')</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>place_name <span class="op">=</span> <span class="st">'Leeds'</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>file_path <span class="op">=</span> pyrosm.get_data(place_name)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Data downloaded to:'</span>, file_path)</span></code></pre></div>
+<pre class="output"><code>Data downloaded to: /tmp/pyrosm/Leeds.osm.pbf</code></pre>
+<p>This has downloaded the OSM data in the Protocolbuffer Binary Format (<a href="https://wiki.openstreetmap.org/wiki/PBF_Format#:~:text=PBF%20Format%20(%22Protocolbuffer%20Binary%20Format,read%20than%20a%20gzipped%20planet.)'" class="external-link">pbf</a>) file format ready to be parsed by the pyrosm OSM file reader.</p>
+<div class="section level5">
+<h5 id="reproducable-data">Reproducable Data<a class="anchor" aria-label="anchor" href="#reproducable-data"></a>
+</h5>
+<p>As OSM data is constantly updated as mappers continually add/update features the data you request from pyrosm providers may have more features than within our example.</p>
+<p>If you would like to use the same dataset as us (Leeds.osm.pbf - 06/06/2022) this can be downloaded from our repository releases using the following code:</p>
+<p>Note that you will need to set your own desired download location with the <code>save_to</code> variable:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#____________Function__________________________________________________________</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> download_file(url, save_to) :</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># url     - url of downloadable file</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># save_to - directory to save the file to</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> os <span class="im">import</span> chdir, getcwd</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> requests <span class="im">import</span> get</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"downloading from url:"</span>, url)       </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    req <span class="op">=</span> get(url)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    filename <span class="op">=</span> req.headers[<span class="st">'Content-Disposition'</span>].split(<span class="st">"filename="</span>)[<span class="dv">1</span>]</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    chdir(save_to)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"writing"</span>, filename)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">'wb'</span>) <span class="im">as</span> <span class="bu">file</span>: </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> chunk <span class="kw">in</span> req.iter_content(chunk_size<span class="op">=</span>(<span class="dv">8192</span>)):</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> chunk:</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                <span class="bu">file</span>.write(chunk)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">file</span>.close()</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(filename, <span class="st">"has been downloaded to"</span>, getcwd())</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#______________________________________________________________________________</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://github.com/udsleeds/openinfra/releases/download/v0.2/Leeds_06_06_22.osm.pbf"</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Change this to your desired download directory.</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>save_to <span class="op">=</span> <span class="st">"/home/james/Desktop/Python_Downloads"</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>download_file(url, save_to)</span></code></pre></div>
+</div>
+</div>
+<div class="section level4">
+<h4 id="data-loading">Data Loading<a class="anchor" aria-label="anchor" href="#data-loading"></a>
+</h4>
+<p>Now we have downloaded the most up-to-date (or the reproducible) OSM dataset we can continue by loading our data and observing it’s structure:</p>
+<p>If you are following this guide using the reproducible dataset then <code>file_path</code> will simply be the <code>save_to</code> path + the file name.</p>
+<p>For me that is <code>file_path = /home/james/Desktop/Python_Downloads/Leeds_06_06_22.osm.pbf</code></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialises the OSM object that parses .osm.pbf files</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>osm <span class="op">=</span> pyrosm.OSM(file_path)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'osm type:'</span>, <span class="bu">type</span>(osm))</span></code></pre></div>
+<pre class="output"><code>osm type: &lt;class 'pyrosm.pyrosm.OSM'&gt;</code></pre>
+<p>Notice that the osm (lower case) variable is actually the reader instance (type: <code>&lt;class 'pyrosm.pyrosm.OSM'&gt;</code>) for the given .osm.pbf dataset. As such this (osm) variable should always be used to make the calls for fetching different network datasets from the OSM pbf file.</p>
+<p>There are a number of ways to request network data from the osm.pbf file, most notable and of use in this demonstration are</p>
+<ul>
+<li>get_network() and</li>
+<li>get_data_by_custom_criteria()</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="pre-defined-networks-from-get_network">Pre-defined Networks from get_network()<a class="anchor" aria-label="anchor" href="#pre-defined-networks-from-get_network"></a>
+</h4>
+<p>The functionality of OSM.get_network() is demonstrated below first. For assistance with this function we can call for the documentation with <code>help</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calling the help function on OSM.get_network() to see documentation. </span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">help</span>(pyrosm.OSM.get_network)</span></code></pre></div>
+<pre class="output"><code>Help on function get_network in module pyrosm.pyrosm:
+
+get_network(self, network_type='walking', extra_attributes=None, nodes=False)
+    Parses street networks from OSM
+    for walking, driving, and cycling.
+    
+    Parameters
+    ----------
+    
+    network_type : str
+        What kind of network to parse.
+        Possible values are:
+          - `'walking'`
+          - `'cycling'`
+          - `'driving'`
+          - `'driving+service'`
+          - `'all'`.
+    
+    extra_attributes : list (optional)
+        Additional OSM tag keys that will be converted into columns in the resulting GeoDataFrame.
+    
+    nodes : bool (default: False)
+        If True, 1) the nodes associated with the network will be returned in addition to edges,
+        and 2) every segment of a road constituting a way is parsed as a separate row
+        (to enable full connectivity in the graph).
+    
+    Returns
+    -------
+    
+    gdf_edges or (gdf_nodes, gdf_edges)
+    
+    Return type
+    -----------
+    
+    geopandas.GeoDataFrame or tuple
+    
+    See Also
+    --------
+    
+    Take a look at the OSM documentation for further details about the data:
+    `https://wiki.openstreetmap.org/wiki/Key:highway &lt;https://wiki.openstreetmap.org/wiki/Key:highway&gt;`__</code></pre>
+<p>As can be seen above, the <code>get_network</code> function accepts a number of <code>network_type</code> parameters depending on the network you are trying to analyse, including:</p>
+<ul>
+<li><code>'all'</code></li>
+<li><code>'driving'</code></li>
+<li><code>'cycling'</code></li>
+<li><code>'walking'</code></li>
+<li><code>'driving+service'</code></li>
+</ul>
+<p>where <code>'service'</code> generally implies an access road to a building, service station, campsite, industrial estate, fuel station, wind turbine site etc.</p>
+<p>Lets first obtain the network for all of Leeds, examine the data structure returned from our get_network() request, and visualise the network we have retrieved.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtaining the total network for 'Leeds'</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>leeds_total_network <span class="op">=</span> osm.get_network(network_type <span class="op">=</span> <span class="st">'all'</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Variable shape:'</span>,leeds_total_network.shape, <span class="st">'and type:'</span>, <span class="bu">type</span>(leeds_total_network), <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>leeds_total_network.head(<span class="dv">2</span>)</span></code></pre></div>
+<pre class="output"><code>Variable shape: (136372, 39) and type: &lt;class 'geopandas.geodataframe.GeoDataFrame'&gt; 
+(leeds_total_network.head(2) shown as image below)</code></pre>
+<p><img src="https://i.imgur.com/OmN6gYO.png"></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>leeds_total_network[<span class="st">'geom_type'</span>] <span class="op">=</span> leeds_total_network[<span class="st">'geometry'</span>].geom_type</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(leeds_total_network[<span class="st">'geom_type'</span>].value_counts())</span></code></pre></div>
+<pre class="output"><code>MultiLineString    136372
+Name: geom_type, dtype: int64</code></pre>
+<p>We have saved the output from our <code>get_network</code> request as the variable <code>leeds_total_network</code>.</p>
+<p>We can see this variable (<code>leeds_total_network</code>) is a <a href="https://geopandas.org/en/stable/docs.html" class="external-link">geopandas</a> GeoDataFrame (analogous to an Excel spreadsheet) with shape <code>(135,546, 39)</code>, implying this DataFrame contains 135,546 rows and 39 columns.</p>
+<p>Each row corresponds to a unique feature (such as a way - a road, path, cyclepath etc.) and each column corresponds to a tag for that feature (such as feature geometry, osmid, pedestrian access etc.)</p>
+<p>We can observe all keys have been returned by calling for the column names of the DataFrame (<code>leeds_total_network</code>) below.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>keys <span class="op">=</span> leeds_total_network.columns</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(keys)</span></code></pre></div>
+<pre class="outpu"><code>Index(['access', 'area', 'bicycle', 'bicycle_road', 'bridge', 'busway',
+       'cycleway', 'est_width', 'foot', 'footway', 'highway', 'int_ref',
+       'junction', 'lanes', 'lit', 'maxspeed', 'motorcar', 'motor_vehicle',
+       'name', 'oneway', 'overtaking', 'psv', 'ref', 'service', 'segregated',
+       'sidewalk', 'smoothness', 'surface', 'tracktype', 'tunnel', 'turn',
+       'width', 'id', 'timestamp', 'version', 'tags', 'osm_type', 'geometry',
+       'length'],
+      dtype='object')</code></pre>
+<p>These are all the default keys (returned as columns) when a network is requested from the osm.pbf file with <code>get_network</code>. We can see there is a column named <code>'geometry'</code> which stores the linestring geometries of features we have requested, and is used in the visualisation of our networks.</p>
+<p>However, it should be noted that in some instances a number of extra tags are returned within the <em><code>tags</code></em> column, in instances where specific OSM features have more information attributed to them. We can take a look at them below.</p>
+<p>Should we wish for any of these additional tags to be returned as columns in the DataFrame, rather than being stored within the <em><code>tags</code></em> column, we can specify this with the <code>extra_attributes</code> argument for the <code>get_network</code> function. i.e. <code>get_network(network_type='walking', extra_attributes=["description", "crossing"])</code> would return all vlaues for the tags <a href="https://wiki.openstreetmap.org/wiki/Key:description#:~:text=The%20description%20%3D*%20tag%20can,to%20three%20sentences%20at%20most." class="external-link">description</a> and <a href="https://wiki.openstreetmap.org/wiki/Key:crossing" class="external-link">crossing</a> as their own columns.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Removes any features from the DataFrame which have no additional tags within the 'tags' column (i.e no additional tags are returned) and shows the first 4 features</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>leeds_total_network_noNA <span class="op">=</span> leeds_total_network.loc[leeds_total_network.tags.isna() <span class="op">==</span> <span class="va">False</span>]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>leeds_total_network_noNA.head(<span class="dv">4</span>)</span></code></pre></div>
+<pre class="output"><code>output as image below</code></pre>
+<p><img src="https://i.imgur.com/UJ2W5Wo.png"></p>
+<p>As can be seen the feature with index <strong>20</strong> (the 4th row above) has a number of additional tags within the <code>'tags'</code> column - lets take a closer look.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>leeds_total_network_noNA.tags.iloc[<span class="dv">3</span>]</span></code></pre></div>
+<pre class="output"><code>{"gritting":"priority_1","maintenance":"gritting","maxweight":"7.5"}</code></pre>
+<p>Through some reverse searching of these additional tags using <a href="http://tagfinder.herokuapp.com/" class="external-link">Tag Finder</a>, we can see the feature being described is likely a well used public road as the local authorities are required to grit it in icy conditions (maintenance:gritting).</p>
+<p>Furthermore, we know this is likely a well used road due to the highest gritting priority (gritting:priority_1) with a maximum permissible weight of 7.5 tonnes.</p>
+<p>Obtaining the feature osm id <code>id</code> and feature type <code>osm_type</code> provides more context:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>leeds_total_network_noNA.<span class="bu">id</span>.iloc[<span class="dv">3</span>], leeds_total_network_noNA.osm_type.iloc[<span class="dv">3</span>]</span></code></pre></div>
+<pre class="output"><code>(2340358, 'way')</code></pre>
+<p>Having accessed the feature ID and osm_type field above, we can search for this feature using the OSM <a href="https://nominatim.openstreetmap.org/ui/details.html" class="external-link">Nominatim</a> search by ID field which uses osm_type + ID as the query argument.</p>
+<p>So, for a way (W) with ID 2340358 our query becomes W2340358</p>
+<p>Passing <a href="https://nominatim.openstreetmap.org/ui/details.html?osmtype=W&amp;osmid=2340358" class="external-link">this query</a> to Nominatim we find that this way corresponds to a road within central Wakefield. As such, and as hypothesised, it is likely a well used important road thus the high gritting priority in icy conditions.</p>
+</div>
+<div class="section level4">
+<h4 id="network-visualisation">Network Visualisation<a class="anchor" aria-label="anchor" href="#network-visualisation"></a>
+</h4>
+<p>Here we look to plot the networks we have requested using the <code>get_network</code> function.</p>
+<p>Remember that within the GeoDataFrame returned there was a column named <code>'geometry'</code> which stores the geometries of returned features used for visualisation of requested networks.</p>
+<p>Calling the <code>.plot</code> method on the returned GeoDataFrame automatically detects the column containing feature geometry and plots them, as shown below.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the total network for Leeds</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>leeds_total_network.plot()</span></code></pre></div>
+<p><img src="https://i.imgur.com/wUmwcsu.png"></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Requesting and plotting the drivable network for Leeds</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>leeds_total_walking <span class="op">=</span> osm.get_network(network_type<span class="op">=</span><span class="st">'driving'</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>leeds_total_walking.plot()</span></code></pre></div>
+<p><img src="https://i.imgur.com/H6n1ZoO.png"></p>
+</div>
+<div class="section level4">
+<h4 id="custom-networks-with-get_data_by_custom_criteria">Custom networks with get_data_by_custom_criteria()<a class="anchor" aria-label="anchor" href="#custom-networks-with-get_data_by_custom_criteria"></a>
+</h4>
+<p>There exists the <a href="https://pyrosm.readthedocs.io/en/latest/custom_filter.html" class="external-link">option</a> in pyrosm to request custom networks using the <code>get_data_by_custom_criteria</code> function</p>
+<p>As preivously described the <code>get_network</code> function has five pre-defined network configurations: <code>walking</code>, <code>driving</code>, <code>cycling</code>, <code>all</code>, <code>driving+service</code>.</p>
+<p>Here we will have a brief view of the <code>get_data_by_custom_criteria</code> function before re-creating one of the pre-defined <code>network_type=</code> filters by copying filtering steps from the <code>get_network</code> <a href="https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1" class="external-link">documentation</a>.</p>
+<p>Specifically, we will recreate the cycling network for Leeds. From function documentation we know:</p>
+<pre><code>def cycling_filter():
+    """
+    Cycling filters for different tags as in OSMnx for 'bike'.
+    Filter out foot ways, motor ways, private ways, and anything
+    specifying biking=no.
+    Applied filters:
+        '["area"!~"yes"]["highway"!~"footway|steps|corridor|elevator|escalator|motor|proposed|'
+        'construction|abandoned|platform|raceway"]'
+        '["bicycle"!~"no"]["service"!~"private"
+    """
+    return dict(
+        area=["yes"],
+        highway=[
+            "footway",
+            "steps",
+            "corridor",
+            "elevator",
+            "escalator",
+            "motor",
+            "proposed",
+            "construction",
+            "abandoned",
+            "platform",
+            "raceway",
+            "motorway",
+            "motorway_link",
+        ],
+        bicycle=["no"],
+        service=["private"],
+    )</code></pre>
+<p>From “Applied filters:” we know that features containing any tag values pairs contained within the returned dictionary will be excluded from our network rather than left in.</p>
+<p>This is due to the <code>!</code> operator within the filter which implies <code>does not equal</code>.</p>
+<p>i.e. to create a cycling network, remove features from the network if they have the highway tag with any of the values: <code>"footway", "steps", "corridor", "elevator", etc.</code>. Intuitively these are all features that are not accessible when cycling.</p>
+<p><br><br> We can see which features are removed from networks from the following pre-defined filters in tabular form below constructed from <a href="https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1" class="external-link">documentation</a>: <br><br><strong>Cycling Filter</strong> removed tags</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th align="center">Tag</th>
+<th align="center">Values</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">area</td>
+<td align="center">“yes”</td>
+</tr>
+<tr class="even">
+<td align="center">highway</td>
+<td align="center">“footway”, “steps”, “corridor”, “elevator”, “escalator”, “motor”, “proposed”, “construction”, “abandoned”, “platform”, “raceway”, “motorway”, “motorway_link”</td>
+</tr>
+<tr class="odd">
+<td align="center">bicycle</td>
+<td align="center">“no”</td>
+</tr>
+<tr class="even">
+<td align="center">service</td>
+<td align="center">“private”</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Driving Filter</strong> removed tags</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th align="center">Tag</th>
+<th align="center">Values</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">area</td>
+<td align="center">“yes”</td>
+</tr>
+<tr class="even">
+<td align="center">highway</td>
+<td align="center">“cycleway”, “footway”, “path”, “pedestrian”, “steps”, “track”, “corridor”, “elevator”, “escalator”, “proposed”, “construction”, “bridleway”, “abandoned”, “platform”, “raceway”</td>
+</tr>
+<tr class="odd">
+<td align="center">motor_vehicle</td>
+<td align="center">“no”</td>
+</tr>
+<tr class="even">
+<td align="center">motorcar</td>
+<td align="center">“no”</td>
+</tr>
+<tr class="odd">
+<td align="center">service</td>
+<td align="center">“parking”, “parking_aisle”, “private”, “emergency_access”</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Walking Filter</strong> removed tags</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th align="center">Tag</th>
+<th align="center">Values</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">area</td>
+<td align="center">“yes”</td>
+</tr>
+<tr class="even">
+<td align="center">highway</td>
+<td align="center">“cycleway”, “motor”, “proposed”, “construction”, “abandoned”, “platform”, “raceway”, “motorway”, “motorway_link”</td>
+</tr>
+<tr class="odd">
+<td align="center">foot</td>
+<td align="center">“no”</td>
+</tr>
+<tr class="even">
+<td align="center">service</td>
+<td align="center">“private”</td>
+</tr>
+</tbody>
+</table>
+<p><br><br> We will now take a look at the <code>get _data_by_custom_criteria</code> function documentation to see how to define a custom network.</p>
+<pre><code>Help on function get_data_by_custom_criteria in module pyrosm.pyrosm:
+
+get_data_by_custom_criteria(self, custom_filter, osm_keys_to_keep=None, filter_type='keep', tags_as_columns=None, keep_nodes=True, keep_ways=True, keep_relations=True, extra_attributes=None)
+    `
+    Parse OSM data based on custom criteria.
+    
+    Parameters
+    ----------
+    
+    custom_filter : dict (required)
+        A custom filter to filter only specific POIs from OpenStreetMap.
+    
+    osm_keys_to_keep : str | list
+        A filter to specify which OSM keys should be kept.
+    
+    filter_type : str
+        "keep" | "exclude"
+        Whether the filters should be used to keep or exclude the data from OSM.
+    
+    tags_as_columns : list
+        Which tags should be kept as columns in the resulting GeoDataFrame.
+    
+    keep_nodes : bool
+        Whether or not the nodes should be kept in the resulting GeoDataFrame if they are found.
+    
+    keep_ways : bool
+        Whether or not the ways should be kept in the resulting GeoDataFrame if they are found.
+    
+    keep_relations : bool
+        Whether or not the relations should be kept in the resulting GeoDataFrame if they are found.
+    
+    extra_attributes : list (optional)
+        Additional OSM tag keys that will be converted into columns in the resulting GeoDataFrame.</code></pre>
+<p>Studying the docmentation we see that we can create a dictionary of tags to either <code>'exclude'</code> or <code>'keep'</code> within our network, this is decided by the <code>filter_type=</code> paramater.</p>
+<p>If we want to keep data on only roads <em>(rather than footpaths etc.)</em> we can do so by keeping only <code>"highway"</code> tags by specifying <code>osm_keys_to_keep = "highway"</code>.</p>
+<p>We will define our custom cycling network below:</p>
+<pre><code># Specifying desired keys to be kept - this is our first level of filtering
+keys_to_keep = "highway"
+
+# Specifying key:value pairs to be filtered - this is the second level of filtering. 
+cycling_filter = dict(area=["yes"],
+        highway=[
+            "footway",
+            "steps",
+            "corridor",
+            "elevator",
+            "escalator",
+            "motor",
+            "proposed",
+            "construction",
+            "abandoned",
+            "platform",
+            "raceway",
+            "motorway",
+            "motorway_link",
+        ],
+        bicycle=["no"],
+        service=["private"])
+
+# Specifying if the above tags should be kept or removed
+filter_type = "exclude"
+
+# Filter the network: 
+# From the docuemtnation on get_network() function, nodes and relations are set False as default so we do so here too.
+leeds_custom_cycling = osm.get_data_by_custom_criteria(custom_filter = cycling_filter, 
+                                                       osm_keys_to_keep = keys_to_keep,
+                                                       filter_type = filter_type,
+                                                       keep_nodes = False,
+                                                       keep_relations = False)
+
+# Visualisation and stats
+leeds_custom_cycling.plot()
+print(leeds_custom_cycling.shape)
+
+leeds_custom_cycling['geom_type'] = leeds_custom_cycling['geometry'].geom_type
+print(leeds_custom_cycling.geom_type.value_counts())
+
+(105460, 38)
+MultiLineString    77219
+LineString         28241
+dtype: int64</code></pre>
+<p><img src="https://i.imgur.com/8x4zvUC.png"></p>
+<p>Comparing to the default cycling network</p>
+<pre><code>leeds_cycling = osm.get_network(network_type = "cycling")
+leeds_cycling['geom_type'] = leeds_cycling.geometry.geom_type
+leeds_cycling.plot()
+print(leeds_cycling.shape)
+print(leeds_cycling.geom_type.value_counts())
+
+(105460, 39)
+MultiLineString    105460
+dtype: int64</code></pre>
+<p><img src="https://i.imgur.com/v6UoiNR.png"></p>
+<p>As can be seen we have recreated the <code>get_network</code> cycling filter with our custom query.</p>
+<p>Both of the returned networks contain 105460 features, differing only in the number of columns returned.</p>
+<p>We an find the difference in returned columns by calculating the set difference of each networks columns as follows:</p>
+<pre><code>set(leeds_custom_cycling.keys()).difference(set(leeds_cycling.keys()))
+set(leeds_cycling.keys()).difference(set(leeds_custom_cycling.keys()))
+
+{'length'}</code></pre>
+<p>Only one output is returned, the additional column within the <code>leeds_cycling</code> network. This is because every column within <code>leeds_custom_cycling</code> is already within <code>leeds_cycling</code> and so nothing is returned.</p>
+</div>
+</div>
 </div>
   </div>
 
@@ -127,7 +569,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer>
