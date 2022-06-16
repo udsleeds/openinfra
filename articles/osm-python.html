@@ -354,7 +354,7 @@ Name: geom_type, dtype: int64</code></pre>
 <p>From “Applied filters:” we know that features containing any tag values pairs contained within the returned dictionary will be excluded from our network rather than left in.</p>
 <p>This is due to the <code>!</code> operator within the filter which implies <code>does not equal</code>.</p>
 <p>i.e. to create a cycling network, remove features from the network if they have the highway tag with any of the values: <code>"footway", "steps", "corridor", "elevator", etc.</code>. Intuitively these are all features that are not accessible when cycling.</p>
-<p><br><br> We can see which features are removed from networks from the following pre-defined filters in tabular form below constructed from <a href="https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1" class="external-link">documentation</a>: <br><br><strong>Cycling Filter</strong> removed tags</p>
+<p><br><br> We can see which features are removed from networks from the following pre-defined filters in tabular form below constructed from <a href="https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1" class="external-link">documentation</a>: <br><br><br><br><strong>Cycling Filter</strong> removed tags</p>
 <table class="table">
 <colgroup>
 <col width="50%">
@@ -383,7 +383,7 @@ Name: geom_type, dtype: int64</code></pre>
 </tr>
 </tbody>
 </table>
-<p><strong>Driving Filter</strong> removed tags</p>
+<p><br><br><strong>Driving Filter</strong> removed tags</p>
 <table class="table">
 <colgroup>
 <col width="50%">
@@ -416,7 +416,7 @@ Name: geom_type, dtype: int64</code></pre>
 </tr>
 </tbody>
 </table>
-<p><strong>Walking Filter</strong> removed tags</p>
+<p><br><br><strong>Walking Filter</strong> removed tags</p>
 <table class="table">
 <colgroup>
 <col width="50%">
