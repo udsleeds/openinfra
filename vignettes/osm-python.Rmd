@@ -383,6 +383,7 @@ i.e. to create a cycling network, remove features from the network if they have 
 
 <br><br>
 We can see which features are removed from networks from the following pre-defined filters in tabular form below constructed from [documentation](https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1): <br><br>
+<br><br>
 **Cycling Filter** removed tags
 
 | Tag | Values|
@@ -391,7 +392,7 @@ We can see which features are removed from networks from the following pre-defin
 |highway|"footway", "steps", "corridor", "elevator", "escalator", "motor", "proposed", "construction", "abandoned", "platform", "raceway", "motorway", "motorway_link"|
 |bicycle|"no"|
 |service|"private"|
-
+<br><br>
 **Driving Filter** removed tags
 
 | Tag | Values|
@@ -401,7 +402,7 @@ We can see which features are removed from networks from the following pre-defin
 |motor_vehicle| "no"|
 |motorcar| "no"|
 |service| "parking", "parking_aisle", "private", "emergency_access"|
-
+<br><br>
 **Walking Filter** removed tags
 
 | Tag | Values|
