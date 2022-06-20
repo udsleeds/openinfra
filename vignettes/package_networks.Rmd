@@ -93,7 +93,7 @@ Features are removed if the service tag value (a string) contains the sub-string
 <br><br>
 
 #### python representation
-```{python}
+```{}
 osmextract_filter = dict() 
 osmextract_filter["driving"] = (
   f'["highway]'
@@ -171,7 +171,7 @@ Features are removed if the service tag value (a string) contains the sub-string
 <br><br>
 
 #### python representation
-```{python}
+```{}
 osmextract_filter = dict()
 osmextract_filter["walking"] = (
   f'["highway"]'
@@ -252,7 +252,7 @@ Features are removed if the service tag value (a string) contains the sub-string
 <br><br>
 
 #### python representation
-```{python}
+```{}
 osmextract_filter = dict() 
 osmextract_filter["cycling"] = (
   f'["highway"]'
@@ -281,7 +281,7 @@ remove ways by tag/value.*
 
 | Tag | Pyrosm Values| OSMnx Values | osmextract|Proposed Filter|
 |:----:|:----:|:----:|:---:|:---:|
-|area| "yes" | "yes"|**None**|"yes"|
+|area| "yes" | "yes"|**None**|**N/A**|
 |access| **None** | "private"| "private", "no"|"private", "no"|
 |highway|"footway", "steps", "corridor", "elevator", "escalator", "motor", "proposed", "construction", "abandoned", "platform", "raceway", "motorway", "motorway_link"| "abandoned", "bus_guideway", "construction", "corridor", "elevator", "escalator", "footway", "motor", "planned", "platform", "proposed", "raceway", "steps"|'abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator', 'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform', 'proposed', 'raceway', 'steps' |'abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator', 'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform', 'proposed', 'raceway', 'steps', "motor"|
 |highway|**not needed**|**not needed**|Remove feature if highway = ("motorway", "motorway_link", "footway", "bridleway") UNLESS bicycle = ("yes", "designated", "permissive", "destination") |Remove if highway= ("motorway", "motorway_link", "footway", "bridleway") UNLESS bicycle = ("yes", "designated", "permissive", "destination)|
@@ -296,7 +296,7 @@ remove ways by tag/value.*
 
 | Tag | Pyrosm Values| OSMnx Values | osmextract|Proposed Filter|
 |:----:|:----:|:----:|:---:|:---:|
-|area| "yes" | "yes"| **None**|"yes"|
+|area| "yes" | "yes"| **None**|**N/A**|
 |access|**None**|"private"|"private", "no"|"private", "no"|
 |highway| "cycleway", "footway", "path", "pedestrian", "steps", "track", "corridor", "elevator", "escalator", "proposed", "construction", "bridleway", "abandoned", "platform", "raceway"| "abandoned", "bridleway", "bus_guideway", "construction", "corridor", "cycleway", "elevator", "escalator", "footway", "path", "pedestrian", "planned", "platform", "proposed", "raceway", "service", "steps", "track"|'abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator', 'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform', 'proposed', 'cycleway', 'pedestrian', 'bridleway', 'path', 'footway', 'steps'|'abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator', 'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform', 'proposed', 'cycleway', 'pedestrian', 'bridleway', 'path', 'footway', 'steps', "track", "raceway", "service"|
 |motor_vehicle| "no"|"no"|**None**|"no"|
@@ -320,7 +320,7 @@ remove ways by tag/value.*
 | Tag | Pyrosm Values| OSMnx Values | osmextract|Proposed Filter|
 |:----:|:----:|:----:|:---:|:---:|
 |access|**None**|"private"|"private", "no"|"private","no"|
-|area| "yes" | "yes"|**None**|"yes"|
+|area| "yes" | "yes"|**None**|**N/A**|
 |highway| "cycleway", "motor", "proposed", "construction", "abandoned", "platform", "raceway", "motorway", "motorway_link"|"abandoned", "bus_guideway", "construction", "cycleway", "motor", "planned", "platform", "proposed", "raceway"|'abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator', 'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform', 'proposed', 'raceway', 'motorway', 'motorway_link'|'abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator', 'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform', 'proposed', 'raceway', 'motorway', 'motorway_link', 'motor'|
 |highway|**not needed**|**not needed**|Remove feature if highway = "cycleway" UNLESS feature also has foot = "yes", "permissive", "designated", "destination"|remove feature if highway=cycleway UNLESS feature has foot=("yes", "permissive", "designated", "destination")|
 |foot| "no"| "no"|"private", "no", "use_sidepath", "restricted"|"no", "private", "use_sideapth", "restricted"|
@@ -336,7 +336,7 @@ This was done by creating a set of each packages tags filter and finding the set
 
 ### Drving Filter
 
-```{python}
+```{}
 # Driving Filter (highway tag)
 pyrosm_set_drive = set(["cycleway", "footway", "path", "pedestrian", "steps", "track", "corridor", "elevator", "escalator", "proposed", "construction", "bridleway", "abandoned", "platform", "raceway"])
 OSMnx_set_drive = set(["abandoned", "bridleway", "bus_guideway", "construction", "corridor", "cycleway", "elevator", "escalator", "footway", "path", "pedestrian", "planned", "platform", "proposed", "raceway", "service", "steps", "track"])
@@ -345,13 +345,19 @@ proposed_set_drive = set(['abandoned', 'bus_guideway', 'byway', 'construction', 
 
 # Things in osmextract filter, not in OSMnx/pyrosm filters
 print(osmextract_set_drive.difference(pyrosm_set_drive))
+##>{'historic', 'no', 'gallop', 'planned', 'fixme', 'bus_guideway', 'byway'}
+
 # Things in osmextract filter, not in OSMnx/pyrosm filters
 print(osmextract_set_drive.difference(OSMnx_set_drive))
+##> {'historic', 'no', 'gallop', 'fixme', 'byway'}
 
 # Things in OSMnx/pyrosm filters, not in osmextract
 print(OSMnx_set_drive.difference(osmextract_set_drive))
+##> {'raceway', 'service', 'track'}
+
 # Things in OSMnx/pyrosm filters, not in osmextract
 print(pyrosm_set_drive.difference(osmextract_set_drive))
+##> {'raceway', 'track'}
 ```
 <br><br>
 The proposed filter is the **osmextract** filter with "track", "raceway", "service" keys added.
@@ -359,7 +365,7 @@ The proposed filter is the **osmextract** filter with "track", "raceway", "servi
 
 ### Cycling Filter
 
-```{python}
+```{}
 pyrosm_cycle = set(["footway", "steps", "corridor", "elevator", "escalator", "motor", "proposed", "construction", "abandoned", "platform", "raceway", "motorway", "motorway_link"])
 OSMnx_cycle = set(["abandoned", "bus_guideway", "construction", "corridor", "elevator", "escalator", "footway", "motor", "planned", "platform", "proposed", "raceway", "steps"])
 osmextract_cycle = set(['abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator', 'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform', 'proposed', 'raceway', 'steps'])
@@ -368,13 +374,19 @@ osmextract_combined = set(['abandoned', 'bus_guideway', 'byway', 'construction',
 
 # Tags in osmextract filter not in OSMnx/pyrosm filters
 print(osmextract_combined.difference(OSMnx_cycle))
+##> {'historic', 'no', 'gallop', 'bridleway', 'fixme', 'motorway_link', 'motorway', 'byway'}
+
 # Tags in osmextract filter not in OSMnx/pyrosm filters
 print(osmextract_combined.difference(pyrosm_cycle))
+##> {'historic', 'no', 'gallop', 'planned', 'bridleway', 'fixme', 'bus_guideway', 'byway'}
 
 #Tags in OSMnx/pyrosm filters not in osmextract filters
 print(OSMnx_cycle.difference(osmextract_combined))
+##> {'motor'}
+
 #Tags in OSMnx/pyrosm filters not in osmextract filters
 print(pyrosm_cycle.difference(osmextract_combined))
+##> {'motor'}
 ```
 
 <br><br>
@@ -385,7 +397,7 @@ Note this will still include the remove feature if highway=["motorway", "motorwa
 
 ### Walking Filter
 
-```{python}
+```{}
 #Walking Filter
 pyrosm_walk = set(["cycleway", "motor", "proposed", "construction", "abandoned", "platform", "raceway", "motorway", "motorway_link"])
 OSMnx_walk = set(["abandoned", "bus_guideway", "construction", "cycleway", "motor", "planned", "platform", "proposed", "raceway"])
@@ -395,8 +407,11 @@ osmextract_combined = set(['abandoned', 'bus_guideway', 'byway', 'construction',
 
 # Comparing OSMnx & Pyrosm filter
 print(pyrosm_walk.difference(OSMnx_walk))
+##> {'motorway', 'motorway_link'}
+
 # Comparing OSMnx & Pyrosm filter
 print(OSMnx_walk.difference(pyrosm_walk))
+##> {'bus_guideway', 'planned'}
 
 # Update pyrosm/OSMnx filters to match
 pyrosm_walk.update(["bus_guideway", "planned"])
@@ -404,13 +419,19 @@ OSMnx_walk.update(["motorway_link", "motorway"])
 
 # Comparing updated filters
 print(pyrosm_walk.difference(OSMnx_walk))
+##> set()
+
 # Comparing updated filters
 print(OSMnx_walk.difference(pyrosm_walk))
+##> set()
 
 # Comparing difference to osmextract filter
 print(OSMnx_walk.difference(osmextract_walk))
+##> {'motor', 'cycleway'}
+
 # Comparing difference to osmextract filter
 print(pyrosm_walk.difference(osmextract_walk))
+##> {'motor', 'cycleway'}
 ```
 
 <br><br>
