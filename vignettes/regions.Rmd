@@ -107,6 +107,5 @@ transport_regions %>% tmap::qtm(title = 'Transport regions of England')
 ```{r, fig.height=15.25, fig.width=9}
 # Here we create the interactive plot of England's transport regions
 transport_regions %>% tmap::qtm(title = 'Coloured transport regions of England', fill = 'Region_name')
-```
 
-# SF to GeoJson: <https://cran.r-project.org/web/packages/geojsonsf/vignettes/geojson-sf-conversions.html>
+```
