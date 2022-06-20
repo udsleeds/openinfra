@@ -36,6 +36,8 @@ osmextract creates networks with the following workflow. A place name string (i.
 Here we look at the three pre-defined filters offered by `osmextract` and how these are parsed with an SQL query, we then try to translate these queries into a python format, similar to the filtering usilised by pyrosm/OSMnx.
 <br><br>
 After, we compare the tag filtering applied by each package to obtain our final networks.
+<br>
+Note that as the `osmextract` package defines the osm layer it is looking at (`layer="lines"`) as being the lines (OSM ways - roads, footpaths, etc.) then we do not need to specify area="no", as by default, no areas (polygons) are returned within the `"lines"` layer.
 
 ### Driving Filter
 <br>
@@ -442,7 +444,21 @@ taken care of by the proceeding highway=cycleway UNLESS foot=("yes", "designated
 
 <br><br>
 
-### Proposed Data Aquisition Method. 
+### Additional filters
+
+#### Walking
+
+#### Cycling
+
+<br> From a pyrosm package [pull request](https://github.com/HTenkanen/pyrosm/pull/175) it has been proposed to [add](https://github.com/HTenkanen/pyrosm/pull/175/files) highway="busway" to the removed features list.
+<br><br>
+Additionaly, it was propsed to also use bicycle="use_sidepath", however this is already covered by the osmextract package.
+
+#### Driving
+
+<br><br>
+
+## Proposed Data Aquisition Method. 
 
 I am looking into how each package (osmextract, pyrosm, OSMnx) acquires OSM data so that we may use the most appropriate method moving forward.
 <br><br>
