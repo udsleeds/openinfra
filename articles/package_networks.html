@@ -113,7 +113,7 @@
 <div class="section level2">
 <h2 id="osmextract-network-filters">osmextract network filters<a class="anchor" aria-label="anchor" href="#osmextract-network-filters"></a>
 </h2>
-<p><br> Firstly we go through the osmextract (R) package function documentation to see which filters are applied to each of the three network types. <br><br> osmextract creates networks with the following workflow. A place name string (i.e. “Leeds”) is matched to one of two dataset providers, <a href="https://download.bbbike.org/osm/bbbike/" class="external-link">BBBike</a> or <a href="https://download.geofabrik.de/" class="external-link">Geofabrik</a> before downloading a compressed <a href="https://wiki.openstreetmap.org/wiki/PBF_Format" class="external-link"><code>.pbf</code></a> file of OSM data for the specified place (Leeds). Next the downloaded file is converted into the open standard <a href="https://www.geopackage.org/" class="external-link"><code>.gpkg</code></a> format. This file is then parsed with an SQL query to obtain network features specified by the user (i.e. “walking”, “cycling”, or “driving”). <br><br> Here we look at the three pre-defined filters offered by <code>osmextract</code> and how these are parsed with an SQL query, we then try to translate these queries into a python format, similar to the filtering usilised by pyrosm/OSMnx. <br><br> After, we compare the tag filtering applied by each package to obtain our final networks.</p>
+<p><br> Firstly we go through the osmextract (R) package function documentation to see which filters are applied to each of the three network types. <br><br> osmextract creates networks with the following workflow. A place name string (i.e. “Leeds”) is matched to one of two dataset providers, <a href="https://download.bbbike.org/osm/bbbike/" class="external-link">BBBike</a> or <a href="https://download.geofabrik.de/" class="external-link">Geofabrik</a> before downloading a compressed <a href="https://wiki.openstreetmap.org/wiki/PBF_Format" class="external-link"><code>.pbf</code></a> file of OSM data for the specified place (Leeds). Next the downloaded file is converted into the open standard <a href="https://www.geopackage.org/" class="external-link"><code>.gpkg</code></a> format. This file is then parsed with an SQL query to obtain network features specified by the user (i.e. “walking”, “cycling”, or “driving”). <br><br> Here we look at the three pre-defined filters offered by <code>osmextract</code> and how these are parsed with an SQL query, we then try to translate these queries into a python format, similar to the filtering usilised by pyrosm/OSMnx. <br><br> After, we compare the tag filtering applied by each package to obtain our final networks. <br> Note that as the <code>osmextract</code> package defines the osm layer it is looking at (<code>layer="lines"</code>) as being the lines (OSM ways - roads, footpaths, etc.) then we do not need to specify area=“no”, as by default, no areas (polygons) are returned within the <code>"lines"</code> layer.</p>
 <div class="section level3">
 <h3 id="driving-filter">Driving Filter<a class="anchor" aria-label="anchor" href="#driving-filter"></a>
 </h3>
@@ -700,10 +700,28 @@ print(pyrosm_walk.difference(osmextract_walk))
 <p><br><br></p>
 </div>
 <div class="section level3">
-<h3 id="proposed-data-aquisition-method-">Proposed Data Aquisition Method.<a class="anchor" aria-label="anchor" href="#proposed-data-aquisition-method-"></a>
+<h3 id="additional-filters">Additional filters<a class="anchor" aria-label="anchor" href="#additional-filters"></a>
 </h3>
-<p>I am looking into how each package (osmextract, pyrosm, OSMnx) acquires OSM data so that we may use the most appropriate method moving forward. <br><br> Pyrosm collects pre-formated OSM extracts by custom user query from one of two providers, BBBike or Geofabrik. <br><br> It appears that Pyrosm takes all data for a user place query, before iteratively removing features from the parsed .osm.pbf file if they do not satisfy the filter conditions specified by the <a href="https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1" class="external-link">filter documentation</a>. Features that are removed from the file unless specified by the filter documentation, suggesting that some incorrect (<em>unknown</em>) features may still remain in the network if they are not caught by this filter. <br><br> On the other hand, it seems that osmextract makes direct queries to the OSM API to retrieve network features that meet a specific SQL query. The network features returned from such a request will only be returned if they satisfy the SQL query passed to the OSM API, and as such only known features should be returned, unlike pyrosm. <br><br> From studying the OSM documentation, it seems this may take a similar approach to osmextract making direct queries to the OSM API but I need to study this further. <br><br> I propose that we proceed utilizing the osmextract library, making use of the SQL query option so that we can specifically define queries (i.e. highway=cycleway UNLESS foot=yes, permissive, designated, destination etc…)</p>
+<div class="section level4">
+<h4 id="walking">Walking<a class="anchor" aria-label="anchor" href="#walking"></a>
+</h4>
 </div>
+<div class="section level4">
+<h4 id="cycling">Cycling<a class="anchor" aria-label="anchor" href="#cycling"></a>
+</h4>
+<p><br> From a pyrosm package <a href="https://github.com/HTenkanen/pyrosm/pull/175" class="external-link">pull request</a> it has been proposed to <a href="https://github.com/HTenkanen/pyrosm/pull/175/files" class="external-link">add</a> highway=“busway” to the removed features list. <br><br> Additionaly, it was propsed to also use bicycle=“use_sidepath”, however this is already covered by the osmextract package.</p>
+</div>
+<div class="section level4">
+<h4 id="driving">Driving<a class="anchor" aria-label="anchor" href="#driving"></a>
+</h4>
+<p><br><br></p>
+</div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="proposed-data-aquisition-method-">Proposed Data Aquisition Method.<a class="anchor" aria-label="anchor" href="#proposed-data-aquisition-method-"></a>
+</h2>
+<p>I am looking into how each package (osmextract, pyrosm, OSMnx) acquires OSM data so that we may use the most appropriate method moving forward. <br><br> Pyrosm collects pre-formated OSM extracts by custom user query from one of two providers, BBBike or Geofabrik. <br><br> It appears that Pyrosm takes all data for a user place query, before iteratively removing features from the parsed .osm.pbf file if they do not satisfy the filter conditions specified by the <a href="https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1" class="external-link">filter documentation</a>. Features that are removed from the file unless specified by the filter documentation, suggesting that some incorrect (<em>unknown</em>) features may still remain in the network if they are not caught by this filter. <br><br> On the other hand, it seems that osmextract makes direct queries to the OSM API to retrieve network features that meet a specific SQL query. The network features returned from such a request will only be returned if they satisfy the SQL query passed to the OSM API, and as such only known features should be returned, unlike pyrosm. <br><br> From studying the OSM documentation, it seems this may take a similar approach to osmextract making direct queries to the OSM API but I need to study this further. <br><br> I propose that we proceed utilizing the osmextract library, making use of the SQL query option so that we can specifically define queries (i.e. highway=cycleway UNLESS foot=yes, permissive, designated, destination etc…)</p>
 </div>
   </div>
 
