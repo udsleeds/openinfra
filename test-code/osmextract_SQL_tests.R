@@ -14,25 +14,7 @@ edi = c(55.94625165186419, -3.1844093528268886)
 # Place point must be formatted as (Long, Lat)
 place_point = c(-3.1844093528268886, 55.94625165186419)
 
-# Desired (m) radius around desired point"-where",
-"(highway IS NOT NULL)
-    AND
-    (highway NOT IN (
-    'abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
-    'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-    'proposed', 'raceway', 'steps'
-    ))
-    AND
-    (highway NOT IN ('motorway', 'motorway_link', 'footway', 'bridleway',
-    'pedestrian') OR bicycle IN ('yes', 'designated', 'permissive', 'destination')
-    )
-    AND
-    (access NOT IN ('private', 'no'))
-    AND
-    (bicycle NOT IN ('private', 'no', 'use_sidepath', 'restricted'))
-    AND
-    (service NOT ILIKE 'private%')
-    "
+# Desired (m) radius around desired point
 radius = 1000 #(1km)
 
 # Converts point coord into a sf object (so we can use st_buffer)
