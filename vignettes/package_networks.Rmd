@@ -1,5 +1,5 @@
 ---
-title: "Network Definitions by package"
+title: "Network definitions (pre-defined networks) by OSM data package"
 author: "James Hulse"
 date: '2022-06-15'
 output: html_document
@@ -464,10 +464,11 @@ I am looking into how each package (osmextract, pyrosm, OSMnx) acquires OSM data
 <br><br>
 Pyrosm collects pre-formated OSM extracts by custom user query from one of two providers, BBBike or Geofabrik.
 <br><br>
-It appears that Pyrosm takes all data for a user place query, before iteratively removing features from the parsed .osm.pbf file if they do not satisfy the filter conditions specified by the [filter documentation](https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1). Features that are removed from the file unless specified by the filter documentation, suggesting that some incorrect (*unknown*) features may still remain in the network if they are not caught by this filter. 
+It appears that Pyrosm takes all data for a user place query, before iteratively removing features from the parsed .osm.pbf file, in a top-down approach. If features do not satisfy the filter conditions specified by the [filter documentation](https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1) then they are removed. Features are only removed from the downloaded file if they are caught by the pyrosm filtering, suggesting that some incorrect (*unknown*) features may still remain in the network if they are not caught by this filter. 
 <br><br>
-On the other hand, it seems that osmextract makes direct queries to the OSM API to retrieve network features that meet a specific SQL query. The network features returned from such a request will only be returned if they satisfy the SQL query passed to the OSM API, and as such only known features should be returned, unlike pyrosm. 
+On the other hand, it seems that osmextract also downloads data from providers (Geofabrik & BBBike) before then filtering data using a bottom up apprpach. <br>
+From the downloaded `.pbf` file which is then converted to the open `.gpkg` format, `osmextract` then parses the `.gpkg` file using SQL queries. The networks features returned from such a request will only be returned if they satisfy the SQL query passed, and as such only known features should be returned, unlike pyrosm which may contain unknown features.
 <br><br> 
-From studying the OSM documentation, it seems this may take a similar approach to osmextract making direct queries to the OSM API but I need to study this further. 
+From studying the OSMnx documentation, it seems this may take a similar approach to osmextract making direct queries to the OSM API but I need to study this further. 
 <br><br>
 I propose that we proceed utilizing the osmextract library, making use of the SQL query option so that we can specifically define queries (i.e. highway=cycleway UNLESS foot=yes, permissive, designated, destination etc...)
