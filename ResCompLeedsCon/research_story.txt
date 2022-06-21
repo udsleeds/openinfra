@@ -1,0 +1,9 @@
+OpenInfra (Open Infrastructure) is studying the utility of Open Street Map (OSM) data as evidence to better inform local policy decision and infrastructure development.
+
+We use numerous tools / computational packages within the python/R environments to obtain OSM data and perform our analysis, including but not limited to osmextract, pyrosm, simple features, and OSMnx.
+
+Whilst OSM has proved to be an extensive database on mapping the existence of network infrastructure (all types of roads, cycling paths, walking paths, e.t.c) one issue that has arisen is the inconsistent feature tagging used by OSM mappers resulting in (a) a disproportionate number of ways with no additional tags other than way specification (road, cycle path etc.) and (b) inconsistent tagging practice among OSM mappers, for example querying highway=”cycleway” does not return all cycleways, a number of additional tags must be specified to define complete networks, which can become counterintuitive and rather confusing.
+
+Thus far the project has been able to produce reproducible documentation on the acquisition and analysis of OSM data for both Python and R. We have also developed a function in R that recategorizes OSM features based on whether they are compliant with the Inclusive Mobility (DfT) guide.
+
+The future of the OpenInfra project is focused on the upscaled production of such transport infrastructure data packs for every transport authority within Great Britain whilst maintaining the production of reproducible documentation on the acquisition and analysis of OSM data.
