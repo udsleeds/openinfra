@@ -2,11 +2,12 @@ pandoc: 2.14.2
 pkgdown: 2.0.4
 pkgdown_sha: ~
 articles:
+  QGIS_OSM_Setup: QGIS_OSM_Setup.html
   getosm: getosm.html
   im_get: im_get.html
   openinfra: openinfra.html
   osm-python: osm-python.html
   package_networks: package_networks.html
   regions: regions.html
-last_built: 2022-06-21T15:43Z
+last_built: 2022-06-22T10:46Z
 
