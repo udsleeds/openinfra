@@ -1,0 +1,113 @@
+---
+title: "Getting and using OSM data with GUI QGIS"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting and using OSM data with GUI QGIS}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+
+
+### Ubuntu Linux QGIS Stable Install
+
+This section covers the removal of unstable or outdated QGIS versions before covering the stable installation of QGIS for Ubuntu Linux 20.04.
+<br><br>
+This sections paraphrases the following [YouTube video](https://www.youtube.com/watch?v=Zzhb8jnEEDI) covering this process.
+<br><br><br>
+
+First open the software properties interface from the terminal with: 
+```
+> sudo software-properties-gtk
+# then enter your password
+```
+
+Next go to the software tab in the popup and remove any provider that contains `gis` before then clicking `close` and then `reload/refresh`:
+```
+# Go to "Other Software" tab
+# Remove ANY provider that contains "gis" within URL i.e. ubuntugis/ppa
+
+> click close
+> click reload/refresh
+
+```
+![](https://i.imgur.com/FFsRPYT.png)
+
+<br><br>
+
+Now we have removed QGIS from providers, we must purge our system of any QGIS files:
+```
+> sudo apt purge qgis* python-qgis* --auto-remove
+# Then enter your password
+# Type 'y' then hit Enter
+```
+<br><br>
+Now we have removed QGIS, we must update our repository to be able to download QGIS stable: 
+```
+# Need to add the repository that we can download stable QGIS from:
+> sudo add-apt-repository ppa:ubuntugis/ppa
+# Hit enter
+```
+<br><br>
+Now we need to refresh our list of repositories after adding the QGIS repo before installing QGIS: 
+```
+#Now we need to refresh the list of repositories
+> sudo apt-get update
+
+# Now we can reinstall QGIS
+> sudo apt-get install qgis
+# Type 'y' and hit Enter
+```
+Congratulations, QGIS (stable) should now be re-installed!
+<br><br>
+To load QGIS, simply type `qgis` into the terminal and hit enter.
+
+<br><br>
+<br><br>
+
+### Installing OSM downloader
+
+The installation guide has been paraphrased from the following [YouTube video](https://www.youtube.com/watch?v=XKKpPeSQ9UU), should you wish to follow the video instead.
+<br><br>
+
+1. Open QGIS (type `qgis` in terminal)
+<br><br>
+2. GoTo Plugins > Manage and Install Plugins (in QGIS toolbar)
+<br><br>
+3. In the pop up,  select the "Not Installed" tab
+<br><br>
+4. Find the OSMDownloader plugin and install it
+![](https://i.imgur.com/S8Z5IlF.png)
+<br><br>
+5. Close the plugin window
+<br><br>
+6. Open a QGIS tile from the browser. We use XYZ Tiles > OpenStreetMap
+![](https://i.imgur.com/RVS5xrt.png)
+<br><br>
+7. Zoom to a desired location, we go to Institute for Transport Studies (ITS) Leeds
+![](https://i.imgur.com/ErZjZjZ.png)
+<br><br>
+8. Select area to download using newly installed OSMDownloader tool ---> ![](https://i.imgur.com/5DWKrzt.png)
+<br><br>
+9. Specify download save location
+![](https://i.imgur.com/ZeJ6lkz.png)
+<br><br>
+10. Hit "OK". The OSM data for your selected bounding box will be downloaded to your specified location as a .osm file!
+![](https://i.imgur.com/nsKUdj1.png)
+![](https://i.imgur.com/ZP2Gwzg.png)
+
+<br><br>
+Data downloaded using the OSMDownloader QGIS plugin comes in the .osm format. This file can either be loaded into a GeoDataframe for further analysis using the [OSMnx](https://github.com/gboeing/osmnx) Python package in our [Getting and using OSM data in Python](https://udsleeds.github.io/openinfra/articles/osm-python.html) tutorial vignette.
+<br><br>
+Alternatively, the downloaded OSM layers can be loaded into QGIS as tiles too.
+![](https://i.imgur.com/IaEFxT8.png)
+<br>
+Please see the [hyper linked](https://www.youtube.com/watch?v=XKKpPeSQ9UU) video for a deeper explanation on this. 
