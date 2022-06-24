@@ -15,65 +15,17 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Introduction
 
-
-### Ubuntu Linux QGIS Stable Install
-
-This section covers the removal of unstable or outdated QGIS versions before covering the stable installation of QGIS for Ubuntu Linux 20.04.
+This article covers the [QGIS](https://www.qgis.org/en/site/) plugin [OSMDownloader](https://plugins.qgis.org/plugins/OSMDownloader/), answering how to obtain OSM data through a Graphical User Interface (GUI).
 <br><br>
-This sections paraphrases the following [YouTube video](https://www.youtube.com/watch?v=Zzhb8jnEEDI) covering this process.
-<br><br><br>
-
-First open the software properties interface from the terminal with: 
-```
-> sudo software-properties-gtk
-# then enter your password
-```
-
-Next go to the software tab in the popup and remove any provider that contains `gis` before then clicking `close` and then `reload/refresh`:
-```
-# Go to "Other Software" tab
-# Remove ANY provider that contains "gis" within URL i.e. ubuntugis/ppa
-
-> click close
-> click reload/refresh
-
-```
-![](https://i.imgur.com/FFsRPYT.png)
+It is assumed that users already have QGIS installed - If not it can be downloaded for Mac and Windows Operating Systems [here](https://qgis.org/en/site/forusers/download.html). 
+<br><br>
+There is also a guide for Linux users, however this may be confusing harder to follow, and so we go through the process of remving QGIS (users may have corrupted versions or unstable versions) before re-installing a stable version of QGIS at the bottom of this article.
 
 <br><br>
 
-Now we have removed QGIS from providers, we must purge our system of any QGIS files:
-```
-> sudo apt purge qgis* python-qgis* --auto-remove
-# Then enter your password
-# Type 'y' then hit Enter
-```
-<br><br>
-Now we have removed QGIS, we must update our repository to be able to download QGIS stable: 
-```
-# Need to add the repository that we can download stable QGIS from:
-> sudo add-apt-repository ppa:ubuntugis/ppa
-# Hit enter
-```
-<br><br>
-Now we need to refresh our list of repositories after adding the QGIS repo before installing QGIS: 
-```
-#Now we need to refresh the list of repositories
-> sudo apt-get update
-
-# Now we can reinstall QGIS
-> sudo apt-get install qgis
-# Type 'y' and hit Enter
-```
-Congratulations, QGIS (stable) should now be re-installed!
-<br><br>
-To load QGIS, simply type `qgis` into the terminal and hit enter.
-
-<br><br>
-<br><br>
-
-### Installing OSM downloader
+## Installing OSMDownloader
 
 The installation guide has been paraphrased from the following [YouTube video](https://www.youtube.com/watch?v=XKKpPeSQ9UU), should you wish to follow the video instead.
 <br><br>
@@ -108,6 +60,63 @@ The installation guide has been paraphrased from the following [YouTube video](h
 Data downloaded using the OSMDownloader QGIS plugin comes in the .osm format. This file can either be loaded into a GeoDataframe for further analysis using the [OSMnx](https://github.com/gboeing/osmnx) Python package in our [Getting and using OSM data in Python](https://udsleeds.github.io/openinfra/articles/osm-python.html) tutorial vignette.
 <br><br>
 Alternatively, the downloaded OSM layers can be loaded into QGIS as tiles too.
+<br><br>
 ![](https://i.imgur.com/IaEFxT8.png)
-<br>
-Please see the [hyper linked](https://www.youtube.com/watch?v=XKKpPeSQ9UU) video for a deeper explanation on this. 
+<br><br>
+Please see the [linked](https://www.youtube.com/watch?v=XKKpPeSQ9UU) video for a longer example of using OSM layers within QGIS. 
+
+<br><br><br>
+
+## Ubuntu Linux QGIS Uninstall and Stable Install
+
+This section covers the removal of unstable or outdated QGIS versions before covering the stable installation of QGIS for Ubuntu Linux 20.04.
+<br><br>
+This sections paraphrases the following [YouTube video](https://www.youtube.com/watch?v=Zzhb8jnEEDI) covering this process, you may prefer to follow the video so it has been linked.
+<br><br>
+
+First open the software properties interface from the terminal with: 
+```
+> sudo software-properties-gtk
+# then enter your password
+```
+
+Next go to the software tab in the popup and remove any provider that contains `gis`, in our example the highlighted `ubuntugis/ppa` url, before then clicking `close` and then `reload/refresh`:
+```
+# Go to "Other Software" tab
+# Remove ANY provider that contains "gis" within URL 
+
+> click close
+> click reload/refresh
+
+```
+![](https://i.imgur.com/FFsRPYT.png)
+
+<br><br>
+
+Now we have removed QGIS from providers, we must purge our system of any QGIS files:
+```
+> sudo apt purge qgis* python-qgis* --auto-remove
+# Then enter your password
+# Type 'y' then hit Enter
+```
+<br><br>
+Now we have removed QGIS, we must update our repository to be able to download QGIS stable: 
+```
+# Need to add the repository that we can download stable QGIS from:
+> sudo add-apt-repository ppa:ubuntugis/ppa
+# Hit enter
+```
+<br><br>
+Now we need to refresh our list of repositories after adding the QGIS repo before installing QGIS: 
+```
+#Now we need to refresh the list of repositories
+> sudo apt-get update
+
+# Now we can reinstall QGIS
+> sudo apt-get install qgis
+# Type 'y' and hit Enter
+```
+Congratulations, QGIS (stable) should now be re-installed!
+<br><br>
+To load QGIS, simply type `qgis` into the terminal and hit enter!
+
