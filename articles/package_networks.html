@@ -126,37 +126,37 @@
 <a href="https://github.com/ropensci/osmextract/blob/master/R/get-network.R#L230" class="external-link">osmextract</a> (R &amp; SQL)<a class="anchor" aria-label="anchor" href="#osmextract-r-sql"></a>
 </h5>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># A motorcar/motorcycle mode of transport includes the following scenarios:</span>
-<span class="co"># - highway IS NOT NULL (since usually that means that's not a road);</span>
-<span class="co"># - highway NOT IN ('bus_guideway', 'byway' (not sure what it means), 'construction',</span>
-<span class="co"># 'corridor', 'cycleway', 'elevator', 'fixme', 'footway', 'gallop', 'historic',</span>
-<span class="co"># 'no', 'pedestrian', 'platform', 'proposed', 'steps', 'pedestrian',</span>
-<span class="co"># 'bridleway', 'path', 'platform');</span>
-<span class="co"># - access NOT IN ('private', 'no');</span>
-<span class="co"># - service NOT ILIKE 'private%';</span>
-<span class="va">load_options_driving</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">place</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-    place <span class="op">=</span> <span class="va">place</span>,
-    layer <span class="op">=</span> <span class="st">"lines"</span>,
-    extra_tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"access"</span>, <span class="st">"service"</span><span class="op">)</span>,
-    vectortranslate_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-    <span class="st">"-where"</span>, <span class="st">"
-    (highway IS NOT NULL)
-    AND
-    (highway NOT IN (
-    'abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
-    'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-    'proposed', 'cycleway', 'pedestrian', 'bridleway', 'path', 'footway',
-    'steps'
-    ))
-    AND
-    (access NOT IN ('private', 'no'))
-    AND
-    (service NOT ILIKE 'private%')
-    "</span>
-    <span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># A motorcar/motorcycle mode of transport includes the following scenarios:</span></span>
+<span><span class="co"># - highway IS NOT NULL (since usually that means that's not a road);</span></span>
+<span><span class="co"># - highway NOT IN ('bus_guideway', 'byway' (not sure what it means), 'construction',</span></span>
+<span><span class="co"># 'corridor', 'cycleway', 'elevator', 'fixme', 'footway', 'gallop', 'historic',</span></span>
+<span><span class="co"># 'no', 'pedestrian', 'platform', 'proposed', 'steps', 'pedestrian',</span></span>
+<span><span class="co"># 'bridleway', 'path', 'platform');</span></span>
+<span><span class="co"># - access NOT IN ('private', 'no');</span></span>
+<span><span class="co"># - service NOT ILIKE 'private%';</span></span>
+<span><span class="va">load_options_driving</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">place</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    place <span class="op">=</span> <span class="va">place</span>,</span>
+<span>    layer <span class="op">=</span> <span class="st">"lines"</span>,</span>
+<span>    extra_tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"access"</span>, <span class="st">"service"</span><span class="op">)</span>,</span>
+<span>    vectortranslate_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"-where"</span>, <span class="st">"</span></span>
+<span><span class="st">    (highway IS NOT NULL)</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (highway NOT IN (</span></span>
+<span><span class="st">    'abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',</span></span>
+<span><span class="st">    'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',</span></span>
+<span><span class="st">    'proposed', 'cycleway', 'pedestrian', 'bridleway', 'path', 'footway',</span></span>
+<span><span class="st">    'steps'</span></span>
+<span><span class="st">    ))</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (access NOT IN ('private', 'no'))</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (service NOT ILIKE 'private%')</span></span>
+<span><span class="st">    "</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><br><br></p>
 </div>
 <div class="section level4">
@@ -199,41 +199,41 @@ osmextract_filter["driving"] = (
 <a href="https://github.com/ropensci/osmextract/blob/master/R/get-network.R#L197" class="external-link">osmextract</a> (R &amp; SQL)<a class="anchor" aria-label="anchor" href="#osmextract-r-sql-1"></a>
 </h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># See also https://wiki.openstreetmap.org/wiki/Key:footway and</span>
-<span class="co"># https://wiki.openstreetmap.org/wiki/Key:foot</span>
-<span class="co"># A walking mode of transport includes the following scenarios:</span>
-<span class="co"># - highway IS NOT NULL (since usually that means that's not a road);</span>
-<span class="co"># - highway NOT IN ('abandoned', 'bus_guideway', 'byway', 'construction', 'corridor',</span>
-<span class="co"># 'elevator', 'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned',</span>
-<span class="co"># 'platform', 'proposed', 'raceway', 'motorway', 'motorway_link');</span>
-<span class="co"># - highway != 'cycleway' OR foot IN ('yes', 'designated', 'permissive', 'destination');</span>
-<span class="co"># - access NOT IN ('no', 'private');</span>
-<span class="co"># - foot NOT IN ('no', 'use_sidepath', 'private', 'restricted')</span>
-<span class="co"># - service does not look like 'private' (ILIKE is string matching case insensitive)</span>
-<span class="va">load_options_walking</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">place</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-    place <span class="op">=</span> <span class="va">place</span>,
-    layer <span class="op">=</span> <span class="st">"lines"</span>,
-    extra_tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"access"</span>, <span class="st">"foot"</span>, <span class="st">"service"</span><span class="op">)</span>,
-    vectortranslate_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-    <span class="st">"-where"</span>, <span class="st">"
-    (highway IS NOT NULL)
-    AND
-    (highway NOT IN ('abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
-    'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform', 'proposed', 'raceway',
-    'motorway', 'motorway_link'))
-    AND
-    (highway &lt;&gt; 'cycleway' OR foot IN ('yes', 'designated', 'permissive', 'destination'))
-    AND
-    (access NOT IN ('private', 'no'))
-    AND
-    (foot NOT IN ('private', 'no', 'use_sidepath', 'restricted'))
-    AND
-    (service NOT ILIKE 'private%')
-    "</span>
-    <span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># See also https://wiki.openstreetmap.org/wiki/Key:footway and</span></span>
+<span><span class="co"># https://wiki.openstreetmap.org/wiki/Key:foot</span></span>
+<span><span class="co"># A walking mode of transport includes the following scenarios:</span></span>
+<span><span class="co"># - highway IS NOT NULL (since usually that means that's not a road);</span></span>
+<span><span class="co"># - highway NOT IN ('abandoned', 'bus_guideway', 'byway', 'construction', 'corridor',</span></span>
+<span><span class="co"># 'elevator', 'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned',</span></span>
+<span><span class="co"># 'platform', 'proposed', 'raceway', 'motorway', 'motorway_link');</span></span>
+<span><span class="co"># - highway != 'cycleway' OR foot IN ('yes', 'designated', 'permissive', 'destination');</span></span>
+<span><span class="co"># - access NOT IN ('no', 'private');</span></span>
+<span><span class="co"># - foot NOT IN ('no', 'use_sidepath', 'private', 'restricted')</span></span>
+<span><span class="co"># - service does not look like 'private' (ILIKE is string matching case insensitive)</span></span>
+<span><span class="va">load_options_walking</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">place</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    place <span class="op">=</span> <span class="va">place</span>,</span>
+<span>    layer <span class="op">=</span> <span class="st">"lines"</span>,</span>
+<span>    extra_tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"access"</span>, <span class="st">"foot"</span>, <span class="st">"service"</span><span class="op">)</span>,</span>
+<span>    vectortranslate_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"-where"</span>, <span class="st">"</span></span>
+<span><span class="st">    (highway IS NOT NULL)</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (highway NOT IN ('abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',</span></span>
+<span><span class="st">    'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform', 'proposed', 'raceway',</span></span>
+<span><span class="st">    'motorway', 'motorway_link'))</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (highway &lt;&gt; 'cycleway' OR foot IN ('yes', 'designated', 'permissive', 'destination'))</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (access NOT IN ('private', 'no'))</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (foot NOT IN ('private', 'no', 'use_sidepath', 'restricted'))</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (service NOT ILIKE 'private%')</span></span>
+<span><span class="st">    "</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><br><br></p>
 </div>
 <div class="section level4">
@@ -281,44 +281,44 @@ osmextract_filter["walking"] = (
 <a href="https://github.com/ropensci/osmextract/blob/master/R/get-network.R#L157" class="external-link">osmextract</a> (R &amp; SQL)<a class="anchor" aria-label="anchor" href="#osmextract-r-sql-2"></a>
 </h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># A cycling mode of transport includes the following scenarios:</span>
-<span class="co"># - highway IS NOT NULL (since usually that means that's not a road);</span>
-<span class="co"># - highway NOT IN ('abandoned', 'bus_guideway', 'byway', 'construction', 'corridor',</span>
-<span class="co"># 'elevator', 'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned',</span>
-<span class="co"># 'platform', 'proposed', 'raceway', 'steps');</span>
-<span class="co"># - highway NOT IN IN ('motorway', 'motorway_link', 'bridleway', 'footway',</span>
-<span class="co"># 'pedestrian) OR bicycle IN ('yes', 'designated', 'permissive', 'destination');</span>
-<span class="co"># - access NOT IN ('no', 'private');</span>
-<span class="co"># - bicycle NOT IN ('no', 'use_sidepath')</span>
-<span class="co"># - service does not look like 'private' (ILIKE is string matching case insensitive)</span>
-<span class="va">load_options_cycling</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">place</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-    place <span class="op">=</span> <span class="va">place</span>,
-    layer <span class="op">=</span> <span class="st">"lines"</span>,
-    extra_tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"access"</span>, <span class="st">"bicycle"</span>, <span class="st">"service"</span><span class="op">)</span>,
-    vectortranslate_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-    <span class="st">"-where"</span>, <span class="st">"
-    (highway IS NOT NULL)
-    AND
-    (highway NOT IN (
-    'abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',
-    'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',
-    'proposed', 'raceway', 'steps'
-    ))
-    AND
-    (highway NOT IN ('motorway', 'motorway_link', 'footway', 'bridleway',
-    'pedestrian') OR bicycle IN ('yes', 'designated', 'permissive', 'destination')
-    )
-    AND
-    (access NOT IN ('private', 'no'))
-    AND
-    (bicycle NOT IN ('private', 'no', 'use_sidepath', 'restricted'))
-    AND
-    (service NOT ILIKE 'private%')
-    "</span>
-    <span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># A cycling mode of transport includes the following scenarios:</span></span>
+<span><span class="co"># - highway IS NOT NULL (since usually that means that's not a road);</span></span>
+<span><span class="co"># - highway NOT IN ('abandoned', 'bus_guideway', 'byway', 'construction', 'corridor',</span></span>
+<span><span class="co"># 'elevator', 'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned',</span></span>
+<span><span class="co"># 'platform', 'proposed', 'raceway', 'steps');</span></span>
+<span><span class="co"># - highway NOT IN IN ('motorway', 'motorway_link', 'bridleway', 'footway',</span></span>
+<span><span class="co"># 'pedestrian) OR bicycle IN ('yes', 'designated', 'permissive', 'destination');</span></span>
+<span><span class="co"># - access NOT IN ('no', 'private');</span></span>
+<span><span class="co"># - bicycle NOT IN ('no', 'use_sidepath')</span></span>
+<span><span class="co"># - service does not look like 'private' (ILIKE is string matching case insensitive)</span></span>
+<span><span class="va">load_options_cycling</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">place</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    place <span class="op">=</span> <span class="va">place</span>,</span>
+<span>    layer <span class="op">=</span> <span class="st">"lines"</span>,</span>
+<span>    extra_tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"access"</span>, <span class="st">"bicycle"</span>, <span class="st">"service"</span><span class="op">)</span>,</span>
+<span>    vectortranslate_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"-where"</span>, <span class="st">"</span></span>
+<span><span class="st">    (highway IS NOT NULL)</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (highway NOT IN (</span></span>
+<span><span class="st">    'abandoned', 'bus_guideway', 'byway', 'construction', 'corridor', 'elevator',</span></span>
+<span><span class="st">    'fixme', 'escalator', 'gallop', 'historic', 'no', 'planned', 'platform',</span></span>
+<span><span class="st">    'proposed', 'raceway', 'steps'</span></span>
+<span><span class="st">    ))</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (highway NOT IN ('motorway', 'motorway_link', 'footway', 'bridleway',</span></span>
+<span><span class="st">    'pedestrian') OR bicycle IN ('yes', 'designated', 'permissive', 'destination')</span></span>
+<span><span class="st">    )</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (access NOT IN ('private', 'no'))</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (bicycle NOT IN ('private', 'no', 'use_sidepath', 'restricted'))</span></span>
+<span><span class="st">    AND</span></span>
+<span><span class="st">    (service NOT ILIKE 'private%')</span></span>
+<span><span class="st">    "</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><br><br></p>
 </div>
 <div class="section level4">
@@ -745,7 +745,7 @@ print(pyrosm_walk.difference(osmextract_walk))
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>

@@ -1,5 +1,5 @@
 pandoc: 2.14.2
-pkgdown: 2.0.4
+pkgdown: 2.0.5
 pkgdown_sha: ~
 articles:
   QGIS_OSM_Setup: QGIS_OSM_Setup.html
@@ -9,5 +9,5 @@ articles:
   osm-python: osm-python.html
   package_networks: package_networks.html
   regions: regions.html
-last_built: 2022-06-24T11:06Z
+last_built: 2022-06-24T17:49Z
 
