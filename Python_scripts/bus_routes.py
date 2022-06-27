@@ -12,7 +12,7 @@ import pyrosm
 osm = pyrosm.OSM(pyrosm.get_data("Leeds"))
 
 keys_to_keep = ["highway", "route"]
-tags_to_keep = ["route" ]
+tags_to_keep = ["route", "ref"]
 
 # Specifying key:value pairs to be filtered - this is the second level of filtering. 
 drive_filter = dict(
@@ -48,7 +48,7 @@ leeds_custom_driving = osm.get_data_by_custom_criteria(custom_filter = drive_fil
                                                        osm_keys_to_keep = keys_to_keep,
                                                        filter_type = filter_type,
                                                        tags_as_columns = tags_to_keep,
-                                                       keep_nodes = False,
+                                                       keep_nodes = True,
                                                        keep_relations = True)
 
 # Visualisation and stats
@@ -70,6 +70,8 @@ print("Leeds_bus_routes plot")
 leeds_bus_routes.plot()
 
 
+leeds_14_bus = leeds_bus_routes.loc[leeds_bus_routes.ref == "14"].copy()
+
 import folium
 leeds_coords = [53.8008, -1.5491]
 m = folium.Map(leeds_coords, zoom_start=13)
@@ -79,4 +81,13 @@ folium.Choropleth(leeds_bus_routes.geometry,
                   line_color= 'blue').add_to(m)
 
 file_path = "/home/james/Desktop/maps/leeds_bus_routes_folium.html"
+m.save(file_path)
+
+m = folium.Map(leeds_coords, zoom_start=13)
+
+folium.Choropleth(leeds_14_bus.geometry,
+                  line_weight= 3,
+                  line_color= 'blue').add_to(m)
+
+file_path = "/home/james/Desktop/maps/leeds_14bus_routes_folium.html"
 m.save(file_path)
