@@ -32,8 +32,11 @@
 # Define recode_road_class function
 #' @export
 recode_road_class <- function(osm_sf) {
+  
+  # Allows the use of pipe %>%
+  usethis::use_pipe()
   # Created road_class columns
-  osm_recat = osm_sf |>
+  osm_recat = osm_sf %>%
     # Creates road_class column
     dplyr::mutate(road_class = dplyr::case_when(
       # (7) - Motorways
@@ -50,7 +53,7 @@ recode_road_class <- function(osm_sf) {
       highway %in% c("living_street", "residential", "unclassified") ~ "1",
       # (0) - Traffic-free Paths
       highway == "cycleway" ~ "0"
-    )) |>
+    )) %>%
     
     # Creates road_description columns
     dplyr::mutate(road_desc = dplyr::case_when(
@@ -68,7 +71,7 @@ recode_road_class <- function(osm_sf) {
       highway %in% c("living_street", "residential", "unclassified") ~ "Residential / Local Roads",
       # (0) - Traffic-free Paths
       highway == "cycleway" ~ "Cycleway"
-    )) |>
+    )) %>%
     
     # Removes features that have not been recodeed to a road_class value
     filter(!is.na(road_class))
