@@ -30,6 +30,7 @@
 
 
 # Define recode_road_class function
+#' @export
 recode_road_class <- function(osm_sf) {
   # Created road_class columns
   osm_recat = osm_sf %>%
