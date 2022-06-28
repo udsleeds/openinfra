@@ -1,7 +1,33 @@
-# Date      27/06/2022
+#' Re-classifies OSM Roads
+#' 
+#' Determines road classification defined by [Chan and Cooper's](https://www.nature.com/articles/s41598-019-55669-8) work. 
+#' Specifically re-classifies roads as one of 8 road classes (0-7) specified in the following [table](https://www.nature.com/articles/s41598-019-55669-8/tables/6),
+#' depending on each features `highway=` key values.
+#' 
+#' Re-classifies data based on the following highway key values:
+#' 
+#' Road Class | Description | Selection from OSM
+#' -- | -- | --
+#' 7 | Motorways | highway = motorway OR highway = motorway_link
+#' 6 | Non-residential Dual Carriageways | highway =  trunk OR highway = trunk_link*manual classification needed
+#' 5 | Residential Dual Carriageways | highway =  trunk OR highway =  trunk_link*manual classification needed
+#' 4 | Primary Roads | highway =  primary OR highway =  primary_link OR (highway =  trunk AND oneway = F)
+#' 3 | Secondary Roads | highway =  secondary OR highway =  secondary_link
+#' 2 | Tertiary Roads | highway = tertiary OR highway = tertiary_link
+#' 1 | Local Roads | highway = living_street OR highway = residential OR highway = unclassified
+#' 0 | Traffic-free Paths | highway = cycleway
+#'
+#' @param osm_sf An `sf` and `data.frame` object containing OpenStreetMap infrastructure data, obtained from the [`osmextract`](https://github.com/ropensci/osmextract) function.
+#' @return  The \code{osm_sf} simple features data frame is returned with additional columns road_class and road_desc based on Chan and Cooper's road classifications.
+#'
+#' @examples 
+#' output = recode_road_class(total_place = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson"))
+
+
+# Date      28/06/2022
 # Authour   James Hulse
 # Version   1.0.0
-#
+
 
 # Define recode_road_class function
 recode_road_class <- function(osm_sf) {
