@@ -5,8 +5,6 @@
 
 # Define recode_road_class function
 recode_road_class <- function(osm_sf) {
-  library("dplyr")
-  
   # Created road_class columns
   osm_recat = osm_sf %>%
     # Creates road_class column
