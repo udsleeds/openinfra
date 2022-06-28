@@ -21,7 +21,7 @@
 #' @return  The \code{osm_sf} simple features data frame is returned with additional columns road_class and road_desc based on Chan and Cooper's road classifications.
 #'
 #' @examples 
-#' output = recode_road_class(total_place = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson"))
+#' output = openinfra::recode_road_class(total_place = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson"))
 
 
 # Date      28/06/2022

@@ -31,5 +31,5 @@ Re-classifies data based on the following highway key values:\tabular{lll}{
 }
 }
 \examples{
-output = recode_road_class(total_place = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson"))
+output = openinfra::recode_road_class(total_place = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson"))
 }
