@@ -17,8 +17,10 @@
 #' 1 | Local Roads | highway = living_street OR highway = residential OR highway = unclassified
 #' 0 | Traffic-free Paths | highway = cycleway
 #'
+#' @importFrom dplyr %>%
 #' @param osm_sf An `sf` and `data.frame` object containing OpenStreetMap infrastructure data, obtained from the [`osmextract`](https://github.com/ropensci/osmextract) function.
 #' @return  The \code{osm_sf} simple features data frame is returned with additional columns road_class and road_desc based on Chan and Cooper's road classifications.
+#' @export
 #'
 #' @examples 
 #' output = recode_road_class(sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson"))
@@ -30,11 +32,11 @@
 
 
 # Define recode_road_class function
-#' @export
+
 recode_road_class <- function(osm_sf) {
   
   # Allows the use of pipe %>%
-  usethis::use_pipe()
+  # usethis::use_pipe()
   # Created road_class columns
   osm_recat = osm_sf %>%
     # Creates road_class column
