@@ -1,0 +1,164 @@
+---
+title: "data_packs"
+author: "James Hulse"
+date: '2022-06-27'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Setup
+Library install
+```{r libraries, echo=TRUE, message=FALSE}
+library(sf)
+library(dplyr)
+library(tmap)
+library(data.table)
+```
+
+
+## Data Packs
+
+This vignette covers the transport infrastructure data packs.
+<br><br>
+Below we can see the `recode_road_class` function. This function takes a SimpleFeatures ([sf](https://r-spatial.github.io/sf/index.html)) osm infrastructure network and re-classifies features based
+on road classifications specified by [Chan and Cooper](https://www.nature.com/articles/s41598-019-55669-8) in the following [table](https://www.nature.com/articles/s41598-019-55669-8/tables/6).
+<br><br>
+[Chan and Cooper's](https://www.nature.com/articles/s41598-019-55669-8) work, *"Using road class as a replacement for predicted motorized traffic flow in spatial network models of cycling"*.
+<br><br>
+Cycling models require the simulation of motorised traffic in order to simulate motorised traffic movement to be considered in cycling models for route planning (cyclists won't enjoy being on a busy road full of traffic!).
+<br><br>
+To model a given area for cycling, simulated motorised traffic must be modelled for a circular area (∝r^2^) 20x that of the cyclists, as zonal Origin Destination (OD) data is used for the entire car trip (typical car journey range ~30km to a cyclists ~7km).
+<br><br>
+Accurately modelling motor traffic for such a larger area requires much more data, time, and money than that required to model for cyclists, this becomes even more of an issue when comparing budgets for cyclist modelling and motorised traffic modelling.
+<br><br>
+[Work](https://www.nature.com/articles/s41598-019-55669-8) by Chan and Cooper propose estimating road traffic based on road classes, as defined in the table above, negating the requirement for the costly and time consuming modelling of motorised traffic.
+
+### Function: `recode_road_class` 
+```{r function}
+# Define recode_road_class function
+recode_road_class <- function(osm_sf) {
+  
+  library("dplyr")
+  #_Function_Code_________________________________
+  osm_recat = osm_sf %>%
+    # Creates road_class column
+    dplyr::mutate(road_class = dplyr::case_when(
+      # (7) - Motorways
+      highway %in% c("motorway", "motorway_link") ~ "7",
+      # (6/5) - Dual Carriageways resi & non-resi
+      highway %in% c("trunk", "trunk_link") ~ "6/5",
+      # (4) - Primary Roads
+      highway %in% c("primary", "primary_link") | (highway == "trunk" & oneway == "F") ~ "4",
+      # (3) - Secondary Roads
+      highway %in% c("secondary", "secondary_link") ~ "3",
+      # (2) - Tertiary Roads
+      highway %in% c("tertiary", "tertiary_link") ~ "2",
+      # (1) - Local Roads
+      highway %in% c("living_street", "residential", "unclassified") ~ "1",
+      # (0) - Traffic-free Paths
+      highway == "cycleway" ~ "0"
+    )) %>%
+    
+    # Creates road_description columns
+    dplyr::mutate(road_desc = dplyr::case_when(
+      # (7) - Motorways
+      highway %in% c("motorway", "motorway_link") ~ "Motorways",
+      # (6/5) - Dual Carriageways resi & non-resi
+      highway %in% c("trunk", "trunk_link") ~ "Dual Carriageways (R&NR)",
+      # (4) - Primary Roads
+      highway %in% c("primary", "primary_link") | (highway == "trunk" & oneway == "F") ~ "Primary Roads",
+      # (3) - Secondary Roads
+      highway %in% c("secondary", "secondary_link") ~ "Secondary Roads",
+      # (2) - Tertiary Roads
+      highway %in% c("tertiary", "tertiary_link") ~ "Tertiary Roads",
+      # (1) - Local Roads
+      highway %in% c("living_street", "residential", "unclassified") ~ "Residential / Local Roads",
+      # (0) - Traffic-free Paths
+      highway == "cycleway" ~ "Cycleway"
+    )) %>%
+    # Removes features that have not been recodeed to a road_class value
+    filter(!is.na(road_class))
+}
+```
+<br><br>
+
+## An Example
+
+Here we visualise an output from `recode_road_class` using OSM data extracted using the [`osmextract`](https://github.com/ropensci/osmextract) package for R using the `oe_get()` command, shown below.
+<br><br>
+This example concerns a 5km circular radius about the city centre of Leeds, UK, with Long, Lat coords (-1.548567, 53.801277).
+<br><br>
+
+### Getting Data
+```{r download_data}
+# Data downloaded through osmextract as shown below: 
+
+#total_place = osmextract::oe_get(
+#  place = "Leeds",
+#  provider = "bbbike",
+#  layer = "lines",
+#  never_skip_vectortranslate = TRUE,
+#  force_download = TRUE,
+#  quiet = FALSE,
+#  extra_tags = c("access", "service", "foot", "bicycle" "oneway") # Add in "oneway" for recode_road_class function
+#)
+
+# For reproduciblity you may chose to use the example dataset from our releases.
+# You can create your own data using the oe_get() function above.
+total_place = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson")
+```
+
+<br><br>
+
+### Set Up Circular Buffer
+```{r setup_buffer}
+# Setting up the circular buffer around specified (long, lat) coord
+crs = "WGS84"
+
+# (Long, Lat) coords of desired place (Leeds City Centre)
+place_point = c(-1.548567, 53.801277)
+
+# Desired (m) radius around desired point
+radius = 5000 #(5km)
+
+# Converts point coord into a sf object (so we can use st_buffer)
+point_table <- data.table(place=("Location"), lon=(place_point[1]), lat=(place_point[2]))
+point_sf = st_as_sf(point_table, coords=c("lon", "lat"), crs=crs)
+
+# Define the circle buffer around our desired location
+circle_buffer = sf::st_buffer(point_sf, dist = radius)
+```
+
+<br><br>
+
+### Applying `recode_road_class` & Circular Buffer Zone 
+```{r function_application}
+road_class_recode = recode_road_class(total_place)
+
+place_subset= road_class_recode[circle_buffer, ]
+```
+
+<br><br>
+
+### Road Description Visualisation
+```{r visualisation}
+tmap_mode("view")
+tmap::tm_shape(place_subset %>% dplyr::select(road_desc)) +
+  tmap::tm_lines("road_desc") +
+  tmap::tm_layout(title = "Road Descriptions within 5km of Leeds City Centre")
+
+```
+
+<br><br>
+
+### Road Classification Visualisation
+```{r visualisation_class}
+tmap::tm_shape(place_subset %>% dplyr::select(road_class)) +
+  tmap::tm_lines("road_class") +
+  tmap::tm_layout(title = "Road Classifications within 5km of Leeds City Centre")
+```
+
+
