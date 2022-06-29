@@ -54,4 +54,10 @@
   <url>
     <loc>/reference/index.html</loc>
   </url>
+  <url>
+    <loc>/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>/reference/recode_road_class.html</loc>
+  </url>
 </urlset>
