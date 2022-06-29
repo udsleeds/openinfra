@@ -12,6 +12,7 @@ Description: This package contains code and example data to explore the utility 
 License: MIT + file LICENSE
 Imports: 
     dplyr,
+    magrittr,
     od,
     osmextract,
     pct,

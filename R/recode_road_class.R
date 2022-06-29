@@ -17,13 +17,15 @@
 #' 1 | Local Roads | highway = living_street OR highway = residential OR highway = unclassified
 #' 0 | Traffic-free Paths | highway = cycleway
 #'
-#' @importFrom dplyr %>%
 #' @param osm_sf An `sf` and `data.frame` object containing OpenStreetMap infrastructure data, obtained from the [`osmextract`](https://github.com/ropensci/osmextract) function.
 #' @return  The \code{osm_sf} simple features data frame is returned with additional columns road_class and road_desc based on Chan and Cooper's road classifications.
 #' @export
 #'
 #' @examples 
-#' output = recode_road_class(sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson"))
+#' u_data_large = "https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson"
+#' u_data_small = "some_url" #Add smaller example here! 
+#' data = sf::read_sf(u_data_large)
+#' output = recode_road_class(data)
 
 
 # Date      28/06/2022
@@ -34,9 +36,8 @@
 # Define recode_road_class function
 
 recode_road_class <- function(osm_sf) {
-  
-  # Allows the use of pipe %>%
-  # usethis::use_pipe()
+  # browser() uncomment this to perform function debugging 
+
   # Created road_class columns
   osm_recat = osm_sf %>%
     # Creates road_class column
@@ -76,5 +77,5 @@ recode_road_class <- function(osm_sf) {
     )) %>%
     
     # Removes features that have not been recodeed to a road_class value
-    filter(!is.na(road_class))
+    dplyr::filter(!is.na(road_class))
 }
