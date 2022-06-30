@@ -27,21 +27,18 @@
 #'                       "/download/v0.2/bbbike_leeds_27_6_22.geojson")
 #' u_data_small = paste0("https://github.com/udsleeds/openinfra/releases",
 #'                       "/download/v0.2/30_06_22_bbbike_LCC_func_example_5_75km.geojson")
-#' example_data = sf::read_sf(u_data_small)
+#' example_data = sf::read_sf(u_data_large)
 #' print(structure(example_data))
 #' example_data = data(example_data)
 #' print(structure(example_data))
 #' output = recode_road_class(example_data)
-#' tmap::qtm(output %>% dplyr::select(road_desc))
-
-
-# Date      28/06/2022
-# Authour   James Hulse
-# Version   1.0.1
-
-
-# Define recode_road_class function
-
+#' # Quick plot:
+#' # plot(output["road_desc"], key.pos = 1)
+#' # Advanced plot with tmap:
+#' library(tmap)
+#' tm_shape(output %>% dplyr::select(road_desc)) +
+#'  tm_lines(col = "road_desc", title.col = "Road class") +
+#'  tm_layout(legend.bg.color = "white")
 recode_road_class <- function(osm_sf) {
   # browser() uncomment this to perform function debugging 
 
