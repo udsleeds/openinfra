@@ -36,7 +36,10 @@ u_data_large = paste0("https://github.com/udsleeds/openinfra/releases",
                       "/download/v0.2/bbbike_leeds_27_6_22.geojson")
 u_data_small = paste0("https://github.com/udsleeds/openinfra/releases",
                       "/download/v0.2/30_06_22_bbbike_LCC_func_example_5_75km.geojson")
-data = sf::read_sf(u_data_small)
-output = recode_road_class(data)
+example_data = sf::read_sf(u_data_small)
+print(structure(example_data))
+example_data = data(example_data)
+print(structure(example_data))
+output = recode_road_class(example_data)
 tmap::qtm(output \%>\% dplyr::select(road_desc))
 }
