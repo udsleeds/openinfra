@@ -31,6 +31,7 @@ Re-classifies data based on the following highway key values:\tabular{lll}{
 }
 }
 \examples{
+library(openinfra)
 u_data_large = paste0("https://github.com/udsleeds/openinfra/releases",
                       "/download/v0.2/bbbike_leeds_27_6_22.geojson")
 u_data_small = paste0("https://github.com/udsleeds/openinfra/releases",
