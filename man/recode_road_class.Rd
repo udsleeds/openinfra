@@ -31,8 +31,11 @@ Re-classifies data based on the following highway key values:\tabular{lll}{
 }
 }
 \examples{
-u_data_large = "https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson"
-u_data_small = "some_url" #Add smaller example here! 
-data = sf::read_sf(u_data_large)
+u_data_large = paste0("https://github.com/udsleeds/openinfra/releases",
+                      "/download/v0.2/bbbike_leeds_27_6_22.geojson")
+u_data_small = paste0("https://github.com/udsleeds/openinfra/releases",
+                      "/download/v0.2/30_06_22_bbbike_LCC_func_example_5_75km.geojson")
+data = sf::read_sf(u_data_small)
 output = recode_road_class(data)
+tmap::qtm(output \%>\% dplyr::select(road_desc))
 }
