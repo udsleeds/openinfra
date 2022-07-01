@@ -17,16 +17,15 @@ quiet = FALSE,\cr
 extra_tags = c(all_extra_tags, "oneway", "maxspeed") # Add in "oneway" for recode_road_class)
 }
 \source{
-{Created using the \href{https://github.com/ropensci/osmextract}{osmextract} package for R using oe_get() }
+{Created using the \href{https://github.com/ropensci/osmextract}{osmextract} package for R using oe_get() - params shown above.}
 }
 \usage{
-data(example_data)
-example_data
+openinfra::example_data
 }
 \description{
 OSM infrastructure data to showcase the recode_road_class openinfra function.
 }
 \examples{
-data(example_data)    # Lazy Loading. Data becomes visible as soon as it is requested. 
+example_data   # Lazy Loading. Data becomes visible as soon as it is requested. 
 }
 \keyword{dataset}
