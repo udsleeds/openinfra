@@ -37,31 +37,31 @@ The installation guide has been paraphrased from the following [YouTube video](h
 3. In the pop up,  select the "Not Installed" tab
 <br><br>
 4. Find the OSMDownloader plugin and install it
-![](https://i.imgur.com/S8Z5IlF.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-20-11.png) 
 <br><br>
 5. Close the plugin window
 <br><br>
 6. Open a QGIS tile from the browser. We use XYZ Tiles > OpenStreetMap
-![](https://i.imgur.com/RVS5xrt.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-22-19.png) 
 <br><br>
 7. Zoom to a desired location, we go to Institute for Transport Studies (ITS) Leeds
-![](https://i.imgur.com/ErZjZjZ.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-29-39.png) 
 <br><br>
-8. Select area to download using newly installed OSMDownloader tool ---> ![](https://i.imgur.com/5DWKrzt.png)
+8. Select area to download using newly installed OSMDownloader tool ---> ![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-21.17-48-25.png)
 <br><br>
 9. Specify download save location
-![](https://i.imgur.com/ZeJ6lkz.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-24-45.png) 
 <br><br>
 10. Hit "OK". The OSM data for your selected bounding box will be downloaded to your specified location as a .osm file!
-![](https://i.imgur.com/nsKUdj1.png)
-![](https://i.imgur.com/ZP2Gwzg.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-25-58.png) 
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-28-04.png) 
 
 <br><br>
 Data downloaded using the OSMDownloader QGIS plugin comes in the .osm format. This file can either be loaded into a GeoDataframe for further analysis using the [OSMnx](https://github.com/gboeing/osmnx) Python package in our [Getting and using OSM data in Python](https://udsleeds.github.io/openinfra/articles/osm-python.html) tutorial vignette.
 <br><br>
 Alternatively, the downloaded OSM layers can be loaded into QGIS as tiles too.
 <br><br>
-![](https://i.imgur.com/IaEFxT8.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-38-13.png) 
 <br><br>
 Please see the [linked](https://www.youtube.com/watch?v=XKKpPeSQ9UU) video for a longer example of using OSM layers within QGIS. 
 
@@ -89,7 +89,7 @@ Next go to the software tab in the popup and remove any provider that contains `
 > click reload/refresh
 
 ```
-![](https://i.imgur.com/FFsRPYT.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-08-05.png) 
 
 <br><br>
 
