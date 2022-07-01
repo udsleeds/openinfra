@@ -17,9 +17,11 @@
 #' 1 | Local Roads | highway = living_street OR highway = residential OR highway = unclassified
 #' 0 | Traffic-free Paths | highway = cycleway
 #'
+#' 
 #' @param osm_sf An `sf` and `data.frame` object containing OpenStreetMap infrastructure data, obtained from the [`osmextract`](https://github.com/ropensci/osmextract) function.
 #' @return  The \code{osm_sf} simple features data frame is returned with additional columns road_class and road_desc based on Chan and Cooper's road classifications.
 #' @export
+#' 
 #'
 #' @examples 
 #' library(openinfra)
@@ -29,18 +31,21 @@
 #'                       "/download/v0.2/30_06_22_bbbike_LCC_func_example_5_75km.geojson")
 #' example_data = sf::read_sf(u_data_small)
 #' print(structure(example_data))
-#' example_data = data(example_data)
-#' print(structure(example_data))
-#' output = recode_road_class(example_data)
-#' tmap::qtm(output %>% dplyr::select(road_desc))
+#' #test1 = data(example_data)
+#' #print(structure(test1))
+#' #test2 = example_data
+#' #print(structure(test2))
+#' internal_data = example_data
+#' output = recode_road_class(internal_data)
 
-
-# Date      28/06/2022
-# Authour   James Hulse
-# Version   1.0.1
-
-
-# Define recode_road_class function
+#' # Quick plot:
+#' # plot(output["road_desc"], key.pos = 1)
+#' 
+#' # Advanced plot with tmap:
+#' library(tmap)
+#' tm_shape(output %>% dplyr::select(road_desc)) +
+#'  tm_lines(col = "road_desc", title.col = "Road class") +
+#'  tm_layout(legend.bg.color = "white")
 
 recode_road_class <- function(osm_sf) {
   # browser() uncomment this to perform function debugging 
