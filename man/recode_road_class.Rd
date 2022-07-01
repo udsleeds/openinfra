@@ -32,6 +32,7 @@ Re-classifies data based on the following highway key values:\tabular{lll}{
 }
 \examples{
 library(openinfra)
+library(sf)
 u_data_large = paste0("https://github.com/udsleeds/openinfra/releases",
                       "/download/v0.2/bbbike_leeds_27_6_22.geojson")
 u_data_small = paste0("https://github.com/udsleeds/openinfra/releases",
@@ -39,6 +40,8 @@ u_data_small = paste0("https://github.com/udsleeds/openinfra/releases",
 #example_data = sf::read_sf(u_data_small)
 #print(structure(example_data))
 internal_data = example_data
+print(dim(internal_data))
+print(structure(internal_data))
 output = recode_road_class(internal_data)
 # Quick plot:
 # plot(output["road_desc"], key.pos = 1)
