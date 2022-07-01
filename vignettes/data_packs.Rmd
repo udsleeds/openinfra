@@ -2,7 +2,11 @@
 title: "data_packs"
 author: "James Hulse"
 date: '2022-06-27'
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{data_packs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}

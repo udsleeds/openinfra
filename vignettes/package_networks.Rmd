@@ -2,7 +2,11 @@
 title: "Network definitions (pre-defined networks) by OSM data package"
 author: "James Hulse"
 date: '2022-06-15'
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Network definitions (pre-defined networks) by OSM data package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
