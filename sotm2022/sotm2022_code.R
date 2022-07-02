@@ -356,3 +356,48 @@ tmap::tm_shape(lcc_locations_index)+
            as.count = TRUE,
            lwd = 2)
 
+# a visualisation for Figure 1 in the abstract
+## first create a new sf object with column values as refering to linestring type (will be helpful in creating a legend later)
+lcc_new = lcc |> 
+  dplyr::mutate(footpaths = dplyr::case_when(im_footpath == "yes" ~ "footpath",
+                                             TRUE ~ "NA"),
+                footways = dplyr::case_when(im_footway == "yes" ~ "footway",
+                                            TRUE ~ "NA"),
+                footways_implied = dplyr::case_when(im_footway_imp == "yes" ~ "implied footway",
+                                                    TRUE ~ "NA")) 
+## create subsets that will later be joined by row. This will create a column that can be mapped and colored by its values 
+## (values were defined in the code chunk above)
+lcc_footway = lcc_new |>
+  dplyr::filter(footways == "footway") |> 
+  dplyr::select(footways) |> 
+  dplyr::rename("Highway type" = footways)
+lcc_footpath = lcc_new |>
+  dplyr::filter(footpaths == "footpath") |> 
+  dplyr::select(footpaths) |> 
+  dplyr::rename("Highway type" = footpaths)
+lcc_footway_imp = lcc_new |>
+  dplyr::filter(footways_implied == "implied footway") |> 
+  dplyr::select(footways_implied) |> 
+  dplyr::rename("Highway type" = footways_implied)
+
+## join by row
+lcc_joined = rbind(lcc_footway, lcc_footpath, lcc_footway_imp)
+
+# plot
+tmap::tmap_mode("plot")
+cl_map = tmap::tm_shape(lcc_joined) +
+  tmap::tm_lines(col = "Highway type",
+                 palette = "Dark2") +
+  tmap::tm_shape(lcc |> filter(!is.na(im_kerb)) |> dplyr::rename("Kerb" = im_kerb))+
+  tmap::tm_dots("Kerb",
+                palette = "magma",
+                shape = 4,
+                size = 0.5)+
+  tmap::tm_layout(legend.position = c("left", "bottom"),
+                  legend.bg.color = "white",
+                  frame = FALSE)
+
+tmap::tmap_save(tm = cl_map,
+                filename = "sotm2022/somt2022_figure",
+                units = 150)
+
