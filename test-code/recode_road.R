@@ -43,7 +43,7 @@ place_point = c(-1.548567, 53.801277)
 # Desired (m) radius around desired point
 radius = 5000 #(5km)
 # Converts point coord into a sf object (so we can use st_buffer)
-point_table <- data.table(place=("Location"), lon=(place_point[1]), lat=(place_point[2]))
+point_table <- data.frame(place=("Location"), lon=(place_point[1]), lat=(place_point[2]))
 point_sf = st_as_sf(point_table, coords=c("lon", "lat"), crs=crs)
 # Define the circle buffer around our desired location
 circle_buffer = sf::st_buffer(point_sf, dist = radius)
