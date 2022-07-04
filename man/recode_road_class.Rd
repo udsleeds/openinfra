@@ -7,7 +7,9 @@
 recode_road_class(osm_sf)
 }
 \arguments{
-\item{osm_sf}{An \code{sf} and \code{data.frame} object containing OpenStreetMap infrastructure data, obtained from the \href{https://github.com/ropensci/osmextract}{\code{osmextract}} function.}
+\item{osm_sf}{\itemize{
+\item A \code{sf} and \code{data.frame} object containing OpenStreetMap infrastructure data, obtained from the \href{https://github.com/ropensci/osmextract}{\code{osmextract}} function.
+}}
 }
 \value{
 The \code{osm_sf} simple features data frame is returned with additional columns road_class and road_desc based on Chan and Cooper's road classifications.
@@ -32,14 +34,12 @@ Re-classifies data based on the following highway key values:\tabular{lll}{
 }
 \examples{
 library(sf)
+library(openinfra)
 u_data_large = paste0("https://github.com/udsleeds/openinfra/releases",
                       "/download/v0.2/bbbike_leeds_27_6_22.geojson")
 u_data_small = paste0("https://github.com/udsleeds/openinfra/releases",
                       "/download/v0.2/30_06_22_bbbike_LCC_func_example_5_75km.geojson")
-#example_data = sf::read_sf(u_data_small)
-#print(structure(example_data))
 internal_data = example_data
-dim(internal_data)
 structure(internal_data)
 output = recode_road_class(internal_data)
 # Quick plot:

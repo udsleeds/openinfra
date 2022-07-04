@@ -18,21 +18,19 @@
 #' 0 | Traffic-free Paths | highway = cycleway
 #'
 #' 
-#' @param osm_sf An `sf` and `data.frame` object containing OpenStreetMap infrastructure data, obtained from the [`osmextract`](https://github.com/ropensci/osmextract) function.
+#' @param osm_sf - A `sf` and `data.frame` object containing OpenStreetMap infrastructure data, obtained from the [`osmextract`](https://github.com/ropensci/osmextract) function.
 #' @return  The \code{osm_sf} simple features data frame is returned with additional columns road_class and road_desc based on Chan and Cooper's road classifications.
 #' @export
 #' 
 #'
 #' @examples 
 #' library(sf)
+#' library(openinfra)
 #' u_data_large = paste0("https://github.com/udsleeds/openinfra/releases",
 #'                       "/download/v0.2/bbbike_leeds_27_6_22.geojson")
 #' u_data_small = paste0("https://github.com/udsleeds/openinfra/releases",
 #'                       "/download/v0.2/30_06_22_bbbike_LCC_func_example_5_75km.geojson")
-#' #example_data = sf::read_sf(u_data_small)
-#' #print(structure(example_data))
 #' internal_data = example_data
-#' dim(internal_data)
 #' structure(internal_data)
 #' output = recode_road_class(internal_data)
 
@@ -43,8 +41,9 @@
 #' tmap::tm_shape(output |> dplyr::select(road_desc)) +
 #'  tmap::tm_lines(col = "road_desc", title.col = "Road class") +
 #'  tmap::tm_layout(legend.bg.color = "white")
+
 recode_road_class <- function(osm_sf) {
-  # browser() uncomment this to perform function debugging 
+  # browser() Uncomment this to perform function debugging 
 
   # Created road_class columns
   osm_recat = osm_sf %>%
