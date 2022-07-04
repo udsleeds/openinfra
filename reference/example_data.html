@@ -86,7 +86,58 @@
 
     <div id="format">
     <h2>Format</h2>
-    <p>A data frame of infrastructure features for Leeds, with 36,065 features and 16 variables</p>
+    <p>A data frame of infrastructure features for Leeds, with 36,065 features and 16 variable. Each feature is described by the following columns.<br></p><dl><dt>osm_id</dt>
+<dd><p>Unique feature type (Node|Way|Relation) and numeric ID combination. e.g OSM Way 2746 has osm_id = W2746.</p></dd>
+
+<dt>name</dt>
+<dd><p>This key is set to the primary name of the feature in the real world.</p></dd>
+
+<dt>highway</dt>
+<dd><p>Main key used to identify any kind of road, street or path.</p></dd>
+
+<dt>waterway</dt>
+<dd><p>Key used to describe water flows like rivers, streams, boat-yards. Or, elements that interact with water like dams, weirs, locks etc.</p></dd>
+
+<dt>aerialway</dt>
+<dd><p>Key used for various forms of passenger or goods transport that uses wires, including cable-cars, chair-lifts, gondolas etc.</p></dd>
+
+<dt>barrier</dt>
+<dd><p>Key used for a physical ground structures which blocks or impeads movement.</p></dd>
+
+<dt>man_made</dt>
+<dd><p>Key used to identify man made structures.</p></dd>
+
+<dt>access</dt>
+<dd><p>Key to describe restrictions on the use of highways, and other trasnportation routes (warterways|railways|aerialways) as well as facilities such as buildings.</p></dd>
+
+<dt>service</dt>
+<dd><p>Key to show feature is used for access to a building, service station, beach, campsite, industrial estate, business park etc. Commonly also used for acces to parking, driveways and alleyways.</p></dd>
+
+<dt>bicycle</dt>
+<dd><p>Key to indicate legal restrictions for cyclists. i.e "dismount" implies dismount the cycle, "yes" implies suitable for cyclists.</p></dd>
+
+<dt>foot</dt>
+<dd><p>Key to indicate legal resrictions for pedestrians</p></dd>
+
+<dt>oneway</dt>
+<dd><p>Key to indicate the oneway access restriction on highways, and other ways, for vehicles (car|bicycle|truck etc.) as appropriate</p></dd>
+
+<dt>maxspeed</dt>
+<dd><p>Key used to define the maximum legal speed limit for general traffic on a particular road.</p></dd>
+
+<dt>z_order</dt>
+<dd><p>A field in osm2pgsql datamodel that map OSM Layers in OSM tags to a number in osm2pgsql model. See <a href="https://wiki.openstreetmap.org/wiki/Layer#Within_the_renderer_.2F_Mapnik" class="external-link">Within Renderers</a></p></dd>
+
+<dt>other_tags</dt>
+<dd><p>Any additional tags attributed to a feature that is not returned as its own column (muhc like this column) by default.</p></dd>
+
+<dt>geometry</dt>
+<dd><p>A column that contains the geometry of the feature in question. Typically either Linestring, MultiLinestring, Polygon, MultiPolygon.</p></dd>
+
+
+</dl><p><br>
+place_name = "Leeds"<br>
+provider = "bbbike"<br></p>
 <p>total_place = osmextract::oe_get(<br>
 place = place_name,<br>
 provider = provider,<br>

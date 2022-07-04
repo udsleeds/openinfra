@@ -91,7 +91,8 @@ depending on each features <code>highway=</code> key values.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>osm_sf</dt>
-<dd><p>An <code>sf</code> and <code>data.frame</code> object containing OpenStreetMap infrastructure data, obtained from the <a href="https://github.com/ropensci/osmextract" class="external-link"><code>osmextract</code></a> function.</p></dd>
+<dd><ul><li><p>A <code>sf</code> and <code>data.frame</code> object containing OpenStreetMap infrastructure data, obtained from the <a href="https://github.com/ropensci/osmextract" class="external-link"><code>osmextract</code></a> function.</p></li>
+</ul></dd>
 
 </dl></div>
     <div id="value">
@@ -108,16 +109,13 @@ depending on each features <code>highway=</code> key values.</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 6.3.1; sf_use_s2() is TRUE</span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/udsleeds/openinfra/" class="external-link">openinfra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">u_data_large</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"https://github.com/udsleeds/openinfra/releases"</span>,</span></span>
 <span class="r-in"><span>                      <span class="st">"/download/v0.2/bbbike_leeds_27_6_22.geojson"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">u_data_small</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"https://github.com/udsleeds/openinfra/releases"</span>,</span></span>
 <span class="r-in"><span>                      <span class="st">"/download/v0.2/30_06_22_bbbike_LCC_func_example_5_75km.geojson"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">#example_data = sf::read_sf(u_data_small)</span></span></span>
-<span class="r-in"><span><span class="co">#print(structure(example_data))</span></span></span>
 <span class="r-in"><span><span class="va">internal_data</span> <span class="op">=</span> <span class="va">example_data</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'example_data' not found</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">internal_data</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'internal_data' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span><span class="va">internal_data</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in structure(internal_data):</span> object 'internal_data' not found</span>
 <span class="r-in"><span><span class="va">output</span> <span class="op">=</span> <span class="fu">recode_road_class</span><span class="op">(</span><span class="va">internal_data</span><span class="op">)</span></span></span>
