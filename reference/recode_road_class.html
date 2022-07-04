@@ -109,7 +109,6 @@ depending on each features <code>highway=</code> key values.</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 6.3.1; sf_use_s2() is TRUE</span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/udsleeds/openinfra/" class="external-link">openinfra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">u_data_large</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"https://github.com/udsleeds/openinfra/releases"</span>,</span></span>
 <span class="r-in"><span>                      <span class="st">"/download/v0.2/bbbike_leeds_27_6_22.geojson"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">u_data_small</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"https://github.com/udsleeds/openinfra/releases"</span>,</span></span>
@@ -121,13 +120,14 @@ depending on each features <code>highway=</code> key values.</p>
 <span class="r-in"><span><span class="va">output</span> <span class="op">=</span> <span class="fu">recode_road_class</span><span class="op">(</span><span class="va">internal_data</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in recode_road_class(internal_data):</span> could not find function "recode_road_class"</span>
 <span class="r-in"><span><span class="co"># Quick plot:</span></span></span>
-<span class="r-in"><span><span class="co"># plot(output["road_desc"], key.pos = 1)</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">output</span><span class="op">[</span><span class="st">"road_desc"</span><span class="op">]</span>, key.pos <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot(output["road_desc"], key.pos = 1):</span> object 'output' not found</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Advanced plot with tmap:</span></span></span>
-<span class="r-in"><span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">output</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">road_desc</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"road_desc"</span>, title.col <span class="op">=</span> <span class="st">"Road class"</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html" class="external-link">tm_layout</a></span><span class="op">(</span>legend.bg.color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::select(output, road_desc):</span> object 'output' not found</span>
+<span class="r-in"><span><span class="co"># Advanced plot with tmap - un-comment following four lines to run! </span></span></span>
+<span class="r-in"><span><span class="co"># tmap_mode("view")</span></span></span>
+<span class="r-in"><span><span class="co"># tmap::tm_shape(output |&gt; dplyr::select(road_desc)) +</span></span></span>
+<span class="r-in"><span><span class="co">#  tmap::tm_lines(col = "road_desc", title.col = "Road class") +</span></span></span>
+<span class="r-in"><span><span class="co">#  tmap::tm_layout(legend.bg.color = "white")</span></span></span>
 </code></pre></div>
     </div>
   </div>
