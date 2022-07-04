@@ -5,6 +5,7 @@ bibliography: references.bib
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/udsleeds/openinfra/workflows/R-CMD-check/badge.svg)](https://github.com/udsleeds/openinfra/actions)
+[![R-CMD-check](https://github.com/udsleeds/openinfra/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/udsleeds/openinfra/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 
