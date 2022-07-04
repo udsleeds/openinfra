@@ -33,8 +33,8 @@
 #' #example_data = sf::read_sf(u_data_small)
 #' #print(structure(example_data))
 #' internal_data = example_data
-#' print(dim(internal_data))
-#' print(structure(internal_data))
+#' dim(internal_data)
+#' structure(internal_data)
 #' output = recode_road_class(internal_data)
 
 #' # Quick plot:
