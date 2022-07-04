@@ -20,7 +20,7 @@ extra_tags = c(all_extra_tags, "oneway", "maxspeed") # Add in "oneway" for recod
 {Created using the \href{https://github.com/ropensci/osmextract}{osmextract} package for R using oe_get() - params shown above.}
 }
 \usage{
-openinfra::example_data
+example_data
 }
 \description{
 OSM infrastructure data to showcase the recode_road_class openinfra function.

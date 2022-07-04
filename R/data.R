@@ -3,8 +3,6 @@
 #' @docType data
 #' @keywords dataset
 #' 
-#' @usage openinfra::example_data
-#' 
 #' @format A data frame of infrastructure features for Leeds, with 36,065 features and 16 variables
 #'  
 #' total_place = osmextract::oe_get(\cr

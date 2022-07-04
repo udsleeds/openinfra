@@ -24,7 +24,6 @@
 #' 
 #'
 #' @examples 
-#' library(openinfra)
 #' library(sf)
 #' u_data_large = paste0("https://github.com/udsleeds/openinfra/releases",
 #'                       "/download/v0.2/bbbike_leeds_27_6_22.geojson")
@@ -44,7 +43,6 @@
 #' tmap::tm_shape(output |> dplyr::select(road_desc)) +
 #'  tmap::tm_lines(col = "road_desc", title.col = "Road class") +
 #'  tmap::tm_layout(legend.bg.color = "white")
-
 recode_road_class <- function(osm_sf) {
   # browser() uncomment this to perform function debugging 
 
