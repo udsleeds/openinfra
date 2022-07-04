@@ -25,7 +25,6 @@
 #'
 #' @examples 
 #' library(sf)
-#' library(openinfra)
 #' u_data_large = paste0("https://github.com/udsleeds/openinfra/releases",
 #'                       "/download/v0.2/bbbike_leeds_27_6_22.geojson")
 #' u_data_small = paste0("https://github.com/udsleeds/openinfra/releases",
@@ -35,14 +34,15 @@
 #' output = recode_road_class(internal_data)
 
 #' # Quick plot:
-#' # plot(output["road_desc"], key.pos = 1)
+#'  plot(output["road_desc"], key.pos = 1)
 #' 
-#' # Advanced plot with tmap:
-#' tmap::tm_shape(output |> dplyr::select(road_desc)) +
-#'  tmap::tm_lines(col = "road_desc", title.col = "Road class") +
-#'  tmap::tm_layout(legend.bg.color = "white")
+#' # Advanced plot with tmap - un-comment following four lines to run! 
+#' # tmap_mode("view")
+#' # tmap::tm_shape(output |> dplyr::select(road_desc)) +
+#' #  tmap::tm_lines(col = "road_desc", title.col = "Road class") +
+#' #  tmap::tm_layout(legend.bg.color = "white")
 
-recode_road_class <- function(osm_sf) {
+recode_road_class = function(osm_sf) {
   # browser() Uncomment this to perform function debugging 
 
   # Created road_class columns
