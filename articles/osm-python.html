@@ -270,7 +270,7 @@ get_network(self, network_type='walking', extra_attributes=None, nodes=False)
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>leeds_total_network.head(<span class="dv">2</span>)</span></code></pre></div>
 <pre class="output"><code>Variable shape: (136372, 39) and type: &lt;class 'geopandas.geodataframe.GeoDataFrame'&gt; 
 (leeds_total_network.head(2) shown as image below)</code></pre>
-<p><img src="https://i.imgur.com/OmN6gYO.png"></p>
+<p><img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-05-30.16-08-58.png"></p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>leeds_total_network[<span class="st">'geom_type'</span>] <span class="op">=</span> leeds_total_network[<span class="st">'geometry'</span>].geom_type</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(leeds_total_network[<span class="st">'geom_type'</span>].value_counts())</span></code></pre></div>
 <pre class="output"><code>MultiLineString    136372
@@ -296,7 +296,7 @@ Name: geom_type, dtype: int64</code></pre>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>leeds_total_network_noNA <span class="op">=</span> leeds_total_network.loc[leeds_total_network.tags.isna() <span class="op">==</span> <span class="va">False</span>]</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>leeds_total_network_noNA.head(<span class="dv">4</span>)</span></code></pre></div>
 <pre class="output"><code>output as image below</code></pre>
-<p><img src="https://i.imgur.com/UJ2W5Wo.png"></p>
+<p><img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-05-30.16-15-51.png"></p>
 <p>As can be seen the feature with index <strong>20</strong> (the 4th row above) has a number of additional tags within the <code>'tags'</code> column - lets take a closer look.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>leeds_total_network_noNA.tags.iloc[<span class="dv">3</span>]</span></code></pre></div>
 <pre class="output"><code>{"gritting":"priority_1","maintenance":"gritting","maxweight":"7.5"}</code></pre>
@@ -317,11 +317,11 @@ Name: geom_type, dtype: int64</code></pre>
 <p>Calling the <code>.plot</code> method on the returned GeoDataFrame automatically detects the column containing feature geometry and plots them, as shown below.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the total network for Leeds</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>leeds_total_network.plot()</span></code></pre></div>
-<p><img src="https://i.imgur.com/wUmwcsu.png"></p>
+<p><img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-05-30.16-21-58.png"></p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Requesting and plotting the drivable network for Leeds</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>leeds_total_walking <span class="op">=</span> osm.get_network(network_type<span class="op">=</span><span class="st">'driving'</span>)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>leeds_total_walking.plot()</span></code></pre></div>
-<p><img src="https://i.imgur.com/H6n1ZoO.png"></p>
+<p><img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-05-30.16-23-19.png"></p>
 </div>
 <div class="section level4">
 <h4 id="custom-networks-with-get_data_by_custom_criteria">Custom networks with get_data_by_custom_criteria()<a class="anchor" aria-label="anchor" href="#custom-networks-with-get_data_by_custom_criteria"></a>
@@ -536,7 +536,7 @@ print(leeds_custom_cycling.geom_type.value_counts())
 MultiLineString    77219
 LineString         28241
 dtype: int64</code></pre>
-<p><img src="https://i.imgur.com/8x4zvUC.png"></p>
+<p><img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-01.17-59-11.png"></p>
 <p>Comparing to the default cycling network</p>
 <pre><code>leeds_cycling = osm.get_network(network_type = "cycling")
 leeds_cycling['geom_type'] = leeds_cycling.geometry.geom_type
@@ -547,7 +547,7 @@ print(leeds_cycling.geom_type.value_counts())
 (105460, 39)
 MultiLineString    105460
 dtype: int64</code></pre>
-<p><img src="https://i.imgur.com/v6UoiNR.png"></p>
+<p><img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-01.17-59-11.png"></p>
 <p>As can be seen we have recreated the <code>get_network</code> cycling filter with our custom query.</p>
 <p>Both of the returned networks contain 105460 features, differing only in the number of columns returned.</p>
 <p>We an find the difference in returned columns by calculating the set difference of each networks columns as follows:</p>
