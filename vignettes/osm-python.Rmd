@@ -227,7 +227,8 @@ Variable shape: (136372, 39) and type: <class 'geopandas.geodataframe.GeoDataFra
 (leeds_total_network.head(2) shown as image below)
 ```
 
-![](https://i.imgur.com/OmN6gYO.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-05-30.16-08-58.png) 
+
 
 ``` python
 leeds_total_network['geom_type'] = leeds_total_network['geometry'].geom_type
@@ -279,7 +280,7 @@ leeds_total_network_noNA.head(4)
 output as image below
 ```
 
-![](https://i.imgur.com/UJ2W5Wo.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-05-30.16-15-51.png) 
 
 As can be seen the feature with index **20** (the 4th row above) has a number of additional tags within the `'tags'` column - lets take a closer look.
 
@@ -324,7 +325,7 @@ Calling the `.plot` method on the returned GeoDataFrame automatically detects th
 leeds_total_network.plot()
 ```
 
-![](https://i.imgur.com/wUmwcsu.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-05-30.16-21-58.png) 
 
 ``` python
 # Requesting and plotting the drivable network for Leeds
@@ -332,7 +333,7 @@ leeds_total_walking = osm.get_network(network_type='driving')
 leeds_total_walking.plot()
 ```
 
-![](https://i.imgur.com/H6n1ZoO.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-05-30.16-23-19.png) 
 
 #### Custom networks with get_data_by_custom_criteria()
 
@@ -501,7 +502,7 @@ We will define our custom cycling network below:
     LineString         28241
     dtype: int64
 
-![](https://i.imgur.com/8x4zvUC.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-01.17-59-11.png) 
 
 Comparing to the default cycling network
 
@@ -515,7 +516,7 @@ Comparing to the default cycling network
     MultiLineString    105460
     dtype: int64
 
-![](https://i.imgur.com/v6UoiNR.png)
+![](https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-01.17-59-11.png) 
 
 As can be seen we have recreated the `get_network` cycling filter with our custom query.
 
