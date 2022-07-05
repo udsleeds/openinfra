@@ -12,9 +12,14 @@
 #' @examples 
 #' internal_data = example_data
 #' structure(internal_data)
-#' dim(internal_data)
 #' output = oi_clean_maxspeed_uk(internal_data)
-#' dim(output)
+#' plot(output["oi_maxspeed"], key.pos = 1)
+#' 
+#' #' # Advanced plot with tmap - un-comment following four lines to run! 
+#' # tmap_mode("view")
+#' # tmap::tm_shape(output |> dplyr::select(oi_maxspeed)) +
+#' #  tmap::tm_lines(col = "oi_maxspeed", title.col = "Cleaned maxspeed") +
+#' #  tmap::tm_layout(legend.bg.color = "white")
 "oi_clean_maxspeed_uk"
 
 
