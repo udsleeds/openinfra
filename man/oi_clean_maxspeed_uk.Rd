@@ -8,7 +8,7 @@
 An object of class \code{function} of length 1.
 }
 \usage{
-oi_clean_maxspeed_uk
+oi_clean_maxspeed_uk(osm_sf, no_NA = FALSE, del = FALSE)
 }
 \arguments{
 \item{osm_sf}{\itemize{
@@ -16,11 +16,11 @@ oi_clean_maxspeed_uk
 }}
 
 \item{no_NA}{\itemize{
-\item Boolean, if \code{TRUE} then any oi_maxspeed == NA are removed. (i.e. maxspeed value is NOT compliant with \href{https://www.gov.uk/speed-limits}{UK speed limits}) are removed from \code{osm_sf}.
+\item Boolean, \code{FALSE} by default. If \code{TRUE} then any oi_maxspeed == NA are removed. (i.e. maxspeed value is NOT compliant with \href{https://www.gov.uk/speed-limits}{UK speed limits}) are removed from \code{osm_sf}.
 }}
 
 \item{del}{\itemize{
-\item Boolean, if \code{TRUE} then the original \code{maxspeed} column is deleted and only \code{oi_maxspeed} is returned.
+\item Boolean, \code{FALSE} by default. If \code{TRUE} then the original \code{maxspeed} column is deleted and only \code{oi_maxspeed} is returned.
 }}
 }
 \value{
@@ -31,14 +31,15 @@ Re-classifies the maxspeed column of an OSM data frame to be compliant with curr
 }
 \examples{
 internal_data = example_data
-structure(internal_data)
-output = oi_clean_maxspeed_uk(internal_data)
-plot(output["oi_maxspeed"], key.pos = 1)
+dim(internal_data)
+output = oi_clean_maxspeed_uk(internal_data, no_NA = TRUE)
+dim(output)
+#tmap::qtm(output["oi_maxspeed"])
 
 #' # Advanced plot with tmap - un-comment following four lines to run! 
 # tmap_mode("view")
-# tmap::tm_shape(output |> dplyr::select(oi_maxspeed)) +
-#  tmap::tm_lines(col = "oi_maxspeed", title.col = "Cleaned maxspeed") +
-#  tmap::tm_layout(legend.bg.color = "white")
+ tmap::tm_shape(output |> dplyr::select(oi_maxspeed)) +
+  tmap::tm_lines(col = "oi_maxspeed", title.col = "Cleaned maxspeed") +
+  tmap::tm_layout(legend.bg.color = "white")
 }
 \keyword{datasets}
