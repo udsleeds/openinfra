@@ -30,6 +30,7 @@ The \code{osm_sf} simple features data frame is returned with the maxspeed colum
 Re-classifies the maxspeed column of an OSM data frame to be compliant with current \href{https://www.gov.uk/speed-limits}{UK speed limits}. The clean re-coded speeds are stoed in \code{oi_maxspeed}.
 }
 \examples{
+library(sf)
 internal_data = example_data
 dim(internal_data)
 output = oi_clean_maxspeed_uk(internal_data, no_NA = TRUE)
