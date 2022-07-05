@@ -36,7 +36,7 @@ layer = "lines",\cr
 never_skip_vectortranslate = TRUE,\cr
 force_download = TRUE,\cr
 quiet = FALSE,\cr
-extra_tags = c(all_extra_tags, "oneway", "maxspeed") # Add in "oneway" for recode_road_class)
+extra_tags = c("service", "access", "foot", "bicycle", "oneway", "maxspeed") # Add in "oneway" & "maxspeed" for \href{https://udsleeds.github.io/openinfra/reference/recode_road_class.html}{\code{recode_road_class}}.
 }
 \source{
 {Created using the \href{https://github.com/ropensci/osmextract}{osmextract} package for R using oe_get() - params shown above.}
