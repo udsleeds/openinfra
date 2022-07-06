@@ -7,7 +7,6 @@
 
 library("osmextract")
 library("tmap")
-library("data.table")
 library("dplyr")
 library("sf")
 devtools::load_all() # Loads recode_road_class
