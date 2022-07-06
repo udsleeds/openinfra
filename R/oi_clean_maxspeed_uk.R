@@ -9,11 +9,11 @@
 #' @param del - Boolean, `FALSE` by default. If `TRUE` then the original `maxspeed` column is deleted and only `oi_maxspeed` is returned.
 #'
 #' @return  The `osm_sf` simple features data frame is returned with the maxspeed column values cleaned based on `allowed_speeds`.
-#' @export
+#' @export oi_clean_maxspeed_uk
 #' 
 #' @examples 
 #' library(sf)
-#' internal_data = example_data
+#' internal_data = extended_data
 #' dim(internal_data)
 #' output = oi_clean_maxspeed_uk(internal_data, no_NA = TRUE)
 #' dim(output)
