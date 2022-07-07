@@ -5,3 +5,5 @@
 utils::globalVariables(c("road_class"))
 # oi_clean_maxspeed_uk.R
 utils::globalVariables(c("maxspeed", "oi_maxspeed"))
+# oi_inclusive_mobility
+utils::globalVariables(c("kerb", "width", "est_width"))
