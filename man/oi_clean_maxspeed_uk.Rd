@@ -24,7 +24,7 @@ oi_clean_maxspeed_uk(osm_sf, no_NA = FALSE, del = FALSE)
 }}
 }
 \value{
-The \code{osm_sf} simple features data frame is returned with the maxspeed column values cleaned based on \code{allowed_speeds}.
+The \code{osm_sf} simple features data frame is returned with maxspeed column values cleaned based on \code{allowed_speeds}.
 }
 \description{
 Re-classifies the maxspeed column of an OSM data frame to be compliant with current \href{https://www.gov.uk/speed-limits}{UK speed limits}. The clean re-coded speeds are stoed in \code{oi_maxspeed}.

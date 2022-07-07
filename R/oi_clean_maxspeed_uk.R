@@ -8,7 +8,7 @@
 #'
 #' @param del - Boolean, `FALSE` by default. If `TRUE` then the original `maxspeed` column is deleted and only `oi_maxspeed` is returned.
 #'
-#' @return  The `osm_sf` simple features data frame is returned with the maxspeed column values cleaned based on `allowed_speeds`.
+#' @return  The `osm_sf` simple features data frame is returned with maxspeed column values cleaned based on `allowed_speeds`.
 #' @export oi_clean_maxspeed_uk
 #' 
 #' @examples 
@@ -31,6 +31,8 @@ oi_clean_maxspeed_uk = function(osm_sf, no_NA = FALSE, del = FALSE) {
   
   # Define NOT IN 
   `%!in%` = Negate(`%in%`)
+  
+  #Add Parse number
   
   osm_clean = osm_sf %>%
     dplyr::mutate(oi_maxspeed = dplyr::case_when(
