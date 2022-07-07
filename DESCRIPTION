@@ -18,7 +18,9 @@ Imports:
     pct,
     sf,
     stats19,
-    tmap
+    tmap,
+    readr,
+    stringr
 Suggests:
     rmarkdown,
     knitr,
