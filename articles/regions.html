@@ -162,13 +162,13 @@
 <code class="sourceCode R"><span><span class="co"># Here we create the  interactive plots</span></span>
 <span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/s2.html" class="external-link">sf_use_s2</a></span><span class="op">(</span>use_s2 <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">regions_lad</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/qtm.html" class="external-link">qtm</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">'LADs of UK &amp; NI'</span><span class="op">)</span></span></code></pre></div>
-<iframe src="https://udsleeds.github.io/openinfraresults/LADs_UK_NI_1.html" width="900px" height="850px" data-external="1">
+<iframe src="https://raw.githubusercontent.com/udsleeds/openinfraresults/main/tmap/assets/LADs_UK_NI_1.html" width="900px" height="850px" data-external="1">
 </iframe>
 <p><br> Here we call another interactive map of all the LADs, but this time we have colour coded the LADs based on the region they reside in</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_options.html" class="external-link">tmap_options</a></span><span class="op">(</span>max.categories <span class="op">=</span> <span class="fl">78</span><span class="op">)</span> <span class="co"># We increase max categories so that every transport region has its own colour</span></span>
 <span><span class="va">regions_lad</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/qtm.html" class="external-link">qtm</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">'Region_name'</span>, title <span class="op">=</span> <span class="st">'LADs of UK &amp; NI coloured by region'</span><span class="op">)</span></span></code></pre></div>
-<iframe src="https://udsleeds.github.io/openinfraresults/LADs_UK_NI_region_coloured_2.html" width="900px" height="1500px" data-external="1">
+<iframe src="https://raw.githubusercontent.com/udsleeds/openinfraresults/main/tmap/assets/LADs_UK_NI_region_coloured_2.html" width="900px" height="1500px" data-external="1">
 </iframe>
 <p><br><br></p>
 </div>
@@ -193,12 +193,12 @@
 <p>Here we look to create an interactive plot of all local transport regions within England. Again clicking on each transport region will highlight additional information, such as the specific LADs that reside within each transport region.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">transport_regions</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/qtm.html" class="external-link">qtm</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">'Transport regions of England'</span><span class="op">)</span></span></code></pre></div>
-<iframe src="https://udsleeds.github.io/openinfraresults/England_transport_regions_3.html" width="900px" height="850px" data-external="1">
+<iframe src="https://raw.githubusercontent.com/udsleeds/openinfraresults/main/tmap/assets/England_transport_regions_3.html" width="900px" height="850px" data-external="1">
 </iframe>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Here we create the interactive plot of England's transport regions</span></span>
 <span><span class="va">transport_regions</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/qtm.html" class="external-link">qtm</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">'Coloured transport regions of England'</span>, fill <span class="op">=</span> <span class="st">'Region_name'</span><span class="op">)</span></span></code></pre></div>
-<iframe src="https://udsleeds.github.io/openinfraresults/Coloured_England_transport_regions_4.html" width="900px" height="1500px" data-external="1">
+<iframe src="https://raw.githubusercontent.com/udsleeds/openinfraresults/main/tmap/assets/Coloured_England_transport_regions_4.html" width="900px" height="1500px" data-external="1">
 </iframe>
 </div>
 </div>
