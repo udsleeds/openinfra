@@ -72,7 +72,7 @@ sf::sf_use_s2(use_s2 = FALSE)
 regions_lad %>% tmap::qtm(title = 'LADs of UK & NI')
 ```
 ```{r, echo=FALSE, include=TRUE, out.width="900px"}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/LADs_UK_NI_1.html", height = "850px")
+knitr::include_url("https://raw.githubusercontent.com/udsleeds/openinfraresults/main/tmap/assets/LADs_UK_NI_1.html", height = "850px")
 ```
 
 
@@ -83,7 +83,7 @@ tmap_options(max.categories = 78) # We increase max categories so that every tra
 regions_lad %>% tmap::qtm(fill = 'Region_name', title = 'LADs of UK & NI coloured by region')
 ```
 ```{r, echo=FALSE, include=TRUE, out.width="900px"}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/LADs_UK_NI_region_coloured_2.html", height = "1500px")
+knitr::include_url("https://raw.githubusercontent.com/udsleeds/openinfraresults/main/tmap/assets/LADs_UK_NI_region_coloured_2.html", height = "1500px")
 ```
 <br><br>
 
@@ -110,7 +110,7 @@ Here we look to create an interactive plot of all local transport regions within
 transport_regions %>% tmap::qtm(title = 'Transport regions of England')
 ```
 ```{r, echo=FALSE, include=TRUE, out.width="900px"}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/England_transport_regions_3.html", height = "850px")
+knitr::include_url("https://raw.githubusercontent.com/udsleeds/openinfraresults/main/tmap/assets/England_transport_regions_3.html", height = "850px")
 ```
 
 ```{r, eval=FALSE, fig.height=15.25, fig.width=9}
@@ -119,6 +119,6 @@ transport_regions %>% tmap::qtm(title = 'Coloured transport regions of England',
 
 ```
 ```{r, echo=FALSE, include=TRUE, out.width="900px"}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/Coloured_England_transport_regions_4.html", height = "1500px") 
+knitr::include_url("https://raw.githubusercontent.com/udsleeds/openinfraresults/main/tmap/assets/Coloured_England_transport_regions_4.html", height = "1500px") 
 ```
 
