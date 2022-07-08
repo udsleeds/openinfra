@@ -1,9 +1,11 @@
 # Generate package test-data. 
-
+library("openinfra")
 library("osmextract")
 library("tmap")
 library("dplyr")
 library("sf")
+
+devtools::load_all()
 
 
 # All extra tags - by requesting all of these extra_tags, you can
@@ -18,7 +20,7 @@ all_extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
 place_name = "Leeds"
 
 # Specify Buffer Radius
-radius = 6500 # <- meters - 6.5km
+radius = 5000 # <- meters - 6.5km
 
 # (Long, Lat) coords of desired buffer place (Leeds City Centre)
 coords = c(-1.548567, 53.801277)
@@ -68,6 +70,25 @@ total_place = osmextract::oe_get(
 
 
 total_place_buffered = total_place[circle_buffer, ]
+osm_sf = total_place_buffered
 
+osm_sf_road_recoded = openinfra::recode_road_class(osm_sf)
 
-extended_data = total_place_buffered
+data_pack = openinfra::oi_clean_maxspeed_uk(osm_sf_road_recoded)
+
+data_pack = data_pack %>% dplyr::select(c("osm_id", "highway", "road_desc", "oi_maxspeed"))
+
+tmap_mode("view")
+
+osm_sf = osm_sf %>% dplyr::filter(! is.na(highway)) # COMMENT OUT AFTER
+
+map = tmap::tm_shape(osm_sf |> dplyr::select(highway)) +
+  tmap::tm_lines(col = "highway", title.col = "OSM highways") +
+  tmap::tm_layout(title = "OSM highways within 5mk of Leeds City Centre", legend.bg.color = "white")
+
+map
+
+tmap_save(map, "5km_Leeds_OSM_highways.html")
+
+#sf::st_write(data_pack, "500m_LCC_data_pack.geojson")
+
