@@ -1,16 +1,11 @@
-#' Function to recategorize OSM data based on the recent Inclusive Mobility (IM) guide [UK](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1044542/inclusive-mobility-a-guide-to-best-practice-on-access-to-pedestrian-and-transport-infrastructure.pdf)
+#' Function to recategorize OSM data based on the Inclusive Mobility (IM)
 #'
 #' @usage oi_inclusive_mobility(osm_sf)
-#' 
 #' @param osm_sf - A `sf` and `data.frame` object containing OpenStreetMap infrastructure data, obtained from the [`osmextract`](https://github.com/ropensci/osmextract) function.
-#'
 #' @return The `osm_sf` data frame is returned with additional inclusive mobility columns returned.
-#' 
 #' @importFrom readr parse_number
 #' @importFrom stringr str_detect
-#'  
 #' @export oi_inclusive_mobility
-#'
 #' @examples
 #' library(sf)
 #' internal_data = extended_data
@@ -18,13 +13,9 @@
 #' output = oi_inclusive_mobility(internal_data)
 "oi_inclusive_mobility"
 
-
-
-
 oi_inclusive_mobility = function(osm_sf) {
-  
-  #print(dim(osm_sf))
-  #browser()
+
+  #browser() # <-- Uncomment for debugging.
   
   osm_sf_im = osm_sf %>% 
     # Assesses whether a kerb is flush or not
@@ -57,7 +48,7 @@ oi_inclusive_mobility = function(osm_sf) {
     )
     ) %>%
     
-    # presence of a crossing: give-way, signal controlled, none, or yes (but the type is unknown)
+    # Assesses presence of a crossing and what type: give-way, signal controlled, none, or yes (but the type is unknown)
     dplyr::mutate(im_crossing = dplyr::case_when(
       stringr::str_detect(crossing, "zebra|uncontr|marked")~ "give-way",
       stringr::str_detect(crossing, "toucan|pedex|puffin|equestrian|light|signal")~ "signal-controlled",
@@ -141,7 +132,5 @@ oi_inclusive_mobility = function(osm_sf) {
         im_width_est > 2 ~ "> 2"
       )
     )
-  #print(dim(osm_sf_im))
-  #structure(osm_sf_im)
   return(osm_sf_im)
 }

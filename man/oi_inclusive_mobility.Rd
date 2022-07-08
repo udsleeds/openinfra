@@ -3,7 +3,7 @@
 \docType{data}
 \name{oi_inclusive_mobility}
 \alias{oi_inclusive_mobility}
-\title{Function to recategorize OSM data based on the recent Inclusive Mobility (IM) guide \href{https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1044542/inclusive-mobility-a-guide-to-best-practice-on-access-to-pedestrian-and-transport-infrastructure.pdf}{UK}}
+\title{Function to recategorize OSM data based on the Inclusive Mobility (IM)}
 \format{
 An object of class \code{function} of length 1.
 }
@@ -19,7 +19,7 @@ oi_inclusive_mobility(osm_sf)
 The \code{osm_sf} data frame is returned with additional inclusive mobility columns returned.
 }
 \description{
-Function to recategorize OSM data based on the recent Inclusive Mobility (IM) guide \href{https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1044542/inclusive-mobility-a-guide-to-best-practice-on-access-to-pedestrian-and-transport-infrastructure.pdf}{UK}
+Function to recategorize OSM data based on the Inclusive Mobility (IM)
 }
 \examples{
 library(sf)
