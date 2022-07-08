@@ -19,7 +19,11 @@ oi_inclusive_mobility(osm_sf)
 The \code{osm_sf} data frame is returned with additional inclusive mobility columns returned.
 }
 \description{
-Function to recategorize OSM data based on the Inclusive Mobility (IM)
+This function is based on the Inclusive Mobility (IM) guide
+\href{https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1044542/inclusive-mobility-a-guide-to-best-practice-on-access-to-pedestrian-and-transport-infrastructure.pdf}{UK}.
+}
+\details{
+See details in the link above and the function's source code.
 }
 \examples{
 library(sf)
