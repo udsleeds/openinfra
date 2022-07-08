@@ -19,6 +19,7 @@ Library install
 library(sf)
 library(dplyr)
 library(tmap)
+#library(openinfra)
 ```
 
 
@@ -86,6 +87,22 @@ recode_road_class <- function(osm_sf) {
     filter(!is.na(road_class))
 }
 ```
+
+<br><br>
+
+As discussed, the above function was defined defined based on the following table from Chan and Cooper: 
+
+Road Class | Description | Selection from OSM
+-- | -- | --
+7 | Motorways | highway = motorway OR highway = motorway_link
+6 | Non-residential Dual Carriageways | highway =  trunk OR highway = trunk_link*manual classification needed
+5 | Residential Dual Carriageways | highway =  trunk OR highway =  trunk_link*manual classification needed
+4 | Primary Roads | highway =  primary OR highway =  primary_link OR (highway =  trunk AND oneway = F)
+3 | Secondary Roads | highway =  secondary OR highway =  secondary_link
+2 | Tertiary Roads | highway = tertiary OR highway = tertiary_link
+1 | Local Roads | highway = living_street OR highway = residential OR highway = unclassified
+0 | Traffic-free Paths | highway = cycleway
+
 <br><br>
 
 ## An Example
@@ -111,7 +128,7 @@ This example concerns a 5km circular radius about the city centre of Leeds, UK, 
 
 # For reproduciblity you may chose to use the example dataset from our releases.
 # You can create your own data using the oe_get() function above.
-total_place = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson")
+ total_place = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson")
 ```
 
 <br><br>
@@ -146,22 +163,23 @@ place_subset= road_class_recode[circle_buffer, ]
 
 <br><br>
 
-### Road Description Visualisation
-```{r visualisation}
-tmap_mode("view")
-tmap::tm_shape(place_subset %>% dplyr::select(road_desc)) +
-  tmap::tm_lines("road_desc") +
-  tmap::tm_layout(title = "Road Descriptions within 5km of Leeds City Centre")
-
+### Default OSM Highways
+```{r out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/5km_Leeds_OSM_highways.html", height = "650px")
 ```
-
 <br><br>
 
-### Road Classification Visualisation
-```{r visualisation_class}
-tmap::tm_shape(place_subset %>% dplyr::select(road_class)) +
-  tmap::tm_lines("road_class") +
-  tmap::tm_layout(title = "Road Classifications within 5km of Leeds City Centre")
+### Road Description Visualisation
+```{r visualisation_frame, out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/LCC_recode_road_class_example_output.html", height = "650px")
+```
+
+As can be seen - the OSM highways re-categorised to road descriptions are much easier to visualise and insightful than all OSM highawy values.
+<br><br>
+
+### Clean maxspeed visualisation
+```{r vis_frame, out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/5mk_Leeds_cleaned_maxspeed.html", height="650px")
 ```
 
 
