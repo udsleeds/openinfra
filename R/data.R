@@ -1,22 +1,5 @@
 #' OSM infrastructure data used in creation of transport infrastructure data packs.
 #' 
-#' Contains all columns required for IM function, recode_max_speed, recode_road_class.
-#' 
-#' @docType data
-#' @keywords dataset
-#' 
-#' @format A data frame with 42,779 features described by 28 variables. 
-#' 
-#' @source {[generate_example_data.R](https://github.com/udsleeds/openinfra/blob/main/test-code/generate_example_data.R)}
-#'
-#' @examples
-#' library(sf)
-#' extended_data   # Lazy Loading. Data becomes visible as soon as it is requested. 
-"extended_data"
-
-
-#' OSM infrastructure data used in creation of transport infrastructure data packs.
-#' 
 #' Contains all columns required for IM function, oi_recode_max_speed, oi_recode_road_, oi_active_cycle, oi_is_lit.
 #' 
 #' @docType data
@@ -28,5 +11,5 @@
 #'
 #' @examples
 #' library(sf)
-#' extended_data   # Lazy Loading. Data becomes visible as soon as it is requested. 
+#' example_data   # Lazy Loading. Data becomes visible as soon as it is requested. 
 "example_data"
