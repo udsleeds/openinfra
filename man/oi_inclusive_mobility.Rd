@@ -27,7 +27,7 @@ See details in the link above and the function's source code.
 }
 \examples{
 library(sf)
-internal_data = extended_data
+internal_data = example_data
 dim(internal_data)
 output = oi_inclusive_mobility(internal_data)
 }
