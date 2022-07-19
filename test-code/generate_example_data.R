@@ -20,7 +20,7 @@ all_extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
 place_name = "Leeds"
 
 # Specify Buffer Radius
-radius = 5000 # <- meters - 6.5km
+radius = 5000 # <- meters - 5km
 
 # (Long, Lat) coords of desired buffer place (Leeds City Centre)
 coords = c(-1.548567, 53.801277)
@@ -70,7 +70,7 @@ total_place = osmextract::oe_get(
 
 
 #__________________FUNCTION___
-oi_inclusive_mobility = function(osm_sf) {
+#oi_inclusive_mobility = function(osm_sf) {
   
   #print(dim(osm_sf))
   #browser()
@@ -199,6 +199,12 @@ oi_inclusive_mobility = function(osm_sf) {
 
 
 total_place_buffered = total_place[circle_buffer, ]
+
+example_data = total_place_buffered
+
+# UNCOMMENT BELOW TO SAVE NEW EXAMPLE_DATA
+#usethis::use_data(example_data)
+
 osm_sf = total_place_buffered
 
 osm_sf_road_recoded = recode_road_class(osm_sf) #openinfra::recode_road_class(osm_sf)
@@ -208,7 +214,7 @@ data_pack = oi_clean_maxspeed_uk(osm_sf_road_recoded) #openinfra::oi_clean_maxsp
 data_pack_IM = oi_inclusive_mobility(data_pack)
 
 data_pack_short = data_pack %>% dplyr::select(c("osm_id", "highway", "road_desc", "oi_maxspeed"))
-data_pack_IM = data_pack_IM %>% dplyr::select(c("im_footway", "im_footpath", "im_tactile"))
+data_pack_IM = data_pack_IM %>% dplyr::select(c("highway", "im_footway", "im_footpath", "im_tactile"))
 
 tmap_mode("view")
 
