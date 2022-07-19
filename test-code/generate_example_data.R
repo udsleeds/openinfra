@@ -1,5 +1,5 @@
 # Generate package test-data. 
-library("openinfra")
+#library("openinfra")
 library("osmextract")
 library("tmap")
 library("dplyr")
@@ -207,7 +207,7 @@ data_pack = openinfra::oi_clean_maxspeed_uk(osm_sf_road_recoded)
 
 data_pack_IM = oi_inclusive_mobility(data_pack)
 
-data_pack = data_pack %>% dplyr::select(c("osm_id", "highway", "road_desc", "oi_maxspeed"))
+data_pack_short = data_pack %>% dplyr::select(c("osm_id", "highway", "road_desc", "oi_maxspeed"))
 data_pack_IM = data_pack_IM %>% dplyr::select(c("im_footway", "im_footpath", "im_tactile"))
 
 tmap_mode("view")
