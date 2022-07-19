@@ -14,7 +14,7 @@ devtools::load_all()
 all_extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
                    "kerb", "footway", "sidewalk", "cycleway", "segregated", "highway",
                    "crossing", "lit", "tactile_paving", "surface", "smoothness", "width",
-                   "est_width")
+                   "est_width", "lit_by_led")
 
 # Set place name
 place_name = "Leeds"
@@ -201,9 +201,9 @@ oi_inclusive_mobility = function(osm_sf) {
 total_place_buffered = total_place[circle_buffer, ]
 osm_sf = total_place_buffered
 
-osm_sf_road_recoded = openinfra::recode_road_class(osm_sf)
+osm_sf_road_recoded = recode_road_class(osm_sf) #openinfra::recode_road_class(osm_sf)
 
-data_pack = openinfra::oi_clean_maxspeed_uk(osm_sf_road_recoded)
+data_pack = oi_clean_maxspeed_uk(osm_sf_road_recoded) #openinfra::oi_clean_maxspeed_uk(osm_sf_road_recoded)
 
 data_pack_IM = oi_inclusive_mobility(data_pack)
 
