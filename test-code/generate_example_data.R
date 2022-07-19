@@ -69,7 +69,7 @@ total_place = osmextract::oe_get(
 )
 
 
-#__________________FUNCTION
+#__________________FUNCTION___
 oi_inclusive_mobility = function(osm_sf) {
   
   #print(dim(osm_sf))
