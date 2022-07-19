@@ -39,7 +39,6 @@ u_data_large = paste0("https://github.com/udsleeds/openinfra/releases",
 u_data_small = paste0("https://github.com/udsleeds/openinfra/releases",
                       "/download/v0.2/30_06_22_bbbike_LCC_func_example_5_75km.geojson")
 internal_data = example_data
-structure(internal_data)
 output = recode_road_class(internal_data)
 # Quick plot:
  plot(output["road_desc"], key.pos = 1)
