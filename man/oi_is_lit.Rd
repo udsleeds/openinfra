@@ -22,14 +22,17 @@ are removed from the \code{osm_sf} before being returned.
 }}
 }
 \value{
-an sf object with oi_is_lit column added.
+an sf object with oi_is_lit column added, indicating if the way is
+lit or not.
 }
 \description{
 Determins whether or not a piece of OSM infrastructure is lit or not.
 }
 \details{
 This function adds a new column, \code{oi_is_lit} containing values "yes"
-, "no", whether or not the feature is lit.
+, "no", whether or not the feature is lit. The value "maybe" is assigned when
+there is a lack of data to distinguish - not implying the presence or lack of
+lighting, but a lack of data to identify.
 }
 \examples{
 data = example_data
