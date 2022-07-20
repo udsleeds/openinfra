@@ -9,7 +9,9 @@
 #' @return an sf object with oi_is_lit column added, indicating if the way is
 #'    lit or not.
 #' @details This function adds a new column, `oi_is_lit` containing values "yes"
-#' , "no", whether or not the feature is lit.
+#' , "no", whether or not the feature is lit. The value "maybe" is assigned when
+#' there is a lack of data to distinguish - not implying the presence or lack of
+#' lighting, but a lack of data to identify.
 #' @export oi_is_lit
 #' 
 #' @examples
@@ -45,11 +47,11 @@ oi_is_lit = function(osm_sf, remove=FALSE){
     ))
   
   # Finally - all remaining N/A are unknown as either lit or unlit.
-  osm_sf_lit$oi_is_lit[is.na(osm_sf_lit$oi_is_lit)] = "unknown"
+  osm_sf_lit$oi_is_lit[is.na(osm_sf_lit$oi_is_lit)] = "maybe"
   
   # If remove = TRUE, filter out features that have oi_is_lit == "no"
   if (remove){
-    osm_sf_lit = osm_sf_lit %>% dplyr::filter(osm_sf_lit$oi_is_lit %in% c("yes", "yes - LED", "unknown"))
+    osm_sf_lit = osm_sf_lit %>% dplyr::filter(osm_sf_lit$oi_is_lit %in% c("yes", "yes - LED", "maybe"))
   }
   
   return(osm_sf_lit)
