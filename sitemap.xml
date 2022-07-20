@@ -55,7 +55,7 @@
     <loc>/index.html</loc>
   </url>
   <url>
-    <loc>/reference/extended_data.html</loc>
+    <loc>/reference/example_data.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
@@ -65,6 +65,9 @@
   </url>
   <url>
     <loc>/reference/oi_inclusive_mobility.html</loc>
+  </url>
+  <url>
+    <loc>/reference/oi_is_lit.html</loc>
   </url>
   <url>
     <loc>/reference/pipe.html</loc>
