@@ -18,6 +18,6 @@ Contains all columns required for IM function, oi_recode_max_speed, oi_recode_ro
 }
 \examples{
 library(sf)
-extended_data   # Lazy Loading. Data becomes visible as soon as it is requested. 
+example_data   # Lazy Loading. Data becomes visible as soon as it is requested. 
 }
 \keyword{dataset}
