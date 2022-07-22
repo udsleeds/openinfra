@@ -38,7 +38,7 @@
       <a href="../articles/QGIS_OSM_Setup.html">Getting and using OSM data with GUI QGIS</a>
     </li>
     <li>
-      <a href="../articles/data_packs.html">data_packs</a>
+      <a href="../articles/data_packs.html">Transport Infrastructure Data Packs</a>
     </li>
     <li>
       <a href="../articles/getosm.html">Getting and using OSM data with the R package osmextract</a>
@@ -106,12 +106,15 @@ are removed from the <code>osm_sf</code> before being returned.</p></li>
     <h2>Value</h2>
     
 
-<p>an sf object with oi_is_lit column added.</p>
+<p>an sf object with oi_is_lit column added, indicating if the way is
+lit or not.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p>This function adds a new column, <code>oi_is_lit</code> containing values "yes"
-, "no", whether or not the feature is lit.</p>
+, "no", whether or not the feature is lit. The value "maybe" is assigned when
+there is a lack of data to distinguish - not implying the presence or lack of
+lighting, but a lack of data to identify.</p>
     </div>
 
     <div id="ref-examples">
