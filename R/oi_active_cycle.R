@@ -21,8 +21,6 @@
 #' example_output = oi_active_cycle(data)
 #' #plot(output["oi_cycle"], key.pos = 1)
 #' 
-"oi_active_cycle"
-
 oi_active_cycle = function(osm_sf, remove=FALSE){
   #browser() # Uncomment to debug
   osm_sf_cycle = osm_sf %>% dplyr::mutate(oi_cycle = dplyr::case_when(
