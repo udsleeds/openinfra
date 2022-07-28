@@ -3,7 +3,9 @@
 #' This function is based on the Inclusive Mobility (IM) guide
 #' [UK](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1044542/inclusive-mobility-a-guide-to-best-practice-on-access-to-pedestrian-and-transport-infrastructure.pdf).
 #' 
-#' See details in the link above and the function's source code.
+#' See details in the link above, the function's source code, and our 
+#' justification 
+#' [vignette](https://udsleeds.github.io/openinfra/articles/im_get.html).
 #'
 #' @usage oi_inclusive_mobility(osm_sf)
 #' @param osm_sf - A `sf` and `data.frame` object containing OpenStreetMap infrastructure data, obtained from the [`osmextract`](https://github.com/ropensci/osmextract) function.

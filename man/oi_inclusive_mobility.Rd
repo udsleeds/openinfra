@@ -23,7 +23,9 @@ This function is based on the Inclusive Mobility (IM) guide
 \href{https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1044542/inclusive-mobility-a-guide-to-best-practice-on-access-to-pedestrian-and-transport-infrastructure.pdf}{UK}.
 }
 \details{
-See details in the link above and the function's source code.
+See details in the link above, the function's source code, and our
+justification
+\href{https://udsleeds.github.io/openinfra/articles/im_get.html}{vignette}.
 }
 \examples{
 library(sf)
