@@ -2,7 +2,7 @@
 % Please edit documentation in R/oi_active_cycle.R
 \name{oi_active_cycle}
 \alias{oi_active_cycle}
-\title{Function to recategorise OSM infrastrcutre based on cycleability}
+\title{Function to recategorise OSM infrastructure based on cycleability}
 \usage{
 oi_active_cycle(osm_sf, remove=FALSE)
 }
@@ -15,14 +15,14 @@ infrastructure data, obtained from the
 
 \item{remove}{\itemize{
 \item Boolean - If TRUE, features that do not form part of a
-cycleable network are removed from the \code{osm_sf} before being returned
+cyclable network are removed from the \code{osm_sf} before being returned
 }}
 }
 \value{
 an sf object with oi_active_cycle column added.
 }
 \description{
-Determins whether or not a piece of OSM infrastructure is cycleable or not
+Determines whether or not a piece of OSM infrastructure is cyclable or not
 depending on whether the feature is included in the default cycling network
 defined by \href{https://github.com/ropensci/osmextract}{\code{osmextract}}
 }

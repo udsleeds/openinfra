@@ -1,6 +1,6 @@
-#' Function to recategorise OSM infrastrcutre based on cycleability
+#' Function to recategorise OSM infrastructure based on cycleability
 #' 
-#' Determins whether or not a piece of OSM infrastructure is cycleable or not 
+#' Determines whether or not a piece of OSM infrastructure is cyclable or not 
 #' depending on whether the feature is included in the default cycling network
 #' defined by [`osmextract`](https://github.com/ropensci/osmextract)
 #' 
@@ -9,7 +9,7 @@
 #'   infrastructure data, obtained from the 
 #'   [`osmextract`](https://github.com/ropensci/osmextract) function.
 #' @param remove - Boolean - If TRUE, features that do not form part of a 
-#'    cycleable network are removed from the `osm_sf` before being returned
+#'    cyclable network are removed from the `osm_sf` before being returned
 #' @return an sf object with oi_active_cycle column added.
 #' @details This function mimics the cycling filtering steps applied by the 
 #' [`oe_get_network`](https://rdrr.io/cran/osmextract/man/oe_get_network.html)
