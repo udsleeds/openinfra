@@ -19,7 +19,6 @@
 #' @examples 
 #' data = example_data
 #' example_output = oi_active_walk(data)
-
 oi_active_walk = function(osm_sf, remove = FALSE){
   #browser() #<-- Uncomment to debug function.
   osm_sf_walking = osm_sf %>% dplyr::mutate(oi_walk = dplyr::case_when(
