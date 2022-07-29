@@ -2,6 +2,7 @@
 
 export("%>%")
 export(oi_active_cycle)
+export(oi_active_walk)
 export(oi_clean_maxspeed_uk)
 export(oi_inclusive_mobility)
 export(oi_is_lit)
