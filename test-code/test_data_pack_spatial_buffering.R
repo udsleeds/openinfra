@@ -11,9 +11,7 @@ lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
 
 LADs = sf::read_sf("https://github.com/udsleeds/openinfra/raw/main/data-small/lads_joined_2021.geojson")
 
-stroud = LADs %>% dplyr::filter(LADs$LAD21NM == "Stroud")
-
-stroud_poly = stroud %>% select(geometry)
+stroud_poly = LADs %>% dplyr::filter(LADs$LAD21NM == "Stroud") %>% select(geometry)
 
 # Request data using osmextract
 all_extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
