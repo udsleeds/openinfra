@@ -92,7 +92,7 @@ network_files = list.files(network_dir)
 # Load Openinfra functions
 devtools::load_all()
 # Directory to store data packs
-data_pack_dir = "/home/james/Desktop/LIDA_OSM_Project/openinfra/openinfra/data_packs"
+data_pack_dir = "/home/james/Desktop/LIDA_OSM_Project/openinfra/openinfra/data_packs/"
 
 # For all network files, apply openinfra functions & save data pack. 
 
@@ -101,6 +101,13 @@ for (filename in network_files){
   print(paste("Opening file:", filename, "@",format(Sys.time(), "%a %b %d %X %Y")))
   network = sf::read_sf(paste0(network_dir, filename))
   
+  # Check if this data pack already exists - skip if it does. 
+  if (filename %in% list.files(data_pack_dir)){
+    # In this instance the data pack exists so skip to next network
+    message(paste("Error:", filename, "data pack already exists - moving on."))
+    next
+  }
+  message(paste(filename, "data pack not found - creating now."))
   # Apply all openinfra functions to network (create data pack)
   network = oi_active_cycle(network, remove = FALSE)
   network = oi_active_walk(network, remove = FALSE)
@@ -119,7 +126,7 @@ for (filename in network_files){
   
   # Save the data packs
   filename = gsub(".geojson", "_data_pack.geojson", filename)
-  sf::st_write(networ_data_pack, paste0(data_pack_dir, filename))
+  sf::st_write(network_data_pack, paste0(data_pack_dir, filename))
   print(paste("Data pack created for LAD:", gsub("_data_pack.geojson","",filename), "@",format(Sys.time(), "%a %b %d %X %Y")))
 }
 
@@ -150,33 +157,3 @@ for (filename in network_files){
 #road_desc_map = tmap::tm_shape(test_network_datapack) + 
 #  tmap::tm_lines(col = "road_desc")
 #tmap::tmap_save(road_desc_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/road_desc_map.html')
-
-#_________________________TEST CODE_____________________---
-
-
-#test_filename = "Leeds.geojson"
-
-#test_network = sf::read_sf(paste0(network_dir, test_filename))
-
-#test_network = oi_active_cycle(test_network, remove = FALSE)
-#test_network = oi_active_walk(test_network, remove = FALSE)
-#test_network = oi_clean_maxspeed_uk(test_network, no_NA = FALSE, del = FALSE)
-#test_network = oi_inclusive_mobility(test_network)
-#test_network = oi_is_lit(test_network, remove = FALSE)
-#test_network = recode_road_class(test_network)
-
-#test_network_datapack = test_network %>% dplyr::select(c(
-#  "osm_id", "highway", "road_desc", "oi_maxspeed", "oi_walk", "oi_cycle",
-#  "oi_is_lit", "im_kerb", "im_footway", "im_footpath", "im_crossing", 
-#  "im_footway_imp", "im_light", "im_tactile", "im_surface_paved", "im_surface",
-#  "im_width", "im_width_est")
-#  )
-
-#sf::st_write(test_network_datapack, "/home/james/Desktop/LIDA_OSM_Project/openinfra/openinfra/data_pack_networks/Leeds_datapack_example.geojson")
-
-
-
-
-
-
-
