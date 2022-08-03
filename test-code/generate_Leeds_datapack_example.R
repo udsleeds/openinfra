@@ -1,10 +1,7 @@
 # Create example data pack for Leeds! 
 
 
-# Key parameters ----------------------------------------------------------
-
-region_name = "leeds"
-release_tag = "0.2"
+# Setup -------------------------------------------------------------------
 
 # Library Imports
 pkgs = c("sf",
@@ -13,6 +10,13 @@ pkgs = c("sf",
          "tmap",
          "openinfra")
 lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
+# # Uncomment to create new release:
+# piggyback::pb_new_release(tag = "0.3")
+
+# Key parameters ----------------------------------------------------------
+
+region_name = "leeds"
+release_tag = "0.3"
 
 # GeoJson of Leeds network obtained with osmextract 2/07/2022.
 a_test_network = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/Leeds.geojson")
