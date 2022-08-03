@@ -108,9 +108,9 @@
 
     
     
-<div class="section level2">
-<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
-</h2>
+<div class="section level3">
+<h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h3>
 <p>Library install</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
@@ -118,13 +118,13 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-tmap/tmap" class="external-link">tmap</a></span><span class="op">)</span></span>
 <span><span class="co">#library(openinfra)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="data-packs">Data Packs<a class="anchor" aria-label="anchor" href="#data-packs"></a>
-</h2>
-<p>This vignette covers the transport infrastructure data packs. <br><br> Below we can see the <code>recode_road_class</code> function. This function takes a SimpleFeatures (<a href="https://r-spatial.github.io/sf/index.html" class="external-link">sf</a>) osm infrastructure network and re-classifies features based on road classifications specified by <a href="https://www.nature.com/articles/s41598-019-55669-8" class="external-link">Chan and Cooper</a> in the following <a href="https://www.nature.com/articles/s41598-019-55669-8/tables/6" class="external-link">table</a>. <br><br><a href="https://www.nature.com/articles/s41598-019-55669-8" class="external-link">Chan and Cooper’s</a> work, <em>“Using road class as a replacement for predicted motorized traffic flow in spatial network models of cycling”</em>. <br><br> Cycling models require the simulation of motorised traffic in order to simulate motorised traffic movement to be considered in cycling models for route planning (cyclists won’t enjoy being on a busy road full of traffic!). <br><br> To model a given area for cycling, simulated motorised traffic must be modelled for a circular area (∝r<sup>2</sup>) 20x that of the cyclists, as zonal Origin Destination (OD) data is used for the entire car trip (typical car journey range ~30km to a cyclists ~7km). <br><br> Accurately modelling motor traffic for such a larger area requires much more data, time, and money than that required to model for cyclists, this becomes even more of an issue when comparing budgets for cyclist modelling and motorised traffic modelling. <br><br><a href="https://www.nature.com/articles/s41598-019-55669-8" class="external-link">Work</a> by Chan and Cooper propose estimating road traffic based on road classes, as defined in the table above, negating the requirement for the costly and time consuming modelling of motorised traffic.</p>
 <div class="section level3">
-<h3 id="function-recode_road_class">Function: <code>recode_road_class</code><a class="anchor" aria-label="anchor" href="#function-recode_road_class"></a>
+<h3 id="data-packs">Data Packs<a class="anchor" aria-label="anchor" href="#data-packs"></a>
 </h3>
+<p>This vignette covers the transport infrastructure data packs. <br><br> Below we can see the <code>recode_road_class</code> function. This function takes a SimpleFeatures (<a href="https://r-spatial.github.io/sf/index.html" class="external-link">sf</a>) osm infrastructure network and re-classifies features based on road classifications specified by <a href="https://www.nature.com/articles/s41598-019-55669-8" class="external-link">Chan and Cooper</a> in the following <a href="https://www.nature.com/articles/s41598-019-55669-8/tables/6" class="external-link">table</a>. <br><br><a href="https://www.nature.com/articles/s41598-019-55669-8" class="external-link">Chan and Cooper’s</a> work, <em>“Using road class as a replacement for predicted motorized traffic flow in spatial network models of cycling”</em>. <br><br> Cycling models require the simulation of motorised traffic in order to simulate motorised traffic movement to be considered in cycling models for route planning (cyclists won’t enjoy being on a busy road full of traffic!). <br><br> To model a given area for cycling, simulated motorised traffic must be modelled for a circular area (∝r<sup>2</sup>) 20x that of the cyclists, as zonal Origin Destination (OD) data is used for the entire car trip (typical car journey range ~30km to a cyclists ~7km). <br><br> Accurately modelling motor traffic for such a larger area requires much more data, time, and money than that required to model for cyclists, this becomes even more of an issue when comparing budgets for cyclist modelling and motorised traffic modelling. <br><br><a href="https://www.nature.com/articles/s41598-019-55669-8" class="external-link">Work</a> by Chan and Cooper propose estimating road traffic based on road classes, as defined in the table above, negating the requirement for the costly and time consuming modelling of motorised traffic.</p>
+<div class="section level4">
+<h4 id="function-recode_road_class">Function: <code>recode_road_class</code><a class="anchor" aria-label="anchor" href="#function-recode_road_class"></a>
+</h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define recode_road_class function</span></span>
 <span><span class="va">recode_road_class</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span><span class="op">)</span> <span class="op">{</span></span>
@@ -229,13 +229,13 @@
 <p><br><br></p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="an-example">An Example<a class="anchor" aria-label="anchor" href="#an-example"></a>
-</h2>
-<p>Here we visualise an output from <code>recode_road_class</code> using OSM data extracted using the <a href="https://github.com/ropensci/osmextract" class="external-link"><code>osmextract</code></a> package for R using the <code>oe_get()</code> command, shown below. <br><br> This example concerns a 5km circular radius about the city centre of Leeds, UK, with Long, Lat coords (-1.548567, 53.801277). <br><br></p>
 <div class="section level3">
-<h3 id="getting-data">Getting Data<a class="anchor" aria-label="anchor" href="#getting-data"></a>
+<h3 id="an-example">An Example<a class="anchor" aria-label="anchor" href="#an-example"></a>
 </h3>
+<p>Here we visualise an output from <code>recode_road_class</code> using OSM data extracted using the <a href="https://github.com/ropensci/osmextract" class="external-link"><code>osmextract</code></a> package for R using the <code>oe_get()</code> command, shown below. <br><br> This example concerns a 5km circular radius about the city centre of Leeds, UK, with Long, Lat coords (-1.548567, 53.801277). <br><br></p>
+<div class="section level4">
+<h4 id="getting-data">Getting Data<a class="anchor" aria-label="anchor" href="#getting-data"></a>
+</h4>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Data downloaded through osmextract as shown below: </span></span>
 <span></span>
@@ -254,9 +254,9 @@
 <span> <span class="va">total_place</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="st">"https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson"</span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
 </div>
-<div class="section level3">
-<h3 id="set-up-circular-buffer">Set Up Circular Buffer<a class="anchor" aria-label="anchor" href="#set-up-circular-buffer"></a>
-</h3>
+<div class="section level4">
+<h4 id="set-up-circular-buffer">Set Up Circular Buffer<a class="anchor" aria-label="anchor" href="#set-up-circular-buffer"></a>
+</h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Setting up the circular buffer around specified (long, lat) coord</span></span>
 <span><span class="va">crs</span> <span class="op">=</span> <span class="st">"WGS84"</span></span>
@@ -275,33 +275,74 @@
 <span><span class="va">circle_buffer</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_buffer</a></span><span class="op">(</span><span class="va">point_sf</span>, dist <span class="op">=</span> <span class="va">radius</span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
 </div>
-<div class="section level3">
-<h3 id="applying-recode_road_class-circular-buffer-zone">Applying <code>recode_road_class</code> &amp; Circular Buffer Zone<a class="anchor" aria-label="anchor" href="#applying-recode_road_class-circular-buffer-zone"></a>
-</h3>
+<div class="section level4">
+<h4 id="applying-recode_road_class-circular-buffer-zone">Applying <code>recode_road_class</code> &amp; Circular Buffer Zone<a class="anchor" aria-label="anchor" href="#applying-recode_road_class-circular-buffer-zone"></a>
+</h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">road_class_recode</span> <span class="op">=</span> <span class="fu"><a href="../reference/recode_road_class.html">recode_road_class</a></span><span class="op">(</span><span class="va">total_place</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">place_subset</span><span class="op">=</span> <span class="va">road_class_recode</span><span class="op">[</span><span class="va">circle_buffer</span>, <span class="op">]</span></span></code></pre></div>
 <p><br><br></p>
 </div>
-<div class="section level3">
-<h3 id="default-osm-highways">Default OSM Highways<a class="anchor" aria-label="anchor" href="#default-osm-highways"></a>
-</h3>
+<div class="section level4">
+<h4 id="default-osm-highways">Default OSM Highways<a class="anchor" aria-label="anchor" href="#default-osm-highways"></a>
+</h4>
 <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/5km_Leeds_OSM_highways.html" width="100%" height="650px" data-external="1">
 </iframe>
 <p><br><br></p>
 </div>
-<div class="section level3">
-<h3 id="road-description-visualisation">Road Description Visualisation<a class="anchor" aria-label="anchor" href="#road-description-visualisation"></a>
-</h3>
+<div class="section level4">
+<h4 id="road-description-visualisation">Road Description Visualisation<a class="anchor" aria-label="anchor" href="#road-description-visualisation"></a>
+</h4>
 <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/LCC_recode_road_class_example_output.html" width="100%" height="650px" data-external="1">
 </iframe>
 <p>As can be seen - the OSM highways re-categorised to road descriptions are much easier to visualise and insightful than all OSM highawy values. <br><br></p>
 </div>
-<div class="section level3">
-<h3 id="clean-maxspeed-visualisation">Clean maxspeed visualisation<a class="anchor" aria-label="anchor" href="#clean-maxspeed-visualisation"></a>
-</h3>
+<div class="section level4">
+<h4 id="clean-maxspeed-visualisation">Clean maxspeed visualisation<a class="anchor" aria-label="anchor" href="#clean-maxspeed-visualisation"></a>
+</h4>
 <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/5mk_Leeds_cleaned_maxspeed.html" width="100%" height="650px" data-external="1">
+</iframe>
+</div>
+</div>
+<div class="section level2">
+<h2 id="current-data-pack-example">Current Data Pack Example<a class="anchor" aria-label="anchor" href="#current-data-pack-example"></a>
+</h2>
+<p>A current exmaple data pack for “Leeds” - contains outputs: - Active cycle network - Active walking network - Presence of lighting network - Cleaned maximum speed values - Cleaned road descriptions - Inclusive Mobility (unfortunately not mapped here due to filesize)</p>
+<div class="section level4">
+<h4 id="default-network">Default Network<a class="anchor" aria-label="anchor" href="#default-network"></a>
+</h4>
+<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/5km_Leeds_OSM_highways.html" width="100%" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="section level4">
+<h4 id="oi-active-cycle">oi active cycle<a class="anchor" aria-label="anchor" href="#oi-active-cycle"></a>
+</h4>
+<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_map.html" width="100%" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="section level4">
+<h4 id="oi-active-walk">oi active walk<a class="anchor" aria-label="anchor" href="#oi-active-walk"></a>
+</h4>
+<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/walk_map.html" width="100%" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="section level4">
+<h4 id="oi-is-lit">oi is lit<a class="anchor" aria-label="anchor" href="#oi-is-lit"></a>
+</h4>
+<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/is_lit_map.html" width="100%" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="section level4">
+<h4 id="oi-maxspeed">oi maxspeed<a class="anchor" aria-label="anchor" href="#oi-maxspeed"></a>
+</h4>
+<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/maxspeed_map.html" width="100%" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="section level4">
+<h4 id="recode-road">recode road<a class="anchor" aria-label="anchor" href="#recode-road"></a>
+</h4>
+<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/road_desc_map.html" width="100%" height="650px" data-external="1">
 </iframe>
 </div>
 </div>
