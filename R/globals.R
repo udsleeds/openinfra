@@ -2,7 +2,7 @@
 # created as a suggested fix from (https://community.rstudio.com/t/how-to-solve-no-visible-binding-for-global-variable-note/28887)
 
 # reocde_road_class function
-utils::globalVariables(c("road_class"))
+utils::globalVariables(c("oi_road_class"))
 # oi_clean_maxspeed_uk.R
 utils::globalVariables(c("maxspeed", "oi_maxspeed"))
 # oi_inclusive_mobility
