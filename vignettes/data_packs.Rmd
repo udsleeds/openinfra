@@ -182,4 +182,42 @@ As can be seen - the OSM highways re-categorised to road descriptions are much e
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/5mk_Leeds_cleaned_maxspeed.html", height="650px")
 ```
 
+# Current Data Pack Example
 
+A current exmaple data pack for "Leeds" - contains outputs: 
+- Active cycle network
+- Active walking network
+- Presence of lighting network
+- Cleaned maximum speed values
+- Cleaned road descriptions
+- Inclusive Mobility (unfortunately not mapped here due to filesize)
+
+### Default Network
+```{r out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/5km_Leeds_OSM_highways.html", height = "650px")
+```
+
+### oi active cycle
+```{r out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_map.html", height = "650px")
+```
+
+### oi active walk
+```{r out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/walk_map.html", height = "650px")
+```
+
+### oi is lit
+```{r out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/is_lit_map.html", height = "650px")
+```
+
+### oi maxspeed
+```{r out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/maxspeed_map.html", height = "650px")
+```
+
+### recode road
+```{r out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/road_desc_map.html", height = "650px")
+```
