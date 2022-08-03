@@ -3,6 +3,7 @@
 
 # Setup -------------------------------------------------------------------
 
+remotes::install_github("udsleeds/openinfra")
 # Library Imports
 pkgs = c("sf",
          "osmextract",
@@ -30,7 +31,6 @@ a_test_network = oi_is_lit(a_test_network, remove = FALSE)
 a_test_network = recode_road_class(a_test_network)
 
 # Select relevant columns for data_pack
-names(a_test)
 # test_network_datapack = a_test_network %>% dplyr::select(c(
 #   "osm_id", "highway", "road_desc", "oi_maxspeed", "oi_walk", "oi_cycle",
 #   "oi_is_lit", "im_kerb", "im_footway", "im_footpath", "im_crossing", 
@@ -45,7 +45,6 @@ a_test_network = sf::st_sf(
 )
 names(a_test_network)
 
-
 # Upload data -------------------------------------------------------------
 
 data_pack_basename = paste0("datapack_", region_name)
@@ -58,8 +57,14 @@ for (f in formats) {
   message("Uploading data for ", region_name, ": ", data_pack_filename)
   piggyback::pb_upload(data_pack_filename)
 }
-
-
+# create shapefile (not by default)
+data_pack_filename_shp = paste0(data_pack_basename, ".shp")
+dir.create(paste0(data_pack_basename, "_shp"))
+sf::write_sf(a_test_network, file.path(paste0(data_pack_basename, "_shp"), data_pack_filename_shp))
+waldo::compare(names(a_test_network), names(a_test_shp))
+a_test_shp = sf::read_sf("datapack_leeds_shp/datapack_leeds.shp")
+zip(zipfile = paste0(data_pack_basename, ".zip"), files = paste0(data_pack_basename, "_shp"))
+piggyback::pb_upload(paste0(data_pack_basename, ".zip"))
 
 #___________MAPS_____________________________
 
