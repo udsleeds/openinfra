@@ -118,8 +118,10 @@ vc_dc_new = as.data.frame(table(updated_output$oi_road_desc))
 
 # Comapre the difference
 waldo::compare(vc_dc_og, vc_dc_new)
-# We can see that rows 2 & 4 have chaged where 2 - Dual Carriage Ways and 
-# 4 - Primary (A) Roads --> thus, by changing our filtering we have moved 
-# 343 ways incorrectly classified as dual carraige ways, back to being 
-# Primary Roads (this was due to A roads being marked as trunk or trunk_link)
-# and I was not specifying that a Dual Carriage way required a oneway key. 
+# We can see that rows 2 & 4 have changed.
+# Where 2 - Dual Carriage Ways and 
+# 4 - Primary (A) Roads
+# Thus, by changing our filtering we have moved 343 ways incorrectly classified 
+# as dual carraige ways, back to being Primary Roads (this was due to A roads
+# being marked as trunk or trunk_link) and I was not specifying that a Dual 
+# Carriage way required a oneway key. 
