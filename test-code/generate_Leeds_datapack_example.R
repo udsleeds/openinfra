@@ -13,12 +13,12 @@ lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
 a_test_network = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/Leeds.geojson")
 
 # Apply Openinfra functions to create datapack
-a_test_network = oi_active_cycle(test_network, remove = FALSE)
-a_test_network = oi_active_walk(test_network, remove = FALSE)
-a_test_network = oi_clean_maxspeed_uk(test_network, no_NA = FALSE, del = FALSE)
-a_test_network = oi_inclusive_mobility(test_network)
-a_test_network = oi_is_lit(test_network, remove = FALSE)
-a_test_network = recode_road_class(test_network)
+a_test_network = oi_active_cycle(a_test_network, remove = FALSE)
+a_test_network = oi_active_walk(a_test_network, remove = FALSE)
+a_test_network = oi_clean_maxspeed_uk(a_test_network, no_NA = FALSE, del = FALSE)
+a_test_network = oi_inclusive_mobility(a_test_network)
+a_test_network = oi_is_lit(a_test_network, remove = FALSE)
+a_test_network = recode_road_class(a_test_network)
 
 # Select relevant columns for data_pack
 test_network_datapack = a_test_network %>% dplyr::select(c(
