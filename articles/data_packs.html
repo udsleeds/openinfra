@@ -108,9 +108,9 @@
 
     
     
-<div class="section level3">
-<h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
-</h3>
+<div class="section level2">
+<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
 <p>Library install</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
@@ -118,22 +118,26 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-tmap/tmap" class="external-link">tmap</a></span><span class="op">)</span></span>
 <span><span class="co">#library(openinfra)</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="data-packs">Data Packs<a class="anchor" aria-label="anchor" href="#data-packs"></a>
+</h2>
+<p>This vignette covers the transport infrastructure data packs. <br><br> The transport infrastructure data packs contain OSM infrastructure data for a given Local Authority District (LAD) as defined by the polygons of this map of <a href="https://github.com/udsleeds/openinfra/blob/main/data-small/lads_joined_2021.geojson" class="external-link">UK LADs</a>. <br><br> Whilst these LADs are currently being used to define the spatial area covered by each infrastructure data pack, any new set of updated boundaries (as a geojson file) can also be used to create the infrastructure data packs. <br><br></p>
 <div class="section level3">
-<h3 id="data-packs">Data Packs<a class="anchor" aria-label="anchor" href="#data-packs"></a>
+<h3 id="data-packs-additional-data---the-functions">Data Packs Additional Data - The Functions<a class="anchor" aria-label="anchor" href="#data-packs-additional-data---the-functions"></a>
 </h3>
-<p>This vignette covers the transport infrastructure data packs. <br><br> Below we can see the <code>recode_road_class</code> function. This function takes a SimpleFeatures (<a href="https://r-spatial.github.io/sf/index.html" class="external-link">sf</a>) osm infrastructure network and re-classifies features based on road classifications specified by <a href="https://www.nature.com/articles/s41598-019-55669-8" class="external-link">Chan and Cooper</a> in the following <a href="https://www.nature.com/articles/s41598-019-55669-8/tables/6" class="external-link">table</a>. <br><br><a href="https://www.nature.com/articles/s41598-019-55669-8" class="external-link">Chan and Cooper’s</a> work, <em>“Using road class as a replacement for predicted motorized traffic flow in spatial network models of cycling”</em>. <br><br> Cycling models require the simulation of motorised traffic in order to simulate motorised traffic movement to be considered in cycling models for route planning (cyclists won’t enjoy being on a busy road full of traffic!). <br><br> To model a given area for cycling, simulated motorised traffic must be modelled for a circular area (∝r<sup>2</sup>) 20x that of the cyclists, as zonal Origin Destination (OD) data is used for the entire car trip (typical car journey range ~30km to a cyclists ~7km). <br><br> Accurately modelling motor traffic for such a larger area requires much more data, time, and money than that required to model for cyclists, this becomes even more of an issue when comparing budgets for cyclist modelling and motorised traffic modelling. <br><br><a href="https://www.nature.com/articles/s41598-019-55669-8" class="external-link">Work</a> by Chan and Cooper propose estimating road traffic based on road classes, as defined in the table above, negating the requirement for the costly and time consuming modelling of motorised traffic.</p>
+<p>Below we can see the <code>recode_road_class</code> function. This function takes a SimpleFeatures (<a href="https://r-spatial.github.io/sf/index.html" class="external-link">sf</a>) osm infrastructure network and re-classifies features based on road classifications specified by <a href="https://www.nature.com/articles/s41598-019-55669-8" class="external-link">Chan and Cooper</a> in the following <a href="https://www.nature.com/articles/s41598-019-55669-8/tables/6" class="external-link">table</a>. <br><br><a href="https://www.nature.com/articles/s41598-019-55669-8" class="external-link">Chan and Cooper’s</a> work, <em>“Using road class as a replacement for predicted motorized traffic flow in spatial network models of cycling”</em>. <br><br> Cycling models require the simulation of motorised traffic in order to simulate motorised traffic movement to be considered in cycling models for route planning (cyclists won’t enjoy being on a busy road full of traffic!). <br><br> To model a given area for cycling, simulated motorised traffic must be modelled for a circular area (∝r<sup>2</sup>) 20x that of the cyclists, as zonal Origin Destination (OD) data is used for the entire car trip (typical car journey range ~30km to a cyclists ~7km). <br><br> Accurately modelling motor traffic for such a larger area requires much more data, time, and money than that required to model for cyclists, this becomes even more of an issue when comparing budgets for cyclist modelling and motorised traffic modelling. <br><br><a href="https://www.nature.com/articles/s41598-019-55669-8" class="external-link">Work</a> by Chan and Cooper propose estimating road traffic based on road classes, as defined in the table above, negating the requirement for the costly and time consuming modelling of motorised traffic.</p>
 <div class="section level4">
-<h4 id="function-recode_road_class">Function: <code>recode_road_class</code><a class="anchor" aria-label="anchor" href="#function-recode_road_class"></a>
+<h4 id="function-oi_recode_road_class">Function: <code>oi_recode_road_class</code><a class="anchor" aria-label="anchor" href="#function-oi_recode_road_class"></a>
 </h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define recode_road_class function</span></span>
-<span><span class="va">recode_road_class</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="va">oi_recode_road_class</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># browser() Uncomment this to perform function debugging </span></span>
 <span>  </span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span></span>
-<span>  <span class="co">#_Function_Code_________________________________</span></span>
+<span>  <span class="co"># Created road_class columns</span></span>
 <span>  <span class="va">osm_recat</span> <span class="op">=</span> <span class="va">osm_sf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="co"># Creates road_class column</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>road_class <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>oi_road_class <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
 <span>      <span class="co"># (7) - Motorways</span></span>
 <span>      <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"motorway"</span>, <span class="st">"motorway_link"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"7"</span>,</span>
 <span>      <span class="co"># (6/5) - Dual Carriageways resi &amp; non-resi</span></span>
@@ -151,13 +155,13 @@
 <span>    <span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    </span>
 <span>    <span class="co"># Creates road_description columns</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>road_desc <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>oi_road_desc <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
 <span>      <span class="co"># (7) - Motorways</span></span>
 <span>      <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"motorway"</span>, <span class="st">"motorway_link"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Motorways"</span>,</span>
 <span>      <span class="co"># (6/5) - Dual Carriageways resi &amp; non-resi</span></span>
-<span>      <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trunk"</span>, <span class="st">"trunk_link"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Dual Carriageways (R&amp;NR)"</span>,</span>
+<span>      <span class="op">(</span><span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trunk"</span>, <span class="st">"trunk_link"</span><span class="op">)</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">oneway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"yes"</span>, <span class="st">"-1"</span>, <span class="st">"reversible"</span>, <span class="st">"alternating"</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Dual Carriageways (R&amp;NR)"</span>,</span>
 <span>      <span class="co"># (4) - Primary Roads</span></span>
-<span>      <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"primary"</span>, <span class="st">"primary_link"</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="va">highway</span> <span class="op">==</span> <span class="st">"trunk"</span> <span class="op">&amp;</span> <span class="va">oneway</span> <span class="op">==</span> <span class="st">"F"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Primary Roads"</span>,</span>
+<span>      <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"primary"</span>, <span class="st">"primary_link"</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trunk"</span>, <span class="st">"trunk_link"</span><span class="op">)</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="op">!</span> <span class="va">oneway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"yes"</span>, <span class="st">"-1"</span>, <span class="st">"reversible"</span>, <span class="st">"alternating"</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Primary Roads"</span>,</span>
 <span>      <span class="co"># (3) - Secondary Roads</span></span>
 <span>      <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"secondary"</span>, <span class="st">"secondary_link"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Secondary Roads"</span>,</span>
 <span>      <span class="co"># (2) - Tertiary Roads</span></span>
@@ -167,8 +171,9 @@
 <span>      <span class="co"># (0) - Traffic-free Paths</span></span>
 <span>      <span class="va">highway</span> <span class="op">==</span> <span class="st">"cycleway"</span> <span class="op">~</span> <span class="st">"Cycleway"</span></span>
 <span>    <span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    </span>
 <span>    <span class="co"># Removes features that have not been recodeed to a road_class value</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">road_class</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">oi_road_class</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p><br><br></p>
 <p>As discussed, the above function was defined defined based on the following table from Chan and Cooper:</p>
@@ -187,56 +192,375 @@
 <tr class="odd">
 <td>7</td>
 <td>Motorways</td>
-<td>highway = motorway OR highway = motorway_link</td>
+<td>
+<code>highway = motorway</code> <strong>OR</strong> <code>highway = motorway_link</code>
+</td>
 </tr>
 <tr class="even">
 <td>6</td>
 <td>Non-residential Dual Carriageways</td>
-<td>highway =  trunk OR highway = trunk_link*manual classification needed</td>
+<td>
+<code>highway =  trunk</code> <strong>OR</strong> <code>highway = trunk_link</code> <strong>AND</strong> <code>oneway = yes</code><em>&amp; manual classification needed</em>
+</td>
 </tr>
 <tr class="odd">
 <td>5</td>
 <td>Residential Dual Carriageways</td>
-<td>highway =  trunk OR highway =  trunk_link*manual classification needed</td>
+<td>
+<code>highway =  trunk</code> <strong>OR</strong> <code>highway =  trunk_link</code> <strong>AND</strong> <code>oneway = yes</code> <em>&amp; manual classification needed</em>
+</td>
 </tr>
 <tr class="even">
 <td>4</td>
 <td>Primary Roads</td>
-<td>highway =  primary OR highway =  primary_link OR (highway =  trunk AND oneway = F)</td>
+<td>(<code>highway =  primary</code> <strong>OR</strong> <code>highway = primary_link</code> <strong>OR</strong> <code>highway = trunk</code>) <strong>AND</strong> <code>oneway != yes</code>)</td>
 </tr>
 <tr class="odd">
 <td>3</td>
 <td>Secondary Roads</td>
-<td>highway =  secondary OR highway =  secondary_link</td>
+<td>
+<code>highway =  secondary</code> <strong>OR</strong> <code>highway =  secondary_link</code>
+</td>
 </tr>
 <tr class="even">
 <td>2</td>
 <td>Tertiary Roads</td>
-<td>highway = tertiary OR highway = tertiary_link</td>
+<td>
+<code>highway = tertiary</code> <strong>OR</strong> <code>highway = tertiary_link</code>
+</td>
 </tr>
 <tr class="odd">
 <td>1</td>
 <td>Local Roads</td>
-<td>highway = living_street OR highway = residential OR highway = unclassified</td>
+<td>
+<code>highway = living_street</code> <strong>OR</strong> <code>highway = residential</code> <strong>OR</strong> <code>highway = unclassified</code>
+</td>
 </tr>
 <tr class="even">
 <td>0</td>
 <td>Traffic-free Paths</td>
-<td>highway = cycleway</td>
+<td><code>highway = cycleway</code></td>
 </tr>
 </tbody>
 </table>
 <p><br><br></p>
 </div>
-</div>
-<div class="section level3">
-<h3 id="an-example">An Example<a class="anchor" aria-label="anchor" href="#an-example"></a>
-</h3>
-<p>Here we visualise an output from <code>recode_road_class</code> using OSM data extracted using the <a href="https://github.com/ropensci/osmextract" class="external-link"><code>osmextract</code></a> package for R using the <code>oe_get()</code> command, shown below. <br><br> This example concerns a 5km circular radius about the city centre of Leeds, UK, with Long, Lat coords (-1.548567, 53.801277). <br><br></p>
 <div class="section level4">
-<h4 id="getting-data">Getting Data<a class="anchor" aria-label="anchor" href="#getting-data"></a>
+<h4 id="function-oi_active_cycle">Function: <code>oi_active_cycle</code><a class="anchor" aria-label="anchor" href="#function-oi_active_cycle"></a>
 </h4>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oi_active_cycle</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span>, <span class="va">remove</span><span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="co">#browser() # Uncomment to debug</span></span>
+<span>  <span class="va">osm_sf_cycle</span> <span class="op">=</span> <span class="va">osm_sf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>oi_cycle <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>    </span>
+<span>    <span class="co"># Highway cannot be NA</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">highway</span><span class="op">)</span> <span class="op">~</span> <span class="st">"no"</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Highway values not appropriate for cycling</span></span>
+<span>    <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'abandoned'</span>, <span class="st">'bus_guideway'</span>, <span class="st">'byway'</span>, <span class="st">'construction'</span>, </span>
+<span>                   <span class="st">'corridor'</span>, <span class="st">'elevator'</span>, <span class="st">'fixme'</span>, <span class="st">'escalator'</span>, <span class="st">'gallop'</span>, </span>
+<span>                   <span class="st">'historic'</span>, <span class="st">'no'</span>, <span class="st">'planned'</span>, <span class="st">'platform'</span>, <span class="st">'proposed'</span>, </span>
+<span>                   <span class="st">'raceway'</span>, <span class="st">'steps'</span><span class="op">)</span> </span>
+<span>    <span class="op">~</span> <span class="st">"no"</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Create two cases to catch features typically not allowed for cyclists, but have been flagged appropriate:</span></span>
+<span>    <span class="co"># 1 - If highway = "bad highway values" BUT bicycle = "good bicycle values" then assign ~ "yes",</span></span>
+<span>    <span class="op">(</span><span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'motorway'</span>, <span class="st">'motorway_link'</span>, <span class="st">'footway'</span>, <span class="st">'bridleway'</span>,<span class="st">'pedestrian'</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">bicycle</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'yes'</span>, <span class="st">'designated'</span>, <span class="st">'permissive'</span>, <span class="st">'destination'</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>    <span class="op">(</span><span class="op">(</span><span class="va">highway</span> <span class="op">==</span> <span class="st">"footway"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="op">!</span> <span class="va">bicycle</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"dismount"</span>, <span class="st">"private"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="op">!</span> <span class="va">access</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"private"</span>, <span class="st">"no"</span>, <span class="st">"permit"</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>    </span>
+<span>    <span class="co"># 2 - Assign highway = "bad highway values" ONLY as ~ "no". Ways that are appropriate for cyclists will already be assigned "yes" from above</span></span>
+<span>    <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'motorway'</span>, <span class="st">'motorway_link'</span>, <span class="st">'footway'</span>, <span class="st">'bridleway'</span>,<span class="st">'pedestrian'</span><span class="op">)</span> <span class="op">~</span> <span class="st">"no"</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Way must have access rights</span></span>
+<span>    <span class="va">access</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'private'</span>, <span class="st">'no'</span><span class="op">)</span> <span class="op">~</span> <span class="st">"no"</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Way must not bar cyclists</span></span>
+<span>    <span class="va">bicycle</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'no'</span>, <span class="st">'private'</span>, <span class="st">'ue_sidepath'</span>, <span class="st">'restricted'</span><span class="op">)</span> <span class="op">~</span> <span class="st">"no"</span>, </span>
+<span>    </span>
+<span>    <span class="co"># Way must not contain "private" within the service tag</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"private"</span>, <span class="va">service</span><span class="op">)</span> <span class="op">~</span> <span class="st">"no"</span>,</span>
+<span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Case_when above should have added "no" to all inappropriate features, now </span></span>
+<span>  <span class="co"># find features that do not contain "no" and set as "yes"</span></span>
+<span>  <span class="va">osm_sf_cycle</span><span class="op">$</span><span class="va">oi_cycle</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">osm_sf_cycle</span><span class="op">$</span><span class="va">oi_cycle</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="st">"yes"</span></span>
+<span>  </span>
+<span>  <span class="co"># If remove = TRUE, filter out features that have oi_cycle == "no"</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">remove</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="va">osm_sf_cycle</span> <span class="op">=</span> <span class="va">osm_sf_cycle</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">osm_sf_cycle</span><span class="op">$</span><span class="va">oi_cycle</span> <span class="op">==</span> <span class="st">"yes"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">osm_sf_cycle</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="function-oi_active_walk">Function: <code>oi_active_walk</code><a class="anchor" aria-label="anchor" href="#function-oi_active_walk"></a>
+</h4>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oi_active_walk</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span>, <span class="va">remove</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="co">#browser() #&lt;-- Uncomment to debug function.</span></span>
+<span>  <span class="va">osm_sf_walking</span> <span class="op">=</span> <span class="va">osm_sf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>oi_walk <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>    </span>
+<span>    <span class="co"># Highway tag cannot be NA</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">highway</span><span class="op">)</span> <span class="op">~</span> <span class="st">"no"</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Highway tag cannot have un-walkable values</span></span>
+<span>    <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'abandoned'</span>, <span class="st">'bus_guideway'</span>, <span class="st">'byway'</span>, <span class="st">'construction'</span>, </span>
+<span>                   <span class="st">'corridor'</span>, <span class="st">'elevator'</span>, <span class="st">'fixme'</span>, <span class="st">'escalator'</span>, <span class="st">'gallop'</span>, </span>
+<span>                   <span class="st">'historic'</span>, <span class="st">'no'</span>, <span class="st">'planned'</span>, <span class="st">'platform'</span>, <span class="st">'proposed'</span>,</span>
+<span>                   <span class="st">'raceway'</span>, <span class="st">'motorway'</span>, <span class="st">'motorway_link'</span><span class="op">)</span> </span>
+<span>    <span class="op">~</span> <span class="st">"no"</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Hihgway tag cannot be a cycleway UNLESS walking is permitted</span></span>
+<span>    <span class="op">(</span><span class="op">(</span><span class="va">highway</span> <span class="op">==</span> <span class="st">"cycleway"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">foot</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'yes'</span>, <span class="st">'designated'</span>, <span class="st">'permissive'</span>, <span class="st">'destination'</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>    <span class="co"># Below catches highway == cycleway and foot != values below INCLUDING NAs. </span></span>
+<span>    <span class="op">(</span><span class="op">(</span><span class="va">highway</span> <span class="op">==</span> <span class="st">"cycleway"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="op">!</span> <span class="va">foot</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'yes'</span>, <span class="st">'designated'</span>, <span class="st">'permissive'</span>, <span class="st">'destination'</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"no"</span>,</span>
+<span>    </span>
+<span>    <span class="op">(</span><span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"footway"</span>, <span class="st">"pedestrian"</span>, <span class="st">"path"</span><span class="op">)</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="op">!</span> <span class="va">foot</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"private"</span><span class="op">)</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="op">!</span> <span class="va">access</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"private"</span>, <span class="st">"no"</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Access cannot be restricted</span></span>
+<span>    <span class="op">(</span><span class="op">(</span><span class="va">access</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'private'</span>, <span class="st">'no'</span><span class="op">)</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">foot</span> <span class="op">==</span> <span class="st">"yes"</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>    <span class="op">(</span><span class="op">(</span><span class="va">access</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'private'</span>, <span class="st">'no'</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"no"</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Foot usage must be permitted,</span></span>
+<span>    <span class="va">foot</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'private'</span>, <span class="st">'no'</span>, <span class="st">'use_sidepath'</span>, <span class="st">'restricted'</span><span class="op">)</span> <span class="op">~</span> <span class="st">"no"</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Service value does not contain "private"</span></span>
+<span>    <span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"private"</span>, <span class="va">service</span><span class="op">)</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">foot</span> <span class="op">==</span> <span class="st">"yes"</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>    <span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"private"</span>, <span class="va">service</span><span class="op">)</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">foot</span> <span class="op">!=</span> <span class="st">"yes"</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"no"</span>,</span>
+<span>    </span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># find features that do not contain "no" and set as "yes"</span></span>
+<span>  <span class="va">osm_sf_walking</span><span class="op">$</span><span class="va">oi_walk</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">osm_sf_walking</span><span class="op">$</span><span class="va">oi_walk</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="st">"yes"</span></span>
+<span>  </span>
+<span>  <span class="co"># If remove = TRUE, filter out features that have oi_walking == "no"</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">remove</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="va">osm_sf_walking</span> <span class="op">=</span> <span class="va">osm_sf_walking</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">osm_sf_walking</span><span class="op">$</span><span class="va">oi_walk</span> <span class="op">==</span> <span class="st">"yes"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  </span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">osm_sf_walking</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="function-oi_clean_maxspeed_uk">Function: <code>oi_clean_maxspeed_uk</code><a class="anchor" aria-label="anchor" href="#function-oi_clean_maxspeed_uk"></a>
+</h4>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oi_clean_maxspeed_uk</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span>, <span class="va">no_NA</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">del</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="co"># Define NOT IN </span></span>
+<span>  <span class="va">`%!in%`</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Negate</a></span><span class="op">(</span><span class="va">`%in%`</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">osm_clean</span> <span class="op">=</span> <span class="va">osm_sf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>oi_maxspeed <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="co"># maxspeed == national, when on motorway</span></span>
+<span>      <span class="op">(</span><span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"national"</span> <span class="op">&amp;</span> <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"motorway"</span>, <span class="st">"motorway_link"</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"70 mph"</span>,</span>
+<span>      </span>
+<span>      <span class="co"># maxspeed == national, when NOT on motorway</span></span>
+<span>      <span class="op">(</span><span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"national"</span> <span class="op">&amp;</span> <span class="va">highway</span> <span class="op">%!in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"motorway"</span>, <span class="st">"motorway_link"</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"60 mph"</span>,  </span>
+<span>      </span>
+<span>      <span class="co"># maxspeed == national, when on standard (i.e Non-Residential) dual carriageway</span></span>
+<span>      <span class="op">(</span><span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"national"</span> <span class="op">&amp;</span> <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trunk"</span>, <span class="st">"trunk_link"</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"70 mph"</span>,</span>
+<span>      </span>
+<span>      <span class="co"># maxspeed == (20|30|40|50|60|70 --&gt; + mph)</span></span>
+<span>      <span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"20"</span> <span class="op">~</span> <span class="st">"20 mph"</span>,</span>
+<span>      <span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"30"</span> <span class="op">~</span> <span class="st">"30 mph"</span>,</span>
+<span>      <span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"40"</span> <span class="op">~</span> <span class="st">"40 mph"</span>,</span>
+<span>      <span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"50"</span> <span class="op">~</span> <span class="st">"50 mph"</span>,</span>
+<span>      <span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"60"</span> <span class="op">~</span> <span class="st">"60 mph"</span>,</span>
+<span>      <span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"70"</span> <span class="op">~</span> <span class="st">"70 mph"</span>,</span>
+<span>      </span>
+<span>      <span class="co"># Already cleaned speeds (to stop mutate missing these)</span></span>
+<span>      <span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"20 mph"</span> <span class="op">~</span> <span class="st">"20 mph"</span>,</span>
+<span>      <span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"30 mph"</span> <span class="op">~</span> <span class="st">"30 mph"</span>,</span>
+<span>      <span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"40 mph"</span> <span class="op">~</span> <span class="st">"40 mph"</span>,</span>
+<span>      <span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"50 mph"</span> <span class="op">~</span> <span class="st">"50 mph"</span>,</span>
+<span>      <span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"60 mph"</span> <span class="op">~</span> <span class="st">"60 mph"</span>,</span>
+<span>      <span class="va">maxspeed</span> <span class="op">==</span> <span class="st">"70 mph"</span> <span class="op">~</span> <span class="st">"70 mph"</span>,</span>
+<span>    <span class="op">)</span><span class="op">)</span> </span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">no_NA</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="co"># if TURE, will remove features if their oi_maxspeed == NA</span></span>
+<span>    <span class="va">osm_clean</span> <span class="op">=</span> <span class="va">osm_clean</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">oi_maxspeed</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">del</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="co"># If TRUE, will delete original `maxspeed` column</span></span>
+<span>    <span class="va">osm_clean</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">osm_clean</span>, select <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">maxspeed</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> </span>
+<span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">osm_clean</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="function-oi_inclusive_mobility">Function: <code>oi_inclusive_mobility</code><a class="anchor" aria-label="anchor" href="#function-oi_inclusive_mobility"></a>
+</h4>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oi_inclusive_mobility</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co">#browser() # &lt;-- Uncomment for debugging.</span></span>
+<span>  </span>
+<span>  <span class="va">osm_sf_im</span> <span class="op">=</span> <span class="va">osm_sf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="co"># Assesses whether a kerb is flush or not</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>im_kerb <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">kerb</span> <span class="op">==</span> <span class="st">"flush"</span> <span class="op">|</span> <span class="va">kerb</span> <span class="op">==</span> <span class="st">"no"</span>, <span class="st">"flush"</span>, <span class="st">"other"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    </span>
+<span>    <span class="co"># Assesses footway - a ‘pavement’ adjacent to a road</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>im_footway <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="va">footway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"right"</span>, <span class="st">"both"</span>, <span class="st">"sidewalk"</span><span class="op">)</span> <span class="op">|</span></span>
+<span>        <span class="va">sidewalk</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"right"</span>, <span class="st">"both"</span>, <span class="st">"yes"</span>, <span class="st">"separate"</span><span class="op">)</span> <span class="op">|</span></span>
+<span>        <span class="co"># trying to capture footways shared with cyclists</span></span>
+<span>        <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">cycleway</span><span class="op">)</span> <span class="op">&amp;</span> <span class="co"># map cycling infrastructure that is an inherent part of the road</span></span>
+<span>        <span class="va">foot</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"yes"</span>, <span class="st">"designated"</span><span class="op">)</span> <span class="op">|</span></span>
+<span>        <span class="va">segregated</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"yes"</span></span>
+<span>      <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"no"</span> </span>
+<span>    <span class="op">)</span> </span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="co"># Assesses footpath - any other right of way for pedestrians, that does not run adjacent to a road.</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>im_footpath <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"footway"</span> <span class="op">&amp;</span> </span>
+<span>        <span class="va">im_footway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"no"</span> <span class="op">|</span> </span>
+<span>        <span class="co"># not (always) an inherent part of the road</span></span>
+<span>        <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cycleway"</span>, <span class="st">"bridleway"</span>, <span class="st">"path"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="co"># foot = "designated" is implied</span></span>
+<span>        <span class="va">im_footway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"no"</span> <span class="op">&amp;</span></span>
+<span>        <span class="op">!</span> <span class="va">foot</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"private"</span><span class="op">)</span> <span class="op">|</span> </span>
+<span>        <span class="op">!</span> <span class="va">access</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"private"</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>        <span class="va">segregated</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"no"</span> <span class="co"># shared space</span></span>
+<span>      <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"no"</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    </span>
+<span>    <span class="co"># Assesses presence of a crossing and what type: give-way, signal controlled, none, or yes (but the type is unknown)</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>im_crossing <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">crossing</span>, <span class="st">"zebra|uncontr|marked"</span><span class="op">)</span><span class="op">~</span> <span class="st">"give-way"</span>,</span>
+<span>      <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">crossing</span>, <span class="st">"toucan|pedex|puffin|equestrian|light|signal"</span><span class="op">)</span><span class="op">~</span> <span class="st">"signal-controlled"</span>,</span>
+<span>      <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"crossing"</span> <span class="op">|</span> <span class="va">footway</span>  <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"crossing"</span> <span class="op">|</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">crossing</span><span class="op">)</span> <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"no"</span></span>
+<span>    <span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    </span>
+<span>    <span class="co"># implied footways but there's a lack of data to verify</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>im_footway_imp <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="va">im_footway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"no"</span> <span class="op">&amp;</span></span>
+<span>        <span class="va">im_footpath</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"no"</span> <span class="op">&amp;</span></span>
+<span>        <span class="va">im_crossing</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"no"</span></span>
+<span>      <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"no"</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="co"># Assesses whether the way is lit or not</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>im_light <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span> </span>
+<span>      <span class="co"># highway %in% "street_lamp" |</span></span>
+<span>      <span class="op">!</span> <span class="va">lit</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"disused"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">lit</span><span class="op">)</span></span>
+<span>      <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"no"</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    </span>
+<span>    <span class="co"># Assesses the presence of tactile paving - either yes, no.</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>im_tactile <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="op">!</span> <span class="va">tactile_paving</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"incorrect"</span>, <span class="st">"bad"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">tactile_paving</span><span class="op">)</span> </span>
+<span>      <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>      <span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">tactile_paving</span><span class="op">)</span></span>
+<span>      <span class="op">~</span> <span class="st">"no"</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    </span>
+<span>    <span class="co"># Assesses whether surface is paved, unpaved, or other</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>      im_surface_paved <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>        <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"cycleway"</span></span>
+<span>        <span class="op">~</span> <span class="st">"paved"</span>,</span>
+<span>        </span>
+<span>        <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">surface</span>,</span>
+<span>                            <span class="st">"pav|asph|chipseal|concrete|paving|sett|cobble|metal|wood|stepping"</span><span class="op">)</span></span>
+<span>        <span class="op">~</span> <span class="st">"paved"</span>,</span>
+<span>        <span class="va">highway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"footway"</span>, <span class="st">"bridleway"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="co"># highway = footway implied surface value is unpaved</span></span>
+<span>          <span class="op">!</span> <span class="va">surface</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">surface</span>, <span class="st">"pav|asph|chipseal|concrete|paving|sett|cobble|metal|wood|stepping"</span><span class="op">)</span></span>
+<span>        <span class="op">~</span> <span class="st">"unpaved"</span>,</span>
+<span>        <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">surface</span>, <span class="st">"unpav|compact|gravel|rock|pebble|ground|dirt|grass|mud|sand|woodchips|snow|ice|salt"</span><span class="op">)</span></span>
+<span>        <span class="op">~</span> <span class="st">"unpaved"</span>,</span>
+<span>        <span class="cn">TRUE</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">surface</span><span class="op">)</span> <span class="op">~</span> <span class="st">"other"</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="co"># Assesses whether surface is even or uneven</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>im_surface <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">surface</span>, <span class="st">"asph|concrete"</span><span class="op">)</span></span>
+<span>      <span class="op">~</span> <span class="st">"even"</span>,</span>
+<span>      </span>
+<span>      <span class="va">im_surface_paved</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"paved"</span> <span class="op">&amp;</span></span>
+<span>        <span class="va">smoothness</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"excellent"</span>, <span class="st">"good"</span><span class="op">)</span></span>
+<span>      <span class="op">~</span> <span class="st">"even"</span>,</span>
+<span>      <span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">im_surface_paved</span><span class="op">)</span> </span>
+<span>      <span class="op">~</span> <span class="st">"uneven"</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="co"># Assesses way width - either under 1.5 meters, 1.5-2 meters, or over 2 meters</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>      im_width <span class="op">=</span>  <span class="va">width</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>        <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/parse_number.html" class="external-link">parse_number</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      im_width <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>        <span class="va">im_width</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">im_width</span> <span class="op">&lt;</span> <span class="fl">1.5</span> <span class="op">~</span> <span class="st">" &lt; 1.5"</span>,</span>
+<span>        <span class="va">im_width</span> <span class="op">&lt;=</span> <span class="fl">1.5</span> <span class="op">&amp;</span> <span class="va">im_width</span> <span class="op">&lt;=</span> <span class="fl">2</span> <span class="op">~</span> <span class="st">"1.5 - 2"</span>,</span>
+<span>        <span class="va">im_width</span> <span class="op">&gt;</span> <span class="fl">2</span> <span class="op">~</span> <span class="st">"&gt; 2"</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="co"># Assesses estimated way width - either under 1.5 meters, 1.5-2 meters, or over 2 meters</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>      im_width_est <span class="op">=</span> <span class="va">est_width</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>        <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/parse_number.html" class="external-link">parse_number</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      im_width_est <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>        <span class="va">im_width_est</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">im_width_est</span> <span class="op">&lt;</span> <span class="fl">1.5</span> <span class="op">~</span> <span class="st">"&lt; 1.5"</span>,</span>
+<span>        <span class="va">im_width_est</span> <span class="op">&lt;=</span> <span class="fl">1.5</span> <span class="op">&amp;</span> <span class="va">im_width_est</span> <span class="op">&lt;=</span> <span class="fl">2</span> <span class="op">~</span> <span class="st">"1.5 - 2"</span>,</span>
+<span>        <span class="va">im_width_est</span> <span class="op">&gt;</span> <span class="fl">2</span> <span class="op">~</span> <span class="st">"&gt; 2"</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">osm_sf_im</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="function-oi_is_lit">Function: <code>oi_is_lit</code><a class="anchor" aria-label="anchor" href="#function-oi_is_lit"></a>
+</h4>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oi_is_lit</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span>, <span class="va">remove</span><span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="co"># Select only the ways that have a highway value (not train tracks etc.)</span></span>
+<span>  <span class="va">osm_sf</span> <span class="op">=</span> <span class="va">osm_sf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">osm_sf</span><span class="op">$</span><span class="va">highway</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Recategorise the data</span></span>
+<span>  <span class="va">osm_sf_lit</span> <span class="op">=</span> <span class="va">osm_sf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>oi_is_lit <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span> </span>
+<span>    <span class="co"># If lit=* is not a unlit value - set as yes.</span></span>
+<span>    <span class="op">(</span><span class="op">!</span> <span class="va">lit</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"disused"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">lit</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"yes"</span>,</span>
+<span>    <span class="co"># If way is known to be unlit</span></span>
+<span>    <span class="va">lit</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"disued"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"no"</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Used if street light is an LED (increasing popularity)</span></span>
+<span>    <span class="va">lit_by_led</span> <span class="op">==</span> <span class="st">"yes"</span> <span class="op">~</span> <span class="st">"yes - LED"</span>,</span>
+<span>    <span class="va">lit_by_led</span> <span class="op">==</span> <span class="st">"no"</span> <span class="op">~</span> <span class="st">"no - LED"</span>,</span>
+<span>    <span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Finally - all remaining N/A are unknown as either lit or unlit.</span></span>
+<span>  <span class="va">osm_sf_lit</span><span class="op">$</span><span class="va">oi_is_lit</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">osm_sf_lit</span><span class="op">$</span><span class="va">oi_is_lit</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="st">"maybe"</span></span>
+<span>  </span>
+<span>  <span class="co"># If remove = TRUE, filter out features that have oi_is_lit == "no"</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">remove</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="va">osm_sf_lit</span> <span class="op">=</span> <span class="va">osm_sf_lit</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">osm_sf_lit</span><span class="op">$</span><span class="va">oi_is_lit</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"yes"</span>, <span class="st">"yes - LED"</span>, <span class="st">"maybe"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  </span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">osm_sf_lit</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p><br><br><br><br></p>
+</div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="an-example---leeds">An Example - Leeds<a class="anchor" aria-label="anchor" href="#an-example---leeds"></a>
+</h2>
+<p>Here we visualise an output from <code>recode_road_class</code> using OSM data extracted using the <a href="https://github.com/ropensci/osmextract" class="external-link"><code>osmextract</code></a> package for R using the <code>oe_get()</code> command, shown below. <br><br> This example concerns a 5km circular radius about the city centre of Leeds, UK, with Long, Lat coords (-1.548567, 53.801277). <br><br></p>
+<div class="section level3">
+<h3 id="getting-data">Getting Data<a class="anchor" aria-label="anchor" href="#getting-data"></a>
+</h3>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Data downloaded through osmextract as shown below: </span></span>
 <span></span>
 <span><span class="co">#total_place = osmextract::oe_get(</span></span>
@@ -246,103 +570,84 @@
 <span><span class="co">#  never_skip_vectortranslate = TRUE,</span></span>
 <span><span class="co">#  force_download = TRUE,</span></span>
 <span><span class="co">#  quiet = FALSE,</span></span>
-<span><span class="co">#  extra_tags = c("access", "service", "foot", "bicycle" "oneway") # Add in "oneway" for recode_road_class function</span></span>
+<span><span class="co">#  extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",</span></span>
+<span><span class="co">#                  "kerb", "footway", "sidewalk", "cycleway", "segregated", "highway",</span></span>
+<span><span class="co">#                  "crossing", "lit", "tactile_paving", "surface", "smoothness", "width",</span></span>
+<span><span class="co">#                  "est_width", "lit_by_led", "boundary", "admin_level", "name")</span></span>
 <span><span class="co">#)</span></span>
 <span></span>
 <span><span class="co"># For reproduciblity you may chose to use the example dataset from our releases.</span></span>
 <span><span class="co"># You can create your own data using the oe_get() function above.</span></span>
-<span> <span class="va">total_place</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="st">"https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">leeds_network</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="st">"https://github.com/udsleeds/openinfra/releases/download/v0.2/Leeds.geojson"</span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
 </div>
-<div class="section level4">
-<h4 id="set-up-circular-buffer">Set Up Circular Buffer<a class="anchor" aria-label="anchor" href="#set-up-circular-buffer"></a>
-</h4>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Setting up the circular buffer around specified (long, lat) coord</span></span>
-<span><span class="va">crs</span> <span class="op">=</span> <span class="st">"WGS84"</span></span>
-<span></span>
-<span><span class="co"># (Long, Lat) coords of desired place (Leeds City Centre)</span></span>
-<span><span class="va">place_point</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.548567</span>, <span class="fl">53.801277</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Desired (m) radius around desired point</span></span>
-<span><span class="va">radius</span> <span class="op">=</span> <span class="fl">5000</span> <span class="co">#(5km)</span></span>
-<span></span>
-<span><span class="co"># Converts point coord into a sf object (so we can use st_buffer)</span></span>
-<span><span class="va">point_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>place<span class="op">=</span><span class="op">(</span><span class="st">"Location"</span><span class="op">)</span>, lon<span class="op">=</span><span class="op">(</span><span class="va">place_point</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>, lat<span class="op">=</span><span class="op">(</span><span class="va">place_point</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">point_sf</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">point_table</span>, coords<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lon"</span>, <span class="st">"lat"</span><span class="op">)</span>, crs<span class="op">=</span><span class="va">crs</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Define the circle buffer around our desired location</span></span>
-<span><span class="va">circle_buffer</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_buffer</a></span><span class="op">(</span><span class="va">point_sf</span>, dist <span class="op">=</span> <span class="va">radius</span><span class="op">)</span></span></code></pre></div>
-<p><br><br></p>
-</div>
-<div class="section level4">
-<h4 id="applying-recode_road_class-circular-buffer-zone">Applying <code>recode_road_class</code> &amp; Circular Buffer Zone<a class="anchor" aria-label="anchor" href="#applying-recode_road_class-circular-buffer-zone"></a>
-</h4>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">road_class_recode</span> <span class="op">=</span> <span class="fu">recode_road_class</span><span class="op">(</span><span class="va">total_place</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">place_subset</span><span class="op">=</span> <span class="va">road_class_recode</span><span class="op">[</span><span class="va">circle_buffer</span>, <span class="op">]</span></span></code></pre></div>
-<p><br><br></p>
-</div>
-<div class="section level4">
-<h4 id="default-osm-highways">Default OSM Highways<a class="anchor" aria-label="anchor" href="#default-osm-highways"></a>
-</h4>
-<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/5km_Leeds_OSM_highways.html" width="100%" height="650px" data-external="1">
-</iframe>
-<p><br><br></p>
-</div>
-<div class="section level4">
-<h4 id="road-description-visualisation">Road Description Visualisation<a class="anchor" aria-label="anchor" href="#road-description-visualisation"></a>
-</h4>
-<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/LCC_recode_road_class_example_output.html" width="100%" height="650px" data-external="1">
-</iframe>
-<p>As can be seen - the OSM highways re-categorised to road descriptions are much easier to visualise and insightful than all OSM highawy values. <br><br></p>
-</div>
-<div class="section level4">
-<h4 id="clean-maxspeed-visualisation">Clean maxspeed visualisation<a class="anchor" aria-label="anchor" href="#clean-maxspeed-visualisation"></a>
-</h4>
-<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/5mk_Leeds_cleaned_maxspeed.html" width="100%" height="650px" data-external="1">
-</iframe>
+<div class="section level3">
+<h3 id="applying-openinfra-functions---adding-value">Applying Openinfra Functions - Adding Value<a class="anchor" aria-label="anchor" href="#applying-openinfra-functions---adding-value"></a>
+</h3>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">leeds_network</span> <span class="op">=</span> <span class="fu"><a href="../reference/oi_recode_road_class.html">oi_recode_road_class</a></span><span class="op">(</span><span class="va">leeds_network</span><span class="op">)</span> </span>
+<span><span class="va">leeds_network</span> <span class="op">=</span> <span class="fu"><a href="../reference/oi_active_walk.html">oi_active_walk</a></span><span class="op">(</span><span class="va">leeds_network</span><span class="op">)</span></span>
+<span><span class="va">leeds_network</span> <span class="op">=</span> <span class="fu"><a href="../reference/oi_active_cycle.html">oi_active_cycle</a></span><span class="op">(</span><span class="va">leeds_network</span><span class="op">)</span></span>
+<span><span class="va">leeds_network</span> <span class="op">=</span> <span class="fu"><a href="../reference/oi_clean_maxspeed_uk.html">oi_clean_maxspeed_uk</a></span><span class="op">(</span><span class="va">leeds_network</span><span class="op">)</span></span>
+<span><span class="va">leeds_network</span> <span class="op">=</span> <span class="fu"><a href="../reference/oi_inclusive_mobility.html">oi_inclusive_mobility</a></span><span class="op">(</span><span class="va">leeds_network</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: 2 parsing failures.</span></span>
+<span><span class="co">##   row col expected actual</span></span>
+<span><span class="co">## 17499  -- a number narrow</span></span>
+<span><span class="co">## 18457  -- a number narrow</span></span></code></pre>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">leeds_network</span> <span class="op">=</span> <span class="fu"><a href="../reference/oi_is_lit.html">oi_is_lit</a></span><span class="op">(</span><span class="va">leeds_network</span><span class="op">)</span></span></code></pre></div>
+<p><br><br> ### Selecting Relevant Columns for Data Pack</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">leeds_datapack</span> <span class="op">=</span> <span class="va">leeds_network</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span> <span class="st">"osm_id"</span>, <span class="st">"highway"</span>, <span class="st">"oi_road_desc"</span>, <span class="st">"oi_maxspeed"</span>, <span class="st">"oi_walk"</span>, <span class="st">"oi_cycle"</span>,</span>
+<span> <span class="st">"oi_is_lit"</span>, <span class="st">"im_kerb"</span>, <span class="st">"im_footway"</span>, <span class="st">"im_footpath"</span>, <span class="st">"im_crossing"</span>, </span>
+<span> <span class="st">"im_footway_imp"</span>, <span class="st">"im_light"</span>, <span class="st">"im_tactile"</span>, <span class="st">"im_surface_paved"</span>, <span class="st">"im_surface"</span>,</span>
+<span> <span class="st">"im_width"</span>, <span class="st">"im_width_est"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Thus concludes the creation of the transport infrastructure data packs.</p>
+<p><br><br><br><br></p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="current-data-pack-example">Current Data Pack Example<a class="anchor" aria-label="anchor" href="#current-data-pack-example"></a>
+<h2 id="current-data-pack-example-visualisations">Current Data Pack Example Visualisations<a class="anchor" aria-label="anchor" href="#current-data-pack-example-visualisations"></a>
 </h2>
-<p>A current exmaple data pack for “Leeds” - contains outputs: - Active cycle network - Active walking network - Presence of lighting network - Cleaned maximum speed values - Cleaned road descriptions - Inclusive Mobility (unfortunately not mapped here due to filesize)</p>
-<div class="section level4">
-<h4 id="default-network">Default Network<a class="anchor" aria-label="anchor" href="#default-network"></a>
-</h4>
-<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/5km_Leeds_OSM_highways.html" width="100%" height="650px" data-external="1">
-</iframe>
+<p>A current example data pack for “Leeds” - contains outputs: <br> - Cleaned road descriptions <br> - Active cycle network <br> - Active walking network <br> - Presence of lighting network <br> - Cleaned maximum speed values <br> - Inclusive Mobility (unfortunately not mapped here due to map filesize) <br><br></p>
+<div class="section level3">
+<h3 id="default-osm-highways">Default OSM Highways<a class="anchor" aria-label="anchor" href="#default-osm-highways"></a>
+</h3>
+<p>Please note that a 7.5Km circular buffer (centred at Leeds City Centre) has been applied to this map so that the map can be hosted on this website. (max filesize 25Mb) <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/total_leeds_LAD.html" width="100%" height="650px" data-external="1"></iframe> <br><br></p>
 </div>
-<div class="section level4">
-<h4 id="oi-active-cycle">oi active cycle<a class="anchor" aria-label="anchor" href="#oi-active-cycle"></a>
-</h4>
+<div class="section level3">
+<h3 id="recategorised-road-descriptions">Recategorised Road Descriptions<a class="anchor" aria-label="anchor" href="#recategorised-road-descriptions"></a>
+</h3>
+<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/road_desc_map.html" width="100%" height="650px" data-external="1">
+</iframe>
+<p>As can be seen - the OSM highways re-categorised to road descriptions are much easier to visualise and insightful than all OSM highawy values. <br><br></p>
+</div>
+<div class="section level3">
+<h3 id="recategorised-cyclable-ways">Recategorised Cyclable Ways<a class="anchor" aria-label="anchor" href="#recategorised-cyclable-ways"></a>
+</h3>
 <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_map.html" width="100%" height="650px" data-external="1">
 </iframe>
+<p><br><br></p>
 </div>
-<div class="section level4">
-<h4 id="oi-active-walk">oi active walk<a class="anchor" aria-label="anchor" href="#oi-active-walk"></a>
-</h4>
+<div class="section level3">
+<h3 id="recategorised-walkable-ways">Recategorised Walkable Ways<a class="anchor" aria-label="anchor" href="#recategorised-walkable-ways"></a>
+</h3>
 <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/walk_map.html" width="100%" height="650px" data-external="1">
 </iframe>
+<p><br><br></p>
 </div>
-<div class="section level4">
-<h4 id="oi-is-lit">oi is lit<a class="anchor" aria-label="anchor" href="#oi-is-lit"></a>
-</h4>
+<div class="section level3">
+<h3 id="recategorised-presence-of-street-lighting">Recategorised Presence of Street Lighting<a class="anchor" aria-label="anchor" href="#recategorised-presence-of-street-lighting"></a>
+</h3>
 <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/is_lit_map.html" width="100%" height="650px" data-external="1">
 </iframe>
+<p><br><br></p>
 </div>
-<div class="section level4">
-<h4 id="oi-maxspeed">oi maxspeed<a class="anchor" aria-label="anchor" href="#oi-maxspeed"></a>
-</h4>
+<div class="section level3">
+<h3 id="cleaned-maximum-speeds-uk">Cleaned Maximum Speeds (UK)<a class="anchor" aria-label="anchor" href="#cleaned-maximum-speeds-uk"></a>
+</h3>
 <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/maxspeed_map.html" width="100%" height="650px" data-external="1">
-</iframe>
-</div>
-<div class="section level4">
-<h4 id="recode-road">recode road<a class="anchor" aria-label="anchor" href="#recode-road"></a>
-</h4>
-<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/road_desc_map.html" width="100%" height="650px" data-external="1">
 </iframe>
 </div>
 </div>
