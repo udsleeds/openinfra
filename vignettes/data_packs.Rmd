@@ -165,6 +165,7 @@ oi_active_cycle = function(osm_sf, remove=FALSE){
   return(osm_sf_cycle)
 }
 ```
+<br><br>
 
 #### Function: `oi_active_walk`
 
@@ -216,6 +217,7 @@ oi_active_walk = function(osm_sf, remove = FALSE){
   return(osm_sf_walking)
 }
 ```
+<br><br>
 
 #### Function: `oi_clean_maxspeed_uk`
 
@@ -269,7 +271,7 @@ oi_clean_maxspeed_uk = function(osm_sf, no_NA = FALSE, del = FALSE) {
   }
 
 ```
-
+<br><br>
 
 #### Function: `oi_inclusive_mobility`
 
@@ -398,6 +400,7 @@ oi_inclusive_mobility = function(osm_sf) {
   return(osm_sf_im)
 }
 ```
+<br><br>
 
 #### Function: `oi_is_lit`
 
@@ -437,7 +440,7 @@ oi_is_lit = function(osm_sf, remove=FALSE){
 <br><br>
 <br><br>
 
-## An Example - Leeds
+## Example Data Pack Production - Leeds
 
 Here we go over a reproducible example of generating a transport infrastructure data pack from a OSM network retrieved using [`osmextract`](https://github.com/ropensci/osmextract). 
 
