@@ -593,14 +593,18 @@
 <span><span class="va">leeds_network</span> <span class="op">=</span> <span class="fu"><a href="../reference/oi_clean_maxspeed_uk.html">oi_clean_maxspeed_uk</a></span><span class="op">(</span><span class="va">leeds_network</span><span class="op">)</span></span>
 <span><span class="va">leeds_network</span> <span class="op">=</span> <span class="fu"><a href="../reference/oi_inclusive_mobility.html">oi_inclusive_mobility</a></span><span class="op">(</span><span class="va">leeds_network</span><span class="op">)</span></span>
 <span><span class="va">leeds_network</span> <span class="op">=</span> <span class="fu"><a href="../reference/oi_is_lit.html">oi_is_lit</a></span><span class="op">(</span><span class="va">leeds_network</span><span class="op">)</span></span></code></pre></div>
-<p><br><br> ### Selecting Relevant Columns for Data Pack</p>
+<p><br><br></p>
+</div>
+<div class="section level3">
+<h3 id="selecting-relevant-columns-for-data-pack">Selecting Relevant Columns for Data Pack<a class="anchor" aria-label="anchor" href="#selecting-relevant-columns-for-data-pack"></a>
+</h3>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_datapack</span> <span class="op">=</span> <span class="va">leeds_network</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span> <span class="st">"osm_id"</span>, <span class="st">"highway"</span>, <span class="st">"oi_road_desc"</span>, <span class="st">"oi_maxspeed"</span>, <span class="st">"oi_walk"</span>, <span class="st">"oi_cycle"</span>,</span>
 <span> <span class="st">"oi_is_lit"</span>, <span class="st">"im_kerb"</span>, <span class="st">"im_footway"</span>, <span class="st">"im_footpath"</span>, <span class="st">"im_crossing"</span>, </span>
 <span> <span class="st">"im_footway_imp"</span>, <span class="st">"im_light"</span>, <span class="st">"im_tactile"</span>, <span class="st">"im_surface_paved"</span>, <span class="st">"im_surface"</span>,</span>
 <span> <span class="st">"im_width"</span>, <span class="st">"im_width_est"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Thus concludes the creation of the transport infrastructure data packs.</p>
+<p>Thus concludes the creation of the transport infrastructure data packs. <br><br> We can visualise these outputs below.</p>
 <p><br><br><br><br></p>
 </div>
 </div>
