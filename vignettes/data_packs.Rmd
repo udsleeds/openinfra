@@ -467,6 +467,7 @@ leeds_network = oi_inclusive_mobility(leeds_network)
 leeds_network = oi_is_lit(leeds_network)
 ```
 <br><br>
+
 ### Selecting Relevant Columns for Data Pack
 ```{r, create_data_pack, eval=FALSE}
 leeds_datapack = leeds_network %>% dplyr::select(c(
@@ -475,7 +476,9 @@ leeds_datapack = leeds_network %>% dplyr::select(c(
  "im_footway_imp", "im_light", "im_tactile", "im_surface_paved", "im_surface",
  "im_width", "im_width_est"))
 ```
-Thus concludes the creation of the transport infrastructure data packs. 
+Thus concludes the creation of the transport infrastructure data packs.
+<br><br>
+We can visualise these outputs below.
 
 <br><br><br><br>
 
