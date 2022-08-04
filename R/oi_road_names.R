@@ -20,7 +20,7 @@
 oi_road_names = function(osm_sf){
   osm_edited = osm_sf %>% dplyr::mutate(oi_name = dplyr::case_when(
     # name & ref are there
-    (! is.na(name) & ! is.na(ref)) ~ paste0(name, " | ", ref),
+    (! is.na(name) & ! is.na(ref)) ~ paste0(name, ", ", ref),
     
     # name there, ref is NA
     (! is.na(name) & is.na(ref)) ~ name,
