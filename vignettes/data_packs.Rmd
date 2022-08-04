@@ -117,6 +117,9 @@ Road Class | Description | Selection from OSM
 <br><br>
 
 #### Function: `oi_active_cycle`
+
+Adds column `oi_active_cycle` with values `"yes"|"no"` depending on whether or not a way is cyclable by cyclists. 
+
 ```{r function2}
 oi_active_cycle = function(osm_sf, remove=FALSE){
   #browser() # Uncomment to debug
@@ -164,6 +167,9 @@ oi_active_cycle = function(osm_sf, remove=FALSE){
 ```
 
 #### Function: `oi_active_walk`
+
+Adds the column `oi_active_walk` with values `"yes"|"no"` depending on whether or not a way is walkable by pedestrians or not.
+
 ```{r}
 oi_active_walk = function(osm_sf, remove = FALSE){
   #browser() #<-- Uncomment to debug function.
@@ -212,6 +218,9 @@ oi_active_walk = function(osm_sf, remove = FALSE){
 ```
 
 #### Function: `oi_clean_maxspeed_uk`
+
+Adds column `oi_maxspeed` that contains cleaned maxspeed values from OSM features, where the maxspeed field exists. 
+
 ```{r}
 oi_clean_maxspeed_uk = function(osm_sf, no_NA = FALSE, del = FALSE) {
   
@@ -263,6 +272,9 @@ oi_clean_maxspeed_uk = function(osm_sf, no_NA = FALSE, del = FALSE) {
 
 
 #### Function: `oi_inclusive_mobility`
+
+Adds a number of Inclusive Mobility (IM) `"im_***"` columns that reflect whether or not a piece of infrastructure meets the requirements of the [IM Guide](https://www.gov.uk/government/publications/inclusive-mobility-making-transport-accessible-for-passengers-and-pedestrians)
+
 ```{r}
 oi_inclusive_mobility = function(osm_sf) {
 
@@ -388,6 +400,9 @@ oi_inclusive_mobility = function(osm_sf) {
 ```
 
 #### Function: `oi_is_lit`
+
+Adds column `oi_is_lit` with values `"yes"|"no"|"yes- LED"|"no -LED"|"maybe"` depending on whether the OSM way is lit or not, and if the lighting is LED or not. The value `"maybe"` implies that there is a lack of data to be able to distinguish - this is likely "yes" in built up urban areas, and "no" for more rural areas.
+
 ```{r}
 oi_is_lit = function(osm_sf, remove=FALSE){
   
@@ -498,24 +513,27 @@ The current example data pack for "Leeds" - contains outputs: <br>
 
 ### Default OSM Highways
 
-Please note that a 7.5Km circular buffer (centred at Leeds City Centre) has been applied to this map so that the map can be hosted on this website. (max filesize 25Mb) 
+Please note that a 7.5Km circular buffer (centred at Leeds City Centre) has been applied to this map so that the map can be hosted on this website. (max filesize 25Mb)<br>
+As can be seen, the default network has a variety of `higway` values and is rather confusing. 
 ```{r out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/total_leeds_LAD.html", height = "650px")
 ```
 <br><br>
 
 ### Recategorised Road Descriptions
+The recategorised road descriptions are more interpenetrate and meaningful than the default OSM highway values.
+
 ```{r visualisation_frame, out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/road_desc_map.html", height = "650px")
 ```
-
-As can be seen - the OSM highways re-categorised to road descriptions are much easier to visualise and insightful than all OSM highawy values.
+As can be seen - the OSM highways re-categorised to road descriptions are much easier to visualise and insightful than all OSM highway values.
 <br><br>
 
 ### Recategorised Cyclable Ways
 ```{r out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_map.html", height = "650px")
 ```
+
 <br><br>
 
 ### Recategorised Walkable Ways
@@ -528,6 +546,8 @@ knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/walk
 ```{r out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/is_lit_map.html", height = "650px")
 ```
+Note that a value of `maybe` implies the lack of data to distinguish between `"yes"` or `"no"`.
+
 <br><br>
 
 ### Cleaned Maximum Speeds (UK)
