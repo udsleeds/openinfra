@@ -27,6 +27,13 @@ library(tmap)
 
 This vignette covers the transport infrastructure data packs.
 <br><br>
+The transport infrastructure data packs contain OSM infrastructure data for a given Local Authority District (LAD) as defined by the polygons of this map of [UK LADs](https://github.com/udsleeds/openinfra/blob/main/data-small/lads_joined_2021.geojson). 
+<br><br>
+Whilst these LADs are currently being used to define the spatial area covered by each infrastructure data pack, any new set of updated boundaries (as a geojson file) can also be used to create the infrastructure data packs. 
+<br><br>
+
+### Data Packs Additional Data - The Functions
+
 Below we can see the `recode_road_class` function. This function takes a SimpleFeatures ([sf](https://r-spatial.github.io/sf/index.html)) osm infrastructure network and re-classifies features based
 on road classifications specified by [Chan and Cooper](https://www.nature.com/articles/s41598-019-55669-8) in the following [table](https://www.nature.com/articles/s41598-019-55669-8/tables/6).
 <br><br>
@@ -40,16 +47,16 @@ Accurately modelling motor traffic for such a larger area requires much more dat
 <br><br>
 [Work](https://www.nature.com/articles/s41598-019-55669-8) by Chan and Cooper propose estimating road traffic based on road classes, as defined in the table above, negating the requirement for the costly and time consuming modelling of motorised traffic.
 
-### Function: `recode_road_class` 
-```{r function}
+#### Function: `oi_recode_road_class` 
+```{r function, class.source = 'fold-hide'}
 # Define recode_road_class function
-recode_road_class <- function(osm_sf) {
+oi_recode_road_class <- function(osm_sf) {
+  # browser() Uncomment this to perform function debugging 
   
-  library("dplyr")
-  #_Function_Code_________________________________
+  # Created road_class columns
   osm_recat = osm_sf %>%
     # Creates road_class column
-    dplyr::mutate(road_class = dplyr::case_when(
+    dplyr::mutate(oi_road_class = dplyr::case_when(
       # (7) - Motorways
       highway %in% c("motorway", "motorway_link") ~ "7",
       # (6/5) - Dual Carriageways resi & non-resi
@@ -67,13 +74,13 @@ recode_road_class <- function(osm_sf) {
     )) %>%
     
     # Creates road_description columns
-    dplyr::mutate(road_desc = dplyr::case_when(
+    dplyr::mutate(oi_road_desc = dplyr::case_when(
       # (7) - Motorways
       highway %in% c("motorway", "motorway_link") ~ "Motorways",
       # (6/5) - Dual Carriageways resi & non-resi
-      highway %in% c("trunk", "trunk_link") ~ "Dual Carriageways (R&NR)",
+      (highway %in% c("trunk", "trunk_link")) & (oneway %in% c("yes", "-1", "reversible", "alternating")) ~ "Dual Carriageways (R&NR)",
       # (4) - Primary Roads
-      highway %in% c("primary", "primary_link") | (highway == "trunk" & oneway == "F") ~ "Primary Roads",
+      highway %in% c("primary", "primary_link") | (highway %in% c("trunk", "trunk_link")) & (! oneway %in% c("yes", "-1", "reversible", "alternating")) ~ "Primary Roads",
       # (3) - Secondary Roads
       highway %in% c("secondary", "secondary_link") ~ "Secondary Roads",
       # (2) - Tertiary Roads
@@ -83,8 +90,9 @@ recode_road_class <- function(osm_sf) {
       # (0) - Traffic-free Paths
       highway == "cycleway" ~ "Cycleway"
     )) %>%
+    
     # Removes features that have not been recodeed to a road_class value
-    filter(!is.na(road_class))
+    dplyr::filter(!is.na(oi_road_class))
 }
 ```
 
@@ -94,18 +102,323 @@ As discussed, the above function was defined defined based on the following tabl
 
 Road Class | Description | Selection from OSM
 -- | -- | --
-7 | Motorways | highway = motorway OR highway = motorway_link
-6 | Non-residential Dual Carriageways | highway =  trunk OR highway = trunk_link*manual classification needed
-5 | Residential Dual Carriageways | highway =  trunk OR highway =  trunk_link*manual classification needed
-4 | Primary Roads | highway =  primary OR highway =  primary_link OR (highway =  trunk AND oneway = F)
-3 | Secondary Roads | highway =  secondary OR highway =  secondary_link
-2 | Tertiary Roads | highway = tertiary OR highway = tertiary_link
-1 | Local Roads | highway = living_street OR highway = residential OR highway = unclassified
-0 | Traffic-free Paths | highway = cycleway
-
+7 | Motorways | `highway = motorway` **OR** `highway = motorway_link`
+6 | Non-residential Dual Carriageways | `highway =  trunk` **OR** `highway = trunk_link` **AND** `oneway = yes`*& manual classification needed*
+5 | Residential Dual Carriageways | `highway =  trunk` **OR** `highway =  trunk_link` **AND** `oneway = yes` *& manual classification needed*
+4 | Primary Roads | (`highway =  primary` **OR** `highway = primary_link` **OR** `highway = trunk`) **AND** `oneway != yes`)
+3 | Secondary Roads | `highway =  secondary` **OR** `highway =  secondary_link`
+2 | Tertiary Roads | `highway = tertiary` **OR** `highway = tertiary_link`
+1 | Local Roads | `highway = living_street` **OR** `highway = residential` **OR** `highway = unclassified`
+0 | Traffic-free Paths | `highway = cycleway`
 <br><br>
 
-## An Example
+#### Function: `oi_active_cycle`
+```{r function2}
+oi_active_cycle = function(osm_sf, remove=FALSE){
+  #browser() # Uncomment to debug
+  osm_sf_cycle = osm_sf %>% dplyr::mutate(oi_cycle = dplyr::case_when(
+    
+    # Highway cannot be NA
+    is.na(highway) ~ "no",
+    
+    # Highway values not appropriate for cycling
+    highway %in% c('abandoned', 'bus_guideway', 'byway', 'construction', 
+                   'corridor', 'elevator', 'fixme', 'escalator', 'gallop', 
+                   'historic', 'no', 'planned', 'platform', 'proposed', 
+                   'raceway', 'steps') 
+    ~ "no",
+    
+    # Create two cases to catch features typically not allowed for cyclists, but have been flagged appropriate:
+    # 1 - If highway = "bad highway values" BUT bicycle = "good bicycle values" then assign ~ "yes",
+    (highway %in% c('motorway', 'motorway_link', 'footway', 'bridleway','pedestrian') & bicycle %in% c('yes', 'designated', 'permissive', 'destination')) ~ "yes",
+    ((highway == "footway") & (! bicycle %in% c("no", "dismount", "private"))) & (! access %in% c("private", "no", "permit")) ~ "yes",
+    
+    # 2 - Assign highway = "bad highway values" ONLY as ~ "no". Ways that are appropriate for cyclists will already be assigned "yes" from above
+    highway %in% c('motorway', 'motorway_link', 'footway', 'bridleway','pedestrian') ~ "no",
+    
+    # Way must have access rights
+    access %in% c('private', 'no') ~ "no",
+    
+    # Way must not bar cyclists
+    bicycle %in% c('no', 'private', 'ue_sidepath', 'restricted') ~ "no", 
+    
+    # Way must not contain "private" within the service tag
+    grepl("private", service) ~ "no",
+
+  ))
+  
+  # Case_when above should have added "no" to all inappropriate features, now 
+  # find features that do not contain "no" and set as "yes"
+  osm_sf_cycle$oi_cycle[is.na(osm_sf_cycle$oi_cycle)] = "yes"
+  
+  # If remove = TRUE, filter out features that have oi_cycle == "no"
+  if (remove){
+    osm_sf_cycle = osm_sf_cycle %>% dplyr::filter(osm_sf_cycle$oi_cycle == "yes")
+  }
+  return(osm_sf_cycle)
+}
+```
+
+#### Function: `oi_active_walk`
+```{r}
+oi_active_walk = function(osm_sf, remove = FALSE){
+  #browser() #<-- Uncomment to debug function.
+  osm_sf_walking = osm_sf %>% dplyr::mutate(oi_walk = dplyr::case_when(
+    
+    # Highway tag cannot be NA
+    is.na(highway) ~ "no",
+    
+    # Highway tag cannot have un-walkable values
+    highway %in% c('abandoned', 'bus_guideway', 'byway', 'construction', 
+                   'corridor', 'elevator', 'fixme', 'escalator', 'gallop', 
+                   'historic', 'no', 'planned', 'platform', 'proposed',
+                   'raceway', 'motorway', 'motorway_link') 
+    ~ "no",
+    
+    # Hihgway tag cannot be a cycleway UNLESS walking is permitted
+    ((highway == "cycleway") & (foot %in% c('yes', 'designated', 'permissive', 'destination'))) ~ "yes",
+    # Below catches highway == cycleway and foot != values below INCLUDING NAs. 
+    ((highway == "cycleway") & (! foot %in% c('yes', 'designated', 'permissive', 'destination'))) ~ "no",
+    
+    (highway %in% c("footway", "pedestrian", "path")) & (! foot %in% c("no", "private")) & (! access %in% c("private", "no")) ~ "yes",
+    
+    # Access cannot be restricted
+    ((access %in% c('private', 'no')) & (foot == "yes")) ~ "yes",
+    ((access %in% c('private', 'no'))) ~ "no",
+    
+    # Foot usage must be permitted,
+    foot %in% c('private', 'no', 'use_sidepath', 'restricted') ~ "no",
+    
+    # Service value does not contain "private"
+    ((grepl("private", service)) & (foot == "yes")) ~ "yes",
+    ((grepl("private", service)) & (foot != "yes")) ~ "no",
+    
+  ))
+  
+  # find features that do not contain "no" and set as "yes"
+  osm_sf_walking$oi_walk[is.na(osm_sf_walking$oi_walk)] = "yes"
+  
+  # If remove = TRUE, filter out features that have oi_walking == "no"
+  if (remove){
+    osm_sf_walking = osm_sf_walking %>% dplyr::filter(osm_sf_walking$oi_walk == "yes")
+  }
+  
+  return(osm_sf_walking)
+}
+```
+
+#### Function: `oi_clean_maxspeed_uk`
+```{r}
+oi_clean_maxspeed_uk = function(osm_sf, no_NA = FALSE, del = FALSE) {
+  
+  # Define NOT IN 
+  `%!in%` = Negate(`%in%`)
+  
+  osm_clean = osm_sf %>%
+    dplyr::mutate(oi_maxspeed = dplyr::case_when(
+      # maxspeed == national, when on motorway
+      (maxspeed == "national" & highway %in% c("motorway", "motorway_link")) ~ "70 mph",
+      
+      # maxspeed == national, when NOT on motorway
+      (maxspeed == "national" & highway %!in% c("motorway", "motorway_link")) ~ "60 mph",  
+      
+      # maxspeed == national, when on standard (i.e Non-Residential) dual carriageway
+      (maxspeed == "national" & highway %in% c("trunk", "trunk_link")) ~ "70 mph",
+      
+      # maxspeed == (20|30|40|50|60|70 --> + mph)
+      maxspeed == "20" ~ "20 mph",
+      maxspeed == "30" ~ "30 mph",
+      maxspeed == "40" ~ "40 mph",
+      maxspeed == "50" ~ "50 mph",
+      maxspeed == "60" ~ "60 mph",
+      maxspeed == "70" ~ "70 mph",
+      
+      # Already cleaned speeds (to stop mutate missing these)
+      maxspeed == "20 mph" ~ "20 mph",
+      maxspeed == "30 mph" ~ "30 mph",
+      maxspeed == "40 mph" ~ "40 mph",
+      maxspeed == "50 mph" ~ "50 mph",
+      maxspeed == "60 mph" ~ "60 mph",
+      maxspeed == "70 mph" ~ "70 mph",
+    )) 
+  
+  if (no_NA){
+    # if TURE, will remove features if their oi_maxspeed == NA
+    osm_clean = osm_clean %>% dplyr::filter(!is.na(oi_maxspeed))
+  }
+  
+  if (del){
+    # If TRUE, will delete original `maxspeed` column
+    osm_clean = subset(osm_clean, select = -c(maxspeed))
+  } 
+
+  return(osm_clean)
+  }
+
+```
+
+
+#### Function: `oi_inclusive_mobility`
+```{r}
+oi_inclusive_mobility = function(osm_sf) {
+
+  #browser() # <-- Uncomment for debugging.
+  
+  osm_sf_im = osm_sf %>% 
+    # Assesses whether a kerb is flush or not
+    dplyr::mutate(im_kerb = dplyr::if_else(kerb == "flush" | kerb == "no", "flush", "other")) %>% 
+    
+    # Assesses footway - a ‘pavement’ adjacent to a road
+    dplyr::mutate(im_footway = dplyr::case_when(
+      footway %in% c("left", "right", "both", "sidewalk") |
+        sidewalk %in% c("left", "right", "both", "yes", "separate") |
+        # trying to capture footways shared with cyclists
+        !is.na(cycleway) & # map cycling infrastructure that is an inherent part of the road
+        foot %in% c("yes", "designated") |
+        segregated %in% "yes"
+      ~ "yes",
+      TRUE ~ "no" 
+    ) 
+    ) %>% 
+    # Assesses footpath - any other right of way for pedestrians, that does not run adjacent to a road.
+    dplyr::mutate(im_footpath = dplyr::case_when(
+      highway %in% "footway" & 
+        im_footway %in% "no" | 
+        # not (always) an inherent part of the road
+        highway %in% c("cycleway", "bridleway", "path") & # foot = "designated" is implied
+        im_footway %in% "no" &
+        ! foot %in% c("no", "private") | 
+        ! access %in% c("no", "private") &
+        segregated %in% "no" # shared space
+      ~ "yes",
+      TRUE ~ "no"
+    )
+    ) %>%
+    
+    # Assesses presence of a crossing and what type: give-way, signal controlled, none, or yes (but the type is unknown)
+    dplyr::mutate(im_crossing = dplyr::case_when(
+      stringr::str_detect(crossing, "zebra|uncontr|marked")~ "give-way",
+      stringr::str_detect(crossing, "toucan|pedex|puffin|equestrian|light|signal")~ "signal-controlled",
+      highway %in% "crossing" | footway  %in% "crossing" | !is.na(crossing) ~ "yes",
+      TRUE ~ "no"
+    )) %>% 
+    
+    # implied footways but there's a lack of data to verify
+    dplyr::mutate(im_footway_imp = dplyr::case_when(
+      im_footway %in% "no" &
+        im_footpath %in% "no" &
+        im_crossing %in% "no"
+      ~ "yes",
+      TRUE ~ "no"
+    )
+    ) %>% 
+    # Assesses whether the way is lit or not
+    dplyr::mutate(im_light = dplyr::case_when( 
+      # highway %in% "street_lamp" |
+      ! lit %in% c("no", "disused") & ! is.na(lit)
+      ~ "yes",
+      TRUE ~ "no"
+    )
+    ) %>% 
+    
+    # Assesses the presence of tactile paving - either yes, no.
+    dplyr::mutate(im_tactile = dplyr::case_when(
+      ! tactile_paving %in% c("no", "incorrect", "bad") & ! is.na(tactile_paving) 
+      ~ "yes",
+      ! is.na(tactile_paving)
+      ~ "no"
+    )
+    ) %>%
+    
+    # Assesses whether surface is paved, unpaved, or other
+    dplyr::mutate(
+      im_surface_paved = dplyr::case_when(
+        highway %in% "cycleway"
+        ~ "paved",
+        
+        stringr::str_detect(surface,
+                            "pav|asph|chipseal|concrete|paving|sett|cobble|metal|wood|stepping")
+        ~ "paved",
+        highway %in% c("footway", "bridleway") & # highway = footway implied surface value is unpaved
+          ! surface %in% stringr::str_detect(surface, "pav|asph|chipseal|concrete|paving|sett|cobble|metal|wood|stepping")
+        ~ "unpaved",
+        stringr::str_detect(surface, "unpav|compact|gravel|rock|pebble|ground|dirt|grass|mud|sand|woodchips|snow|ice|salt")
+        ~ "unpaved",
+        TRUE & !is.na(surface) ~ "other"
+      )
+    ) %>% 
+    # Assesses whether surface is even or uneven
+    dplyr::mutate(im_surface = dplyr::case_when(
+      stringr::str_detect(surface, "asph|concrete")
+      ~ "even",
+      
+      im_surface_paved %in% "paved" &
+        smoothness %in% c("excellent", "good")
+      ~ "even",
+      ! is.na(im_surface_paved) 
+      ~ "uneven"
+    )
+    ) %>% 
+    # Assesses way width - either under 1.5 meters, 1.5-2 meters, or over 2 meters
+    dplyr::mutate(
+      im_width =  width %>% 
+        readr::parse_number(),
+      im_width = dplyr::case_when(
+        im_width > 0 & im_width < 1.5 ~ " < 1.5",
+        im_width <= 1.5 & im_width <= 2 ~ "1.5 - 2",
+        im_width > 2 ~ "> 2"
+      )
+    ) %>% 
+    # Assesses estimated way width - either under 1.5 meters, 1.5-2 meters, or over 2 meters
+    dplyr::mutate(
+      im_width_est = est_width %>% 
+        readr::parse_number(),
+      im_width_est = dplyr::case_when(
+        im_width_est > 0 & im_width_est < 1.5 ~ "< 1.5",
+        im_width_est <= 1.5 & im_width_est <= 2 ~ "1.5 - 2",
+        im_width_est > 2 ~ "> 2"
+      )
+    )
+  return(osm_sf_im)
+}
+```
+
+#### Function: `oi_is_lit`
+```{r}
+oi_is_lit = function(osm_sf, remove=FALSE){
+  
+  # Select only the ways that have a highway value (not train tracks etc.)
+  osm_sf = osm_sf %>% dplyr::filter(! is.na(osm_sf$highway))
+  
+  # Recategorise the data
+  osm_sf_lit = osm_sf %>% dplyr::mutate(oi_is_lit = dplyr::case_when( 
+    # If lit=* is not a unlit value - set as yes.
+    (! lit %in% c("no", "disused") & ! is.na(lit)) ~ "yes",
+    # If way is known to be unlit
+    lit %in% c("no", "disued") ~ "no",
+    
+    # Used if street light is an LED (increasing popularity)
+    lit_by_led == "yes" ~ "yes - LED",
+    lit_by_led == "no" ~ "no - LED",
+    ))
+  
+  # Finally - all remaining N/A are unknown as either lit or unlit.
+  osm_sf_lit$oi_is_lit[is.na(osm_sf_lit$oi_is_lit)] = "maybe"
+  
+  # If remove = TRUE, filter out features that have oi_is_lit == "no"
+  if (remove){
+    osm_sf_lit = osm_sf_lit %>% dplyr::filter(osm_sf_lit$oi_is_lit %in% c("yes", "yes - LED", "maybe"))
+  }
+  
+  return(osm_sf_lit)
+}
+```
+
+
+<br><br>
+<br><br>
+
+## An Example - Leeds
 
 Here we visualise an output from `recode_road_class` using OSM data extracted using the [`osmextract`](https://github.com/ropensci/osmextract) package for R using the `oe_get()` command, shown below.
 <br><br>
@@ -123,101 +436,92 @@ This example concerns a 5km circular radius about the city centre of Leeds, UK, 
 #  never_skip_vectortranslate = TRUE,
 #  force_download = TRUE,
 #  quiet = FALSE,
-#  extra_tags = c("access", "service", "foot", "bicycle" "oneway") # Add in "oneway" for recode_road_class function
+#  extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
+#                  "kerb", "footway", "sidewalk", "cycleway", "segregated", "highway",
+#                  "crossing", "lit", "tactile_paving", "surface", "smoothness", "width",
+#                  "est_width", "lit_by_led", "boundary", "admin_level", "name")
 #)
 
 # For reproduciblity you may chose to use the example dataset from our releases.
 # You can create your own data using the oe_get() function above.
- total_place = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/bbbike_leeds_27_6_22.geojson")
+leeds_network = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/Leeds.geojson")
 ```
 
 <br><br>
 
-### Set Up Circular Buffer
-```{r setup_buffer}
-# Setting up the circular buffer around specified (long, lat) coord
-crs = "WGS84"
-
-# (Long, Lat) coords of desired place (Leeds City Centre)
-place_point = c(-1.548567, 53.801277)
-
-# Desired (m) radius around desired point
-radius = 5000 #(5km)
-
-# Converts point coord into a sf object (so we can use st_buffer)
-point_table <- data.frame(place=("Location"), lon=(place_point[1]), lat=(place_point[2]))
-point_sf = st_as_sf(point_table, coords=c("lon", "lat"), crs=crs)
-
-# Define the circle buffer around our desired location
-circle_buffer = sf::st_buffer(point_sf, dist = radius)
-```
-
-<br><br>
-
-### Applying `recode_road_class` & Circular Buffer Zone 
+### Applying Openinfra Functions - Adding Value 
 ```{r function_application}
-road_class_recode = recode_road_class(total_place)
 
-place_subset= road_class_recode[circle_buffer, ]
+leeds_network = oi_recode_road_class(leeds_network) 
+leeds_network = oi_active_walk(leeds_network)
+leeds_network = oi_active_cycle(leeds_network)
+leeds_network = oi_clean_maxspeed_uk(leeds_network)
+leeds_network = oi_inclusive_mobility(leeds_network)
+leeds_network = oi_is_lit(leeds_network)
 ```
-
 <br><br>
+### Selecting Relevant Columns for Data Pack
+```{r, create_data_pack}
+leeds_datapack = leeds_network %>% dplyr::select(c(
+ "osm_id", "highway", "oi_road_desc", "oi_maxspeed", "oi_walk", "oi_cycle",
+ "oi_is_lit", "im_kerb", "im_footway", "im_footpath", "im_crossing", 
+ "im_footway_imp", "im_light", "im_tactile", "im_surface_paved", "im_surface",
+ "im_width", "im_width_est"))
+```
+Thus concludes the creation of the transport infrastructure data packs. 
+
+<br><br><br><br>
+
+## Current Data Pack Example Visualisations
+
+A current example data pack for "Leeds" - contains outputs: <br>
+- Cleaned road descriptions <br>
+- Active cycle network <br>
+- Active walking network <br>
+- Presence of lighting network <br>
+- Cleaned maximum speed values <br>
+- Inclusive Mobility (unfortunately not mapped here due to map filesize) 
+<br><br>
+
 
 ### Default OSM Highways
+
+Please note that a 7.5Km circular buffer (centred at Leeds City Centre) has been applied to this map so that the map can be hosted on this website. (max filesize 25Mb) 
 ```{r out.width="100%", echo=FALSE, include=TRUE}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/5km_Leeds_OSM_highways.html", height = "650px")
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/total_leeds_LAD.html", height = "650px")
 ```
 <br><br>
 
-### Road Description Visualisation
+### Recategorised Road Descriptions
 ```{r visualisation_frame, out.width="100%", echo=FALSE, include=TRUE}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/LCC_recode_road_class_example_output.html", height = "650px")
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/road_desc_map.html", height = "650px")
 ```
 
 As can be seen - the OSM highways re-categorised to road descriptions are much easier to visualise and insightful than all OSM highawy values.
 <br><br>
 
-### Clean maxspeed visualisation
-```{r vis_frame, out.width="100%", echo=FALSE, include=TRUE}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/5mk_Leeds_cleaned_maxspeed.html", height="650px")
-```
-
-# Current Data Pack Example
-
-A current exmaple data pack for "Leeds" - contains outputs: 
-- Active cycle network
-- Active walking network
-- Presence of lighting network
-- Cleaned maximum speed values
-- Cleaned road descriptions
-- Inclusive Mobility (unfortunately not mapped here due to filesize)
-
-### Default Network
-```{r out.width="100%", echo=FALSE, include=TRUE}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/5km_Leeds_OSM_highways.html", height = "650px")
-```
-
-### oi active cycle
+### Recategorised Cyclable Ways
 ```{r out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_map.html", height = "650px")
 ```
+<br><br>
 
-### oi active walk
+### Recategorised Walkable Ways
 ```{r out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/walk_map.html", height = "650px")
 ```
+<br><br>
 
-### oi is lit
+### Recategorised Presence of Street Lighting
 ```{r out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/is_lit_map.html", height = "650px")
 ```
+<br><br>
 
-### oi maxspeed
-```{r out.width="100%", echo=FALSE, include=TRUE}
+### Cleaned Maximum Speeds (UK)
+```{r vis_frame, out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/maxspeed_map.html", height = "650px")
 ```
 
-### recode road
-```{r out.width="100%", echo=FALSE, include=TRUE}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/road_desc_map.html", height = "650px")
-```
+
+
