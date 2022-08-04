@@ -249,6 +249,7 @@
 <div class="section level4">
 <h4 id="function-oi_active_cycle">Function: <code>oi_active_cycle</code><a class="anchor" aria-label="anchor" href="#function-oi_active_cycle"></a>
 </h4>
+<p>Adds column <code>oi_active_cycle</code> with values <code>"yes"|"no"</code> depending on whether or not a way is cyclable by cyclists.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oi_active_cycle</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span>, <span class="va">remove</span><span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="co">#browser() # Uncomment to debug</span></span>
@@ -297,6 +298,7 @@
 <div class="section level4">
 <h4 id="function-oi_active_walk">Function: <code>oi_active_walk</code><a class="anchor" aria-label="anchor" href="#function-oi_active_walk"></a>
 </h4>
+<p>Adds the column <code>oi_active_walk</code> with values <code>"yes"|"no"</code> depending on whether or not a way is walkable by pedestrians or not.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oi_active_walk</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span>, <span class="va">remove</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="co">#browser() #&lt;-- Uncomment to debug function.</span></span>
@@ -346,6 +348,7 @@
 <div class="section level4">
 <h4 id="function-oi_clean_maxspeed_uk">Function: <code>oi_clean_maxspeed_uk</code><a class="anchor" aria-label="anchor" href="#function-oi_clean_maxspeed_uk"></a>
 </h4>
+<p>Adds column <code>oi_maxspeed</code> that contains cleaned maxspeed values from OSM features, where the maxspeed field exists.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oi_clean_maxspeed_uk</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span>, <span class="va">no_NA</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">del</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  </span>
@@ -396,6 +399,7 @@
 <div class="section level4">
 <h4 id="function-oi_inclusive_mobility">Function: <code>oi_inclusive_mobility</code><a class="anchor" aria-label="anchor" href="#function-oi_inclusive_mobility"></a>
 </h4>
+<p>Adds a number of Inclusive Mobility (IM) <code>"im_***"</code> columns that reflect whether or not a piece of infrastructure meets the requirements of the <a href="https://www.gov.uk/government/publications/inclusive-mobility-making-transport-accessible-for-passengers-and-pedestrians" class="external-link">IM Guide</a></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oi_inclusive_mobility</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>
@@ -522,6 +526,7 @@
 <div class="section level4">
 <h4 id="function-oi_is_lit">Function: <code>oi_is_lit</code><a class="anchor" aria-label="anchor" href="#function-oi_is_lit"></a>
 </h4>
+<p>Adds column <code>oi_is_lit</code> with values <code>"yes"|"no"|"yes- LED"|"no -LED"|"maybe"</code> depending on whether the OSM way is lit or not, and if the lighting is LED or not. The value <code>"maybe"</code> implies that there is a lack of data to be able to distinguish - this is likely “yes” in built up urban areas, and “no” for more rural areas.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oi_is_lit</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span>, <span class="va">remove</span><span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
 <span>  </span>
@@ -616,14 +621,15 @@
 <div class="section level3">
 <h3 id="default-osm-highways">Default OSM Highways<a class="anchor" aria-label="anchor" href="#default-osm-highways"></a>
 </h3>
-<p>Please note that a 7.5Km circular buffer (centred at Leeds City Centre) has been applied to this map so that the map can be hosted on this website. (max filesize 25Mb) <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/total_leeds_LAD.html" width="100%" height="650px" data-external="1"></iframe> <br><br></p>
+<p>Please note that a 7.5Km circular buffer (centred at Leeds City Centre) has been applied to this map so that the map can be hosted on this website. (max filesize 25Mb)<br> As can be seen, the default network has a variety of <code>higway</code> values and is rather confusing. <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/total_leeds_LAD.html" width="100%" height="650px" data-external="1"></iframe> <br><br></p>
 </div>
 <div class="section level3">
 <h3 id="recategorised-road-descriptions">Recategorised Road Descriptions<a class="anchor" aria-label="anchor" href="#recategorised-road-descriptions"></a>
 </h3>
+<p>The recategorised road descriptions are more interpenetrate and meaningful than the default OSM highway values.</p>
 <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/road_desc_map.html" width="100%" height="650px" data-external="1">
 </iframe>
-<p>As can be seen - the OSM highways re-categorised to road descriptions are much easier to visualise and insightful than all OSM highawy values. <br><br></p>
+<p>As can be seen - the OSM highways re-categorised to road descriptions are much easier to visualise and insightful than all OSM highway values. <br><br></p>
 </div>
 <div class="section level3">
 <h3 id="recategorised-cyclable-ways">Recategorised Cyclable Ways<a class="anchor" aria-label="anchor" href="#recategorised-cyclable-ways"></a>
@@ -644,6 +650,7 @@
 </h3>
 <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/is_lit_map.html" width="100%" height="650px" data-external="1">
 </iframe>
+<p>Note that a value of <code>maybe</code> implies the lack of data to distinguish between <code>"yes"</code> or <code>"no"</code>.</p>
 <p><br><br></p>
 </div>
 <div class="section level3">
