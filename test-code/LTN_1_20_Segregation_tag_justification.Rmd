@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "LTN1/20 Segregation by OSM Tags Justifications"
 author: "James Hulse"
 date: "2022-08-11"
 output: html_document
@@ -13,22 +13,28 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Segregated Cycling
 
-#### Use
+#### Use Tags
 
-**cycleway\|cycleway_left\|cycleway_right = [track](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dtrack)** 
+**cycleway\|cycleway_left\|cycleway_right = ["track"](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dtrack)** 
 <br><br>This tag for a feature ([typically applied to roads with highway=\* tag](https://taginfo.openstreetmap.org/tags/cycleway=track#combinations)) that contains a cycle track (a track separated from the road by curbs, parking lots, grass verges, trees or another physical barrier, but is running parallel to and next to the road. [source](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dtrack))
 
-#### Ignore
+#### Ignore Tags
 
-**cycleway\|cycleway_left\|cycleway_right = [seperate](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dseparate)** 
-<br><br>Ignored as this tag value does not capture cycling infrastructure. Rather, it indicates that cycling infrastructure does exist near to this feature, but it is mapped by another geometry (In other words - if infrastructure is tagged with seperate it means the geometry for a cyclelane exists and is **NOT** part of the currecnt feature) \### Cycle Lanes
+**cycleway\|cycleway_left\|cycleway_right = ["seperate"](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dseparate)** 
+<br><br>Ignored as this tag value does not capture cycling infrastructure. Rather, it indicates that cycling infrastructure does exist near to this feature, but it is mapped by another geometry (In other words - if infrastructure is tagged with seperate it means the geometry for a cyclelane exists and is **NOT** part of the currecnt feature) 
 
-#### Use
+### Cycle Lanes
 
-#### Ignore
+#### Use Tags
+
+**cycleway|cycleway_left|cycleway_right == ["lane"](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dlane)**
+<br><br>These tags with value "lane" indicated a cycle lane.<br><br> A cycle lane is bicycle infrastructure that is an inherent part of the road, but set aside for the exclusive use of bicycles, whilst being separated only by paint or other markings, and without a physical separation from vehicles. ([source](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dlane)). <br><br>
+This will capture cycle lanes (both mandatory and advisory) and avoid any cycling infrastructure that is not part of the road - such features *should* be mapped by cycleway=[track](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dtrack).
+
+#### Ignore Tags
 
 ### Mixed Traffic
 
-#### Use
+#### Use Tags
 
-#### Ignore
+#### Ignore Tags
