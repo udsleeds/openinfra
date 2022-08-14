@@ -1,4 +1,4 @@
-#' Function to recategorize OSM data based on the Inclusive Mobility (IM)
+#' Function to recategorise OSM data based on compliance with the Inclusive Mobility (IM)
 #'
 #' This function is based on the Inclusive Mobility (IM) guide
 #' [UK](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1044542/inclusive-mobility-a-guide-to-best-practice-on-access-to-pedestrian-and-transport-infrastructure.pdf).

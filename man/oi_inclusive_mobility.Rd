@@ -3,7 +3,7 @@
 \docType{data}
 \name{oi_inclusive_mobility}
 \alias{oi_inclusive_mobility}
-\title{Function to recategorize OSM data based on the Inclusive Mobility (IM)}
+\title{Function to recategorise OSM data based on compliance with the Inclusive Mobility (IM)}
 \format{
 An object of class \code{function} of length 1.
 }
