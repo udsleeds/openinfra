@@ -18,7 +18,7 @@ lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
 required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
                    "kerb", "footway", "sidewalk", "cycleway", "segregated", "highway",
                    "crossing", "lit", "tactile_paving", "surface", "smoothness", "width",
-                   "est_width", "lit_by_led", "boundary", "admin_level", "name")
+                   "est_width", "lit_by_led", "boundary", "admin_level", "name", "ref")
 
 england = osmextract::oe_get(
   place = "England",
