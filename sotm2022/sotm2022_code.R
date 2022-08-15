@@ -357,7 +357,7 @@ tmap::tm_shape(lcc_locations_index)+
            lwd = 2)
 
 # a visualisation for Figure 1 in the abstract
-## first create a new sf object with column values as refering to linestring type (will be helpful in creating a legend later)
+## first create a new sf object with column values as referring to linestring type (will be helpful in creating a legend later)
 lcc_new = lcc |> 
   dplyr::mutate(footpaths = dplyr::case_when(im_footpath == "yes" ~ "footpath",
                                              TRUE ~ "NA"),
@@ -386,18 +386,56 @@ lcc_joined = rbind(lcc_footway, lcc_footpath, lcc_footway_imp)
 # plot
 tmap::tmap_mode("plot")
 cl_map = tmap::tm_shape(lcc_joined) +
-  tmap::tm_lines(col = "Highway type",
-                 palette = "Dark2") +
-  tmap::tm_shape(lcc |> filter(!is.na(im_kerb)) |> dplyr::rename("Kerb" = im_kerb))+
-  tmap::tm_dots("Kerb",
+    tmap::tm_lines(col = "Highway type",
+                   palette = "Dark2") +
+  
+  tmap::tm_shape(lcc |> filter(!is.na(im_kerb)) |> dplyr::rename("Kerb" = im_kerb)) +
+    tmap::tm_dots("Kerb",
                 palette = "magma",
                 shape = 4,
-                size = 0.5)+
-  tmap::tm_layout(legend.position = c("left", "bottom"),
+                size = 0.5) +
+  
+  #tmap::tm_shape(lcc |> filter(!is.na(im_crossing)) |> dplyr::rename("Crossings" = im_crossing)) +
+  tmap::tm_shape(sf::st_as_sf(lcc) |> dplyr::filter(!is.na(im_crossing)) |> dplyr::rename("Crossings" = im_crossing) |> dplyr::select("Crossings")) +   
+    tmap::tm_symbols(palette = "red",
+                     shape = 3,
+                     size = 0.45) +
+  #tmap::tm_dots(col = "Crossings",
+    #              palette = "red",
+    #              shape = 3,
+    #              size = 0.45) + 
+  
+    tmap::tm_layout(legend.position = c("left", "bottom"),
                   legend.bg.color = "white",
                   frame = FALSE)
 
-tmap::tmap_save(tm = cl_map,
-                filename = "sotm2022/somt2022_figure",
-                units = 150)
+#tmap::tmap_save(tm = cl_map,
+#                filename = "sotm2022/somt2022_figure",
+#                units = 150)
 
+
+# ------------------------SOTM2022 P Figures--------------------------------------
+tmap::tmap_mode("plot")
+
+crossings_df = lcc %>% dplyr::filter(! im_crossing %in%  c("no")) #dplyr::filter(! is.na(im_crossing))#
+
+  # Plots highway types
+tmap::tm_shape(lcc_joined) +
+    tmap::tm_lines(col = "Highway type",
+                   palette = "Dark2") +
+  # Plots IM_Kerbs
+  tmap::tm_shape(lcc %>% filter(!is.na(im_kerb)) %>% rename("Kerb" = im_kerb)) +
+    tmap::tm_dots("Kerb",
+                palette = "magma",
+                shape = 4,
+                size = 0.5) +
+  
+  tmap::tm_shape(crossings_df %>% rename("Crossings" = im_crossing) %>% select("Crossings")) + 
+    tmap::tm_symbols(col = "Crossings",
+                     palette = c("red", "blue", "green"),
+                     shape = 1, 
+                     size = 0.5) + 
+  
+  tmap::tm_layout(legend.position = c("left", "bottom"),
+                  legend.bg.color = "white",
+                  frame = FALSE)
