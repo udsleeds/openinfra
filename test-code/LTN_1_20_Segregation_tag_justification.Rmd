@@ -11,6 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## LTN1/20 OSM Tag Analysis
 
+<br><br>
+
 ### Segregated Cycling
 
 #### Use Tags
@@ -25,6 +27,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Cycle Lanes
 
+<br><br> 
+
 #### Use Tags
 
 **cycleway|cycleway_left|cycleway_right == ["lane"](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dlane)**
@@ -32,6 +36,8 @@ knitr::opts_chunk$set(echo = TRUE)
 This will capture cycle lanes (both mandatory and advisory) and avoid any cycling infrastructure that is not part of the road - such features *should* be mapped by cycleway=[track](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dtrack).
 
 #### Ignore Tags
+
+<br><br>
 
 ### Mixed Traffic
 
