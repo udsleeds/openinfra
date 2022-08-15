@@ -1,0 +1,78 @@
+---
+title: "SOTM2022 Workshop - OSM for sustainable transport planning: getting started"
+author: "James Hulse"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{SOTM2022 Workshop - OSM for sustainable transport planning: getting started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+<br>
+This workshop is designed to be run on your own laptops. The workshop is aimed at everyone interested in using OpenStreetMap (OSM) to support sustainable transport planning, in professional or advocacy contexts through recategorisation of OpenStreetMap (OSM) transport infrastructure data. The focus will be on getting started, identifying, visualizing, and analyzing key tags and identifying gaps in walking, cycling, and wheeling networks. Participants will place OSM data in the context of other data sources to identify its unique advantages.
+
+
+## Installation
+A number of packages will be used within this workshop, though namely [`osmextract`](https://github.com/ropensci/osmextract) and [openinfra](https://github.com/udsleeds/openinfra).
+
+Here are some of the additional packages we will make use of within this workshop: 
+```{r install_dep}
+pkgs = c("tmap",
+         "sf",
+         "dplyr",
+         "remotes"
+         )
+```
+These can be installed with:
+```{r install_okgs, message=FALSE}
+install.packages(pkgs, repos = "http://cran.us.r-project.org")
+```
+You can install the development versions of the `osmextract` and `openinfra` packages as follows: 
+```{r install_dev, message=FALSE}
+# Enter the lines below into your console to install!
+remotes::install_github("ropensci/osmextract")
+remotes::install_github("udsleeds/openinfra")
+```
+Each package can then be loaded iteratively with `library(tmap)`, `library(sf)`, etc, or all at once with: 
+```{r load_pkgs, message=FALSE}
+pkgs = c(pkgs, "osmextract", "openinfra")
+lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
+```
+
+## Installation Check
+If installation has occurred correctly, running the code below should successfully create two plots: <br> One 5km radius infrastructure network centered at Leeds (UK) City Centre, and <br> Seondly, a test plot just outside of the Institute of Transport Studies (ITS), at the University of Leeds.  
+```{r install_check}
+# Pre-installed package data
+data = sotm_data
+# Test osmextract file (ITS Leeds = Institute of Transport Studies, Leeds.)
+test_data = osmextract::oe_get(place = "ITS Leeds")
+
+tmap::tm_shape(data |> dplyr::select("highway")) + 
+  tmap::tm_lines(col = "highway", title.col = "OSM Highways") + 
+  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white")
+
+tmap::qtm(data)
+
+tmap::qtm(test_data)
+
+tmap::tm_shape(test_data |> dplyr::select("highway")) + 
+  tmap::tm_lines(col = "highway", title.col = "OSM Highways") + 
+  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+```
+
+
+## Why these packages? 
+The [`osmextract`](https://github.com/ropensci/osmextract) package is an open-source project, which allows for fast downloading and importing of OSM infrastructure data from one of three OSM providers. We can view all `osmextract` available providers with the following: 
+```{r show_providers, message=FALSE}
+osmextract::oe_providers() 
+```
+
+`osmextract` uses [Geofabrik](http://download.geofabrik.de/), [BBBike](https://download.bbbike.org/osm/), and [openstreetmap_fr](https://download.openstreetmap.fr/extracts/) as OSM data providers. These providers extract, select, and process geospatial data from OSM in .osm.pbf file format. The .pbf file format results in much faster read/write times and reduces filesizes, more information can be found on the [OSM wiki](https://wiki.openstreetmap.org/wiki/PBF_Format#:~:text=PBF%20Format%20(%22Protocolbuffer%20Binary%20Format,read%20than%20a%20gzipped%20planet.).
+
+The [openinfra](https://github.com/udsleeds/openinfra) package, another open-source project, contains several functions that recategorises OSM infrastructure data from the default key=tag values to friendlier visuals. 
