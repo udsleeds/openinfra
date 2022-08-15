@@ -1,5 +1,4 @@
 # Generate package test-data. 
-#library("openinfra")
 library("osmextract")
 library("tmap")
 library("dplyr")
@@ -14,7 +13,7 @@ devtools::load_all()
 all_extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
                    "kerb", "footway", "sidewalk", "cycleway", "segregated", "highway",
                    "crossing", "lit", "tactile_paving", "surface", "smoothness", "width",
-                   "est_width", "lit_by_led")
+                   "est_width", "lit_by_led", "ref")
 
 # Set place name
 place_name = "Leeds"
@@ -61,6 +60,8 @@ circle_buffer = sf::st_buffer(point_sf, dist = radius)
 total_place = osmextract::oe_get(
   place = place_name,
   provider = provider,
+  boundary = circle_buffer,
+  boundary_type = "clipsrc",
   layer = "lines",
   never_skip_vectortranslate = TRUE,
   force_download = TRUE,
@@ -69,46 +70,86 @@ total_place = osmextract::oe_get(
 )
 
 
+total_place = total_place %>% dplyr::filter(! is.na(highway))
+
 #__________________FUNCTION___
-
-
+# This script may actually want deleting now - package data will be made using 
+# the generate_package_data.R script rather than this. 
 #_____________________________
 
 
-total_place_buffered = total_place[circle_buffer, ]
-
-example_data = total_place_buffered
-
+osm_sf= total_place[circle_buffer, ]
 # UNCOMMENT BELOW TO SAVE NEW EXAMPLE_DATA
 #usethis::use_data(example_data)
 
-osm_sf = total_place_buffered
 
-osm_sf_road_recoded = recode_road_class(osm_sf) #openinfra::recode_road_class(osm_sf)
+# SOTM2022 Plots
+osm_sf = total_place
 
+osm_sf_road_recoded = oi_road_names(osm_sf) # recode_road_class(osm_sf) #openinfra::recode_road_class(osm_sf)
 data_pack = oi_clean_maxspeed_uk(osm_sf_road_recoded) #openinfra::oi_clean_maxspeed_uk(osm_sf_road_recoded)
-
 data_pack_IM = oi_inclusive_mobility(data_pack)
 data_pack_lit = oi_is_lit(data_pack)
-
-data_pack_short = data_pack %>% dplyr::select(c("osm_id", "highway", "road_desc", "oi_maxspeed"))
+#data_pack_short = data_pack %>% dplyr::select(c("osm_id", "highway", "road_desc", "oi_maxspeed"))
 data_pack_IM = data_pack_IM %>% dplyr::select(c("highway", "im_footway", "im_footpath", "im_tactile"))
 
-tmap_mode("view")
+data_pack = oi_road_names(osm_sf)
+data_pack_road_name = oi_road_names(osm_sf)
+data_pack_cycle = oi_active_cycle(osm_sf)
+data_pack_walk = oi_active_walk(osm_sf)
+data_pack_maxspeed = oi_clean_maxspeed_uk(osm_sf)
+data_pack_IM = oi_inclusive_mobility(osm_sf)
+data_pack_lit = oi_is_lit(osm_sf)
+data_pack_road_desc = oi_recode_road_class(osm_sf)
+
+
+
+tmap_mode("plot")
 
 #osm_sf = osm_sf %>% dplyr::filter(! is.na(highway)) # COMMENT OUT AFTER
 
 tmap::tm_shape(data_pack_lit |> dplyr::select(c("oi_is_lit"))) +
   tmap::tm_lines(col = "oi_is_lit", title.col = "Lighting presence") +
   tmap::tm_layout(title = "Presence of lighting on ways within 5mk of Leeds City Centre", legend.bg.color = "white")
+#'---------------------------------------______________________________________
+# Re-coded Road Descriptions / Class
+fig_road_desc = tmap::tm_shape(data_pack_road_desc %>% dplyr::select("oi_road_desc")) + 
+  tmap::tm_lines(col = "oi_road_desc", title.col = "Recoded Road Descriptions") + 
+  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+tmap::tmap_save(fig_road_desc, "fig_road_desc.jpg")
 
-#map = tmap::tm_shape(data_pack_IM |> dplyr::select(c("im_footway", "im_footpath", "im_tactile"))) +
-#  tmap::tm_lines(col = "highway", title.col = "OSM highways") +
-#  tmap::tm_layout(title = "OSM highways within 5mk of Leeds City Centre", legend.bg.color = "white")
+# OSM Highway Values
+fig_norm_highway = tmap::tm_shape(data_pack %>% dplyr::select("highway")) + 
+  tmap::tm_lines(col = "highway", title.col = "OSM Highway Values") + 
+  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+tmap::tmap_save(fig_norm_highway, "fig_norm_highway.jpg")
 
-#map
+# oi_active_cycle() oi_cycle
+fig_active_cycle = tmap::tm_shape(data_pack_cycle %>% dplyr::select("oi_cycle")) + 
+  tmap::tm_lines(col = "oi_cycle", title.col = "Cyclable Ways", palette = c("red", "green")) + 
+  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+tmap::tmap_save(fig_active_cycle, "fig_active_cycle.jpg")
 
-tmap_save(map, "5km_Leeds_OSM_highways.html")
+# oi_active_walk() oi_walk
+fig_active_walk = tmap::tm_shape(data_pack_walk %>% dplyr::select("oi_walk")) + 
+  tmap::tm_lines(col = "oi_walk", title.col = "Walkable Ways", palette = c("red", "green")) + 
+  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+tmap::tmap_save(fig_active_walk, "fig_active_walk.jpg")
 
-#sf::st_write(data_pack, "500m_LCC_data_pack.geojson")
+# oi_clean_maxspeed_uk() oi_maxspeed
+fig_maxspeed = tmap::tm_shape(data_pack_maxspeed %>% dplyr::select("oi_maxspeed")) + 
+  tmap::tm_lines(col = "oi_maxspeed", title.col = "Recategorised Maxspeed") + 
+  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+tmap::tmap_save(fig_maxspeed, "fig_maxspeed.jpg")
 
+# oi_is_lit() oi_is_lit
+fig_is_lit = tmap::tm_shape(data_pack_lit %>% dplyr::select("oi_is_lit")) + 
+  tmap::tm_lines(col = "oi_is_lit", title.col = "Presence of Lighting") + 
+  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+tmap::tmap_save(fig_is_lit, "fig_is_lit.jpg")
+
+# oi_road_names() oi_name
+fig_road_names = tmap::tm_shape(data_pack_road_name %>% dplyr::select("oi_name")) + 
+  tmap::tm_lines(col = "oi_name", title.col = "OSM Road Names") + 
+  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+tmap::tmap_save(fig_road_names, "fig_road_names.jpg")
