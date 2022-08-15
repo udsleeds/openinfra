@@ -4,12 +4,14 @@
 \alias{oi_recode_road_class}
 \title{Re-classifies OSM Roads}
 \usage{
-oi_recode_road_class(osm_sf)
+oi_recode_road_class(osm_sf, del = FALSE)
 }
 \arguments{
 \item{osm_sf}{\itemize{
 \item A \code{sf} and \code{data.frame} object containing OpenStreetMap infrastructure data, obtained from the \href{https://github.com/ropensci/osmextract}{\code{osmextract}} function.
 }}
+
+\item{del}{If \code{TRUE}, features not re-coded to one of the 8 road classifications are removed. \code{FALSE} by default.}
 }
 \value{
 The \code{osm_sf} simple features data frame is returned with additional columns road_class and road_desc based on Chan and Cooper's road classifications.
@@ -39,7 +41,7 @@ u_data_large = paste0("https://github.com/udsleeds/openinfra/releases",
 u_data_small = paste0("https://github.com/udsleeds/openinfra/releases",
                       "/download/v0.2/30_06_22_bbbike_LCC_func_example_5_75km.geojson")
 internal_data = example_data
-output = oi_recode_road_class(internal_data)
+output = oi_recode_road_class(internal_data, del = FALSE)
 # Quick plot:
  plot(output["oi_road_desc"], key.pos = 1)
 
