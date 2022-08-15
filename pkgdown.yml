@@ -3,6 +3,7 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   QGIS_OSM_Setup: QGIS_OSM_Setup.html
+  SOTM_workshop: SOTM_workshop.html
   data_packs: data_packs.html
   getosm: getosm.html
   im_get: im_get.html
@@ -10,5 +11,5 @@ articles:
   osm-python: osm-python.html
   package_networks: package_networks.html
   regions: regions.html
-last_built: 2022-08-15T16:24Z
+last_built: 2022-08-15T17:25Z
 
