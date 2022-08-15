@@ -17,3 +17,5 @@
 ^mcr\.xcf$
 ^wy_pct\.Rds$
 ^wy_walking\.Rds$
+^doc$
+^Meta$

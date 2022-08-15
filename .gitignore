@@ -42,3 +42,5 @@ vignettes/*.pdf
 *.xcf
 docs/
 inst/doc
+/doc/
+/Meta/
