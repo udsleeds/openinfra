@@ -120,7 +120,8 @@
 <li>How to use OSM datasets to visualize transport systems in static and interactive maps?</li>
 <li>How to add value to OSM data and communicate results using R, Python and A/B Street, and osm2streets?</li>
 </ol>
-<p>In order to take the most out of the workshop, we recommend to install R, RStudio, and the required packages before the session. To do this, follow “Installation” section below. Moreover, to make sure that everything is installed correctly and you’re ready to go – run a chunk of code in the “Installation Check” section! Check <a href="https://github.com/udsleeds/openinfra/issues/98" class="external-link">this issue on GitHub</a> (you will need an account to make use of it) to find out what you should get after running that code or, alternatively, let us know if you have not :)</p>
+<p>In order to take the most out of the workshop, we recommend installing R, RStudio, and the required packages before the session. To do this, follow “Installation” section below. Moreover, to make sure that everything is installed correctly and you’re ready to go – run a chunk of code in the “Installation Check” section! Check <a href="https://github.com/udsleeds/openinfra/issues/98" class="external-link">this issue on GitHub</a> (you will need an account to make use of it) to find out what you should get after running that code or, alternatively, let us know if you have not :)</p>
+<p>Finally, this workshop does not assume any prior knowledge of R or programming. Yet, it would be useful to familiarise yourself with it prior to the workshop. A good starting point is <a href="https://education.rstudio.com/learn/beginner/" class="external-link">RStudio’s Beginners guide</a> and its <a href="https://www.rstudio.com/resources/webinars/a-gentle-introduction-to-tidy-statistics-in-r/" class="external-link">Gentle Introduction to Tidy Statistics in R</a>.</p>
 <!-- This workshop covers: 
 * How to download and get OSM data from the R package `osmextract`
 * Basics on how the `osmextract` package works
@@ -151,7 +152,7 @@
 <p>You can install the development versions of the <code>osmextract</code> and <code>openinfra</code> packages as follows:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Enter the lines below into your console to install!</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ropensci/osmextract"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ropensci/osmextract"</span>, force <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"udsleeds/openinfra"</span><span class="op">)</span></span></code></pre></div>
 <p>Each package can then be loaded iteratively with <code><a href="https://github.com/r-tmap/tmap" class="external-link">library(tmap)</a></code>, <code><a href="https://r-spatial.github.io/sf/" class="external-link">library(sf)</a></code>, etc, or all at once with:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -163,18 +164,20 @@
 </h3>
 <p>If installation has occurred correctly, running the code below locally (on your own device) should successfully create two plots: <br> One 5km radius circular buffer of the infrastructure network around Leeds (UK) City Centre, and <br> Secondly, a test plot just outside of the Institute of Transport Studies (ITS), at the University of Leeds.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Pre-installed package data</span></span>
-<span><span class="co"># data = sotm_data</span></span>
-<span><span class="co"># Test osmextract file (ITS Leeds = Institute of Transport Studies, Leeds.)</span></span>
+<code class="sourceCode R"><span><span class="co"># Pre-installed package data for central Leeds</span></span>
+<span><span class="va">data</span> <span class="op">=</span> <span class="fu">openinfra</span><span class="fu">::</span><span class="va"><a href="../reference/sotm_data.html">sotm_data</a></span></span>
+<span><span class="co"># Test osmextract file (ITS Leeds = Institute of Transport Studies, University of Leeds)</span></span>
 <span><span class="va">test_data</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span>place <span class="op">=</span> <span class="st">"ITS Leeds"</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Plot central Leeds</span></span>
 <span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="st">"highway"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"highway"</span>, title.col <span class="op">=</span> <span class="st">"OSM Highways"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html" class="external-link">tm_layout</a></span><span class="op">(</span> legend.bg.alpha <span class="op">=</span> <span class="fl">0.5</span>, legend.bg.color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Plot ITS</span></span>
 <span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">test_data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="st">"highway"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"highway"</span>, title.col <span class="op">=</span> <span class="st">"OSM Highways"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html" class="external-link">tm_layout</a></span><span class="op">(</span> legend.bg.alpha <span class="op">=</span> <span class="fl">0.5</span>, legend.bg.color <span class="op">=</span> <span class="st">"white"</span> <span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html" class="external-link">tm_layout</a></span><span class="op">(</span> legend.bg.alpha <span class="op">=</span> <span class="fl">0.5</span>, legend.bg.color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -184,6 +187,8 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_providers.html" class="external-link">oe_providers</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
 <p><br><code>osmextract</code> uses <a href="http://download.geofabrik.de/" class="external-link">Geofabrik</a>, <a href="https://download.bbbike.org/osm/" class="external-link">BBBike</a>, and <a href="https://download.openstreetmap.fr/extracts/" class="external-link">openstreetmap_fr</a> as OSM data providers. These providers extract, select, and process geospatial data from OSM in .osm.pbf file format. The .pbf file format results in much faster read/write times and reduces filesizes, more information can be found on the <a href="https://wiki.openstreetmap.org/wiki/PBF_Format" class="external-link">OSM wiki</a>. <br><br> The <a href="https://github.com/udsleeds/openinfra" class="external-link">openinfra</a> package, another open-source project, contains several functions that recategorises OSM infrastructure data from the default key=tag values to friendlier visuals.</p>
+<p><a href="https://r-tmap.github.io/tmap/index.html" class="external-link"><code>tmap</code></a> is a fantastic package for visualising geospatial data either statically or interatively.</p>
+<p><a href="https://r-spatial.github.io/sf/" class="external-link"><code>sf</code> package</a> supports the representation of spatial vector data as simple features which, consequentially, makes spatial analysis much more accessible. This package is, actually, a backbone to everything we currently do :)</p>
 <div class="section level3">
 <h3 id="osmextract">osmextract<a class="anchor" aria-label="anchor" href="#osmextract"></a>
 </h3>
