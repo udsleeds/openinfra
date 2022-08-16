@@ -114,17 +114,18 @@
 <div class="section level2">
 <h2 id="data-packs">Data Packs<a class="anchor" aria-label="anchor" href="#data-packs"></a>
 </h2>
-<p>This vignette covers the recategorisation of OpenStreetMap transport infrastructure data packs. <br><br> The transport infrastructure data packs contain OSM infrastructure data for a given Local Authority District (LAD), as defined by the following polygons for <a href="https://github.com/udsleeds/openinfra/blob/main/data-small/lads_joined_2021.geojson" class="external-link">UK LADs</a>. <br><br> Whilst these LADs are currently being used to define the spatial area covered by each infrastructure data pack, any new set of updated boundaries (as a geojson file) can also be used to create the transport infrastructure data packs. <br><br></p>
+<p>This vignette covers the recategorisation of OpenStreetMap (OSM) transport infrastructure data packs. <br><br> The transport infrastructure data packs contain OSM infrastructure data for a given Local Authority District (LAD), as defined by the following polygons for <a href="https://github.com/udsleeds/openinfra/blob/main/data-small/lads_joined_2021.geojson" class="external-link">UK LADs</a>. <br><br> Whilst these LADs are currently being used to define the spatial area covered by each infrastructure data pack, any new set of updated boundaries (as a geojson file) can also be used to create the transport infrastructure data packs. <br><br></p>
+<p>The LADs can be seen below: <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/LADs_UK_NI_1.html" width="650px" height="650px" data-external="1"></iframe></p>
 </div>
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
-<p>Library install</p>
+<p>The following libraries are required for the production of transport infrastructure data packs.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-tmap/tmap" class="external-link">tmap</a></span><span class="op">)</span></span>
-<span><span class="co">#library(openinfra)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/udsleeds/openinfra/" class="external-link">openinfra</a></span><span class="op">)</span></span></code></pre></div>
 <p><br><br></p>
 <div class="section level3">
 <h3 id="data-packs-value-added-data---the-functions">Data Packs: Value Added Data - The Functions<a class="anchor" aria-label="anchor" href="#data-packs-value-added-data---the-functions"></a>
