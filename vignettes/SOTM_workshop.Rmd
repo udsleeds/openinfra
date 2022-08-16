@@ -23,7 +23,9 @@ The workshop is designed to be practical and covers the following question:
 4.  How to use OSM datasets to visualize transport systems in static and interactive maps?
 5.  How to add value to OSM data and communicate results using R, Python and A/B Street, and osm2streets?
 
-In order to take the most out of the workshop, we recommend to install R, RStudio, and the required packages before the session. To do this, follow "Installation" section below. Moreover, to make sure that everything is installed correctly and you're ready to go -- run a chunk of code in the "Installation Check" section! Check [this issue on GitHub](https://github.com/udsleeds/openinfra/issues/98) (you will need an account to make use of it) to find out what you should get after running that code or, alternatively, let us know if you have not :)
+In order to take the most out of the workshop, we recommend installing R, RStudio, and the required packages before the session. To do this, follow "Installation" section below. Moreover, to make sure that everything is installed correctly and you're ready to go -- run a chunk of code in the "Installation Check" section! Check [this issue on GitHub](https://github.com/udsleeds/openinfra/issues/98) (you will need an account to make use of it) to find out what you should get after running that code or, alternatively, let us know if you have not :)
+
+Finally, this workshop does not assume any prior knowledge of R or programming. Yet, it would be useful to familiarise yourself with it prior to the workshop. A good starting point is [RStudio's Beginners guide](https://education.rstudio.com/learn/beginner/) and its [Gentle Introduction to Tidy Statistics in R](https://www.rstudio.com/resources/webinars/a-gentle-introduction-to-tidy-statistics-in-r/).
 
 ```{=html}
 <!-- This workshop covers: 
@@ -103,6 +105,10 @@ osmextract::oe_providers()
 ```
 
 <br> `osmextract` uses [Geofabrik](http://download.geofabrik.de/), [BBBike](https://download.bbbike.org/osm/), and [openstreetmap_fr](https://download.openstreetmap.fr/extracts/) as OSM data providers. These providers extract, select, and process geospatial data from OSM in .osm.pbf file format. The .pbf file format results in much faster read/write times and reduces filesizes, more information can be found on the [OSM wiki](https://wiki.openstreetmap.org/wiki/PBF_Format). <br><br> The [openinfra](https://github.com/udsleeds/openinfra) package, another open-source project, contains several functions that recategorises OSM infrastructure data from the default key=tag values to friendlier visuals.
+
+[`tmap`](https://r-tmap.github.io/tmap/index.html) is a fantastic package for visualising geospatial data either statically or interatively.
+
+[`sf` package](https://r-spatial.github.io/sf/) supports the representation of spatial vector data as simple features which, consequentially, makes spatial analysis much more accessible. This package is, actually, a backbone to everything we currently do :)
 
 ### osmextract
 
