@@ -15,21 +15,26 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Data Packs
 
-This vignette covers the recategorisation of OpenStreetMap transport infrastructure data packs.
+This vignette covers the recategorisation of OpenStreetMap (OSM) transport infrastructure data packs.
 <br><br>
 The transport infrastructure data packs contain OSM infrastructure data for a given Local Authority District (LAD), as defined by the following polygons for [UK LADs](https://github.com/udsleeds/openinfra/blob/main/data-small/lads_joined_2021.geojson). 
 <br><br>
 Whilst these LADs are currently being used to define the spatial area covered by each infrastructure data pack, any new set of updated boundaries (as a geojson file) can also be used to create the transport infrastructure data packs. 
 <br><br>
 
+The LADs can be seen below:
+```{r, echo=FALSE, include=TRUE, out.width="650px"}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/LADs_UK_NI_1.html", height = "650px")
+```
+
 
 ## Setup
-Library install
-```{r libraries, echo=TRUE, message=FALSE}
+The following libraries are required for the production of transport infrastructure data packs.
+```{r libraries, echo=TRUE, message=FALSE, eval=FALSE}
 library(sf)
 library(dplyr)
 library(tmap)
-#library(openinfra)
+library(openinfra)
 ```
 <br><br>
 
