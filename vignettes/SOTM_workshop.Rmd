@@ -62,7 +62,7 @@ You can install the development versions of the `osmextract` and `openinfra` pac
 
 ```{r install_dev, message=FALSE, eval = F}
 # Enter the lines below into your console to install!
-remotes::install_github("ropensci/osmextract")
+remotes::install_github("ropensci/osmextract", force = T)
 remotes::install_github("udsleeds/openinfra")
 ```
 
@@ -78,18 +78,20 @@ lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
 If installation has occurred correctly, running the code below locally (on your own device) should successfully create two plots: <br> One 5km radius circular buffer of the infrastructure network around Leeds (UK) City Centre, and <br> Secondly, a test plot just outside of the Institute of Transport Studies (ITS), at the University of Leeds.
 
 ```{r install_check, message=FALSE, dpi=300, out.width = '100%', eval = F}
-# Pre-installed package data
-# data = sotm_data
-# Test osmextract file (ITS Leeds = Institute of Transport Studies, Leeds.)
+# Pre-installed package data for central Leeds
+data = openinfra::sotm_data
+# Test osmextract file (ITS Leeds = Institute of Transport Studies, University of Leeds)
 test_data = osmextract::oe_get(place = "ITS Leeds")
 
+# Plot central Leeds
 tmap::tm_shape(data |> dplyr::select("highway")) + 
   tmap::tm_lines(col = "highway", title.col = "OSM Highways") + 
   tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white")
 
+# Plot ITS
 tmap::tm_shape(test_data |> dplyr::select("highway")) + 
   tmap::tm_lines(col = "highway", title.col = "OSM Highways") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white")
 ```
 
 ## Why these packages?
