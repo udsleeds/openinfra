@@ -115,12 +115,19 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p><br> This workshop is designed to be run on your own laptops. The workshop is aimed at everyone interested in using OpenStreetMap (OSM) to support sustainable transport planning, in professional or advocacy contexts through recategorisation of OpenStreetMap (OSM) transport infrastructure data. The focus will be on getting started, identifying, visualizing, and analyzing key tags and identifying gaps in walking, cycling, and wheeling networks. Participants will place OSM data in the context of other data sources to identify its unique advantages.</p>
-<p>This workshop covers: - How to download and get OSM data from the R package <code>osmextract</code> - Basics on how the <code>osmextract</code> package works - How to visualise different types of network infrastructure - How to add value to OSM data through the <code>openinfra</code> package</p>
+<p>This workshop covers: * How to download and get OSM data from the R package <code>osmextract</code> * Basics on how the <code>osmextract</code> package works * How to visualise different types of network infrastructure * How to add value to OSM infrastructure data through the <code>openinfra</code> package</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>This workshop will be carried out using R. if you are new to R, you should install base R and RStudio before the workshop begins. <br> There is a great <a href="https://rstudio-education.github.io/hopr/starting.html" class="external-link">R and RStudio installation guide</a> by Garrett Grolemund, within <a href="https://rstudio-education.github.io/hopr/" class="external-link">Hands-On Programming with R</a></p>
+<div class="section level3">
+<h3 id="installing-r-and-rstudio">Installing R and RStudio<a class="anchor" aria-label="anchor" href="#installing-r-and-rstudio"></a>
+</h3>
+<p>This workshop will be carried out using R. if you are new to R, you should install base R and RStudio before the workshop begins. <br> There is a great <a href="https://rstudio-education.github.io/hopr/starting.html" class="external-link">R and RStudio installation guide</a> (Section A.1) by Garrett Grolemund, within <a href="https://rstudio-education.github.io/hopr/" class="external-link">Hands-On Programming with R</a> for Windows, Mac, and Linux devices.</p>
+</div>
+<div class="section level3">
+<h3 id="installing-prerequisits">Installing Prerequisits<a class="anchor" aria-label="anchor" href="#installing-prerequisits"></a>
+</h3>
 <p>A number of packages will be used within this workshop, though namely <a href="https://github.com/ropensci/osmextract" class="external-link"><code>osmextract</code></a> and <a href="https://github.com/udsleeds/openinfra" class="external-link">openinfra</a>.</p>
 <p>Here are some of the additional packages we will make use of within this workshop:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -137,7 +144,7 @@
 <code class="sourceCode R"><span><span class="co"># Enter the lines below into your console to install!</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ropensci/osmextract"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">## * checking for file ‘/tmp/RtmpTaz7Fr/remotes35533d31efaa/ropensci-osmextract-dfee25d/DESCRIPTION’ ... OK</span></span>
+<span><span class="co">## * checking for file ‘/tmp/RtmpvuLGNk/remotes35bc4f599e74/ropensci-osmextract-dfee25d/DESCRIPTION’ ... OK</span></span>
 <span><span class="co">## * preparing ‘osmextract’:</span></span>
 <span><span class="co">## * checking DESCRIPTION meta-information ... OK</span></span>
 <span><span class="co">## * checking for LF line-endings in source and make files and shell scripts</span></span>
@@ -147,7 +154,7 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"udsleeds/openinfra"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">## * checking for file ‘/tmp/RtmpTaz7Fr/remotes3553103a1ae1/udsleeds-openinfra-39c2563/DESCRIPTION’ ... OK</span></span>
+<span><span class="co">## * checking for file ‘/tmp/RtmpvuLGNk/remotes35bc7b55eb71/udsleeds-openinfra-879799d/DESCRIPTION’ ... OK</span></span>
 <span><span class="co">## * preparing ‘openinfra’:</span></span>
 <span><span class="co">## * checking DESCRIPTION meta-information ... OK</span></span>
 <span><span class="co">## * checking for LF line-endings in source and make files and shell scripts</span></span>
@@ -162,10 +169,10 @@
 <span><span class="co">##  [6] "tmap"       "stats"      "graphics"   "grDevices"  "utils"     </span></span>
 <span><span class="co">## [11] "datasets"   "methods"    "base"</span></span></code></pre>
 </div>
-<div class="section level2">
-<h2 id="installation-check">Installation Check<a class="anchor" aria-label="anchor" href="#installation-check"></a>
-</h2>
-<p>If installation has occurred correctly, running the code below should successfully create two plots: <br> One 5km radius infrastructure network centered at Leeds (UK) City Centre, and <br> Seondly, a test plot just outside of the Institute of Transport Studies (ITS), at the University of Leeds.</p>
+<div class="section level3">
+<h3 id="installation-check">Installation Check<a class="anchor" aria-label="anchor" href="#installation-check"></a>
+</h3>
+<p>If installation has occurred correctly, running the code below locally (on your own device) should successfully create two plots: <br> One 5km radius circular buffer of the infrastructure network around Leeds (UK) City Centre, and <br> Secondly, a test plot just outside of the Institute of Transport Studies (ITS), at the University of Leeds.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Pre-installed package data</span></span>
 <span><span class="va">data</span> <span class="op">=</span> <span class="va">sotm_data</span></span>
@@ -177,17 +184,25 @@
   |                                                                            
   |==============                                                        |  20%
   |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
   |============================                                          |  40%
   |                                                                            
-  |==========================================                            |  60%
+  |===================================                                   |  51%
   |                                                                            
-  |========================================================              |  80%
+  |===========================================                           |  61%
   |                                                                            
-  |==================================================================    |  94%
+  |==================================================                    |  71%
+  |                                                                            
+  |=========================================================             |  81%
+  |                                                                            
+  |================================================================      |  91%
+  |                                                                            
+  |==================================================================    |  95%
   |                                                                            
   |======================================================================| 100%
 ## 0...10...20...30...40...50...60...70...80...90...100 - done.
-## Reading layer `lines' from data source `/tmp/RtmpTaz7Fr/test_its-example.gpkg' using driver `GPKG'
+## Reading layer `lines' from data source `/tmp/RtmpvuLGNk/test_its-example.gpkg' using driver `GPKG'
 ## Simple feature collection with 189 features and 9 fields
 ## Geometry type: LINESTRING
 ## Dimension:     XY
@@ -204,6 +219,7 @@
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html" class="external-link">tm_layout</a></span><span class="op">(</span> legend.bg.alpha <span class="op">=</span> <span class="fl">0.5</span>, legend.bg.color <span class="op">=</span> <span class="st">"white"</span> <span class="op">)</span></span></code></pre></div>
 <p><img src="SOTM_workshop_files/figure-html/install_check-2.png" width="100%"></p>
 </div>
+</div>
 <div class="section level2">
 <h2 id="why-these-packages">Why these packages?<a class="anchor" aria-label="anchor" href="#why-these-packages"></a>
 </h2>
@@ -214,8 +230,15 @@
 <span><span class="co">## 1           geofabrik        geofabrik_zones             430               14</span></span>
 <span><span class="co">## 2              bbbike           bbbike_zones             235               10</span></span>
 <span><span class="co">## 3    openstreetmap_fr openstreetmap_fr_zones             903                6</span></span></code></pre>
-<p><code>osmextract</code> uses <a href="http://download.geofabrik.de/" class="external-link">Geofabrik</a>, <a href="https://download.bbbike.org/osm/" class="external-link">BBBike</a>, and <a href="https://download.openstreetmap.fr/extracts/" class="external-link">openstreetmap_fr</a> as OSM data providers. These providers extract, select, and process geospatial data from OSM in .osm.pbf file format. The .pbf file format results in much faster read/write times and reduces filesizes, more information can be found on the [OSM wiki](<a href="https://wiki.openstreetmap.org/wiki/PBF_Format#" class="external-link uri">https://wiki.openstreetmap.org/wiki/PBF_Format#</a>:~:text=PBF%20Format%20(%22Protocolbuffer%20Binary%20Format,read%20than%20a%20gzipped%20planet.).</p>
-<p>The <a href="https://github.com/udsleeds/openinfra" class="external-link">openinfra</a> package, another open-source project, contains several functions that recategorises OSM infrastructure data from the default key=tag values to friendlier visuals.</p>
+<p><br><code>osmextract</code> uses <a href="http://download.geofabrik.de/" class="external-link">Geofabrik</a>, <a href="https://download.bbbike.org/osm/" class="external-link">BBBike</a>, and <a href="https://download.openstreetmap.fr/extracts/" class="external-link">openstreetmap_fr</a> as OSM data providers. These providers extract, select, and process geospatial data from OSM in .osm.pbf file format. The .pbf file format results in much faster read/write times and reduces filesizes, more information can be found on the <a href="https://wiki.openstreetmap.org/wiki/PBF_Format" class="external-link">OSM wiki</a>. <br><br> The <a href="https://github.com/udsleeds/openinfra" class="external-link">openinfra</a> package, another open-source project, contains several functions that recategorises OSM infrastructure data from the default key=tag values to friendlier visuals.</p>
+<div class="section level3">
+<h3 id="osmextract">osmextract<a class="anchor" aria-label="anchor" href="#osmextract"></a>
+</h3>
+</div>
+</div>
+<div class="section level2">
+<h2 id="the-osmextract-package-works-in-the-following-way">The osmextract package works in the following way:<a class="anchor" aria-label="anchor" href="#the-osmextract-package-works-in-the-following-way"></a>
+</h2>
 </div>
   </div>
 
