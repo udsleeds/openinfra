@@ -18,16 +18,19 @@ knitr::opts_chunk$set(echo = TRUE)
 This workshop is designed to be run on your own laptops. The workshop is aimed at everyone interested in using OpenStreetMap (OSM) to support sustainable transport planning, in professional or advocacy contexts through recategorisation of OpenStreetMap (OSM) transport infrastructure data. The focus will be on getting started, identifying, visualizing, and analyzing key tags and identifying gaps in walking, cycling, and wheeling networks. Participants will place OSM data in the context of other data sources to identify its unique advantages.
 
 This workshop covers: 
-- How to download and get OSM data from the R package `osmextract`
-- Basics on how the `osmextract` package works
-- How to visualise different types of network infrastructure
-- How to add value to OSM data through the `openinfra` package
+* How to download and get OSM data from the R package `osmextract`
+* Basics on how the `osmextract` package works
+* How to visualise different types of network infrastructure
+* How to add value to OSM infrastructure data through the `openinfra` package
 
 
 ## Installation
-This workshop will be carried out using R. if you are new to R, you should install base R and RStudio before the workshop begins. <br>
-There is a great [R and RStudio installation guide](https://rstudio-education.github.io/hopr/starting.html) by Garrett Grolemund, within [Hands-On Programming with R](https://rstudio-education.github.io/hopr/)
 
+### Installing R and RStudio
+This workshop will be carried out using R. if you are new to R, you should install base R and RStudio before the workshop begins. <br>
+There is a great [R and RStudio installation guide](https://rstudio-education.github.io/hopr/starting.html) (Section A.1) by Garrett Grolemund, within [Hands-On Programming with R](https://rstudio-education.github.io/hopr/) for Windows, Mac, and Linux devices. 
+
+### Installing Prerequisits
 
 A number of packages will be used within this workshop, though namely [`osmextract`](https://github.com/ropensci/osmextract) and [openinfra](https://github.com/udsleeds/openinfra).
 
@@ -55,8 +58,8 @@ pkgs = c(pkgs, "osmextract", "openinfra")
 lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
 ```
 
-## Installation Check
-If installation has occurred correctly, running the code below should successfully create two plots: <br> One 5km radius infrastructure network centered at Leeds (UK) City Centre, and <br> Seondly, a test plot just outside of the Institute of Transport Studies (ITS), at the University of Leeds.  
+### Installation Check
+If installation has occurred correctly, running the code below locally (on your own device) should successfully create two plots: <br> One 5km radius circular buffer of the infrastructure network around Leeds (UK) City Centre, and <br> Secondly, a test plot just outside of the Institute of Transport Studies (ITS), at the University of Leeds.  
 ```{r install_check, message=FALSE, dpi=300, out.width = '100%'}
 # Pre-installed package data
 data = sotm_data
@@ -78,7 +81,11 @@ The [`osmextract`](https://github.com/ropensci/osmextract) package is an open-so
 ```{r show_providers, message=FALSE}
 osmextract::oe_providers() 
 ```
+<br>
+`osmextract` uses [Geofabrik](http://download.geofabrik.de/), [BBBike](https://download.bbbike.org/osm/), and [openstreetmap_fr](https://download.openstreetmap.fr/extracts/) as OSM data providers. These providers extract, select, and process geospatial data from OSM in .osm.pbf file format. The .pbf file format results in much faster read/write times and reduces filesizes, more information can be found on the [OSM wiki](https://wiki.openstreetmap.org/wiki/PBF_Format).
+<br><br>
+The [openinfra](https://github.com/udsleeds/openinfra) package, another open-source project, contains several functions that recategorises OSM infrastructure data from the default key=tag values to friendlier visuals.
 
-`osmextract` uses [Geofabrik](http://download.geofabrik.de/), [BBBike](https://download.bbbike.org/osm/), and [openstreetmap_fr](https://download.openstreetmap.fr/extracts/) as OSM data providers. These providers extract, select, and process geospatial data from OSM in .osm.pbf file format. The .pbf file format results in much faster read/write times and reduces filesizes, more information can be found on the [OSM wiki](https://wiki.openstreetmap.org/wiki/PBF_Format#:~:text=PBF%20Format%20(%22Protocolbuffer%20Binary%20Format,read%20than%20a%20gzipped%20planet.).
-
-The [openinfra](https://github.com/udsleeds/openinfra) package, another open-source project, contains several functions that recategorises OSM infrastructure data from the default key=tag values to friendlier visuals. 
+### osmextract
+The osmextract package works in the following way: 
+- 
