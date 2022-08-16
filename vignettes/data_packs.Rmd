@@ -22,7 +22,8 @@ The transport infrastructure data packs contain OSM infrastructure data for a gi
 Whilst these LADs are currently being used to define the spatial area covered by each infrastructure data pack, any new set of updated boundaries (as a geojson file) can also be used to create the transport infrastructure data packs. 
 <br><br>
 
-The LADs can be seen below:
+The LADs can be seen below:<br>
+
 ```{r, echo=FALSE, include=TRUE, out.width="650px"}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/LADs_of_the_UK_new.html", height = "650px")
 ```
