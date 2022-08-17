@@ -170,7 +170,7 @@ Next we will subset Leeds city from `leeds` dataset. Spatial subsetting is one o
 
 We will use a combination of `mapview` and `mapedit` packages to manually define an area, get its coordinates to perform spatial subsetting.
 
-```{r, veal = F}
+```{r, eval = F}
 map_leeds = mapview::mapview(leeds) # create an object containing interactive map  
 map_leeds_edit = mapedit::editMap(map_leeds) # use `mapedit` package to draw a new polygon
 box = sf::st_bbox(map_leeds_edit$drawn$geometry) # extract the coordinates of a new polygon
@@ -178,7 +178,7 @@ box
 ```
 
 Now we have coordinates of an area we are interested in. From here on there are two ways for getting OSM data for that. One is to use `oe_get()` again and give it an additional `boundary` and `boundary_type` arguments.
-```{r}
+```{r, eval = F}
 leeds_defined = osmextract::oe_get(
   place = "Leeds", # Note capital 'L'!
   provider = "bbbike", # Indicates the provider; default is geofabrik
@@ -192,7 +192,7 @@ leeds_defined = osmextract::oe_get(
 ```
 
 Alternatively, we can subset the `leeds` data, so we do not have to download data again. 
-```{r}
+```{r, eval = F}
 leeds_defined2 = leeds[map_leeds_edit$drawn$geometry, 
                        op= sf::st_intersects] 
 ```
@@ -205,17 +205,7 @@ leeds_defined2 = leeds[map_leeds_edit$drawn$geometry,
 
 Note: not every city/town/region might be directly queried using osmextract.
 
-```{r, eval = F}
-osmextract::oe_match_pattern("Munchen")
 
-florence = osmextract::oe_get(
-  place = "Florence",
-  # provider = "bbbike", # Indicates the provider; default is geofabrik
-  layer = "lines", # Default; returns linestring geometries (highways, waterways, aerialways) 
-  force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
-  force_vectortranslate = TRUE # Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)
-)
-```
 
 
 
