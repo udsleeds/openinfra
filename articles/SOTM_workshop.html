@@ -194,6 +194,43 @@
 <h2 id="getting-data">Getting data<a class="anchor" aria-label="anchor" href="#getting-data"></a>
 </h2>
 <p>In this section we will use <code>osmextract</code> to download OSM data that will be used throughout this workshop.</p>
+<p>The osmextract package comprises the following core functions:</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th align="center">Function</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>oe_providers()</code></td>
+<td>Shows a data frame of currently supported OSM data providers</td>
+</tr>
+<tr class="even">
+<td align="center"><code>oe_match()</code></td>
+<td>Matches the input place query with a url from one of the OSM providers</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>oe_download()</code></td>
+<td>Downloads data from OSM providers</td>
+</tr>
+<tr class="even">
+<td align="center"><code>oe_vectortranslate()</code></td>
+<td>Converts between .pbf (providers default) and .gpkg file formats</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>oe_read()</code></td>
+<td>Reads downloaded .pbf and .gpk files into R</td>
+</tr>
+<tr class="even">
+<td align="center"><code>oe_get()</code></td>
+<td>Performs all of the above in a single function</td>
+</tr>
+</tbody>
+</table>
 <p>To start off we will use a generic <code>oe_get()</code> function to download data for Leeds, UK. It might take a while. If you struggle downloading the data or it takes long to compute, then you might use the example dataset (e.g. <code>data</code>) for central Leeds. It is a much smaller dataset, thus making computing much quicker.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># A useful function is `oe_match_pattern()` to search for patterns in a provider's database. It is helpful in indicating a correct region name for a given provider.</span></span>
