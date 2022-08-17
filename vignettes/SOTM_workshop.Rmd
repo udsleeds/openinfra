@@ -34,13 +34,13 @@ Finally, this workshop does not assume any prior knowledge of R or programming. 
 * How to visualise different types of network infrastructure
 * How to add value to OSM infrastructure data through the `openinfra` package -->
 ```
-## Installation
+# Preparation
 
-### Installing R and RStudio
+## Installing R and RStudio
 
 This workshop will be carried out using R. If you are new to R, you should install base R and RStudio before the workshop begins. <br> There is a great [R and RStudio installation guide](https://rstudio-education.github.io/hopr/starting.html) (Section A.1) by Garrett Grolemund, within [Hands-On Programming with R](https://rstudio-education.github.io/hopr/) for Windows, Mac, and Linux devices.
 
-### Installing Packages
+## Installing Packages
 
 A number of packages will be used within this workshop, though namely [`osmextract`](https://github.com/ropensci/osmextract) and [openinfra](https://github.com/udsleeds/openinfra).
 
@@ -75,7 +75,7 @@ pkgs = c(pkgs, "osmextract", "openinfra")
 lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
 ```
 
-### Installation Check
+## Installation Check
 
 If installation has occurred correctly, running the code below locally (on your own device) should successfully create two plots: <br> One 5km radius circular buffer of the infrastructure network around Leeds (UK) City Centre, and <br> Secondly, a test plot just outside of the Institute of Transport Studies (ITS), at the University of Leeds.
 
@@ -110,6 +110,77 @@ osmextract::oe_providers()
 
 [`sf` package](https://r-spatial.github.io/sf/) supports the representation of spatial vector data as simple features which, consequentially, makes spatial analysis much more accessible. This package is, actually, a backbone to everything we currently do :)
 
-### osmextract
+# Getting data
 
-## The osmextract package works in the following way:
+In this section we will use `osmextract` to download OSM data that will be used throughout this workshop.
+
+To start off we will use a generic `oe_get()` function to download data for Leeds, UK. It might take a while. If you struggle downloading the data or it takes long to compute, then you might use the example dataset (e.g. `data`) for central Leeds. It is a much smaller dataset, thus making computing much quicker. 
+
+```{r, eval = F}
+# A useful function is `oe_match_pattern()` to search for patterns in a provider's database. It is helpful in indicating a correct region name for a given provider.
+osmextract::oe_match_pattern("leeds") 
+
+leeds = osmextract::oe_get(
+  place = "Leeds", # Note capital 'L'!
+  provider = "bbbike", # Indicates the provider; default is geofabrik
+  layer = "lines", # Default; returns linestring geometries (highways, waterways, aerialways) 
+  force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
+  force_vectortranslate = TRUE # Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)
+)
+
+# have a look at the data
+leeds |> dplyr::glimpse()
+
+```
+
+## Tags
+
+In the previous example we've downloaded OSM data but it does not necessarily contain all the information we need. Indeed, it only has 10 columns and only `highway` column is directly useful for active travel infrastructure planning!
+
+In order to get additional tags we need to specify this as an additional argument before running `oe_get()`.
+
+```{r, eval = F}
+# so let's define the extra tags we want
+
+et = c("kerb", "width", "sidewalk", "cycleway", "footway", "lit", "wheelchair", "maxspeed", "foot", "access", "service")
+
+leeds = osmextract::oe_get(
+  place = "Leeds", # Note capital 'L'!
+  provider = "bbbike", # Indicates the provider; default is geofabrik
+  layer = "lines", # Default; returns linestring geometries (highways, waterways, aerialways) 
+  force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
+  force_vectortranslate = TRUE, # Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)
+  extra_tags = et # non-default tags to download
+)
+
+# have a look at the data
+leeds |> str()
+```
+
+
+**Task**: 
+
+1. Decide which tags you would like to download (be selective!)
+2. Download OSM data for a place of your choice by modifying the code above. 
+
+Note: not every city/town/region might be directly queried using osmextract.
+
+**Extra**: in case you cannot find the place you wanted, you can download a larger dataset and then subset it by drawing boundaries. This is how we created central Leeds dataset. 
+
+
+
+```{r, eval = F}
+osmextract::oe_match_pattern("Munchen")
+
+florence = osmextract::oe_get(
+  place = "Florence",
+  # provider = "bbbike", # Indicates the provider; default is geofabrik
+  layer = "lines", # Default; returns linestring geometries (highways, waterways, aerialways) 
+  force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
+  force_vectortranslate = TRUE # Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)
+)
+```
+
+
+
+
