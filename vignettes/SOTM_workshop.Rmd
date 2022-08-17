@@ -154,20 +154,56 @@ leeds = osmextract::oe_get(
 )
 
 # have a look at the data
-leeds |> str()
+leeds |> dplyr::gimpse()
+
+# also it's useful to have a look at the downloaded data by plotting it 
+# it helps to 
+tmap::tm_shape(leeds |> dplyr::filter(!is.na("highway")))+
+  tmap::tm_lines(col = "highway")
 ```
 
+Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested. Such bugs happen, that's why it's important to inspect data before proceeding further.
+
+## Spatial subsetting
+
+Next we will subset Leeds city from `leeds` dataset. Spatial subsetting is one of the essential operations in geocomputation, so if you want to learn more about this, check out ["Spaptial subsetting"](https://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting) section in the Geocomputation with R (Lovelace et al., 2022).
+
+We will use a combination of `mapview` and `mapedit` packages to manually define an area, get its coordinates to perform spatial subsetting.
+
+```{r, veal = F}
+map_leeds = mapview::mapview(leeds) # create an object containing interactive map  
+map_leeds_edit = mapedit::editMap(map_leeds) # use `mapedit` package to draw a new polygon
+box = sf::st_bbox(map_leeds_edit$drawn$geometry) # extract the coordinates of a new polygon
+box
+```
+
+Now we have coordinates of an area we are interested in. From here on there are two ways for getting OSM data for that. One is to use `oe_get()` again and give it an additional `boundary` and `boundary_type` arguments.
+```{r}
+leeds_defined = osmextract::oe_get(
+  place = "Leeds", # Note capital 'L'!
+  provider = "bbbike", # Indicates the provider; default is geofabrik
+  layer = "lines", # Default; returns linestring geometries (highways, waterways, aerialways) 
+  force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
+  force_vectortranslate = TRUE, # Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)
+  extra_tags = et, # non-default tags to download
+  boundary = box,
+  boundary_type = "clipsrc"
+)
+```
+
+Alternatively, we can subset the `leeds` data, so we do not have to download data again. 
+```{r}
+leeds_defined2 = leeds[map_leeds_edit$drawn$geometry, 
+                       op= sf::st_intersects] 
+```
 
 **Task**: 
 
 1. Decide which tags you would like to download (be selective!)
 2. Download OSM data for a place of your choice by modifying the code above. 
+3. Bonus: subset your dataset and plot it. 
 
 Note: not every city/town/region might be directly queried using osmextract.
-
-**Extra**: in case you cannot find the place you wanted, you can download a larger dataset and then subset it by drawing boundaries. This is how we created central Leeds dataset. 
-
-
 
 ```{r, eval = F}
 osmextract::oe_match_pattern("Munchen")
@@ -180,6 +216,26 @@ florence = osmextract::oe_get(
   force_vectortranslate = TRUE # Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)
 )
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
