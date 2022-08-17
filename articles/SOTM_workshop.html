@@ -229,24 +229,47 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># have a look at the data</span></span>
-<span><span class="va">leeds</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">leeds</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">gimpse</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># also it's useful to have a look at the downloaded data by plotting it </span></span>
+<span><span class="co"># it helps to </span></span>
+<span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="st">"highway"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"highway"</span><span class="op">)</span></span></code></pre></div>
+<p>Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested. Such bugs happen, that’s why it’s important to inspect data before proceeding further.</p>
+</div>
+<div class="section level3">
+<h3 id="spatial-subsetting">Spatial subsetting<a class="anchor" aria-label="anchor" href="#spatial-subsetting"></a>
+</h3>
+<p>Next we will subset Leeds city from <code>leeds</code> dataset. Spatial subsetting is one of the essential operations in geocomputation, so if you want to learn more about this, check out <a href="https://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting" class="external-link">“Spaptial subsetting”</a> section in the Geocomputation with R (Lovelace et al., 2022).</p>
+<p>We will use a combination of <code>mapview</code> and <code>mapedit</code> packages to manually define an area, get its coordinates to perform spatial subsetting.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">map_leeds</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="fu">mapview</span><span class="op">(</span><span class="va">leeds</span><span class="op">)</span> <span class="co"># create an object containing interactive map  </span></span>
+<span><span class="va">map_leeds_edit</span> <span class="op">=</span> <span class="fu">mapedit</span><span class="fu">::</span><span class="fu">editMap</span><span class="op">(</span><span class="va">map_leeds</span><span class="op">)</span> <span class="co"># use `mapedit` package to draw a new polygon</span></span>
+<span><span class="va">box</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span><span class="va">map_leeds_edit</span><span class="op">$</span><span class="va">drawn</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span> <span class="co"># extract the coordinates of a new polygon</span></span>
+<span><span class="va">box</span></span></code></pre></div>
+<p>Now we have coordinates of an area we are interested in. From here on there are two ways for getting OSM data for that. One is to use <code>oe_get()</code> again and give it an additional <code>boundary</code> and <code>boundary_type</code> arguments.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">leeds_defined</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span></span>
+<span>  place <span class="op">=</span> <span class="st">"Leeds"</span>, <span class="co"># Note capital 'L'!</span></span>
+<span>  provider <span class="op">=</span> <span class="st">"bbbike"</span>, <span class="co"># Indicates the provider; default is geofabrik</span></span>
+<span>  layer <span class="op">=</span> <span class="st">"lines"</span>, <span class="co"># Default; returns linestring geometries (highways, waterways, aerialways) </span></span>
+<span>  force_download <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Updates the previously downloaded .osm.pbf file (default is FALSE)</span></span>
+<span>  force_vectortranslate <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)</span></span>
+<span>  extra_tags <span class="op">=</span> <span class="va">et</span>, <span class="co"># non-default tags to download</span></span>
+<span>  boundary <span class="op">=</span> <span class="va">box</span>,</span>
+<span>  boundary_type <span class="op">=</span> <span class="st">"clipsrc"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Alternatively, we can subset the <code>leeds</code> data, so we do not have to download data again.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">leeds_defined2</span> <span class="op">=</span> <span class="va">leeds</span><span class="op">[</span><span class="va">map_leeds_edit</span><span class="op">$</span><span class="va">drawn</span><span class="op">$</span><span class="va">geometry</span>, </span>
+<span>                       op<span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html" class="external-link">st_intersects</a></span><span class="op">]</span> </span></code></pre></div>
 <p><strong>Task</strong>:</p>
 <ol style="list-style-type: decimal">
 <li>Decide which tags you would like to download (be selective!)</li>
 <li>Download OSM data for a place of your choice by modifying the code above.</li>
+<li>Bonus: subset your dataset and plot it.</li>
 </ol>
 <p>Note: not every city/town/region might be directly queried using osmextract.</p>
-<p><strong>Extra</strong>: in case you cannot find the place you wanted, you can download a larger dataset and then subset it by drawing boundaries. This is how we created central Leeds dataset.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_match_pattern.html" class="external-link">oe_match_pattern</a></span><span class="op">(</span><span class="st">"Munchen"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">florence</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span></span>
-<span>  place <span class="op">=</span> <span class="st">"Florence"</span>,</span>
-<span>  <span class="co"># provider = "bbbike", # Indicates the provider; default is geofabrik</span></span>
-<span>  layer <span class="op">=</span> <span class="st">"lines"</span>, <span class="co"># Default; returns linestring geometries (highways, waterways, aerialways) </span></span>
-<span>  force_download <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Updates the previously downloaded .osm.pbf file (default is FALSE)</span></span>
-<span>  force_vectortranslate <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </div>
