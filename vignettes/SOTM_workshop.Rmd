@@ -226,14 +226,14 @@ In this section you will be introduced to data filtering based on OSM tags and h
 
 Our data contains a lot of information, but not all of it might be needed. For example, active travel includes cycling, walking, and wheeling, but you may only be interested in cycling. In this case it would be reasonable to contain only data that is related to cycling. In other words, we may not need data on waterways or motorways as one cannot cycle on them.
 
-```{r}
+```{r, eval = F}
 # filter out all the rows that do not contain highways
 leeds_highways = leeds_defined2 |> 
   dplyr::filter(!is.na(highway))
 ```
 
 Our data now only contains highways in Leeds, but we want to create a new dataset containing highway=cycleway only and then visualise them by plotting on a map.
-```{r}
+```{r, eval = F}
 # filter and select
 leeds_cycleway = leeds_highways |> 
   dplyr::filter(highway == "cycleway") |> # filtering based on a key value
@@ -247,7 +247,7 @@ Of course, highway=cycleway does not represent an entire cycling infrastructure 
 
 For example, you may know that it is illegal to cycle on certain roads, such as motorways in the UK. Also, it may be a case that a cycleway is not mapped separately but, rather, has been tagged as part of another highway, such as tertiary road, using `bicycle=*` tag.
 
-```{r}
+```{r, eval = F}
 # To filter data based on these requirements we will:
 
 leeds_cycle = leeds_highways |> 
@@ -265,8 +265,50 @@ leeds_cycle["geometry"] |> plot()
 3. What do you think are potential challenges in defining a network? (eg. missing data)
 4. Bonus: try to define a pedestrian network.
 
+## Pre-defined networks
 
+It's not easy to define a network and, once conceptualised, a lack of data might still lead to innacurate representation, thus limiting further analysis and application.
 
+Nevertheless, it's still useful to have a network defined. For instance, `osmextract` does offer an opportunity to download pre-defined walking, cycling, or driving networks. Yet, if you choose to do this, do check the code used to create the network to ensure that you understand how the network has been defined and that it works for your needs.
+
+```{r, eval = F}
+# to download cycling network as defined by `osmextract`
+osme_cycle = osmextract::oe_get_network(place = "Leeds",
+                                        mode = "cycling")
+```
+
+```{r, eval = F}
+# plot cycling network
+osme_cycle["geometry"] |>
+  plot()
+```
+
+# Visualisation
+
+In this workshop we've been visualizing our data to improve our understanding. Up to this point we've been visualising data statically using base R `plot()` function. However, there is a powerful `tmap` library that can be used to create static and interactive plots to communicate your findings.
+
+```{r, eval = F}
+# equivalent to the earlier plotted map
+# Note: it might be useful to store your plot as a tmap object that can be called at any point.
+
+osme_cycle_plot = tmap::tm_shape(osme_cycle)+
+  tmap::tm_lines()
+```
+
+To plot an interactive map you have to specify this using `tmap_mode()` function. 
+
+```{r, eval = F}
+tmap::tmap_mode("view") # now all the plots will be interactive
+tmap::tm_shape(osme_cycle)+
+  tmap::tm_lines()
+
+```
+
+**Task**:
+
+1. Plot an interactive map of a network you defined in the previous task.
+2. Create a `tmap` object of a static map. Tip: run `?tmap_mode()` to access function's documentation.
+3. Bonus: Save your new tmap object. Tip: explore `tmap_save()` function.
 
 
 
