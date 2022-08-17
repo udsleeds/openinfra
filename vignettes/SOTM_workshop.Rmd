@@ -216,6 +216,37 @@ leeds_defined2 = leeds[map_leeds_edit$drawn$geometry,
 
 Note: not every city/town/region might be directly queried using osmextract.
 
+# Data exploration
+
+As alluded in the previous section, it is important to understand the data before using it for further (spatial) analysis or inform decision-making.
+
+In this section you will be introduced to data filtering based on OSM tags and how to visualise them.
+
+## Data filtering
+
+Our data contains a lot of information, but not all of it might be needed. For example, active travel includes cycling, walking, and wheeling, but you may only be interested in cycling. In this case it would be reasonable to contain only data that is related to cycling. In other words, we may not need data on waterways or motorways as one cannot cycle on them.
+
+```{r}
+# filter out all the rows that do not contain highways
+leeds_highways = leeds_defined2 |> 
+  dplyr::filter(!is.na(highway))
+```
+
+Our data now only contains highways in Leeds, but we want to create a new dataset containing highway=cycleway only and then visualise them by plotting on a map.
+```{r}
+# filter and select
+leeds_cycleway = leeds_highways |> 
+  dplyr::filter(highway == "cycleway") |> # filtering based on a key value
+  dplyr::select(highway)
+
+# plot
+tmap::tm_shape(leeds_cycleway)+
+  tmap::tm_lines("highway")
+```
+
+Of course, highway=cycleway does not represent an entire cycling infrastructure in the given region. For this we need to apply more complex (conditional) filtering to our data.
+
+
 
 
 
