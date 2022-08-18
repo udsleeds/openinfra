@@ -98,7 +98,7 @@ Each package can then be loaded one-by-one as follows:[^1]
 
     ## 
 
-```{r}
+```{r, eval = FALSE}
 library(tmap)
 library(sf)
 library(dplyr)
@@ -274,7 +274,7 @@ For example, active travel includes cycling, walking, and wheeling, but you may 
 In this case it would be reasonable to contain only data that is related to cycling.
 In other words, we may not need data on waterways or motorways as one cannot cycle on them.
 
-```{r}
+```{r, eval = FALSE}
 # filter out all the rows that do not contain highways
 leeds_highways = leeds_defined2 |> 
   dplyr::filter(!is.na(highway))
@@ -282,7 +282,7 @@ leeds_highways = leeds_defined2 |>
 
 Our data now only contains highways in Leeds, but we want to create a new dataset containing highway=cycleway only and then visualise them by plotting on a map.
 
-```{r}
+```{r, eval = FALSE}
 # filter and select
 leeds_cycleway = leeds_highways |> 
   dplyr::filter(highway == "cycleway") |> # filtering based on a key value
@@ -298,7 +298,7 @@ For this we need to apply more complex (conditional) filtering to our data.
 For example, you may know that it is illegal to cycle on certain roads, such as motorways in the UK.
 Also, it may be a case that a cycleway is not mapped separately but, rather, has been tagged as part of another highway, such as tertiary road, using `bicycle=*` tag.
 
-```{r}
+```{r, eval = FALSE}
 # To filter data based on these requirements we will:
 
 leeds_cycle = leeds_highways |> 
