@@ -218,7 +218,7 @@ Such bugs happen, that's why it's important to inspect data before proceeding fu
 ## Spatial subsetting
 
 Next we will subset Leeds city from `leeds` dataset.
-Spatial subsetting is one of the essential operations in geocomputation, so if you want to learn more about this, check out ["Spaptial subsetting"](https://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting) section in the Geocomputation with R (Lovelace et al., 2022).
+Spatial subsetting is one of the essential operations in geocomputation, so if you want to learn more about this, check out ["Spatial subsetting"](https://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting) section in the Geocomputation with R (Lovelace et al., 2022).
 
 We will use a combination of `mapview` and `mapedit` packages to manually define an area, get its coordinates to perform spatial subsetting.
 
