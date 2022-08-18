@@ -35,7 +35,7 @@ The workshop is practical and covers the following questions:
 To get the most out of the workshop, we recommend installing R, RStudio, and the required packages before the session.
 To do this, follow "Installation" section below.
 To make sure that everything is installed correctly, run the code in the "Installation Check" section below.
-Check [issue 98 on the udsleeds/openinfra repo on GitHub](https://github.com/udsleeds/openinfra/issues/98) (you will need an account to commnet) to what you should get after running that code.
+Check [issue 98 on the udsleeds/openinfra repo on GitHub](https://github.com/udsleeds/openinfra/issues/98) (you will need an account to comment) to what you should get after running that code.
 Let us know if you have not :)
 
 This workshop assumes no any prior knowledge of R.
