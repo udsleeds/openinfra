@@ -1,6 +1,6 @@
 ---
 title: "SOTM 2022 Workshop - OSM for sustainable transport planning: getting started"
-author: "James Hulse, Greta Timiate, Robin Lovelace"
+author: "James Hulse, Greta Timaite, Robin Lovelace"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
@@ -434,7 +434,7 @@ lad_name = "Leeds"
 
 ```{r, eval = F}
 # get pct data
-wy_zones = pct::get_pct_zones(region = region_name, geography = "lsoa") # get zone data
+wy_zones = pct::get_pct_zones(region = region_name, geography = "msoa") # get zone data
 # filter for Leeds
 leeds_zones = wy_zones |>  dplyr::filter(lad_name == "Leeds") |> 
   dplyr::select(geo_code) 
@@ -478,12 +478,16 @@ leeds_commute_od = leeds_commute_od |>
 ```
 
 ```{r, eval = F}
-# get OSM building data 
-osm_polygons = osmextract::oe_read(
-  "https://download.geofabrik.de/europe/great-britain/england/west-yorkshire-latest.osm.pbf",
-  # download osm buildings for region using geofabrik
-  layer = "multipolygons"
-)
+# # get OSM building data 
+# osm_polygons = osmextract::oe_read(
+#   "https://download.geofabrik.de/europe/great-britain/england/west-yorkshire-latest.osm.pbf",
+#   # download osm buildings for region using geofabrik
+#   layer = "multipolygons"
+# )
+osm_polygons = osmextract::oe_get(place = region_name,
+                                  layer = "multipolygons",
+                                  force_download = T,
+                                  force_vectortranslate = T)
 
 building_types = c(
   "yes",
