@@ -10,7 +10,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```
 
 The [workshop](https://2022.stateofthemap.org/sessions/JEXYHK/) is aimed at everyone interested in using OpenStreetMap (OSM) to support sustainable transport planning, in professional or advocacy contexts.
@@ -18,7 +18,7 @@ It demonstrates how to get started with using OSM data representing transport in
 It covers how to identify, re-categorize, visualize, and analyze key tags that represent walking, cycling, and wheeling networks.
 We also discuss OSM data in the context of other data sources to identify its advantages and limitations.
 
-The workshop is designed to be practical and covers the following questions:
+The workshop is practical and covers the following questions:
 
 1.  What gaps in transport evidence can OSM data fill in different countries?
 2.  Which elements and tags are most important for transport planning (and how to get the data in reproducible data science environments)?
@@ -26,17 +26,23 @@ The workshop is designed to be practical and covers the following questions:
 4.  How to use OSM datasets to visualize transport systems in static and interactive maps?
 5.  How to add value to OSM data and communicate results using R, Python and A/B Street, and osm2streets?
 
-In order to take the most out of the workshop, we recommend installing R, RStudio, and the required packages before the session. To do this, follow "Installation" section below. Moreover, to make sure that everything is installed correctly and you're ready to go -- run a chunk of code in the "Installation Check" section! Check [this issue on GitHub](https://github.com/udsleeds/openinfra/issues/98) (you will need an account to make use of it) to find out what you should get after running that code or, alternatively, let us know if you have not :)
+In order to take the most out of the workshop, we recommend installing R, RStudio, and the required packages before the session.
+To do this, follow "Installation" section below.
+To make sure that everything is installed correctly, run the code in the "Installation Check" section below.
+Check [issue 98 on the udsleeds/openinfra repo on GitHub](https://github.com/udsleeds/openinfra/issues/98) (you will need an account to commnet) to what you should get after running that code.
+Let us know if you have not :)
 
-Finally, this workshop does not assume any prior knowledge of R or programming. Yet, it would be useful to familiarise yourself with it prior to the workshop. A good starting point is [RStudio's Beginners guide](https://education.rstudio.com/learn/beginner/) and its [Gentle Introduction to Tidy Statistics in R](https://www.rstudio.com/resources/webinars/a-gentle-introduction-to-tidy-statistics-in-r/).
+This workshop assumes no any prior knowledge of R.
+We recommend taking a look at online resources like [RStudio's Beginners guide](https://education.rstudio.com/learn/beginner/) and its [Gentle Introduction to Tidy Statistics in R](https://www.rstudio.com/resources/webinars/a-gentle-introduction-to-tidy-statistics-in-r/) if you're new to the language, however.
 
-```{=html}
-<!-- This workshop covers: 
+<!--
+This workshop covers: 
 * How to download and get OSM data from the R package `osmextract`
 * Basics on how the `osmextract` package works
 * How to visualise different types of network infrastructure
-* How to add value to OSM infrastructure data through the `openinfra` package -->
-```
+* How to add value to OSM infrastructure data through the `openinfra` package 
+-->
+
 # Preparation
 
 ## Installing R and RStudio
