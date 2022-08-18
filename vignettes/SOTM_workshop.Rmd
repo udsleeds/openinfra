@@ -13,7 +13,9 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The [workshop](https://2022.stateofthemap.org/sessions/JEXYHK/) is aimed at everyone interested in using OpenStreetMap (OSM) to support sustainable transport planning, in professional or advocacy contexts through recategorisation of OpenStreetMap (OSM) transport infrastructure data. The focus will be on getting started, identifying, visualizing, and analyzing key tags and identifying gaps in walking, cycling, and wheeling networks. Participants will place OSM data in the context of other data sources to identify its unique advantages.
+The [workshop](https://2022.stateofthemap.org/sessions/JEXYHK/) is aimed at everyone interested in using OpenStreetMap (OSM) to support sustainable transport planning, in professional or advocacy contexts.
+It demonstrates how to import, recategorise, and visualise OSM data representing transport infrastructure data.
+The focus will be on getting started, identifying, visualizing, and analyzing key tags and identifying gaps in walking, cycling, and wheeling networks. Participants will place OSM data in the context of other data sources to identify its unique advantages.
 
 The workshop is designed to be practical and covers the following question:
 
