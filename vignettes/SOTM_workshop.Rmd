@@ -340,9 +340,9 @@ tmap::tm_shape(leeds_speed_rec)+
 We know that in the UK it recommended to have some kind of segregation (eg. lines, tracks) if maxspeed of a motor vehicle is allowed to exceed 30mph. Therefore, we might want to find out if the existing cycling infrastructure complies with the requirements for roads that have maxspeed of 30mph and over.
 
 ```{r}
-# Note: that this is simplification of an above example.
+# Note: that this is simplification of an above example and does not take into consideration .
 leeds_seg = leeds_speed_rec |> dplyr::filter(oi_maxspeed != "20 mph" &
-                                              cycleway %in% c("lane", "track", "left") |
+                                               cycleway %in% c("lane", "track", "left") |
                                                highway == "cycleway")
 ```
 
@@ -350,6 +350,10 @@ leeds_seg = leeds_speed_rec |> dplyr::filter(oi_maxspeed != "20 mph" &
 tmap::tm_shape(leeds_seg["geometry"]) + 
   tmap::tm_lines()
 ```
+
+**Task**:
+
+1. Modify the above example, apply to your data, and then plot it. What does it say about the existing cycling infrastructure?
 
 
 
