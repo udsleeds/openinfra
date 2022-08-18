@@ -100,7 +100,7 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>SOTM 2022 Workshop - OSM for sustainable transport planning: getting started</h1>
-                        <h4 data-toc-skip class="author">James Hulse, Greta Timiate, Robin Lovelace</h4>
+                        <h4 data-toc-skip class="author">James Hulse, Greta Timaite, Robin Lovelace</h4>
             
             <h4 data-toc-skip class="date">2022-08-18</h4>
       
@@ -445,7 +445,7 @@ This workshop covers:
 <span><span class="va">lad_name</span> <span class="op">=</span> <span class="st">"Leeds"</span> </span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get pct data</span></span>
-<span><span class="va">wy_zones</span> <span class="op">=</span> <span class="fu">pct</span><span class="fu">::</span><span class="fu"><a href="https://itsleeds.github.io/pct/reference/get_pct_zones.html" class="external-link">get_pct_zones</a></span><span class="op">(</span>region <span class="op">=</span> <span class="va">region_name</span>, geography <span class="op">=</span> <span class="st">"lsoa"</span><span class="op">)</span> <span class="co"># get zone data</span></span>
+<span><span class="va">wy_zones</span> <span class="op">=</span> <span class="fu">pct</span><span class="fu">::</span><span class="fu"><a href="https://itsleeds.github.io/pct/reference/get_pct_zones.html" class="external-link">get_pct_zones</a></span><span class="op">(</span>region <span class="op">=</span> <span class="va">region_name</span>, geography <span class="op">=</span> <span class="st">"msoa"</span><span class="op">)</span> <span class="co"># get zone data</span></span>
 <span><span class="co"># filter for Leeds</span></span>
 <span><span class="va">leeds_zones</span> <span class="op">=</span> <span class="va">wy_zones</span> <span class="op">|&gt;</span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">lad_name</span> <span class="op">==</span> <span class="st">"Leeds"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">geo_code</span><span class="op">)</span> </span>
@@ -485,12 +485,16 @@ This workshop covers:
 <span>    <span class="va">pcycle_godutch</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># get OSM building data </span></span>
-<span><span class="va">osm_polygons</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_read.html" class="external-link">oe_read</a></span><span class="op">(</span></span>
-<span>  <span class="st">"https://download.geofabrik.de/europe/great-britain/england/west-yorkshire-latest.osm.pbf"</span>,</span>
-<span>  <span class="co"># download osm buildings for region using geofabrik</span></span>
-<span>  layer <span class="op">=</span> <span class="st">"multipolygons"</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># # get OSM building data </span></span>
+<span><span class="co"># osm_polygons = osmextract::oe_read(</span></span>
+<span><span class="co">#   "https://download.geofabrik.de/europe/great-britain/england/west-yorkshire-latest.osm.pbf",</span></span>
+<span><span class="co">#   # download osm buildings for region using geofabrik</span></span>
+<span><span class="co">#   layer = "multipolygons"</span></span>
+<span><span class="co"># )</span></span>
+<span><span class="va">osm_polygons</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span>place <span class="op">=</span> <span class="va">region_name</span>,</span>
+<span>                                  layer <span class="op">=</span> <span class="st">"multipolygons"</span>,</span>
+<span>                                  force_download <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>                                  force_vectortranslate <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">building_types</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"yes"</span>,</span>
