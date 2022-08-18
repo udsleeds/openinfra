@@ -1,6 +1,6 @@
 ---
 title: "SOTM 2022 Workshop - OSM for sustainable transport planning: getting started"
-author: "James Hulse"
+author: "James Hulse, Greta Timiate, Robin Lovelace"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
