@@ -79,7 +79,18 @@ remotes::install_github("ropensci/osmextract", force = T)
 remotes::install_github("udsleeds/openinfra")
 ```
 
-Each package can then be loaded iteratively with `library(tmap)`, `library(sf)`, etc, or all at once with:
+Each package can then be loaded one-by-one as follows:
+
+```{r}
+library(tmap)
+library(sf)
+library(dplyr)
+library(remotes)
+```
+
+
+
+r all at once with:
 
 ```{r load_pkgs, message=FALSE, eval = F}
 pkgs = c(pkgs, "osmextract", "openinfra")
