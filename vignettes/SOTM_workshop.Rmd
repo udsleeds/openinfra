@@ -37,6 +37,7 @@ Let us know if you have not :)
 This workshop assumes no any prior knowledge of R.
 We recommend taking a look at online resources like [RStudio's Beginners guide](https://education.rstudio.com/learn/beginner/) and its [Gentle Introduction to Tidy Statistics in R](https://www.rstudio.com/resources/webinars/a-gentle-introduction-to-tidy-statistics-in-r/) if you're new to the language, however.
 
+```{=html}
 <!--
 This workshop covers: 
 * How to download and get OSM data from the R package `osmextract`
@@ -44,12 +45,14 @@ This workshop covers:
 * How to visualise different types of network infrastructure
 * How to add value to OSM infrastructure data through the `openinfra` package 
 -->
-
+```
 # Preparation
 
 ## Installing R and RStudio
 
-This workshop will be carried out using R. If you are new to R, you should install base R and RStudio before the workshop begins. <br> There is a great [R and RStudio installation guide](https://rstudio-education.github.io/hopr/starting.html) (Section A.1) by Garrett Grolemund, within [Hands-On Programming with R](https://rstudio-education.github.io/hopr/) for Windows, Mac, and Linux devices.
+This workshop will be carried out using R.
+If you are new to R, you should install base R and RStudio before the workshop begins.
+<br> There is a great [R and RStudio installation guide](https://rstudio-education.github.io/hopr/starting.html) (Section A.1) by Garrett Grolemund, within [Hands-On Programming with R](https://rstudio-education.github.io/hopr/) for Windows, Mac, and Linux devices.
 
 ## Installing Packages
 
@@ -79,22 +82,24 @@ remotes::install_github("ropensci/osmextract", force = T)
 remotes::install_github("udsleeds/openinfra")
 ```
 
-Each package can then be loaded one-by-one as follows:
+Each package can then be loaded one-by-one as follows:[^1]
+
+[^1]: You can also load all packages at once with:
+
+    ```{r load_pkgs, message=FALSE, eval = F}
+    pkgs = c(pkgs, "osmextract", "openinfra")
+    lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
+    ```
+
+    ## 
 
 ```{r}
 library(tmap)
 library(sf)
 library(dplyr)
 library(remotes)
-```
-
-
-
-r all at once with:
-
-```{r load_pkgs, message=FALSE, eval = F}
-pkgs = c(pkgs, "osmextract", "openinfra")
-lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
+library(osmextract)
+library(openinfra)
 ```
 
 ## Installation Check
@@ -120,34 +125,41 @@ tmap::tm_shape(test_data |> dplyr::select("highway")) +
 
 ## Why these packages?
 
-The [`osmextract`](https://github.com/ropensci/osmextract) package is an open-source project, which allows for fast downloading and importing of OSM infrastructure data from one of three OSM providers. We can view all `osmextract` available providers with the following:
+The [`osmextract`](https://github.com/ropensci/osmextract) package is an open-source project, which allows for fast downloading and importing of OSM infrastructure data from one of three OSM providers.
+We can view all `osmextract` available providers with the following:
 
 ```{r show_providers, message=FALSE, eval = F}
 osmextract::oe_providers() 
 ```
 
-<br> `osmextract` uses [Geofabrik](http://download.geofabrik.de/), [BBBike](https://download.bbbike.org/osm/), and [openstreetmap_fr](https://download.openstreetmap.fr/extracts/) as OSM data providers. These providers extract, select, and process geospatial data from OSM in .osm.pbf file format. The .pbf file format results in much faster read/write times and reduces filesizes, more information can be found on the [OSM wiki](https://wiki.openstreetmap.org/wiki/PBF_Format). <br><br> The [openinfra](https://github.com/udsleeds/openinfra) package, another open-source project, contains several functions that recategorises OSM infrastructure data from the default key=tag values to friendlier visuals.
+<br> `osmextract` uses [Geofabrik](http://download.geofabrik.de/), [BBBike](https://download.bbbike.org/osm/), and [openstreetmap_fr](https://download.openstreetmap.fr/extracts/) as OSM data providers.
+These providers extract, select, and process geospatial data from OSM in .osm.pbf file format.
+The .pbf file format results in much faster read/write times and reduces filesizes, more information can be found on the [OSM wiki](https://wiki.openstreetmap.org/wiki/PBF_Format).
+<br><br> The [openinfra](https://github.com/udsleeds/openinfra) package, another open-source project, contains several functions that recategorises OSM infrastructure data from the default key=tag values to friendlier visuals.
 
 [`tmap`](https://r-tmap.github.io/tmap/index.html) is a fantastic package for visualising geospatial data either statically or interatively.
 
-[`sf` package](https://r-spatial.github.io/sf/) supports the representation of spatial vector data as simple features which, consequentially, makes spatial analysis much more accessible. This package is, actually, a backbone to everything we currently do :)
+[`sf` package](https://r-spatial.github.io/sf/) supports the representation of spatial vector data as simple features which, consequentially, makes spatial analysis much more accessible.
+This package is, actually, a backbone to everything we currently do :)
 
 # Getting data
 
 In this section we will use `osmextract` to download OSM data that will be used throughout this workshop.
 
-The `osmextract` package comprises the following core functions (also see a [vignette introducing `osmextract`](https://docs.ropensci.org/osmextract/articles/osmextract.html?q=file%20path#main-package-functions)): 
+The `osmextract` package comprises the following core functions (also see a [vignette introducing `osmextract`](https://docs.ropensci.org/osmextract/articles/osmextract.html?q=file%20path#main-package-functions)):
 
-| Function | Description |
-|:------:| -------- |
-|`oe_providers()`|Shows a data frame of currently supported OSM data providers|
-|`oe_match()`|  Matches the input place query with a url from one of the OSM providers|
-| `oe_download()`| Downloads data from OSM providers|
-| `oe_vectortranslate()` |  Converts between .pbf (providers default) and .gpkg file formats |
-| `oe_read()` | Reads downloaded .pbf and .gpk files into R|
-| `oe_get()` |  Performs all of the above in a single function|
+|        Function        | Description                                                            |
+|:----------------------------------:|------------------------------------|
+|    `oe_providers()`    | Shows a data frame of currently supported OSM data providers           |
+|      `oe_match()`      | Matches the input place query with a url from one of the OSM providers |
+|    `oe_download()`     | Downloads data from OSM providers                                      |
+| `oe_vectortranslate()` | Converts between .pbf (providers default) and .gpkg file formats       |
+|      `oe_read()`       | Reads downloaded .pbf and .gpk files into R                            |
+|       `oe_get()`       | Performs all of the above in a single function                         |
 
-To start off we will use a generic `oe_get()` function to download data for Leeds, UK. It might take a while. If you struggle downloading the data or it takes long to compute, then you might use the example dataset (e.g. `data`) for central Leeds. It is a much smaller dataset, thus making computing much quicker. 
+To start off we will use a generic `oe_get()` function to download data for Leeds, UK. It might take a while.
+If you struggle downloading the data or it takes long to compute, then you might use the example dataset (e.g. `data`) for central Leeds.
+It is a much smaller dataset, thus making computing much quicker.
 
 ```{r, eval = F}
 # A useful function is `oe_match_pattern()` to search for patterns in a provider's database. It is helpful in indicating a correct region name for a given provider.
@@ -168,7 +180,8 @@ leeds |> dplyr::glimpse()
 
 ## Tags
 
-In the previous example we've downloaded OSM data but it does not necessarily contain all the information we need. Indeed, it only has 10 columns and only `highway` column is directly useful for active travel infrastructure planning!
+In the previous example we've downloaded OSM data but it does not necessarily contain all the information we need.
+Indeed, it only has 10 columns and only `highway` column is directly useful for active travel infrastructure planning!
 
 In order to get additional tags we need to specify this as an additional argument before running `oe_get()`.
 
@@ -195,11 +208,13 @@ tmap::tm_shape(leeds |> dplyr::filter(!is.na("highway")))+
   tmap::tm_lines(col = "highway")
 ```
 
-Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested. Such bugs happen, that's why it's important to inspect data before proceeding further.
+Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested.
+Such bugs happen, that's why it's important to inspect data before proceeding further.
 
 ## Spatial subsetting
 
-Next we will subset Leeds city from `leeds` dataset. Spatial subsetting is one of the essential operations in geocomputation, so if you want to learn more about this, check out ["Spaptial subsetting"](https://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting) section in the Geocomputation with R (Lovelace et al., 2022).
+Next we will subset Leeds city from `leeds` dataset.
+Spatial subsetting is one of the essential operations in geocomputation, so if you want to learn more about this, check out ["Spaptial subsetting"](https://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting) section in the Geocomputation with R (Lovelace et al., 2022).
 
 We will use a combination of `mapview` and `mapedit` packages to manually define an area, get its coordinates to perform spatial subsetting.
 
@@ -210,7 +225,10 @@ box = sf::st_bbox(map_leeds_edit$drawn$geometry) # extract the coordinates of a 
 box
 ```
 
-Now we have coordinates of an area we are interested in. From here on there are two ways for getting OSM data for that. One is to use `oe_get()` again and give it an additional `boundary` and `boundary_type` arguments.
+Now we have coordinates of an area we are interested in.
+From here on there are two ways for getting OSM data for that.
+One is to use `oe_get()` again and give it an additional `boundary` and `boundary_type` arguments.
+
 ```{r, eval = F}
 leeds_defined = osmextract::oe_get(
   place = "Leeds", # Note capital 'L'!
@@ -224,17 +242,18 @@ leeds_defined = osmextract::oe_get(
 )
 ```
 
-Alternatively, we can subset the `leeds` data, so we do not have to download data again. 
+Alternatively, we can subset the `leeds` data, so we do not have to download data again.
+
 ```{r, eval = F}
 leeds_defined2 = leeds[map_leeds_edit$drawn$geometry, 
                        op= sf::st_intersects] 
 ```
 
-**Task**: 
+**Task**:
 
-1. Decide which tags you would like to download (be selective!)
-2. Download OSM data for a place of your choice by modifying the code above. 
-3. Bonus: subset your dataset and plot it. 
+1.  Decide which tags you would like to download (be selective!)
+2.  Download OSM data for a place of your choice by modifying the code above.
+3.  Bonus: subset your dataset and plot it.
 
 Note: not every city/town/region might be directly queried using osmextract.
 
@@ -246,7 +265,10 @@ In this section you will be introduced to data filtering based on OSM tags and h
 
 ## Data filtering
 
-Our data contains a lot of information, but not all of it might be needed. For example, active travel includes cycling, walking, and wheeling, but you may only be interested in cycling. In this case it would be reasonable to contain only data that is related to cycling. In other words, we may not need data on waterways or motorways as one cannot cycle on them.
+Our data contains a lot of information, but not all of it might be needed.
+For example, active travel includes cycling, walking, and wheeling, but you may only be interested in cycling.
+In this case it would be reasonable to contain only data that is related to cycling.
+In other words, we may not need data on waterways or motorways as one cannot cycle on them.
 
 ```{r}
 # filter out all the rows that do not contain highways
@@ -255,6 +277,7 @@ leeds_highways = leeds_defined2 |>
 ```
 
 Our data now only contains highways in Leeds, but we want to create a new dataset containing highway=cycleway only and then visualise them by plotting on a map.
+
 ```{r}
 # filter and select
 leeds_cycleway = leeds_highways |> 
@@ -265,9 +288,11 @@ leeds_cycleway = leeds_highways |>
 leeds_cycleway |> plot()
 ```
 
-Of course, highway=cycleway does not represent an entire cycling infrastructure in the given region. For this we need to apply more complex (conditional) filtering to our data.
+Of course, highway=cycleway does not represent an entire cycling infrastructure in the given region.
+For this we need to apply more complex (conditional) filtering to our data.
 
-For example, you may know that it is illegal to cycle on certain roads, such as motorways in the UK. Also, it may be a case that a cycleway is not mapped separately but, rather, has been tagged as part of another highway, such as tertiary road, using `bicycle=*` tag.
+For example, you may know that it is illegal to cycle on certain roads, such as motorways in the UK.
+Also, it may be a case that a cycleway is not mapped separately but, rather, has been tagged as part of another highway, such as tertiary road, using `bicycle=*` tag.
 
 ```{r}
 # To filter data based on these requirements we will:
@@ -282,36 +307,7 @@ leeds_cycle["geometry"] |> plot()
 
 **Task**:
 
-1. Think what other tags and/or their values might be useful to define cycling network. Use them to further refine the network and plot it.
-2. Do you think your new network accurately represents the existing network?
-3. What do you think are potential challenges in defining a network? (eg. missing data)
-4. Bonus: try to define a pedestrian network.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+1.  Think what other tags and/or their values might be useful to define cycling network. Use them to further refine the network and plot it.
+2.  Do you think your new network accurately represents the existing network?
+3.  What do you think are potential challenges in defining a network? (eg. missing data)
+4.  Bonus: try to define a pedestrian network.
