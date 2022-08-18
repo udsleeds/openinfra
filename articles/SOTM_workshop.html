@@ -100,7 +100,7 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>SOTM 2022 Workshop - OSM for sustainable transport planning: getting started</h1>
-                        <h4 data-toc-skip class="author">James Hulse</h4>
+                        <h4 data-toc-skip class="author">James Hulse, Greta Timiate, Robin Lovelace</h4>
             
             <h4 data-toc-skip class="date">2022-08-18</h4>
       
@@ -111,8 +111,8 @@
 
     
     
-<p>The <a href="https://2022.stateofthemap.org/sessions/JEXYHK/" class="external-link">workshop</a> is aimed at everyone interested in using OpenStreetMap (OSM) to support sustainable transport planning, in professional or advocacy contexts through recategorisation of OpenStreetMap (OSM) transport infrastructure data. The focus will be on getting started, identifying, visualizing, and analyzing key tags and identifying gaps in walking, cycling, and wheeling networks. Participants will place OSM data in the context of other data sources to identify its unique advantages.</p>
-<p>The workshop is designed to be practical and covers the following question:</p>
+<p>The <a href="https://2022.stateofthemap.org/sessions/JEXYHK/" class="external-link">workshop</a> is aimed at everyone interested in using OpenStreetMap (OSM) to support sustainable transport planning, in professional or advocacy contexts. It demonstrates how to get started with using OSM data representing transport infrastructure for sustainable transport planning, research and policy-making. It covers how to identify, re-categorize, visualize, and analyze key tags that represent walking, cycling, and wheeling networks. We also discuss OSM data in the context of other data sources to identify its advantages and limitations.</p>
+<p>The workshop is practical and covers the following questions:</p>
 <ol style="list-style-type: decimal">
 <li>What gaps in transport evidence can OSM data fill in different countries?</li>
 <li>Which elements and tags are most important for transport planning (and how to get the data in reproducible data science environments)?</li>
@@ -120,20 +120,22 @@
 <li>How to use OSM datasets to visualize transport systems in static and interactive maps?</li>
 <li>How to add value to OSM data and communicate results using R, Python and A/B Street, and osm2streets?</li>
 </ol>
-<p>In order to take the most out of the workshop, we recommend installing R, RStudio, and the required packages before the session. To do this, follow “Installation” section below. Moreover, to make sure that everything is installed correctly and you’re ready to go – run a chunk of code in the “Installation Check” section! Check <a href="https://github.com/udsleeds/openinfra/issues/98" class="external-link">this issue on GitHub</a> (you will need an account to make use of it) to find out what you should get after running that code or, alternatively, let us know if you have not :)</p>
-<p>Finally, this workshop does not assume any prior knowledge of R or programming. Yet, it would be useful to familiarise yourself with it prior to the workshop. A good starting point is <a href="https://education.rstudio.com/learn/beginner/" class="external-link">RStudio’s Beginners guide</a> and its <a href="https://www.rstudio.com/resources/webinars/a-gentle-introduction-to-tidy-statistics-in-r/" class="external-link">Gentle Introduction to Tidy Statistics in R</a>.</p>
-<!-- This workshop covers: 
+<p>To get the most out of the workshop, we recommend installing R, RStudio, and the required packages before the session. To do this, follow “Installation” section below. To make sure that everything is installed correctly, run the code in the “Installation Check” section below. Check <a href="https://github.com/udsleeds/openinfra/issues/98" class="external-link">issue 98 on the udsleeds/openinfra repo on GitHub</a> (you will need an account to comment) to what you should get after running that code. Let us know if you have not :)</p>
+<p>This workshop assumes no any prior knowledge of R. We recommend taking a look at online resources like <a href="https://education.rstudio.com/learn/beginner/" class="external-link">RStudio’s Beginners guide</a> and its <a href="https://www.rstudio.com/resources/webinars/a-gentle-introduction-to-tidy-statistics-in-r/" class="external-link">Gentle Introduction to Tidy Statistics in R</a> if you’re new to the language, however.</p>
+<!--
+This workshop covers: 
 * How to download and get OSM data from the R package `osmextract`
 * Basics on how the `osmextract` package works
 * How to visualise different types of network infrastructure
-* How to add value to OSM infrastructure data through the `openinfra` package -->
+* How to add value to OSM infrastructure data through the `openinfra` package 
+-->
 <div class="section level2">
 <h2 id="preparation">Preparation<a class="anchor" aria-label="anchor" href="#preparation"></a>
 </h2>
 <div class="section level3">
 <h3 id="installing-r-and-rstudio">Installing R and RStudio<a class="anchor" aria-label="anchor" href="#installing-r-and-rstudio"></a>
 </h3>
-<p>This workshop will be carried out using R. If you are new to R, you should install base R and RStudio before the workshop begins. <br> There is a great <a href="https://rstudio-education.github.io/hopr/starting.html" class="external-link">R and RStudio installation guide</a> (Section A.1) by Garrett Grolemund, within <a href="https://rstudio-education.github.io/hopr/" class="external-link">Hands-On Programming with R</a> for Windows, Mac, and Linux devices.</p>
+<p>In this workshop we’ll use R, a statistical programming language widely used for data science, modelling and visualisation. If you are new to R, you should install base R and RStudio before the workshop begins. <br> There is a great <a href="https://rstudio-education.github.io/hopr/starting.html" class="external-link">R and RStudio installation guide</a> (Section A.1) by Garrett Grolemund, within <a href="https://rstudio-education.github.io/hopr/" class="external-link">Hands-On Programming with R</a> for Windows, Mac, and Linux devices.</p>
 </div>
 <div class="section level3">
 <h3 id="installing-packages">Installing Packages<a class="anchor" aria-label="anchor" href="#installing-packages"></a>
@@ -141,12 +143,13 @@
 <p>A number of packages will be used within this workshop, though namely <a href="https://github.com/ropensci/osmextract" class="external-link"><code>osmextract</code></a> and <a href="https://github.com/udsleeds/openinfra" class="external-link">openinfra</a>.</p>
 <p>Here are some of the additional packages we will make use of within this workshop:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tmap"</span>,</span>
-<span>         <span class="st">"sf"</span>,</span>
-<span>         <span class="st">"dplyr"</span>,</span>
-<span>         <span class="st">"remotes"</span></span>
-<span>         <span class="op">)</span></span></code></pre></div>
-<p>These can be installed with:</p>
+<code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"tmap"</span>,    <span class="co"># package for map making</span></span>
+<span>  <span class="st">"sf"</span>,      <span class="co"># geographic vector data classes and functions</span></span>
+<span>  <span class="st">"dplyr"</span>,   <span class="co"># data manipulation</span></span>
+<span>  <span class="st">"remotes"</span>  <span class="co"># for installing packages from GitHub</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p>These can be installed with the following command:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="va">pkgs</span>, repos <span class="op">=</span> <span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span></span></code></pre></div>
 <p>You can install the development versions of the <code>osmextract</code> and <code>openinfra</code> packages as follows:</p>
@@ -154,16 +157,20 @@
 <code class="sourceCode R"><span><span class="co"># Enter the lines below into your console to install!</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ropensci/osmextract"</span>, force <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"udsleeds/openinfra"</span><span class="op">)</span></span></code></pre></div>
-<p>Each package can then be loaded iteratively with <code><a href="https://github.com/r-tmap/tmap" class="external-link">library(tmap)</a></code>, <code><a href="https://r-spatial.github.io/sf/" class="external-link">library(sf)</a></code>, etc, or all at once with:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">pkgs</span>, <span class="st">"osmextract"</span>, <span class="st">"openinfra"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">pkgs</span>, <span class="va">library</span>, character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">pkgs</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<p>Each package can then be loaded one-by-one as follows:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-tmap/tmap" class="external-link">tmap</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/osmextract/" class="external-link">osmextract</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/udsleeds/openinfra/" class="external-link">openinfra</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="installation-check">Installation Check<a class="anchor" aria-label="anchor" href="#installation-check"></a>
 </h3>
 <p>If installation has occurred correctly, running the code below locally (on your own device) should successfully create two plots: <br> One 5km radius circular buffer of the infrastructure network around Leeds (UK) City Centre, and <br> Secondly, a test plot just outside of the Institute of Transport Studies (ITS), at the University of Leeds.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Pre-installed package data for central Leeds</span></span>
 <span><span class="va">data</span> <span class="op">=</span> <span class="fu">openinfra</span><span class="fu">::</span><span class="va"><a href="../reference/sotm_data.html">sotm_data</a></span></span>
 <span><span class="co"># Test osmextract file (ITS Leeds = Institute of Transport Studies, University of Leeds)</span></span>
@@ -182,12 +189,12 @@
 <div class="section level3">
 <h3 id="why-these-packages">Why these packages?<a class="anchor" aria-label="anchor" href="#why-these-packages"></a>
 </h3>
-<p>The <a href="https://github.com/ropensci/osmextract" class="external-link"><code>osmextract</code></a> package is an open-source project, which allows for fast downloading and importing of OSM infrastructure data from one of three OSM providers. We can view all <code>osmextract</code> available providers with the following:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>The <a href="https://github.com/ropensci/osmextract" class="external-link"><code>osmextract</code></a> package is an open source package for downloading and importing large OSM ‘extracts’ from providers who make the datasets available at national and regional levels. We can view all <code>osmextract</code> available providers with the following:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_providers.html" class="external-link">oe_providers</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
-<p><br><code>osmextract</code> uses <a href="http://download.geofabrik.de/" class="external-link">Geofabrik</a>, <a href="https://download.bbbike.org/osm/" class="external-link">BBBike</a>, and <a href="https://download.openstreetmap.fr/extracts/" class="external-link">openstreetmap_fr</a> as OSM data providers. These providers extract, select, and process geospatial data from OSM in .osm.pbf file format. The .pbf file format results in much faster read/write times and reduces filesizes, more information can be found on the <a href="https://wiki.openstreetmap.org/wiki/PBF_Format" class="external-link">OSM wiki</a>. <br><br> The <a href="https://github.com/udsleeds/openinfra" class="external-link">openinfra</a> package, another open-source project, contains several functions that recategorises OSM infrastructure data from the default key=tag values to friendlier visuals.</p>
-<p><a href="https://r-tmap.github.io/tmap/index.html" class="external-link"><code>tmap</code></a> is a fantastic package for visualising geospatial data either statically or interatively.</p>
-<p><a href="https://r-spatial.github.io/sf/" class="external-link"><code>sf</code> package</a> supports the representation of spatial vector data as simple features which, consequentially, makes spatial analysis much more accessible. This package is, actually, a backbone to everything we currently do :)</p>
+<p><br><code>osmextract</code> can currently import datasets from the following providers: <a href="http://download.geofabrik.de/" class="external-link">Geofabrik</a>, <a href="https://download.bbbike.org/osm/" class="external-link">BBBike</a>, and <a href="https://download.openstreetmap.fr/extracts/" class="external-link">openstreetmap_fr</a>. These provide OSM datasets in the pbf file format .pbf, which is optimized for small file sizes (see the <a href="https://wiki.openstreetmap.org/wiki/PBF_Format" class="external-link">OSM wiki</a> for details). <br><br> The <a href="https://github.com/udsleeds/openinfra" class="external-link">openinfra</a> package, contains several functions to re-categorize OSM infrastructure data from the default key=tag values to friendlier visuals.</p>
+<p><a href="https://r-tmap.github.io/tmap/index.html" class="external-link"><code>tmap</code></a> is a fantastic package for visualizing geospatial data either statically or interactively.</p>
+<p>The <a href="https://r-spatial.github.io/sf/" class="external-link"><code>sf</code> package</a> supports the representation of spatial vector data as simple features which, consequentially, makes spatial analysis much more accessible. This package is a backbone of geographic vector data in R and the code in this workshop :)</p>
 </div>
 </div>
 <div class="section level2">
@@ -206,33 +213,33 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="center"><code>oe_providers()</code></td>
+<td align="center"><code><a href="https://docs.ropensci.org/osmextract/reference/oe_providers.html" class="external-link">oe_providers()</a></code></td>
 <td>Shows a data frame of currently supported OSM data providers</td>
 </tr>
 <tr class="even">
-<td align="center"><code>oe_match()</code></td>
+<td align="center"><code><a href="https://docs.ropensci.org/osmextract/reference/oe_match.html" class="external-link">oe_match()</a></code></td>
 <td>Matches the input place query with a url from one of the OSM providers</td>
 </tr>
 <tr class="odd">
-<td align="center"><code>oe_download()</code></td>
+<td align="center"><code><a href="https://docs.ropensci.org/osmextract/reference/oe_download.html" class="external-link">oe_download()</a></code></td>
 <td>Downloads data from OSM providers</td>
 </tr>
 <tr class="even">
-<td align="center"><code>oe_vectortranslate()</code></td>
+<td align="center"><code><a href="https://docs.ropensci.org/osmextract/reference/oe_vectortranslate.html" class="external-link">oe_vectortranslate()</a></code></td>
 <td>Converts between .pbf (providers default) and .gpkg file formats</td>
 </tr>
 <tr class="odd">
-<td align="center"><code>oe_read()</code></td>
+<td align="center"><code><a href="https://docs.ropensci.org/osmextract/reference/oe_read.html" class="external-link">oe_read()</a></code></td>
 <td>Reads downloaded .pbf and .gpk files into R</td>
 </tr>
 <tr class="even">
-<td align="center"><code>oe_get()</code></td>
+<td align="center"><code><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get()</a></code></td>
 <td>Performs all of the above in a single function</td>
 </tr>
 </tbody>
 </table>
-<p>To start off we will use a generic <code>oe_get()</code> function to download data for Leeds, UK. It might take a while. If you struggle downloading the data or it takes long to compute, then you might use the example dataset (e.g. <code>data</code>) for central Leeds. It is a much smaller dataset, thus making computing much quicker.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p>To start off we will use a generic <code><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get()</a></code> function to download data for Leeds, UK. It might take a while. If you struggle downloading the data or it takes long to compute, then you might use the example dataset (e.g. <code>data</code>) for central Leeds. This is a much smaller dataset, thus making computing much quicker.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># A useful function is `oe_match_pattern()` to search for patterns in a provider's database. It is helpful in indicating a correct region name for a given provider.</span></span>
 <span><span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_match_pattern.html" class="external-link">oe_match_pattern</a></span><span class="op">(</span><span class="st">"leeds"</span><span class="op">)</span> </span>
 <span></span>
@@ -250,8 +257,8 @@
 <h3 id="tags">Tags<a class="anchor" aria-label="anchor" href="#tags"></a>
 </h3>
 <p>In the previous example we’ve downloaded OSM data but it does not necessarily contain all the information we need. Indeed, it only has 10 columns and only <code>highway</code> column is directly useful for active travel infrastructure planning!</p>
-<p>In order to get additional tags we need to specify this as an additional argument before running <code>oe_get()</code>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<p>In order to get additional tags we need to specify this as an additional argument before running <code><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get()</a></code>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># so let's define the extra tags we want</span></span>
 <span></span>
 <span><span class="va">et</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kerb"</span>, <span class="st">"width"</span>, <span class="st">"sidewalk"</span>, <span class="st">"cycleway"</span>, <span class="st">"footway"</span>, <span class="st">"lit"</span>, <span class="st">"wheelchair"</span>, <span class="st">"maxspeed"</span>, <span class="st">"foot"</span>, <span class="st">"access"</span>, <span class="st">"service"</span>, <span class="st">"bicycle"</span>, <span class="st">"oneway"</span><span class="op">)</span></span>
@@ -277,15 +284,15 @@
 <div class="section level3">
 <h3 id="spatial-subsetting">Spatial subsetting<a class="anchor" aria-label="anchor" href="#spatial-subsetting"></a>
 </h3>
-<p>Next we will subset Leeds city from <code>leeds</code> dataset. Spatial subsetting is one of the essential operations in geocomputation, so if you want to learn more about this, check out <a href="https://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting" class="external-link">“Spaptial subsetting”</a> section in the Geocomputation with R (Lovelace et al., 2022).</p>
+<p>Next we will subset Leeds city from <code>leeds</code> dataset. Spatial subsetting is one of the essential operations in geocomputation, so if you want to learn more about this, check out <a href="https://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting" class="external-link">“Spatial subsetting”</a> section in the Geocomputation with R (Lovelace et al., 2022).</p>
 <p>We will use a combination of <code>mapview</code> and <code>mapedit</code> packages to manually define an area, get its coordinates to perform spatial subsetting.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">map_leeds</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="fu">mapview</span><span class="op">(</span><span class="va">leeds</span><span class="op">)</span> <span class="co"># create an object containing interactive map  </span></span>
 <span><span class="va">map_leeds_edit</span> <span class="op">=</span> <span class="fu">mapedit</span><span class="fu">::</span><span class="fu">editMap</span><span class="op">(</span><span class="va">map_leeds</span><span class="op">)</span> <span class="co"># use `mapedit` package to draw a new polygon</span></span>
 <span><span class="va">box</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span><span class="va">map_leeds_edit</span><span class="op">$</span><span class="va">drawn</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span> <span class="co"># extract the coordinates of a new polygon</span></span>
 <span><span class="va">box</span></span></code></pre></div>
-<p>Now we have coordinates of an area we are interested in. From here on there are two ways for getting OSM data for that. One is to use <code>oe_get()</code> again and give it an additional <code>boundary</code> and <code>boundary_type</code> arguments.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<p>Now we have coordinates of an area we are interested in. From here on there are two ways for getting OSM data for that. One is to use <code><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get()</a></code> again and give it an additional <code>boundary</code> and <code>boundary_type</code> arguments.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_defined</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span></span>
 <span>  place <span class="op">=</span> <span class="st">"Leeds"</span>, <span class="co"># Note capital 'L'!</span></span>
 <span>  provider <span class="op">=</span> <span class="st">"bbbike"</span>, <span class="co"># Indicates the provider; default is geofabrik</span></span>
@@ -297,7 +304,7 @@
 <span>  boundary_type <span class="op">=</span> <span class="st">"clipsrc"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, we can subset the <code>leeds</code> data, so we do not have to download data again.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_defined2</span> <span class="op">=</span> <span class="va">leeds</span><span class="op">[</span><span class="va">map_leeds_edit</span><span class="op">$</span><span class="va">drawn</span><span class="op">$</span><span class="va">geometry</span>, </span>
 <span>                       op<span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html" class="external-link">st_intersects</a></span><span class="op">]</span> </span></code></pre></div>
 <p><strong>Task</strong>:</p>
@@ -318,12 +325,12 @@
 <h3 id="data-filtering">Data filtering<a class="anchor" aria-label="anchor" href="#data-filtering"></a>
 </h3>
 <p>Our data contains a lot of information, but not all of it might be needed. For example, active travel includes cycling, walking, and wheeling, but you may only be interested in cycling. In this case it would be reasonable to contain only data that is related to cycling. In other words, we may not need data on waterways or motorways as one cannot cycle on them.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># filter out all the rows that do not contain highways</span></span>
 <span><span class="va">leeds_highways</span> <span class="op">=</span> <span class="va">leeds_defined2</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">highway</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Our data now only contains highways in Leeds, but we want to create a new dataset containing highway=cycleway only and then visualise them by plotting on a map.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># filter and select</span></span>
 <span><span class="va">leeds_cycleway</span> <span class="op">=</span> <span class="va">leeds_highways</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">highway</span> <span class="op">==</span> <span class="st">"cycleway"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># filtering based on a key value</span></span>
@@ -333,7 +340,7 @@
 <span><span class="va">leeds_cycleway</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Of course, highway=cycleway does not represent an entire cycling infrastructure in the given region. For this we need to apply more complex (conditional) filtering to our data.</p>
 <p>For example, you may know that it is illegal to cycle on certain roads, such as motorways in the UK. Also, it may be a case that a cycleway is not mapped separately but, rather, has been tagged as part of another highway, such as tertiary road, using <code>bicycle=*</code> tag.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># To filter data based on these requirements we will:</span></span>
 <span></span>
 <span><span class="va">leeds_cycle</span> <span class="op">=</span> <span class="va">leeds_highways</span> <span class="op">|&gt;</span> </span>
@@ -355,11 +362,11 @@
 </h3>
 <p>It’s not easy to define a network and, once conceptualised, a lack of data might still lead to innacurate representation, thus limiting further analysis and application.</p>
 <p>Nevertheless, it’s still useful to have a network defined. For instance, <code>osmextract</code> does offer an opportunity to download pre-defined walking, cycling, or driving networks. Yet, if you choose to do this, do check the code used to create the network to ensure that you understand how the network has been defined and that it works for your needs.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># to download cycling network as defined by `osmextract`</span></span>
 <span><span class="va">osme_cycle</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get_network.html" class="external-link">oe_get_network</a></span><span class="op">(</span>place <span class="op">=</span> <span class="st">"Leeds"</span>,</span>
 <span>                                        mode <span class="op">=</span> <span class="st">"cycling"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot cycling network</span></span>
 <span><span class="va">osme_cycle</span><span class="op">[</span><span class="st">"geometry"</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -369,14 +376,14 @@
 <h2 id="visualisation">Visualisation<a class="anchor" aria-label="anchor" href="#visualisation"></a>
 </h2>
 <p>In this workshop we’ve been visualizing our data to improve our understanding. Up to this point we’ve been visualising data statically using base R <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function. However, there is a powerful <code>tmap</code> library that can be used to create static and interactive plots to communicate your findings.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># equivalent to the earlier plotted map</span></span>
 <span><span class="co"># Note: it might be useful to store your plot as a tmap object that can be called at any point.</span></span>
 <span></span>
 <span><span class="va">osme_cycle_plot</span> <span class="op">=</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">osme_cycle</span><span class="op">[</span><span class="st">"geometry"</span><span class="op">]</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>To plot an interactive map you have to specify this using <code>tmap_mode()</code> function.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<p>To plot an interactive map you have to specify this using <code><a href="https://rdrr.io/pkg/tmap/man/tmap_mode.html" class="external-link">tmap_mode()</a></code> function.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_mode.html" class="external-link">tmap_mode</a></span><span class="op">(</span><span class="st">"view"</span><span class="op">)</span> <span class="co"># now all the plots will be interactive</span></span>
 <span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">osme_cycle</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span><span class="st">"highway"</span><span class="op">)</span></span></code></pre></div>
@@ -384,7 +391,7 @@
 <ol style="list-style-type: decimal">
 <li>Plot an interactive map of a network you defined in the previous task.</li>
 <li>Create a <code>tmap</code> object of a static map. Tip: run <code>?tmap_mode()</code> to access function’s documentation.</li>
-<li>Bonus: Save your new tmap object. Tip: explore <code>tmap_save()</code> function.</li>
+<li>Bonus: Save your new tmap object. Tip: explore <code><a href="https://rdrr.io/pkg/tmap/man/tmap_save.html" class="external-link">tmap_save()</a></code> function.</li>
 </ol>
 </div>
 <div class="section level2">
@@ -392,26 +399,26 @@
 </h2>
 <p>In this section we are going to explore OpenInfra package and some of the functions it currently contains.</p>
 <p>One of the functions that the pakcage has is <code><a href="../reference/oi_recode_road_class.html">oi_recode_road_class()</a></code>. It recategorises OSM highways based on the Chan and Cooper’s (2019) work in which they propose that road class can be used to infer motor traffic volume. Road traffic volume is an important factor in discouraging cycling.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_high_rec</span> <span class="op">=</span> <span class="va">leeds_defined2</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">openinfra</span><span class="fu">::</span><span class="fu"><a href="../reference/oi_recode_road_class.html">oi_recode_road_class</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds_high_rec</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span><span class="st">"oi_road_desc"</span><span class="op">)</span></span></code></pre></div>
 <p>Another important consideration in the context of cycling is the maxspeed of motor vehicles as lower motor vehicle speed is associated with lower driver-cyclist road crashes.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_speed_rec</span> <span class="op">=</span> <span class="va">leeds_defined2</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">openinfra</span><span class="fu">::</span><span class="fu"><a href="../reference/oi_clean_maxspeed_uk.html">oi_clean_maxspeed_uk</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds_speed_rec</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span><span class="st">"oi_maxspeed"</span><span class="op">)</span></span></code></pre></div>
 <p>We know that in the UK it recommended to have some kind of segregation (eg. lines, tracks) if maxspeed of a motor vehicle is allowed to exceed 30mph. Therefore, we might want to find out if the existing cycling infrastructure complies with the requirements for roads that have maxspeed of 30mph and over.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Note: that this is simplification of an above example and does not take into consideration .</span></span>
 <span><span class="va">leeds_seg</span> <span class="op">=</span> <span class="va">leeds_speed_rec</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">oi_maxspeed</span> <span class="op">!=</span> <span class="st">"20 mph"</span> <span class="op">&amp;</span></span>
 <span>                                               <span class="va">cycleway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lane"</span>, <span class="st">"track"</span>, <span class="st">"left"</span><span class="op">)</span> <span class="op">|</span></span>
 <span>                                               <span class="va">highway</span> <span class="op">==</span> <span class="st">"cycleway"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds_seg</span><span class="op">[</span><span class="st">"geometry"</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Task</strong>: Modify the above example, apply to your data, and then plot it. What does it say about the existing cycling infrastructure?</p>
@@ -423,11 +430,11 @@
 <p>This section reuses the <a href="https://a-b-street.github.io/abstr/articles/pct_to_abstr.html" class="external-link">“Visualising cycling potential with A/B Street” vignette</a> to demonstrate how OSM cycling potential can be visualised with A/B Street.</p>
 <p>This is an advanced topic, thus do not worry if you cannot understand everything in this section – take your time and ask questions if you feel stuck!</p>
 <p>Also, ee will make use of an additional R packages: <a href="https://itsleeds.github.io/pct/articles/pct.html" class="external-link"><code>pct</code></a> and <a href="https://a-b-street.github.io/abstr/index.html" class="external-link"><code>abstr</code></a> which provides an interface to the A/B Street.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install additional packages</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pct"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"abstr"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># select a region </span></span>
 <span><span class="fu">pct</span><span class="fu">::</span><span class="va"><a href="https://itsleeds.github.io/pct/reference/pct_regions.html" class="external-link">pct_regions</a></span><span class="op">$</span><span class="va">region_name</span></span>
 <span><span class="va">region_name</span> <span class="op">=</span> <span class="st">"west-yorkshire"</span></span>
@@ -436,7 +443,7 @@
 <span><span class="va">lookup</span> <span class="op">=</span> <span class="fu">pct</span><span class="fu">::</span><span class="va"><a href="https://itsleeds.github.io/pct/reference/pct_regions_lookup.html" class="external-link">pct_regions_lookup</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">lookup</span><span class="op">$</span><span class="va">lad16nm</span><span class="op">[</span><span class="va">lookup</span><span class="op">$</span><span class="va">region_name</span> <span class="op">==</span> <span class="va">region_name</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">lad_name</span> <span class="op">=</span> <span class="st">"Leeds"</span> </span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get pct data</span></span>
 <span><span class="va">wy_zones</span> <span class="op">=</span> <span class="fu">pct</span><span class="fu">::</span><span class="fu"><a href="https://itsleeds.github.io/pct/reference/get_pct_zones.html" class="external-link">get_pct_zones</a></span><span class="op">(</span>region <span class="op">=</span> <span class="va">region_name</span>, geography <span class="op">=</span> <span class="st">"lsoa"</span><span class="op">)</span> <span class="co"># get zone data</span></span>
 <span><span class="co"># filter for Leeds</span></span>
@@ -445,7 +452,7 @@
 <span><span class="co"># get commute od data</span></span>
 <span><span class="va">leeds_commute_od</span> <span class="op">=</span> <span class="fu">pct</span><span class="fu">::</span><span class="fu"><a href="https://itsleeds.github.io/pct/reference/get_pct_lines.html" class="external-link">get_pct_lines</a></span><span class="op">(</span>region <span class="op">=</span> <span class="va">region_name</span>, geography <span class="op">=</span> <span class="st">"msoa"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">lad_name1</span> <span class="op">==</span> <span class="st">"Leeds"</span> <span class="op">&amp;</span> <span class="va">lad_name2</span> <span class="op">==</span> <span class="st">"Leeds"</span><span class="op">)</span> <span class="co"># filter for Leeds</span></span></code></pre></div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_commute_od</span> <span class="op">=</span> <span class="va">leeds_commute_od</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>cycle_base <span class="op">=</span> <span class="va">bicycle</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>walk_base <span class="op">=</span> <span class="va">foot</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -477,7 +484,7 @@
 <span>    <span class="va">cycle_godutch_additional</span>,</span>
 <span>    <span class="va">pcycle_godutch</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get OSM building data </span></span>
 <span><span class="va">osm_polygons</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_read.html" class="external-link">oe_read</a></span><span class="op">(</span></span>
 <span>  <span class="st">"https://download.geofabrik.de/europe/great-britain/england/west-yorkshire-latest.osm.pbf"</span>,</span>
@@ -532,7 +539,7 @@
 <span><span class="va">osm_buildings_valid</span> <span class="op">=</span> <span class="va">osm_buildings</span><span class="op">[</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/valid.html" class="external-link">st_is_valid</a></span><span class="op">(</span><span class="va">osm_buildings</span><span class="op">)</span>, <span class="op">]</span></span>
 <span></span>
 <span><span class="va">leeds_osm_buildings_all</span> <span class="op">=</span> <span class="va">osm_buildings_valid</span><span class="op">[</span><span class="va">leeds_zones</span>, <span class="op">]</span></span></code></pre></div>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># join OSM buildings data with leeds zones</span></span>
 <span><span class="va">leeds_osm_buildings_all_joined</span> <span class="op">=</span> <span class="va">leeds_osm_buildings_all</span>  <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">st_join</a></span><span class="op">(</span><span class="va">leeds_zones</span><span class="op">)</span></span>
@@ -542,7 +549,7 @@
 <span></span>
 <span><span class="va">leeds_osm_buildings_tbl</span> <span class="op">=</span> <span class="va">leeds_osm_buildings_all</span>  <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">osm_way_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">leeds_osm_buildings_sample</span><span class="op">$</span><span class="va">osm_way_id</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Now rename mode columns to match A/B Street documentation for scenario generation</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2021</span><span class="op">)</span> <span class="co"># for reproducible builds</span></span>
 <span><span class="va">go_dutch</span> <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -563,7 +570,7 @@
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Walk <span class="op">=</span> <span class="va">walk_base</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">geo_code1</span>, <span class="va">geo_code2</span>, <span class="va">All</span>, <span class="va">Bike</span>, <span class="va">Transit</span>, <span class="va">Drive</span>, <span class="va">Walk</span>, <span class="va">geometry</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Let's generate A/B Street scenario!</span></span>
 <span></span>
 <span><span class="va">output_sf</span> <span class="op">=</span> <span class="fu">abstr</span><span class="fu">::</span><span class="fu">ab_scenario</span><span class="op">(</span></span>
@@ -577,7 +584,7 @@
 <span>  output <span class="op">=</span> <span class="st">"sf"</span>,</span>
 <span>  modes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Walk"</span>, <span class="st">"Bike"</span>, <span class="st">"Drive"</span>, <span class="st">"Transit"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># generate a JSON file</span></span>
 <span><span class="va">output_json</span> <span class="op">=</span> <span class="fu">abstr</span><span class="fu">::</span><span class="fu">ab_json</span><span class="op">(</span><span class="va">output_sf</span>, time_fun <span class="op">=</span> <span class="va">ab_time_normal</span>, scenario_name <span class="op">=</span> <span class="st">"Go Dutch"</span><span class="op">)</span></span>
 <span><span class="co"># save the file locally</span></span>
@@ -588,6 +595,19 @@
 <h2 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
 </h2>
 <p>First, well done for completing the vignette!</p>
+</div>
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn1">
+<p>You can also load all packages at once with:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">pkgs</span>, <span class="st">"osmextract"</span>, <span class="st">"openinfra"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">pkgs</span>, <span class="va">library</span>, character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">pkgs</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<h2 id="section"></h2>
+<a href="#fnref1" class="footnote-back">↩︎</a>
+</li>
+</ol>
 </div>
   </div>
 
