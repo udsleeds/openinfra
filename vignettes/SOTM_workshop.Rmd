@@ -2,7 +2,9 @@
 title: "SOTM 2022 Workshop - OSM for sustainable transport planning: getting started"
 author: "James Hulse"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    number_sections: true
 vignette: >
   %\VignetteIndexEntry{SOTM2022 Workshop - OSM for sustainable transport planning: getting started}
   %\VignetteEngine{knitr::rmarkdown}
