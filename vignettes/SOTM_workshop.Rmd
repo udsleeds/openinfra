@@ -65,14 +65,15 @@ A number of packages will be used within this workshop, though namely [`osmextra
 Here are some of the additional packages we will make use of within this workshop:
 
 ```{r install_dep, eval = F}
-pkgs = c("tmap",
-         "sf",
-         "dplyr",
-         "remotes"
-         )
+pkgs = c(
+  "tmap",    # package for map making
+  "sf",      # geographic vector data classes and functions
+  "dplyr",   # data manipulation
+  "remotes"  # for installing packages from GitHub
+  )
 ```
 
-These can be installed with:
+These can be installed with the following command:
 
 ```{r install_okgs, message=FALSE, eval = F}
 install.packages(pkgs, repos = "http://cran.us.r-project.org")
