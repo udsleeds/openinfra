@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, eval = F}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -325,8 +325,31 @@ tmap::tm_shape(leeds_high_rec)+
   tmap::tm_lines("oi_road_desc")
 ```
 
+Another important consideration in the context of cycling is the maxspeed of motor vehicles as lower motor vehicle speed is associated with lower driver-cyclist road crashes.
 
+```{r, eval = F}
+leeds_speed_rec = leeds_defined2 |> 
+  openinfra::oi_clean_maxspeed_uk()
+```
 
+```{r, eval = F}
+tmap::tm_shape(leeds_speed_rec)+
+  tmap::tm_lines("oi_maxspeed")
+```
+
+We know that in the UK it recommended to have some kind of segregation (eg. lines, tracks) if maxspeed of a motor vehicle is allowed to exceed 30mph. Therefore, we might want to find out if the existing cycling infrastructure complies with the requirements for roads that have maxspeed of 30mph and over.
+
+```{r}
+# Note: that this is simplification of an above example.
+leeds_seg = leeds_speed_rec |> dplyr::filter(oi_maxspeed != "20 mph" &
+                                              cycleway %in% c("lane", "track", "left") |
+                                               highway == "cycleway")
+```
+
+```{r}
+tmap::tm_shape(leeds_seg["geometry"]) + 
+  tmap::tm_lines()
+```
 
 
 
