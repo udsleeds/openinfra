@@ -315,12 +315,12 @@ In this section we are going to explore OpenInfra package and some of the functi
 
 One of the functions that the pakcage has is `oi_recode_road_class()`. It recategorises OSM highways based on the Chan and Cooper's (2019) work in which they propose that road class can be used to infer motor traffic volume. Road traffic volume is an important factor in discouraging cycling. 
 
-```{r}
+```{r, eval = F}
 leeds_high_rec = leeds_defined2 |> 
   openinfra::oi_recode_road_class()
 ```
 
-```{r}
+```{r, eval = F}
 tmap::tm_shape(leeds_high_rec)+
   tmap::tm_lines("oi_road_desc")
 ```
