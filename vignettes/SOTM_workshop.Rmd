@@ -16,7 +16,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 The [workshop](https://2022.stateofthemap.org/sessions/JEXYHK/) is aimed at everyone interested in using OpenStreetMap (OSM) to support sustainable transport planning, in professional or advocacy contexts.
@@ -192,7 +192,7 @@ In order to get additional tags we need to specify this as an additional argumen
 ```{r, eval = F}
 # so let's define the extra tags we want
 
-et = c("kerb", "width", "sidewalk", "cycleway", "footway", "lit", "wheelchair", "maxspeed", "foot", "access", "service", "bicycle")
+et = c("kerb", "width", "sidewalk", "cycleway", "footway", "lit", "wheelchair", "maxspeed", "foot", "access", "service", "bicycle", "oneway")
 
 leeds = osmextract::oe_get(
   place = "Leeds", # Note capital 'L'!
@@ -204,7 +204,7 @@ leeds = osmextract::oe_get(
 )
 
 # have a look at the data
-leeds |> dplyr::gimpse()
+leeds |> dplyr::glimpse()
 
 # also it's useful to have a look at the downloaded data by plotting it 
 # it helps to 
@@ -311,7 +311,301 @@ leeds_cycle["geometry"] |> plot()
 
 **Task**:
 
-1.  Think what other tags and/or their values might be useful to define cycling network. Use them to further refine the network and plot it.
-2.  Do you think your new network accurately represents the existing network?
-3.  What do you think are potential challenges in defining a network? (eg. missing data)
-4.  Bonus: try to define a pedestrian network.
+1. Think what other tags and/or their values might be useful to define cycling network. Use them to further refine the network and plot it.
+2. Do you think your new network accurately represents the existing network?
+3. What do you think are potential challenges in defining a network? (eg. missing data)
+4. Bonus: try to define a pedestrian network.
+
+## Pre-defined networks
+
+It's not easy to define a network and, once conceptualised, a lack of data might still lead to innacurate representation, thus limiting further analysis and application.
+
+Nevertheless, it's still useful to have a network defined. For instance, `osmextract` does offer an opportunity to download pre-defined walking, cycling, or driving networks. Yet, if you choose to do this, do check the code used to create the network to ensure that you understand how the network has been defined and that it works for your needs.
+
+```{r, eval = F}
+# to download cycling network as defined by `osmextract`
+osme_cycle = osmextract::oe_get_network(place = "Leeds",
+                                        mode = "cycling")
+```
+
+```{r, eval = F}
+# plot cycling network
+osme_cycle["geometry"] |>
+  plot()
+```
+
+# Visualisation
+
+In this workshop we've been visualizing our data to improve our understanding. Up to this point we've been visualising data statically using base R `plot()` function. However, there is a powerful `tmap` library that can be used to create static and interactive plots to communicate your findings.
+
+```{r, eval = F}
+# equivalent to the earlier plotted map
+# Note: it might be useful to store your plot as a tmap object that can be called at any point.
+
+osme_cycle_plot = tmap::tm_shape(osme_cycle["geometry"])+
+  tmap::tm_lines()
+```
+
+To plot an interactive map you have to specify this using `tmap_mode()` function. 
+
+```{r, eval = F}
+tmap::tmap_mode("view") # now all the plots will be interactive
+tmap::tm_shape(osme_cycle)+
+  tmap::tm_lines("highway")
+```
+
+**Task**:
+
+1. Plot an interactive map of a network you defined in the previous task.
+2. Create a `tmap` object of a static map. Tip: run `?tmap_mode()` to access function's documentation.
+3. Bonus: Save your new tmap object. Tip: explore `tmap_save()` function.
+
+# OpenInfra
+
+In this section we are going to explore OpenInfra package and some of the functions it currently contains.
+
+One of the functions that the pakcage has is `oi_recode_road_class()`. It recategorises OSM highways based on the Chan and Cooper's (2019) work in which they propose that road class can be used to infer motor traffic volume. Road traffic volume is an important factor in discouraging cycling. 
+
+```{r, eval = F}
+leeds_high_rec = leeds_defined2 |> 
+  openinfra::oi_recode_road_class()
+```
+
+```{r, eval = F}
+tmap::tm_shape(leeds_high_rec)+
+  tmap::tm_lines("oi_road_desc")
+```
+
+Another important consideration in the context of cycling is the maxspeed of motor vehicles as lower motor vehicle speed is associated with lower driver-cyclist road crashes.
+
+```{r, eval = F}
+leeds_speed_rec = leeds_defined2 |> 
+  openinfra::oi_clean_maxspeed_uk()
+```
+
+```{r, eval = F}
+tmap::tm_shape(leeds_speed_rec)+
+  tmap::tm_lines("oi_maxspeed")
+```
+
+We know that in the UK it recommended to have some kind of segregation (eg. lines, tracks) if maxspeed of a motor vehicle is allowed to exceed 30mph. Therefore, we might want to find out if the existing cycling infrastructure complies with the requirements for roads that have maxspeed of 30mph and over.
+
+```{r, eval = F}
+# Note: that this is simplification of an above example and does not take into consideration .
+leeds_seg = leeds_speed_rec |> dplyr::filter(oi_maxspeed != "20 mph" &
+                                               cycleway %in% c("lane", "track", "left") |
+                                               highway == "cycleway")
+```
+
+```{r, eval = F}
+tmap::tm_shape(leeds_seg["geometry"]) + 
+  tmap::tm_lines()
+```
+
+**Task**: Modify the above example, apply to your data, and then plot it. What does it say about the existing cycling infrastructure?
+
+# A/B Street
+
+A/B Street is an open-source transport traffic and planning simulation software that supports the exploration of "small changes to roads affect cyclists, transit users, pedestrians, and drivers."
+
+This section reuses the ["Visualising cycling potential with A/B Street" vignette](https://a-b-street.github.io/abstr/articles/pct_to_abstr.html) to demonstrate how OSM cycling potential can be visualised with A/B Street.
+
+This is an advanced topic, thus do not worry if you cannot understand everything in this section -- take your time and ask questions if you feel stuck!
+
+Also, ee will make use of an additional R packages: [`pct`](https://itsleeds.github.io/pct/articles/pct.html) and [`abstr`](https://a-b-street.github.io/abstr/index.html) which provides an interface to the A/B Street.
+
+```{r, eval = F}
+# install additional packages
+install.packages("pct")
+install.packages("abstr")
+```
+
+
+```{r, eval = F}
+# select a region 
+pct::pct_regions$region_name
+region_name = "west-yorkshire"
+
+# select (if you want) a local authority in a given area; we will be focusing on Leeds
+lookup = pct::pct_regions_lookup
+table(lookup$lad16nm[lookup$region_name == region_name])
+lad_name = "Leeds" 
+```
+
+```{r, eval = F}
+# get pct data
+wy_zones = pct::get_pct_zones(region = region_name, geography = "lsoa") # get zone data
+# filter for Leeds
+leeds_zones = wy_zones |>  dplyr::filter(lad_name == "Leeds") |> 
+  dplyr::select(geo_code) 
+# get commute od data
+leeds_commute_od = pct::get_pct_lines(region = region_name, geography = "msoa") |> 
+  dplyr::filter(lad_name1 == "Leeds" & lad_name2 == "Leeds") # filter for Leeds
+```
+
+```{r, eval = F}
+leeds_commute_od = leeds_commute_od |> 
+  dplyr::mutate(cycle_base = bicycle) |> 
+  dplyr::mutate(walk_base = foot) |> 
+  dplyr::mutate(transit_base = bus + train_tube) |>  # bunch of renaming 
+  dplyr::mutate(drive_base = car_driver + car_passenger + motorbike + taxi_other) |> 
+  dplyr::mutate(all_base = all) |> 
+  dplyr::mutate(
+    # create new columns
+    pcycle_godutch_uptake = pct::uptake_pct_godutch_2020(distance = rf_dist_km, gradient = rf_avslope_perc),
+    cycle_godutch_additional = pcycle_godutch_uptake * drive_base,
+    cycle_godutch = cycle_base + cycle_godutch_additional,
+    pcycle_godutch = cycle_godutch / all_base,
+    drive__godutch = drive_base - cycle_godutch_additional,
+    dplyr::across(c(drive__godutch, cycle_godutch), round, 0),
+    all_go_dutch = drive__godutch + cycle_godutch + transit_base + walk_base
+  ) |> 
+  dplyr::select(
+    # select variables for the new df
+    geo_code1,
+    geo_code2,
+    cycle_base,
+    drive_base,
+    walk_base,
+    transit_base,
+    all_base,
+    all_go_dutch,
+    drive__godutch,
+    cycle_godutch,
+    cycle_godutch_additional,
+    pcycle_godutch
+  )
+```
+
+```{r, eval = F}
+# get OSM building data 
+osm_polygons = osmextract::oe_read(
+  "https://download.geofabrik.de/europe/great-britain/england/west-yorkshire-latest.osm.pbf",
+  # download osm buildings for region using geofabrik
+  layer = "multipolygons"
+)
+
+building_types = c(
+  "yes",
+  "house",
+  "detached",
+  "residential",
+  "apartments",
+  "commercial",
+  "retail",
+  "school",
+  "industrial",
+  "semidetached_house",
+  "church",
+  "hangar",
+  "mobile_home",
+  "warehouse",
+  "office",
+  "college",
+  "university",
+  "public",
+  "garages",
+  "cabin",
+  "hospital",
+  "dormitory",
+  "hotel",
+  "service",
+  "parking",
+  "manufactured",
+  "civic",
+  "farm",
+  "manufacturing",
+  "floating_home",
+  "government",
+  "bungalow",
+  "transportation",
+  "motel",
+  "manufacture",
+  "kindergarten",
+  "house_boat",
+  "sports_centre"
+)
+osm_buildings  = osm_polygons |> 
+  dplyr::filter(building %in% building_types) |> 
+  dplyr::select(osm_way_id, name, building)
+
+osm_buildings_valid = osm_buildings[sf::st_is_valid(osm_buildings), ]
+
+leeds_osm_buildings_all = osm_buildings_valid[leeds_zones, ]
+```
+
+```{r, eval = F}
+# join OSM buildings data with leeds zones
+leeds_osm_buildings_all_joined = leeds_osm_buildings_all  |> 
+  sf::st_join(leeds_zones)
+
+leeds_osm_buildings_sample = leeds_osm_buildings_all_joined  |> 
+  dplyr::filter(!is.na(osm_way_id))
+
+leeds_osm_buildings_tbl = leeds_osm_buildings_all  |> 
+  dplyr::filter(osm_way_id %in% leeds_osm_buildings_sample$osm_way_id)
+```
+
+```{r, eval = F}
+# Now rename mode columns to match A/B Street documentation for scenario generation
+set.seed(2021) # for reproducible builds
+go_dutch = TRUE
+if (go_dutch == TRUE) {
+  leeds_od = leeds_commute_od  |> 
+    dplyr::mutate(All = all_go_dutch)  |> 
+    dplyr::mutate(Bike = cycle_godutch)  |> 
+    dplyr::mutate(Transit = transit_base)  |> 
+    dplyr::mutate(Drive = drive_base) |> 
+    dplyr::mutate(Walk = walk_base) |> 
+    dplyr::select(geo_code1, geo_code2, All, Bike, Transit, Drive, Walk,geometry)
+} else {
+  leeds_od = leeds_commute_od  |> 
+    dplyr::mutate(All = all_base)  |> 
+    dplyr::mutate(Bike = cycle_base)  |> 
+    dplyr::mutate(Drive = drive_base)  |> 
+    dplyr::mutate(Transit = transit_base) |> 
+    dplyr::mutate(Walk = walk_base) |> 
+    dplyr::select(geo_code1, geo_code2, All, Bike, Transit, Drive, Walk, geometry)
+}
+```
+
+```{r, eval = F}
+# Let's generate A/B Street scenario!
+
+output_sf = abstr::ab_scenario(
+  od = leeds_od,
+  zones = leeds_zones,
+  zones_d = NULL,
+  origin_buildings = leeds_osm_buildings_tbl,
+  destination_buildings = leeds_osm_buildings_tbl,
+  pop_var = 3,
+  time_fun = ab_time_normal,
+  output = "sf",
+  modes = c("Walk", "Bike", "Drive", "Transit")
+)
+```
+
+```{r, eval = F}
+# generate a JSON file
+output_json = abstr::ab_json(output_sf, time_fun = ab_time_normal, scenario_name = "Go Dutch")
+# save the file locally
+abstr::ab_save(output_json, f = "dutch.json")
+```
+
+**Task**: you have created a simulation! Now your task it to visualise it using A/B Street. To do so, follow ["Importing scenario files into A/B Street"](https://a-b-street.github.io/abstr/articles/pct_to_abstr.html#importing-scenario-files-into-ab-street)
+
+# Next steps
+
+First, well done for completing the vignette!
+
+
+
+
+
+
+
+
+
+
+
+
