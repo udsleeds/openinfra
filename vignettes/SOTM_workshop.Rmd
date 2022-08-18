@@ -434,14 +434,6 @@ osm_polygons = osmextract::oe_read(
   layer = "multipolygons"
 )
 
-osm_polygons = osmextract::oe_get(place = region_name,
-                                  layer = "multipolygons",
-                                  boundary = box,
-                                  boundary_type = "clipsrc"
-  
-  
-)
-
 building_types = c(
   "yes",
   "house",
@@ -496,11 +488,11 @@ leeds_osm_buildings_all = osm_buildings_valid[leeds_zones, ]
 leeds_osm_buildings_all_joined = leeds_osm_buildings_all  |> 
   sf::st_join(leeds_zones)
 
-leeds_osm_buildings_sample = leeds_osm_buildings_all_joined %>%
-  filter(!is.na(osm_way_id))
+leeds_osm_buildings_sample = leeds_osm_buildings_all_joined  |> 
+  dplyr::filter(!is.na(osm_way_id))
 
-leeds_osm_buildings_tbl = leeds_osm_buildings_all %>%
-  filter(osm_way_id %in% leeds_osm_buildings_sample$osm_way_id)
+leeds_osm_buildings_tbl = leeds_osm_buildings_all  |> 
+  dplyr::filter(osm_way_id %in% leeds_osm_buildings_sample$osm_way_id)
 ```
 
 ```{r, eval = F}
@@ -508,7 +500,7 @@ leeds_osm_buildings_tbl = leeds_osm_buildings_all %>%
 set.seed(2021) # for reproducible builds
 go_dutch = TRUE
 if (go_dutch == TRUE) {
-  leeds_od = leeds_commute_od %>%
+  leeds_od = leeds_commute_od  |> 
     dplyr::mutate(All = all_go_dutch)  |> 
     dplyr::mutate(Bike = cycle_godutch)  |> 
     dplyr::mutate(Transit = transit_base)  |> 
@@ -516,7 +508,7 @@ if (go_dutch == TRUE) {
     dplyr::mutate(Walk = walk_base) |> 
     dplyr::select(geo_code1, geo_code2, All, Bike, Transit, Drive, Walk,geometry)
 } else {
-  exeter_od = exeter_commute_od  |> 
+  leeds_od = leeds_commute_od  |> 
     dplyr::mutate(All = all_base)  |> 
     dplyr::mutate(Bike = cycle_base)  |> 
     dplyr::mutate(Drive = drive_base)  |> 
