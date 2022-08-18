@@ -9,6 +9,10 @@ vignette: >
   %\VignetteIndexEntry{SOTM2022 Workshop - OSM for sustainable transport planning: getting started}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+# Editor options (for visual mode)
+editor_options:
+  markdown:
+    wrap: sentence
 ---
 
 ```{r setup, include=FALSE}
