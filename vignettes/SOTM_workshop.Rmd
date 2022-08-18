@@ -153,7 +153,7 @@ In order to get additional tags we need to specify this as an additional argumen
 ```{r, eval = F}
 # so let's define the extra tags we want
 
-et = c("kerb", "width", "sidewalk", "cycleway", "footway", "lit", "wheelchair", "maxspeed", "foot", "access", "service", "bicycle")
+et = c("kerb", "width", "sidewalk", "cycleway", "footway", "lit", "wheelchair", "maxspeed", "foot", "access", "service", "bicycle", "oneway")
 
 leeds = osmextract::oe_get(
   place = "Leeds", # Note capital 'L'!
@@ -165,7 +165,7 @@ leeds = osmextract::oe_get(
 )
 
 # have a look at the data
-leeds |> dplyr::gimpse()
+leeds |> dplyr::glimpse()
 
 # also it's useful to have a look at the downloaded data by plotting it 
 # it helps to 
@@ -291,7 +291,7 @@ In this workshop we've been visualizing our data to improve our understanding. U
 # equivalent to the earlier plotted map
 # Note: it might be useful to store your plot as a tmap object that can be called at any point.
 
-osme_cycle_plot = tmap::tm_shape(osme_cycle)+
+osme_cycle_plot = tmap::tm_shape(osme_cycle["geometry"])+
   tmap::tm_lines()
 ```
 
@@ -300,8 +300,7 @@ To plot an interactive map you have to specify this using `tmap_mode()` function
 ```{r, eval = F}
 tmap::tmap_mode("view") # now all the plots will be interactive
 tmap::tm_shape(osme_cycle)+
-  tmap::tm_lines()
-
+  tmap::tm_lines("highway")
 ```
 
 **Task**:
@@ -310,6 +309,21 @@ tmap::tm_shape(osme_cycle)+
 2. Create a `tmap` object of a static map. Tip: run `?tmap_mode()` to access function's documentation.
 3. Bonus: Save your new tmap object. Tip: explore `tmap_save()` function.
 
+# OpenInfra
+
+In this section we are going to explore OpenInfra package and some of the functions it currently contains.
+
+One of the functions that the pakcage has is `oi_recode_road_class()`. It recategorises OSM highways based on the Chan and Cooper's (2019) work in which they propose that road class can be used to infer motor traffic volume. Road traffic volume is an important factor in discouraging cycling. 
+
+```{r}
+leeds_high_rec = leeds_defined2 |> 
+  openinfra::oi_recode_road_class()
+```
+
+```{r}
+tmap::tm_shape(leeds_high_rec)+
+  tmap::tm_lines("oi_road_desc")
+```
 
 
 
