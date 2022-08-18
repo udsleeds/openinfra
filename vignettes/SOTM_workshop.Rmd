@@ -28,7 +28,7 @@ The workshop is practical and covers the following questions:
 4.  How to use OSM datasets to visualize transport systems in static and interactive maps?
 5.  How to add value to OSM data and communicate results using R, Python and A/B Street, and osm2streets?
 
-In order to take the most out of the workshop, we recommend installing R, RStudio, and the required packages before the session.
+To get the most out of the workshop, we recommend installing R, RStudio, and the required packages before the session.
 To do this, follow "Installation" section below.
 To make sure that everything is installed correctly, run the code in the "Installation Check" section below.
 Check [issue 98 on the udsleeds/openinfra repo on GitHub](https://github.com/udsleeds/openinfra/issues/98) (you will need an account to commnet) to what you should get after running that code.
