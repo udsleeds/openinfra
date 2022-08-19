@@ -239,7 +239,7 @@ This workshop covers:
 </tr>
 </tbody>
 </table>
-<p>To start off we will use a generic <code><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get()</a></code> function to download data for Leeds, UK. It might take a while. If you struggle downloading the data or it takes long to compute, then you might use the example dataset (e.g. <code>data</code>) for central Leeds. This is a much smaller dataset, thus making computing much quicker.</p>
+<p>To start off we will use a generic <code><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get()</a></code> function to download data for Leeds, UK. It might take a while. If you struggle downloading the data or it takes long to compute, then you might use the example dataset (e.g. <code><a href="../reference/sotm_data.html">openinfra::sotm_data</a></code>) for central Leeds. This is a much smaller dataset, thus making computing much quicker.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># A useful function is `oe_match_pattern()` to search for patterns in a provider's database. It is helpful in indicating a correct region name for a given provider.</span></span>
 <span><span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_match_pattern.html" class="external-link">oe_match_pattern</a></span><span class="op">(</span><span class="st">"leeds"</span><span class="op">)</span> </span>
