@@ -165,7 +165,7 @@ The `osmextract` package comprises the following core functions (also see a [vig
 |       `oe_get()`       | Performs all of the above in a single function                         |
 
 To start off we will use a generic `oe_get()` function to download data for Leeds, UK. It might take a while.
-If you struggle downloading the data or it takes long to compute, then you might use the example dataset (e.g. `data`) for central Leeds.
+If you struggle downloading the data or it takes long to compute, then you might use the example dataset (e.g. `openinfra::sotm_data`) for central Leeds.
 This is a much smaller dataset, thus making computing much quicker.
 
 ```{r, eval = F}
