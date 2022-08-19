@@ -187,7 +187,7 @@ leeds |> dplyr::glimpse()
 
 ## Tags
 
-In the previous example we've downloaded OSM data but it does not necessarily contain all the information we need.
+In the previous example we've downloaded OSM data but it does not necessarily contain all the information we need (unless you used the example `sotm_data`).
 Indeed, it only has 10 columns and only `highway` column is directly useful for active travel infrastructure planning!
 
 In order to get additional tags we need to specify this as an additional argument before running `oe_get()`.
