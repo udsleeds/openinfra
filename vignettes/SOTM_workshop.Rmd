@@ -35,7 +35,7 @@ The workshop is practical and covers the following questions:
 To get the most out of the workshop, we recommend installing R, RStudio, and the required packages before the session.
 To do this, follow "Installation" section below.
 To make sure that everything is installed correctly, run the code in the "Installation Check" section below.
-Check [issue 98 on the udsleeds/openinfra repo on GitHub](https://github.com/udsleeds/openinfra/issues/98) (you will need an account to comment) to what you should get after running that code.
+Check [issue 98 on the udsleeds/openinfra repo on GitHub](https://github.com/udsleeds/openinfra/issues/98) (you will need an account to comment) to see what you should get after running that code.
 Let us know if you have not :)
 
 This workshop assumes no any prior knowledge of R.
@@ -50,6 +50,7 @@ This workshop covers:
 * How to add value to OSM infrastructure data through the `openinfra` package 
 -->
 ```
+
 # Preparation
 
 ## Installing R and RStudio
@@ -127,6 +128,8 @@ tmap::tm_shape(test_data |> dplyr::select("highway")) +
   tmap::tm_lines(col = "highway", title.col = "OSM Highways") + 
   tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white")
 ```
+
+To check that your plots match, check [issue 98](https://github.com/udsleeds/openinfra/issues/98)
 
 ## Why these packages?
 
@@ -600,7 +603,18 @@ abstr::ab_save(output_json, f = "dutch.json")
 
 # Next steps
 
-First, well done for completing the vignette!
+First, well done for completing the vignette! 
+
+What you do next is totally up to you but if you're interested in learning more about R and geospatial analysis with R, you can check out these resources:
+
+- [R for Data Science](https://r4ds.had.co.nz/)
+- [Geocomputation with R](https://geocompr.robinlovelace.net/)
+- [Getting and using OSM data with the R package osmextract](https://udsleeds.github.io/openinfra/articles/getosm.html)
+
+Also, in this vignette we focused on cycling but you could try to define a walking network and explore what kind of infrastructure is present. Could you determine how accessible it is? Which tags could be good indicators for accessibility in your area? For an inspiration you could have a look at the [`oi_active_walk()`](https://udsleeds.github.io/openinfra/reference/oi_active_walk.html) and [`oi_inclusive_mobility`](https://udsleeds.github.io/openinfra/reference/oi_inclusive_mobility.html) functions.
+
+
+
 
 
 
