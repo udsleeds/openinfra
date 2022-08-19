@@ -102,7 +102,7 @@
       <h1 data-toc-skip>SOTM 2022 Workshop - OSM for sustainable transport planning: getting started</h1>
                         <h4 data-toc-skip class="author">James Hulse, Greta Timaite, Robin Lovelace</h4>
             
-            <h4 data-toc-skip class="date">2022-08-18</h4>
+            <h4 data-toc-skip class="date">2022-08-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/udsleeds/openinfra/blob/HEAD/vignettes/SOTM_workshop.Rmd" class="external-link"><code>vignettes/SOTM_workshop.Rmd</code></a></small>
       <div class="hidden name"><code>SOTM_workshop.Rmd</code></div>
@@ -120,7 +120,7 @@
 <li>How to use OSM datasets to visualize transport systems in static and interactive maps?</li>
 <li>How to add value to OSM data and communicate results using R, Python and A/B Street, and osm2streets?</li>
 </ol>
-<p>To get the most out of the workshop, we recommend installing R, RStudio, and the required packages before the session. To do this, follow “Installation” section below. To make sure that everything is installed correctly, run the code in the “Installation Check” section below. Check <a href="https://github.com/udsleeds/openinfra/issues/98" class="external-link">issue 98 on the udsleeds/openinfra repo on GitHub</a> (you will need an account to comment) to what you should get after running that code. Let us know if you have not :)</p>
+<p>To get the most out of the workshop, we recommend installing R, RStudio, and the required packages before the session. To do this, follow “Installation” section below. To make sure that everything is installed correctly, run the code in the “Installation Check” section below. Check <a href="https://github.com/udsleeds/openinfra/issues/98" class="external-link">issue 98 on the udsleeds/openinfra repo on GitHub</a> (you will need an account to comment) to see what you should get after running that code. Let us know if you have not :)</p>
 <p>This workshop assumes no any prior knowledge of R. We recommend taking a look at online resources like <a href="https://education.rstudio.com/learn/beginner/" class="external-link">RStudio’s Beginners guide</a> and its <a href="https://www.rstudio.com/resources/webinars/a-gentle-introduction-to-tidy-statistics-in-r/" class="external-link">Gentle Introduction to Tidy Statistics in R</a> if you’re new to the language, however.</p>
 <!--
 This workshop covers: 
@@ -185,6 +185,7 @@ This workshop covers:
 <span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">test_data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="st">"highway"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"highway"</span>, title.col <span class="op">=</span> <span class="st">"OSM Highways"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html" class="external-link">tm_layout</a></span><span class="op">(</span> legend.bg.alpha <span class="op">=</span> <span class="fl">0.5</span>, legend.bg.color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code></pre></div>
+<p>To check that your plots match, check <a href="https://github.com/udsleeds/openinfra/issues/98" class="external-link">issue 98</a></p>
 </div>
 <div class="section level3">
 <h3 id="why-these-packages">Why these packages?<a class="anchor" aria-label="anchor" href="#why-these-packages"></a>
@@ -599,6 +600,13 @@ This workshop covers:
 <h2 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
 </h2>
 <p>First, well done for completing the vignette!</p>
+<p>What you do next is totally up to you but if you’re interested in learning more about R and geospatial analysis with R, you can check out these resources:</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/" class="external-link">R for Data Science</a></li>
+<li><a href="https://geocompr.robinlovelace.net/" class="external-link">Geocomputation with R</a></li>
+<li><a href="https://udsleeds.github.io/openinfra/articles/getosm.html" class="external-link">Getting and using OSM data with the R package osmextract</a></li>
+</ul>
+<p>Also, in this vignette we focused on cycling but you could try to define a walking network and explore what kind of infrastructure is present. Could you determine how accessible it is? Which tags could be good indicators for accessibility in your area? For an inspiration you could have a look at the <a href="https://udsleeds.github.io/openinfra/reference/oi_active_walk.html" class="external-link"><code>oi_active_walk()</code></a> and <a href="https://udsleeds.github.io/openinfra/reference/oi_inclusive_mobility.html" class="external-link"><code>oi_inclusive_mobility</code></a> functions.</p>
 </div>
 <div class="footnotes">
 <hr>
