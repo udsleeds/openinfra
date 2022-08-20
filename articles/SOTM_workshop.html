@@ -282,41 +282,28 @@ This workshop covers:
 <div class="figure">
 <img src="https://user-images.githubusercontent.com/58815827/185735455-78849abc-ec98-4597-b079-b3874008ebf9.png" alt=""><p class="caption">plot output</p>
 </div>
+<p>Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested.</p>
+<pre><code><span><span class="co"># also it's useful to have a look at the downloaded data by plotting it </span></span>
+<span><span class="co"># it helps to </span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="st">"highway"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"highway"</span> <span class="op">)</span></span></code></pre>
+<p>The Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested. This is because BBBike only provides results for rectangular datasets. To refine this network further we can apply spatial subsetting.</p>
 </div>
+<div class="section level3">
+<h3 id="defining-your-own-area-optional">Defining your own area (optional)<a class="anchor" aria-label="anchor" href="#defining-your-own-area-optional"></a>
+</h3>
+<p>You can subset the downloaded datasets using <code>mapview</code> and <code>mapedit</code> packages (which you need to have installed if you run this section) to manually define an area, get its coordinates to perform spatial subsetting.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">map_leeds</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="fu">mapview</span><span class="op">(</span><span class="va">leeds</span><span class="op">)</span> <span class="co"># create an object containing interactive map  </span></span>
+<span><span class="va">map_leeds_edit</span> <span class="op">=</span> <span class="fu">mapedit</span><span class="fu">::</span><span class="fu">editMap</span><span class="op">(</span><span class="va">map_leeds</span><span class="op">)</span> <span class="co"># use `mapedit` package to draw a new polygon</span></span>
+<span><span class="va">box</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span><span class="va">map_leeds_edit</span><span class="op">$</span><span class="va">drawn</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span> <span class="co"># extract the coordinates of a new polygon</span></span>
+<span><span class="va">box</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="strangely-or-not-our-leeds-data-actually-represents-the-whole-of-west-yorkshire-and-not-only-leeds-as-we-requested-">Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested.<a class="anchor" aria-label="anchor" href="#strangely-or-not-our-leeds-data-actually-represents-the-whole-of-west-yorkshire-and-not-only-leeds-as-we-requested-"></a>
-</h2>
-</div>
-<div class="section level2">
-<h2 id="also-its-useful-to-have-a-look-at-the-downloaded-data-by-plotting-it">also it’s useful to have a look at the downloaded data by plotting it<a class="anchor" aria-label="anchor" href="#also-its-useful-to-have-a-look-at-the-downloaded-data-by-plotting-it"></a>
-</h2>
-</div>
-<div class="section level2">
-<h2 id="it-helps-to">it helps to<a class="anchor" aria-label="anchor" href="#it-helps-to"></a>
-</h2>
-<p>tm_shape(leeds |&gt; dplyr::filter(!is.na(“highway”)))+ tm_lines(col = “highway” )</p>
-<pre><code>
-The Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested.
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; a18f7dc2369131c1708e882fcf5c3b8a175a454a
-This is because BBBike only provides results for rectangular datasets. 
-To refine this network further we can apply spatial subsetting.
-
-## Defining your own area (optional)
-
-You can subset the downloaded datasets using `mapview` and `mapedit` packages (which you need to have installed if you run this section) to manually define an area, get its coordinates to perform spatial subsetting.
-
-
-```r
-map_leeds = mapview::mapview(leeds) # create an object containing interactive map  
-map_leeds_edit = mapedit::editMap(map_leeds) # use `mapedit` package to draw a new polygon
-box = sf::st_bbox(map_leeds_edit$drawn$geometry) # extract the coordinates of a new polygon
-box</code></pre>
 <div class="section level3">
 <h3 id="getting-data-with-osmdata-optional">Getting data with <code>osmdata</code> (optional)<a class="anchor" aria-label="anchor" href="#getting-data-with-osmdata-optional"></a>
 </h3>
 <p>Another package for getting OSM data is <code>osmdata</code>, which gets data from the Overpass API rather than from bulk .pbf files. <code>osmdata</code> is ideal for getting small amounts of data from OSM, e.g. the boundary representing Leeds, as shown in the code chunk below (you need to have the <code>osmdata</code> package installed to run this).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_boundary</span> <span class="op">=</span> <span class="fu">osmdata</span><span class="fu">::</span><span class="fu">getbb</span><span class="op">(</span><span class="st">"Leeds"</span>, format_out <span class="op">=</span> <span class="st">"sf_polygon"</span>, limit <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/qtm.html" class="external-link">qtm</a></span><span class="op">(</span><span class="va">leeds_boundary</span><span class="op">)</span></span></code></pre></div>
 <p>After running the lines of code above you should see the following which is the boundary for Leeds:</p>
@@ -328,7 +315,7 @@ box</code></pre>
 <h3 id="getting-a-boundary-with-a-buffer">Getting a boundary with a buffer<a class="anchor" aria-label="anchor" href="#getting-a-boundary-with-a-buffer"></a>
 </h3>
 <p>Let’s get everything within a 2.5 km radius of central Leeds, which has coordinates of -1.549, 53.801:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_centre_point</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html" class="external-link">st_point</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.549</span>, <span class="fl">53.801</span><span class="op">)</span><span class="op">)</span>, crs <span class="op">=</span> <span class="st">"EPSG:4326"</span><span class="op">)</span></span>
 <span><span class="va">leeds_buffer</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_buffer</a></span><span class="op">(</span><span class="va">leeds_centre_point</span>, dist <span class="op">=</span> <span class="fl">2500</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -337,7 +324,7 @@ box</code></pre>
 </h3>
 <p>Next we will subset Leeds city from <code>leeds</code> dataset. Spatial subsetting is one of the essential operations in geocomputation, so if you want to learn more about this, check out <a href="https://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting" class="external-link">“Spatial subsetting”</a> section in the Geocomputation with R (Lovelace et al., 2022).</p>
 <p>Now we have coordinates of an area we are interested in. From here on there are two ways for getting OSM data for that. One is to use <code><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get()</a></code> again and give it an additional <code>boundary</code> and <code>boundary_type</code> arguments.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_defined</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span></span>
 <span>  place <span class="op">=</span> <span class="st">"Leeds"</span>, </span>
 <span>  provider <span class="op">=</span> <span class="st">"bbbike"</span>, </span>
@@ -347,10 +334,10 @@ box</code></pre>
 <span>  boundary_type <span class="op">=</span> <span class="st">"clipsrc"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, we can subset the <code>leeds</code> data, so we do not have to download data again.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_defined2</span> <span class="op">=</span> <span class="va">leeds</span><span class="op">[</span><span class="va">leeds_buffer</span>, op <span class="op">=</span> <span class="va">st_within</span><span class="op">]</span> </span></code></pre></div>
 <p>You can plot this as follows:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds_defined2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="https://user-images.githubusercontent.com/58815827/185736112-b62d03dc-e827-4dda-a818-cc0f57ad32ca.png"></p>
@@ -372,12 +359,12 @@ box</code></pre>
 <h3 id="data-filtering">Data filtering<a class="anchor" aria-label="anchor" href="#data-filtering"></a>
 </h3>
 <p>Our data contains a lot of information, but not all of it might be needed. For example, active travel includes cycling, walking, and wheeling, but you may only be interested in cycling. In this case it would be reasonable to contain only data that is related to cycling. In other words, we may not need data on waterways or motorways as one cannot cycle on them.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># filter out all the rows that do not contain highways</span></span>
 <span><span class="va">leeds_highways</span> <span class="op">=</span> <span class="va">leeds_defined2</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">highway</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Our data now only contains highways in Leeds, but we want to create a new dataset containing highway=cycleway only and then visualise them by plotting on a map.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># filter and select</span></span>
 <span><span class="va">leeds_cycleway</span> <span class="op">=</span> <span class="va">leeds_highways</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">highway</span> <span class="op">==</span> <span class="st">"cycleway"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># filtering based on a key value</span></span>
@@ -387,7 +374,7 @@ box</code></pre>
 <span><span class="va">leeds_cycleway</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Of course, highway=cycleway does not represent an entire cycling infrastructure in the given region. For this we need to apply more complex (conditional) filtering to our data.</p>
 <p>For example, you may know that it is illegal to cycle on certain roads, such as motorways in the UK. Also, it may be a case that a cycleway is not mapped separately but, rather, has been tagged as part of another highway, such as tertiary road, using <code>bicycle=*</code> tag.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># To filter data based on these requirements we will:</span></span>
 <span></span>
 <span><span class="va">leeds_cycle</span> <span class="op">=</span> <span class="va">leeds_highways</span> <span class="op">|&gt;</span> </span>
@@ -409,11 +396,11 @@ box</code></pre>
 </h3>
 <p>It’s not easy to define a network and, once conceptualised, a lack of data might still lead to innacurate representation, thus limiting further analysis and application.</p>
 <p>Nevertheless, it’s still useful to have a network defined. For instance, <code>osmextract</code> does offer an opportunity to download pre-defined walking, cycling, or driving networks. Yet, if you choose to do this, do check the code used to create the network to ensure that you understand how the network has been defined and that it works for your needs.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># to download cycling network as defined by `osmextract`</span></span>
 <span><span class="va">osme_cycle</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get_network.html" class="external-link">oe_get_network</a></span><span class="op">(</span>place <span class="op">=</span> <span class="st">"Leeds"</span>,</span>
 <span>                                        mode <span class="op">=</span> <span class="st">"cycling"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot cycling network</span></span>
 <span><span class="va">osme_cycle</span><span class="op">[</span><span class="st">"geometry"</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -423,14 +410,14 @@ box</code></pre>
 <h2 id="visualisation">Visualisation<a class="anchor" aria-label="anchor" href="#visualisation"></a>
 </h2>
 <p>In this workshop we’ve been visualizing our data to improve our understanding. Up to this point we’ve been visualising data statically using base R <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function. However, there is a powerful <code>tmap</code> library that can be used to create static and interactive plots to communicate your findings.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># equivalent to the earlier plotted map</span></span>
 <span><span class="co"># Note: it might be useful to store your plot as a tmap object that can be called at any point.</span></span>
 <span></span>
 <span><span class="va">osme_cycle_plot</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">osme_cycle</span><span class="op">[</span><span class="st">"geometry"</span><span class="op">]</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>To plot an interactive map you have to specify this using <code><a href="https://rdrr.io/pkg/tmap/man/tmap_mode.html" class="external-link">tmap_mode()</a></code> function.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_mode.html" class="external-link">tmap_mode</a></span><span class="op">(</span><span class="st">"view"</span><span class="op">)</span> <span class="co"># now all the plots will be interactive</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">osme_cycle</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span><span class="st">"highway"</span><span class="op">)</span></span></code></pre></div>
@@ -445,30 +432,35 @@ box</code></pre>
 <h2 id="openinfra">OpenInfra<a class="anchor" aria-label="anchor" href="#openinfra"></a>
 </h2>
 <p>In this section we are going to explore OpenInfra package and some of the functions it currently contains.</p>
+<p>The openinfra package contains a suite of functions that recategorise OSM data to more meaningful variables for transport planners and policy makers. The aim of the openinfra package is to add value to OSM data so that this may be used as better evidence to support</p>
 <p>One of the functions that the pakcage has is <code><a href="../reference/oi_recode_road_class.html">oi_recode_road_class()</a></code>. It recategorises OSM highways based on the Chan and Cooper’s (2019) work in which they propose that road class can be used to infer motor traffic volume. Road traffic volume is an important factor in discouraging cycling.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_high_rec</span> <span class="op">=</span> <span class="va">leeds_defined2</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">openinfra</span><span class="fu">::</span><span class="fu"><a href="../reference/oi_recode_road_class.html">oi_recode_road_class</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds_high_rec</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span><span class="st">"oi_road_desc"</span><span class="op">)</span></span></code></pre></div>
 <p>Another important consideration in the context of cycling is the maxspeed of motor vehicles as lower motor vehicle speed is associated with lower driver-cyclist road crashes.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_speed_rec</span> <span class="op">=</span> <span class="va">leeds_defined2</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">openinfra</span><span class="fu">::</span><span class="fu"><a href="../reference/oi_clean_maxspeed_uk.html">oi_clean_maxspeed_uk</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds_speed_rec</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span><span class="st">"oi_maxspeed"</span><span class="op">)</span></span></code></pre></div>
 <p>We know that in the UK it recommended to have some kind of segregation (eg. lines, tracks) if maxspeed of a motor vehicle is allowed to exceed 30mph. Therefore, we might want to find out if the existing cycling infrastructure complies with the requirements for roads that have maxspeed of 30mph and over.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Note: that this is simplification of an above example and does not take into consideration .</span></span>
 <span><span class="va">leeds_seg</span> <span class="op">=</span> <span class="va">leeds_speed_rec</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">oi_maxspeed</span> <span class="op">!=</span> <span class="st">"20 mph"</span> <span class="op">&amp;</span></span>
 <span>                                               <span class="va">cycleway</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lane"</span>, <span class="st">"track"</span>, <span class="st">"left"</span><span class="op">)</span> <span class="op">|</span></span>
 <span>                                               <span class="va">highway</span> <span class="op">==</span> <span class="st">"cycleway"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds_seg</span><span class="op">[</span><span class="st">"geometry"</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Task</strong>: Modify the above example, apply to your data, and then plot it. What does it say about the existing cycling infrastructure?</p>
+<div class="section level3">
+<h3 id="transport-infrastructure-data-packs">Transport Infrastructure Data Packs<a class="anchor" aria-label="anchor" href="#transport-infrastructure-data-packs"></a>
+</h3>
+</div>
 </div>
 <div class="section level2">
 <h2 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
