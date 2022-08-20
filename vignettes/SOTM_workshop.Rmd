@@ -299,6 +299,15 @@ Alternatively, we can subset the `leeds` data, so we do not have to download dat
 leeds_defined2 = leeds[leeds_buffer, op = st_within] 
 ```
 
+You can plot this as follows:
+
+```{r map1, eval=FALSE}
+tm_shape(leeds_defined2) +
+  tm_lines(col = "black")
+```
+
+![](https://user-images.githubusercontent.com/58815827/185736112-b62d03dc-e827-4dda-a818-cc0f57ad32ca.png)
+
 **Task**:
 
 1.  Decide which tags you would like to download (be selective!)
