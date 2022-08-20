@@ -301,7 +301,7 @@ leeds_defined = osmextract::oe_get(
 Alternatively, we can subset the `leeds` data, so we do not have to download data again.
 
 ```{r, eval=FALSE}
-leeds_defined2 = leeds[leeds_buffer, op = "st_within"] 
+leeds_defined2 = leeds[leeds_buffer, op = st_within] 
 ```
 
 You can plot this as follows:
@@ -352,6 +352,8 @@ leeds_cycleway = leeds_highways |>
 leeds_cycleway |> plot()
 ```
 
+![](https://user-images.githubusercontent.com/58815827/185743244-6878f164-31b5-4b63-89af-ddbd3b352ba9.png)
+
 Of course, highway=cycleway does not represent an entire cycling infrastructure in the given region.
 For this we need to apply more complex (conditional) filtering to our data.
 
@@ -368,6 +370,8 @@ leeds_cycle = leeds_highways |>
 # let's plot our new cycle network
 leeds_cycle["geometry"] |> plot()
 ```
+
+![](https://user-images.githubusercontent.com/58815827/185743279-6fdad122-4b59-43ed-ae4b-c8231ddceff7.png)
 
 **Task**:
 
