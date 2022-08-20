@@ -232,11 +232,17 @@ After running the lines of code above you should see the following which is the 
 
 ![](https://user-images.githubusercontent.com/1825120/185735290-1cbc8b8c-b0f9-4647-b66d-87801ab0d315.png)
 
-Task: get the boundary for Florence using a similar technique.
+Task: get the boundary for Florence (Firenze in Italian) using the same technique.
 
 ```{r, echo=FALSE, eval=FALSE}
-
+firenze_boundary = osmdata::getbb("firenze", format_out = "sf_polygon", limit = 1)
+tmap_mode("view")
+tm_shape(firenze_boundary) +
+  tm_borders(lwd = 4) +
+  tm_basemap(server = leaflet::providers$OpenStreetMap)
 ```
+
+![](https://user-images.githubusercontent.com/1825120/185735464-141a7a5f-482e-42ac-a5db-85f415a9e68c.png)
 
 
 ## Spatial subsetting
