@@ -216,9 +216,8 @@ tmap::tm_shape(leeds |> dplyr::filter(!is.na("highway")))+
 ```
 
 Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested.
-This is because the `osmextract` data providers only provide OSM data at this granularity. 
+This is because BBBike only provides results for rectangular datasets. 
 To refine this network further we can apply spatial subsetting.
-
 
 ## Spatial subsetting
 
@@ -244,7 +243,7 @@ leeds_defined = osmextract::oe_get(
   provider = "bbbike", # Indicates the provider; default is geofabrik
   layer = "lines", # Default; returns linestring geometries (highways, waterways, aerialways) 
   force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
-  force_vectortranslate = TRUE, # Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)
+  force_vectortranslate = TRUE, # Forces the vectorization of a .pbf file to .gpkg file
   extra_tags = et, # non-default tags to download
   boundary = box,
   boundary_type = "clipsrc"
