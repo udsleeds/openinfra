@@ -57,7 +57,7 @@ In this workshop we'll use R, a statistical programming language widely used for
 If you are new to R, you should install base R and RStudio before the workshop begins.
 <br> There is a great [R and RStudio installation guide](https://rstudio-education.github.io/hopr/starting.html) (Section A.1) by Garrett Grolemund, within [Hands-On Programming with R](https://rstudio-education.github.io/hopr/) for Windows, Mac, and Linux devices.
 
-## Installing Packages
+## Installing packages
 
 A number of packages will be used within this workshop, though namely [`osmextract`](https://github.com/ropensci/osmextract) and [openinfra](https://github.com/udsleeds/openinfra).
 
@@ -106,7 +106,7 @@ library(osmextract)
 library(openinfra)
 ```
 
-## Installation Check
+## Installation check
 
 If installation has occurred correctly, running the code below locally (on your own device) should successfully create two plots: <br> One 5km radius circular buffer of the infrastructure network around Leeds (UK) City Centre, and <br> Secondly, a test plot just outside of the Institute of Transport Studies (ITS), at the University of Leeds.
 
@@ -128,6 +128,49 @@ tm_shape(test_data |> dplyr::select("highway")) +
 ```
 
 To check that your plots match, check [issue 98](https://github.com/udsleeds/openinfra/issues/98)
+
+## Installing packages and install check in one
+
+If you already have [base r](https://cran.rstudio.com/) & [Rstudio](https://www.rstudio.com/products/rstudio/download/#download) installed, you can perform the package installations and run the installation check in one by copy and pasting the code cell below into your rstudio and hitting `crtl + enter`:
+
+```{r install_and_install_check, eval = F}
+pkgs = c(
+  "tmap",    # package for map making
+  "sf",      # geographic vector data classes and functions
+  "dplyr",   # data manipulation
+  "remotes", # for installing packages from GitHub
+  "tidyverse",
+  "mapedit"
+)
+
+install.packages(pkgs, repos = "http://cran.us.r-project.org")
+
+remotes::install_github("ropensci/osmextract", force = T)
+remotes::install_github("udsleeds/openinfra")
+
+library(tmap)
+library(sf)
+library(dplyr)
+library(remotes)
+library(osmextract)
+library(openinfra)
+
+# Pre-installed package data for central Leeds
+data = openinfra::sotm_data
+# Test osmextract file (ITS Leeds = Institute of Transport Studies, University of Leeds)
+test_data = osmextract::oe_get(place = "ITS Leeds")
+
+# Plot central Leeds
+tm_shape(data |> dplyr::select("highway")) + 
+  tm_lines(col = "highway", title.col = "OSM Highways") + 
+  tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white")
+
+# Plot ITS
+tm_shape(test_data |> dplyr::select("highway")) + 
+  tm_lines(col = "highway", title.col = "OSM Highways") + 
+  tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white")
+```
+
 
 ## Why these packages?
 
@@ -173,7 +216,7 @@ osmextract::oe_match_pattern("Leeds")
 leeds = osmextract::oe_get(
   place = "Leeds", 
   provider = "bbbike", # Indicates the provider; default is geofabrik
-  layer = "lines" # Default; returns linestring geometries (highways etch) 
+  layer = "lines" # Default; returns linestring geometries (highways etc) 
 )
 
 # have a look at the data
