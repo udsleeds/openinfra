@@ -171,17 +171,25 @@ This is a much smaller dataset, thus making computing much quicker.
 osmextract::oe_match_pattern("leeds") 
 
 leeds = osmextract::oe_get(
+  place = "leeds", 
+  provider = "bbbike", # Indicates the provider; default is geofabrik
+  layer = "lines" # Default; returns linestring geometries (highways etch) 
+)
+
+# have a look at the data
+leeds |> dplyr::glimpse()
+```
+
+```{r download_detailed, eval=FALSE, echo=FALSE}
+leeds = osmextract::oe_get(
   place = "Leeds", # Note capital 'L'!
   provider = "bbbike", # Indicates the provider; default is geofabrik
   layer = "lines", # Default; returns linestring geometries (highways, waterways, aerialways) 
   force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
   force_vectortranslate = TRUE # Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)
 )
-
-# have a look at the data
-leeds |> dplyr::glimpse()
-
 ```
+
 
 ## Tags
 
@@ -218,10 +226,21 @@ Strangely (or not!) our Leeds data actually represents the whole of West Yorkshi
 This is because BBBike only provides results for rectangular datasets. 
 To refine this network further we can apply spatial subsetting.
 
-## Getting data with `osmdata`
+## Defining your own area (optional)
+
+You can subset the downloaded datasets using `mapview` and `mapedit` packages (which you need to have installed if you run this section) to manually define an area, get its coordinates to perform spatial subsetting.
+
+```{r, eval=FALSE}
+map_leeds = mapview::mapview(leeds) # create an object containing interactive map  
+map_leeds_edit = mapedit::editMap(map_leeds) # use `mapedit` package to draw a new polygon
+box = sf::st_bbox(map_leeds_edit$drawn$geometry) # extract the coordinates of a new polygon
+box
+```
+
+## Getting data with `osmdata` (optional)
 
 Another package for getting OSM data is `osmdata`, which gets data from the Overpass API rather than from bulk .pbf files.
-`osmdata` is ideal for getting small amounts of data from OSM, e.g. the boundary representing Leeds, as shown in the code chunk below.
+`osmdata` is ideal for getting small amounts of data from OSM, e.g. the boundary representing Leeds, as shown in the code chunk below (you need to have the `osmdata` package installed to run this).
 
 ```{r osmdata_boundary, eval=FALSE}
 leeds_boundary = osmdata::getbb("Leeds", format_out = "sf_polygon", limit = 1)
@@ -244,20 +263,15 @@ tm_shape(firenze_boundary) +
 
 ![](https://user-images.githubusercontent.com/1825120/185735464-141a7a5f-482e-42ac-a5db-85f415a9e68c.png)
 
+## Getting a boundary with a buffer
+
+Let's get everything within a 
+
 
 ## Spatial subsetting
 
 Next we will subset Leeds city from `leeds` dataset.
 Spatial subsetting is one of the essential operations in geocomputation, so if you want to learn more about this, check out ["Spatial subsetting"](https://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting) section in the Geocomputation with R (Lovelace et al., 2022).
-
-We will use a combination of `mapview` and `mapedit` packages to manually define an area, get its coordinates to perform spatial subsetting.
-
-```{r, eval=FALSE}
-map_leeds = mapview::mapview(leeds) # create an object containing interactive map  
-map_leeds_edit = mapedit::editMap(map_leeds) # use `mapedit` package to draw a new polygon
-box = sf::st_bbox(map_leeds_edit$drawn$geometry) # extract the coordinates of a new polygon
-box
-```
 
 Now we have coordinates of an area we are interested in.
 From here on there are two ways for getting OSM data for that.
@@ -271,7 +285,7 @@ leeds_defined = osmextract::oe_get(
   force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
   force_vectortranslate = TRUE, # Forces the vectorization of a .pbf file to .gpkg file
   extra_tags = et, # non-default tags to download
-  boundary = box,
+  boundary = leeds_boundary,
   boundary_type = "clipsrc"
 )
 ```
