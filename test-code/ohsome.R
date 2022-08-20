@@ -9,21 +9,22 @@ q = ohsome_elements_count(leeds_boundary, filter = "highway=cycleway")
 ohsome_post(query = q)
 library(ggplot2)
 
-cyclway_count = q |> 
+cycleway_count = q |> 
   set_time("2009/2022/P1M") |>
   ohsome_post()
 
-cyclway_count |>
+cycleway_count |>
   ggplot(aes(x = timestamp, y = value)) +
   geom_line()
 
 
-cyclway_length = leeds_boundary |> 
+cycleway_length = leeds_boundary |> 
   ohsome_elements_length(filter = "highway=cycleway") |> 
   set_time("2009/2022/P1M") |>
   ohsome_post()
+tail(cycl)
 
-cyclway_length |>
+cycleway_length |>
   ggplot(aes(x = timestamp, y = value / 1000)) +
   geom_line() +
   ylab(label = "Cycleway length (km)")
