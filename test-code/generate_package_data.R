@@ -49,6 +49,9 @@ if (exists("place_match")) {
 print(c(place_name,"provider is:",  provider))
 
 
+
+# State Of The Map Example Data -------------------------------------------
+
 # Circular Buffer ---------------------------------------------------------
 # Setting up the circular buffer around specified (long, lat) coord
 crs = crs
