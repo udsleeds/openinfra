@@ -226,7 +226,8 @@ tmap::tm_shape(leeds |> dplyr::filter(!is.na("highway")))+
 ![plot output](https://user-images.githubusercontent.com/58815827/185735455-78849abc-ec98-4597-b079-b3874008ebf9.png)
 
 Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested.
-=======
+
+```
 # also it's useful to have a look at the downloaded data by plotting it 
 # it helps to 
 tm_shape(leeds |> dplyr::filter(!is.na("highway")))+
@@ -234,7 +235,6 @@ tm_shape(leeds |> dplyr::filter(!is.na("highway")))+
 ```
 
 The Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested.
->>>>>>> a18f7dc2369131c1708e882fcf5c3b8a175a454a
 This is because BBBike only provides results for rectangular datasets. 
 To refine this network further we can apply spatial subsetting.
 
@@ -430,6 +430,9 @@ tm_shape(osme_cycle)+
 
 In this section we are going to explore OpenInfra package and some of the functions it currently contains.
 
+The openinfra package contains a suite of functions that recategorise OSM data to more meaningful variables for transport planners and policy makers. 
+The aim of the openinfra package is to add value to OSM data so that this may be used as better evidence to support 
+
 One of the functions that the pakcage has is `oi_recode_road_class()`. It recategorises OSM highways based on the Chan and Cooper's (2019) work in which they propose that road class can be used to infer motor traffic volume. Road traffic volume is an important factor in discouraging cycling. 
 
 ```{r, eval=FALSE}
@@ -469,6 +472,9 @@ tm_shape(leeds_seg["geometry"]) +
 ```
 
 **Task**: Modify the above example, apply to your data, and then plot it. What does it say about the existing cycling infrastructure?
+
+## Transport Infrastructure Data Packs
+
 
 # Next steps
 
