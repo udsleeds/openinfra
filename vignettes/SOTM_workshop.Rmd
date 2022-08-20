@@ -216,7 +216,9 @@ tmap::tm_shape(leeds |> dplyr::filter(!is.na("highway")))+
 ```
 
 Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested.
-Such bugs happen, that's why it's important to inspect data before proceeding further.
+This is because the `osmextract` data providers only provide OSM data at this granularity. 
+To refine this network further we can apply spatial subsetting.
+
 
 ## Spatial subsetting
 
