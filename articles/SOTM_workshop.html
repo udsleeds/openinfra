@@ -258,27 +258,25 @@ This workshop covers:
 </h3>
 <p>In the previous example we’ve downloaded OSM data but it does not necessarily contain all the information we need (unless you used the example <code>sotm_data</code>). Indeed, it only has 10 columns and only <code>highway</code> column is directly useful for active travel infrastructure planning!</p>
 <p>To get additional tags we need to specify this as an additional argument before running <code><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get()</a></code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># so let's define the extra tags we want</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>et <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"kerb"</span>, <span class="st">"width"</span>, <span class="st">"sidewalk"</span>, <span class="st">"cycleway"</span>, <span class="st">"footway"</span>, <span class="st">"lit"</span>, <span class="st">"wheelchair"</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>       <span class="st">"maxspeed"</span>, <span class="st">"foot"</span>, <span class="st">"access"</span>, <span class="st">"service"</span>, <span class="st">"bicycle"</span>, <span class="st">"oneway"</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>leeds <span class="ot">=</span> osmextract<span class="sc">::</span><span class="fu">oe_get</span>(</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">place =</span> <span class="st">"Leeds"</span>, </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">provider =</span> <span class="st">"bbbike"</span>,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">layer =</span> <span class="st">"lines"</span>,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">force_download =</span> <span class="cn">TRUE</span>, <span class="co"># Updates the previously downloaded .osm.pbf file (default is FALSE)</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">force_vectortranslate =</span> <span class="cn">TRUE</span>, <span class="co"># Forces translation to .gpkg</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">extra_tags =</span> et <span class="co"># non-default tags to download</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># have a look at the data</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>leeds <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span><span class="er">&lt;&lt;&lt;&lt;&lt;&lt;</span> HEAD</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co"># also it's useful to have a look at the downloaded data by plotting it</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(leeds <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">"highway"</span>)))<span class="sc">+</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_lines</span>(<span class="at">col =</span> <span class="st">"highway"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># so let's define the extra tags we want</span></span>
+<span></span>
+<span><span class="va">et</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kerb"</span>, <span class="st">"width"</span>, <span class="st">"sidewalk"</span>, <span class="st">"cycleway"</span>, <span class="st">"footway"</span>, <span class="st">"lit"</span>, <span class="st">"wheelchair"</span>,</span>
+<span>       <span class="st">"maxspeed"</span>, <span class="st">"foot"</span>, <span class="st">"access"</span>, <span class="st">"service"</span>, <span class="st">"bicycle"</span>, <span class="st">"oneway"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">leeds</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span></span>
+<span>  place <span class="op">=</span> <span class="st">"Leeds"</span>, </span>
+<span>  provider <span class="op">=</span> <span class="st">"bbbike"</span>,</span>
+<span>  layer <span class="op">=</span> <span class="st">"lines"</span>,</span>
+<span>  extra_tags <span class="op">=</span> <span class="va">et</span> <span class="co"># non-default tags to download</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># have a look at the data</span></span>
+<span><span class="va">leeds</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># also it's useful to have a look at the downloaded data by plotting it</span></span>
+<span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="st">"highway"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"highway"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="https://user-images.githubusercontent.com/58815827/185735455-78849abc-ec98-4597-b079-b3874008ebf9.png" alt=""><p class="caption">plot output</p>
 </div>
@@ -432,8 +430,8 @@ This workshop covers:
 <h2 id="openinfra">OpenInfra<a class="anchor" aria-label="anchor" href="#openinfra"></a>
 </h2>
 <p>In this section we are going to explore OpenInfra package and some of the functions it currently contains.</p>
-<p>The openinfra package contains a suite of functions that recategorise OSM data to more meaningful variables for transport planners and policy makers. The aim of the openinfra package is to add value to OSM data so that this may be used as better evidence to support</p>
-<p>One of the functions that the pakcage has is <code><a href="../reference/oi_recode_road_class.html">oi_recode_road_class()</a></code>. It recategorises OSM highways based on the Chan and Cooper’s (2019) work in which they propose that road class can be used to infer motor traffic volume. Road traffic volume is an important factor in discouraging cycling.</p>
+<p>The <code>openinfra</code> package contains a suite of functions that recategorise OSM data to more meaningful variables for transport planners and policy makers. The aim of the <code>openinfra</code> package is to add value to OSM data so that this may act as better evidence to support transport planners and policy makers.</p>
+<p>One of the functions that the package has is <code><a href="../reference/oi_recode_road_class.html">oi_recode_road_class()</a></code>. It recategorises OSM highways based on the Chan and Cooper’s (2019) work in which they propose that road class can be used to infer motor traffic volume. Road traffic volume is an important factor in discouraging cycling.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_high_rec</span> <span class="op">=</span> <span class="va">leeds_defined2</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">openinfra</span><span class="fu">::</span><span class="fu"><a href="../reference/oi_recode_road_class.html">oi_recode_road_class</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -456,10 +454,55 @@ This workshop covers:
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds_seg</span><span class="op">[</span><span class="st">"geometry"</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Here we have shown outputs from two of the <code>openinfra</code> functions, <code>oi_clean_maxspeed_uk</code> and <code>oi_recode_road_class</code>. The other package functions and their respective documentation can be found <a href="https://udsleeds.github.io/openinfra/reference/index.html" class="external-link">here</a></p>
 <p><strong>Task</strong>: Modify the above example, apply to your data, and then plot it. What does it say about the existing cycling infrastructure?</p>
 <div class="section level3">
 <h3 id="transport-infrastructure-data-packs">Transport Infrastructure Data Packs<a class="anchor" aria-label="anchor" href="#transport-infrastructure-data-packs"></a>
 </h3>
+<p>The transport infrastructure data packs are created from recategorised OSM data. The OSM data has been recategorised by the OpenInfra functions.</p>
+<p>Following this workshop, you should be able to create such infrastructure data packs for your desired area.</p>
+<p>Here we will visualise the outputs from several <code>openinfra</code> fucntions.</p>
+<div class="section level4">
+<h4 id="oi_recode_road_class">oi_recode_road_class()<a class="anchor" aria-label="anchor" href="#oi_recode_road_class"></a>
+</h4>
+<p>This function recategorises OSM infrastructure data from the default <code>highway=*</code> values to one of the official UK road classifications. <br> With such information, one may wish to <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6928227/" class="external-link">infer traffic flow volumes</a> as a function of road classification.</p>
+<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/road_desc_map.html" width="100%" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="section level4">
+<h4 id="oi_active_cycle">oi_active_cycle()<a class="anchor" aria-label="anchor" href="#oi_active_cycle"></a>
+</h4>
+<p>The <code>oi_active_cycle</code> and <code>oi_active_walk</code> functions recategorises OSM infrastructure data based on whether or not the feature in question forms part of a usable transport network for cyclists or pedestrians.</p>
+<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_map.html" width="100%" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="section level4">
+<h4 id="oi_active_walk">oi_active_walk()<a class="anchor" aria-label="anchor" href="#oi_active_walk"></a>
+</h4>
+<p>The <code>oi_active_cycle</code> and <code>oi_active_walk</code> functions recategorises OSM infrastructure data based on whether or not the feature in question forms part of a usable transport network for cyclists or pedestrians.</p>
+<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/walk_map.html" width="100%" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="section level4">
+<h4 id="oi_clean_maxspeed_uk">oi_clean_maxspeed_uk()<a class="anchor" aria-label="anchor" href="#oi_clean_maxspeed_uk"></a>
+</h4>
+<p>This function recategorises default OSM <code>maxspeed</code> values to be compliant with the current official <a href="https://www.gov.uk/speed-limits" class="external-link">UK speed limits</a>. <br></p>
+<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/maxspeed_map.html" width="100%" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="section level4">
+<h4 id="oi_is_lit">oi_is_lit()<a class="anchor" aria-label="anchor" href="#oi_is_lit"></a>
+</h4>
+<p>This functions recategorises default OSM <code>lit</code> values, values that indicate the type and presence of lighting, to either:</p>
+<ul>
+<li>“yes”,</li>
+<li>“no”,</li>
+<li>or “maybe”</li>
+</ul>
+<p>Note that “maybe” does not indicate the lack of lighting, instead, this indicates that there is a lack of data to distinguish between “yes” or “no”. <br> Clearly, in built up urban areas it is likely that there will be lighting. However, in more rural areas and the countryside this is more likely to be “no”. <br> Such information may be valuable if you would like to establish a safe active travel network that is suitable to use after dark.</p>
+<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/is_lit_map.html" width="100%" height="650px" data-external="1">
+</iframe>
+</div>
 </div>
 </div>
 <div class="section level2">
