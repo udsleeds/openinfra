@@ -78,9 +78,11 @@ These can be installed with the following command:
 install.packages(pkgs, repos = "http://cran.us.r-project.org")
 ```
 
-You can install the development versions of the `osmextract` and `openinfra` packages as follows:
+You can install additional packages, including the development versions of the `osmextract` and `openinfra` packages as follows:
 
 ```{r install_dev, message=FALSE, eval=FALSE}
+install.packages("tidyverse")
+install.packages("mapedit")
 # Enter the lines below into your console to install!
 remotes::install_github("ropensci/osmextract", force = T)
 remotes::install_github("udsleeds/openinfra")
@@ -147,7 +149,27 @@ These provide OSM datasets in the pbf file format .pbf, which is optimized for s
 The [`sf` package](https://r-spatial.github.io/sf/) supports the representation of spatial vector data as simple features which, consequentially, makes spatial analysis much more accessible.
 This package is a backbone of geographic vector data in R and the code in this workshop :)
 
-# Getting data
+# OpenInfra data packs
+
+A key output of the project is open access active travel data packs.
+These will be released in the Releases section of the udsleeds/openinfra repo: https://github.com/udsleeds/openinfra/releases
+
+Let's dive straight in and load some data:
+
+```{r loadgeojson}
+u = "https://github.com/udsleeds/openinfra/releases/download/v0.2/datapack_leeds.geojson"
+openinfra_data = sf::read_sf(u)
+```
+
+Task: plot and do basic analysis of this dataset.
+
+```{r load, eval=FALSE}
+u = "https://github.com/udsleeds/openinfra/releases/download/0.3/datapack_leeds.zip"
+f = basename(u)
+download.file(url = u, destfile = f)
+```
+
+# Importing OSM data
 
 In this section we will use `osmextract` to download OSM data that will be used throughout this workshop.
 
