@@ -242,10 +242,10 @@ This workshop covers:
 <p>To start off we will use a generic <code><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get()</a></code> function to download data for Leeds, UK. It might take a while. If you struggle downloading the data or it takes long to compute, then you might use the example dataset (e.g. <code><a href="../reference/sotm_data.html">openinfra::sotm_data</a></code>) for central Leeds. This is a much smaller dataset, thus making computing much quicker.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># A useful function is `oe_match_pattern()` to search for patterns in a provider's database. It is helpful in indicating a correct region name for a given provider.</span></span>
-<span><span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_match_pattern.html" class="external-link">oe_match_pattern</a></span><span class="op">(</span><span class="st">"leeds"</span><span class="op">)</span> </span>
+<span><span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_match_pattern.html" class="external-link">oe_match_pattern</a></span><span class="op">(</span><span class="st">"Leeds"</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="va">leeds</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span></span>
-<span>  place <span class="op">=</span> <span class="st">"leeds"</span>, </span>
+<span>  place <span class="op">=</span> <span class="st">"Leeds"</span>, </span>
 <span>  provider <span class="op">=</span> <span class="st">"bbbike"</span>, <span class="co"># Indicates the provider; default is geofabrik</span></span>
 <span>  layer <span class="op">=</span> <span class="st">"lines"</span> <span class="co"># Default; returns linestring geometries (highways etch) </span></span>
 <span><span class="op">)</span></span>
@@ -280,7 +280,6 @@ This workshop covers:
 <p><img src="https://user-images.githubusercontent.com/58815827/185735455-78849abc-ec98-4597-b079-b3874008ebf9.png"></p>
 <p>Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested.</p>
 <pre><code><span><span class="co"># also it's useful to have a look at the downloaded data by plotting it </span></span>
-<span><span class="co"># it helps to </span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="st">"highway"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"highway"</span> <span class="op">)</span></span></code></pre>
 <p>The Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested. This is because BBBike only provides results for rectangular datasets. To refine this network further we can apply spatial subsetting.</p>
@@ -331,7 +330,7 @@ This workshop covers:
 <span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, we can subset the <code>leeds</code> data, so we do not have to download data again.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">leeds_defined2</span> <span class="op">=</span> <span class="va">leeds</span><span class="op">[</span><span class="va">leeds_buffer</span>, op <span class="op">=</span> <span class="va">st_within</span><span class="op">]</span> </span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">leeds_defined2</span> <span class="op">=</span> <span class="va">leeds</span><span class="op">[</span><span class="va">leeds_buffer</span>, op <span class="op">=</span> <span class="st">"st_within"</span><span class="op">]</span> </span></code></pre></div>
 <p>You can plot this as follows:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds_defined2</span><span class="op">)</span> <span class="op">+</span></span>
@@ -468,18 +467,11 @@ This workshop covers:
 </iframe>
 </div>
 <div class="section level4">
-<h4 id="oi_active_cycle">oi_active_cycle()<a class="anchor" aria-label="anchor" href="#oi_active_cycle"></a>
+<h4 id="oi_active_cycle-and-oi_active_walk">oi_active_cycle() and oi_active_walk()<a class="anchor" aria-label="anchor" href="#oi_active_cycle-and-oi_active_walk"></a>
 </h4>
-<p>The <code>oi_active_cycle</code> and <code>oi_active_walk</code> functions recategorises OSM infrastructure data based on whether or not the feature in question forms part of a usable transport network for cyclists or pedestrians.</p>
-<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_map.html" width="100%" height="650px" data-external="1">
-</iframe>
-</div>
-<div class="section level4">
-<h4 id="oi_active_walk">oi_active_walk()<a class="anchor" aria-label="anchor" href="#oi_active_walk"></a>
-</h4>
-<p>The <code>oi_active_cycle</code> and <code>oi_active_walk</code> functions recategorises OSM infrastructure data based on whether or not the feature in question forms part of a usable transport network for cyclists or pedestrians.</p>
-<iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/walk_map.html" width="100%" height="650px" data-external="1">
-</iframe>
+<p>The <code>oi_active_cycle</code> and <code>oi_active_walk</code> functions recategorise OSM infrastructure data based on whether or not the feature in question forms part of a usable transport network for cyclists or pedestrians.</p>
+<p><strong>oi_active_cycle</strong> <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_map.html" width="100%" height="650px" data-external="1"></iframe></p>
+<p><strong>oi_active_walk</strong> <iframe src="https://udsleeds.github.io/openinfraresults/tmap/assets/walk_map.html" width="100%" height="650px" data-external="1"></iframe></p>
 </div>
 <div class="section level4">
 <h4 id="oi_clean_maxspeed_uk">oi_clean_maxspeed_uk()<a class="anchor" aria-label="anchor" href="#oi_clean_maxspeed_uk"></a>
