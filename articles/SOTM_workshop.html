@@ -245,11 +245,9 @@ This workshop covers:
 <span><span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_match_pattern.html" class="external-link">oe_match_pattern</a></span><span class="op">(</span><span class="st">"leeds"</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="va">leeds</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span></span>
-<span>  place <span class="op">=</span> <span class="st">"Leeds"</span>, <span class="co"># Note capital 'L'!</span></span>
+<span>  place <span class="op">=</span> <span class="st">"leeds"</span>, </span>
 <span>  provider <span class="op">=</span> <span class="st">"bbbike"</span>, <span class="co"># Indicates the provider; default is geofabrik</span></span>
-<span>  layer <span class="op">=</span> <span class="st">"lines"</span>, <span class="co"># Default; returns linestring geometries (highways, waterways, aerialways) </span></span>
-<span>  force_download <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Updates the previously downloaded .osm.pbf file (default is FALSE)</span></span>
-<span>  force_vectortranslate <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)</span></span>
+<span>  layer <span class="op">=</span> <span class="st">"lines"</span> <span class="co"># Default; returns linestring geometries (highways etch) </span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># have a look at the data</span></span>
@@ -283,10 +281,20 @@ This workshop covers:
 <p>Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested. This is because BBBike only provides results for rectangular datasets. To refine this network further we can apply spatial subsetting.</p>
 </div>
 <div class="section level3">
-<h3 id="getting-data-with-osmdata">Getting data with <code>osmdata</code><a class="anchor" aria-label="anchor" href="#getting-data-with-osmdata"></a>
+<h3 id="defining-your-own-area-optional">Defining your own area (optional)<a class="anchor" aria-label="anchor" href="#defining-your-own-area-optional"></a>
 </h3>
-<p>Another package for getting OSM data is <code>osmdata</code>, which gets data from the Overpass API rather than from bulk .pbf files. <code>osmdata</code> is ideal for getting small amounts of data from OSM, e.g. the boundary representing Leeds, as shown in the code chunk below.</p>
+<p>You can subset the downloaded datasets using <code>mapview</code> and <code>mapedit</code> packages (which you need to have installed if you run this section) to manually define an area, get its coordinates to perform spatial subsetting.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">map_leeds</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="fu">mapview</span><span class="op">(</span><span class="va">leeds</span><span class="op">)</span> <span class="co"># create an object containing interactive map  </span></span>
+<span><span class="va">map_leeds_edit</span> <span class="op">=</span> <span class="fu">mapedit</span><span class="fu">::</span><span class="fu">editMap</span><span class="op">(</span><span class="va">map_leeds</span><span class="op">)</span> <span class="co"># use `mapedit` package to draw a new polygon</span></span>
+<span><span class="va">box</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span><span class="va">map_leeds_edit</span><span class="op">$</span><span class="va">drawn</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span> <span class="co"># extract the coordinates of a new polygon</span></span>
+<span><span class="va">box</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="getting-data-with-osmdata-optional">Getting data with <code>osmdata</code> (optional)<a class="anchor" aria-label="anchor" href="#getting-data-with-osmdata-optional"></a>
+</h3>
+<p>Another package for getting OSM data is <code>osmdata</code>, which gets data from the Overpass API rather than from bulk .pbf files. <code>osmdata</code> is ideal for getting small amounts of data from OSM, e.g. the boundary representing Leeds, as shown in the code chunk below (you need to have the <code>osmdata</code> package installed to run this).</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_boundary</span> <span class="op">=</span> <span class="fu">osmdata</span><span class="fu">::</span><span class="fu">getbb</span><span class="op">(</span><span class="st">"Leeds"</span>, format_out <span class="op">=</span> <span class="st">"sf_polygon"</span>, limit <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/qtm.html" class="external-link">qtm</a></span><span class="op">(</span><span class="va">leeds_boundary</span><span class="op">)</span></span></code></pre></div>
 <p>After running the lines of code above you should see the following which is the boundary for Leeds:</p>
@@ -295,15 +303,14 @@ This workshop covers:
 <p><img src="https://user-images.githubusercontent.com/1825120/185735464-141a7a5f-482e-42ac-a5db-85f415a9e68c.png"></p>
 </div>
 <div class="section level3">
+<h3 id="getting-a-boundary-with-a-buffer">Getting a boundary with a buffer<a class="anchor" aria-label="anchor" href="#getting-a-boundary-with-a-buffer"></a>
+</h3>
+<p>Let’s get everything within a</p>
+</div>
+<div class="section level3">
 <h3 id="spatial-subsetting">Spatial subsetting<a class="anchor" aria-label="anchor" href="#spatial-subsetting"></a>
 </h3>
 <p>Next we will subset Leeds city from <code>leeds</code> dataset. Spatial subsetting is one of the essential operations in geocomputation, so if you want to learn more about this, check out <a href="https://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting" class="external-link">“Spatial subsetting”</a> section in the Geocomputation with R (Lovelace et al., 2022).</p>
-<p>We will use a combination of <code>mapview</code> and <code>mapedit</code> packages to manually define an area, get its coordinates to perform spatial subsetting.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">map_leeds</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="fu">mapview</span><span class="op">(</span><span class="va">leeds</span><span class="op">)</span> <span class="co"># create an object containing interactive map  </span></span>
-<span><span class="va">map_leeds_edit</span> <span class="op">=</span> <span class="fu">mapedit</span><span class="fu">::</span><span class="fu">editMap</span><span class="op">(</span><span class="va">map_leeds</span><span class="op">)</span> <span class="co"># use `mapedit` package to draw a new polygon</span></span>
-<span><span class="va">box</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span><span class="va">map_leeds_edit</span><span class="op">$</span><span class="va">drawn</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span> <span class="co"># extract the coordinates of a new polygon</span></span>
-<span><span class="va">box</span></span></code></pre></div>
 <p>Now we have coordinates of an area we are interested in. From here on there are two ways for getting OSM data for that. One is to use <code><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get()</a></code> again and give it an additional <code>boundary</code> and <code>boundary_type</code> arguments.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leeds_defined</span> <span class="op">=</span> <span class="fu">osmextract</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/osmextract/reference/oe_get.html" class="external-link">oe_get</a></span><span class="op">(</span></span>
@@ -313,7 +320,7 @@ This workshop covers:
 <span>  force_download <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Updates the previously downloaded .osm.pbf file (default is FALSE)</span></span>
 <span>  force_vectortranslate <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Forces the vectorization of a .pbf file to .gpkg file</span></span>
 <span>  extra_tags <span class="op">=</span> <span class="va">et</span>, <span class="co"># non-default tags to download</span></span>
-<span>  boundary <span class="op">=</span> <span class="va">box</span>,</span>
+<span>  boundary <span class="op">=</span> <span class="va">leeds_boundary</span>,</span>
 <span>  boundary_type <span class="op">=</span> <span class="st">"clipsrc"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, we can subset the <code>leeds</code> data, so we do not have to download data again.</p>
