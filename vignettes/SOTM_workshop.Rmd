@@ -218,7 +218,7 @@ tmap::tm_shape(leeds |> dplyr::filter(!is.na("highway")))+
   tmap::tm_lines(col = "highway")
 ```
 
-![plot output](https://user-images.githubusercontent.com/58815827/185735455-78849abc-ec98-4597-b079-b3874008ebf9.png)
+![](https://user-images.githubusercontent.com/58815827/185735455-78849abc-ec98-4597-b079-b3874008ebf9.png)
 
 Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested.
 
