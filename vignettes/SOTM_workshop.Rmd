@@ -184,11 +184,9 @@ See the documentation associated with `oe_get()` on the package website or by en
 
 ```{r download_detailed, eval=FALSE, echo=FALSE}
 leeds = osmextract::oe_get(
-  place = "Leeds", # Note capital 'L'!
-  provider = "bbbike", # Indicates the provider; default is geofabrik
-  layer = "lines", # Default; returns linestring geometries (highways, waterways, aerialways) 
-  force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
-  force_vectortranslate = TRUE # Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)
+  place = "Leeds",
+  provider = "bbbike", 
+  layer = "lines", 
 )
 ```
 
@@ -209,15 +207,12 @@ leeds = osmextract::oe_get(
   place = "Leeds", 
   provider = "bbbike",
   layer = "lines",
-  force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
-  force_vectortranslate = TRUE, # Forces translation to .gpkg
   extra_tags = et # non-default tags to download
 )
 
 # have a look at the data
 leeds |> dplyr::glimpse()
 
-<<<<<<< HEAD
 # also it's useful to have a look at the downloaded data by plotting it
 tmap::tm_shape(leeds |> dplyr::filter(!is.na("highway")))+
   tmap::tm_lines(col = "highway")
@@ -430,10 +425,10 @@ tm_shape(osme_cycle)+
 
 In this section we are going to explore OpenInfra package and some of the functions it currently contains.
 
-The openinfra package contains a suite of functions that recategorise OSM data to more meaningful variables for transport planners and policy makers. 
-The aim of the openinfra package is to add value to OSM data so that this may be used as better evidence to support 
+The `openinfra` package contains a suite of functions that recategorise OSM data to more meaningful variables for transport planners and policy makers. 
+The aim of the `openinfra` package is to add value to OSM data so that this may act as better evidence to support transport planners and policy makers.
 
-One of the functions that the pakcage has is `oi_recode_road_class()`. It recategorises OSM highways based on the Chan and Cooper's (2019) work in which they propose that road class can be used to infer motor traffic volume. Road traffic volume is an important factor in discouraging cycling. 
+One of the functions that the package has is `oi_recode_road_class()`. It recategorises OSM highways based on the Chan and Cooper's (2019) work in which they propose that road class can be used to infer motor traffic volume. Road traffic volume is an important factor in discouraging cycling. 
 
 ```{r, eval=FALSE}
 leeds_high_rec = leeds_defined2 |> 
@@ -471,10 +466,67 @@ tm_shape(leeds_seg["geometry"]) +
   tm_lines()
 ```
 
+Here we have shown outputs from two of the `openinfra` functions, `oi_clean_maxspeed_uk` and `oi_recode_road_class`. The other package functions and their respective documentation can be found [here](https://udsleeds.github.io/openinfra/reference/index.html)
+
 **Task**: Modify the above example, apply to your data, and then plot it. What does it say about the existing cycling infrastructure?
 
 ## Transport Infrastructure Data Packs
 
+The transport infrastructure data packs are created from recategorised OSM data. The OSM data has been recategorised by the OpenInfra functions. 
+
+Following this workshop, you should be able to create such infrastructure data packs for your desired area.
+
+Here we will visualise the outputs from several `openinfra` fucntions.
+
+### oi_recode_road_class()
+
+This function recategorises OSM infrastructure data from the default `highway=*` values to one of the official UK road classifications. <br> With such information, one may wish to [infer traffic flow volumes](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6928227/) as a function of road classification. 
+
+```{r visualisation_frame, out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/road_desc_map.html", height = "650px")
+```
+
+### oi_active_cycle()
+
+The `oi_active_cycle` and `oi_active_walk` functions recategorises OSM infrastructure data based on whether or not the feature in question forms part of a usable transport network for cyclists or pedestrians.
+
+```{r out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_map.html", height = "650px")
+```
+
+### oi_active_walk()
+
+The `oi_active_cycle` and `oi_active_walk` functions recategorises OSM infrastructure data based on whether or not the feature in question forms part of a usable transport network for cyclists or pedestrians.
+
+```{r out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/walk_map.html", height = "650px")
+```
+
+### oi_clean_maxspeed_uk()
+
+This function recategorises default OSM `maxspeed` values to  be compliant with the current official [UK speed limits](https://www.gov.uk/speed-limits). <br>
+
+
+
+```{r vis_frame, out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/maxspeed_map.html", height = "650px")
+```
+
+### oi_is_lit()
+
+This functions recategorises default OSM `lit` values, values that indicate the type and presence of lighting, to either:
+
+ * "yes", 
+ * "no",
+ * or "maybe" 
+
+Note that "maybe" does not indicate the lack of lighting, instead, this indicates that there is a lack of data to distinguish between "yes" or "no". <br>
+Clearly, in built up urban areas it is likely that there will be lighting. However, in more rural areas and the countryside this is more likely to be "no". <br>
+Such information may be valuable if you would like to establish a safe active travel network that is suitable to use after dark.
+
+```{r out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/is_lit_map.html", height = "650px")
+```
 
 # Next steps
 
