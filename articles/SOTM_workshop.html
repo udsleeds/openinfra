@@ -280,7 +280,7 @@ This workshop covers:
 <span><span class="co"># it helps to </span></span>
 <span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">leeds</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="st">"highway"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"highway"</span><span class="op">)</span></span></code></pre></div>
-<p>Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested. This is because the <code>osmextract</code> data providers only provide OSM data at this granularity. To refine this network further we can apply spatial subsetting.</p>
+<p>Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested. This is because BBBike only provides results for rectangular datasets. To refine this network further we can apply spatial subsetting.</p>
 </div>
 <div class="section level3">
 <h3 id="spatial-subsetting">Spatial subsetting<a class="anchor" aria-label="anchor" href="#spatial-subsetting"></a>
@@ -299,7 +299,7 @@ This workshop covers:
 <span>  provider <span class="op">=</span> <span class="st">"bbbike"</span>, <span class="co"># Indicates the provider; default is geofabrik</span></span>
 <span>  layer <span class="op">=</span> <span class="st">"lines"</span>, <span class="co"># Default; returns linestring geometries (highways, waterways, aerialways) </span></span>
 <span>  force_download <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Updates the previously downloaded .osm.pbf file (default is FALSE)</span></span>
-<span>  force_vectortranslate <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)</span></span>
+<span>  force_vectortranslate <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Forces the vectorization of a .pbf file to .gpkg file</span></span>
 <span>  extra_tags <span class="op">=</span> <span class="va">et</span>, <span class="co"># non-default tags to download</span></span>
 <span>  boundary <span class="op">=</span> <span class="va">box</span>,</span>
 <span>  boundary_type <span class="op">=</span> <span class="st">"clipsrc"</span></span>
