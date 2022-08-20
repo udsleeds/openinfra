@@ -117,14 +117,14 @@ data = openinfra::sotm_data
 test_data = osmextract::oe_get(place = "ITS Leeds")
 
 # Plot central Leeds
-tmap::tm_shape(data |> dplyr::select("highway")) + 
-  tmap::tm_lines(col = "highway", title.col = "OSM Highways") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white")
+tm_shape(data |> dplyr::select("highway")) + 
+  tm_lines(col = "highway", title.col = "OSM Highways") + 
+  tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white")
 
 # Plot ITS
-tmap::tm_shape(test_data |> dplyr::select("highway")) + 
-  tmap::tm_lines(col = "highway", title.col = "OSM Highways") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white")
+tm_shape(test_data |> dplyr::select("highway")) + 
+  tm_lines(col = "highway", title.col = "OSM Highways") + 
+  tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white")
 ```
 
 To check that your plots match, check [issue 98](https://github.com/udsleeds/openinfra/issues/98)
@@ -192,25 +192,25 @@ leeds = osmextract::oe_get(
 )
 ```
 
-
 ## Tags
 
 In the previous example we've downloaded OSM data but it does not necessarily contain all the information we need (unless you used the example `sotm_data`).
 Indeed, it only has 10 columns and only `highway` column is directly useful for active travel infrastructure planning!
 
-In order to get additional tags we need to specify this as an additional argument before running `oe_get()`.
+To get additional tags we need to specify this as an additional argument before running `oe_get()`.
 
 ```{r, eval=FALSE}
 # so let's define the extra tags we want
 
-et = c("kerb", "width", "sidewalk", "cycleway", "footway", "lit", "wheelchair", "maxspeed", "foot", "access", "service", "bicycle", "oneway")
+et = c("kerb", "width", "sidewalk", "cycleway", "footway", "lit", "wheelchair",
+       "maxspeed", "foot", "access", "service", "bicycle", "oneway")
 
 leeds = osmextract::oe_get(
-  place = "Leeds", # Note capital 'L'!
-  provider = "bbbike", # Indicates the provider; default is geofabrik
-  layer = "lines", # Default; returns linestring geometries (highways, waterways, aerialways) 
+  place = "Leeds", 
+  provider = "bbbike",
+  layer = "lines",
   force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
-  force_vectortranslate = TRUE, # Forces the vectorization of a .pbf file to .gpbf even if there is a .gpbf file with the same name (default = FALSE)
+  force_vectortranslate = TRUE, # Forces translation to .gpkg
   extra_tags = et # non-default tags to download
 )
 
@@ -219,11 +219,11 @@ leeds |> dplyr::glimpse()
 
 # also it's useful to have a look at the downloaded data by plotting it 
 # it helps to 
-tmap::tm_shape(leeds |> dplyr::filter(!is.na("highway")))+
-  tmap::tm_lines(col = "highway")
+tm_shape(leeds |> dplyr::filter(!is.na("highway")))+
+  tm_lines(col = "highway" )
 ```
 
-Strangely (or not!) our Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested.
+The Leeds data actually represents the whole of West Yorkshire and not only Leeds as we requested.
 This is because BBBike only provides results for rectangular datasets. 
 To refine this network further we can apply spatial subsetting.
 
@@ -266,8 +266,12 @@ tm_shape(firenze_boundary) +
 
 ## Getting a boundary with a buffer
 
-Let's get everything within a 
+Let's get everything within a 2.5 km radius of central Leeds, which has coordinates of -1.549, 53.801:
 
+```{r}
+leeds_centre_point = sf::st_sfc(sf::st_point(c(-1.549, 53.801)), crs = "EPSG:4326")
+leeds_buffer = sf::st_buffer(leeds_centre_point, dist = 2500)
+```
 
 ## Spatial subsetting
 
@@ -280,13 +284,11 @@ One is to use `oe_get()` again and give it an additional `boundary` and `boundar
 
 ```{r, eval=FALSE}
 leeds_defined = osmextract::oe_get(
-  place = "Leeds", # Note capital 'L'!
-  provider = "bbbike", # Indicates the provider; default is geofabrik
-  layer = "lines", # Default; returns linestring geometries (highways, waterways, aerialways) 
-  force_download = TRUE, # Updates the previously downloaded .osm.pbf file (default is FALSE)
-  force_vectortranslate = TRUE, # Forces the vectorization of a .pbf file to .gpkg file
-  extra_tags = et, # non-default tags to download
-  boundary = leeds_boundary,
+  place = "Leeds", 
+  provider = "bbbike", 
+  layer = "lines", 
+  extra_tags = et,
+  boundary = leeds_buffer,
   boundary_type = "clipsrc"
 )
 ```
@@ -294,8 +296,7 @@ leeds_defined = osmextract::oe_get(
 Alternatively, we can subset the `leeds` data, so we do not have to download data again.
 
 ```{r, eval=FALSE}
-leeds_defined2 = leeds[map_leeds_edit$drawn$geometry, 
-                       op= sf::st_intersects] 
+leeds_defined2 = leeds[leeds_buffer, op = st_within] 
 ```
 
 **Task**:
@@ -387,16 +388,16 @@ In this workshop we've been visualizing our data to improve our understanding. U
 # equivalent to the earlier plotted map
 # Note: it might be useful to store your plot as a tmap object that can be called at any point.
 
-osme_cycle_plot = tmap::tm_shape(osme_cycle["geometry"])+
-  tmap::tm_lines()
+osme_cycle_plot = tm_shape(osme_cycle["geometry"])+
+  tm_lines()
 ```
 
 To plot an interactive map you have to specify this using `tmap_mode()` function. 
 
 ```{r, eval=FALSE}
-tmap::tmap_mode("view") # now all the plots will be interactive
-tmap::tm_shape(osme_cycle)+
-  tmap::tm_lines("highway")
+tmap_mode("view") # now all the plots will be interactive
+tm_shape(osme_cycle)+
+  tm_lines("highway")
 ```
 
 **Task**:
@@ -417,8 +418,8 @@ leeds_high_rec = leeds_defined2 |>
 ```
 
 ```{r, eval=FALSE}
-tmap::tm_shape(leeds_high_rec)+
-  tmap::tm_lines("oi_road_desc")
+tm_shape(leeds_high_rec)+
+  tm_lines("oi_road_desc")
 ```
 
 Another important consideration in the context of cycling is the maxspeed of motor vehicles as lower motor vehicle speed is associated with lower driver-cyclist road crashes.
@@ -429,8 +430,8 @@ leeds_speed_rec = leeds_defined2 |>
 ```
 
 ```{r, eval=FALSE}
-tmap::tm_shape(leeds_speed_rec)+
-  tmap::tm_lines("oi_maxspeed")
+tm_shape(leeds_speed_rec)+
+  tm_lines("oi_maxspeed")
 ```
 
 We know that in the UK it recommended to have some kind of segregation (eg. lines, tracks) if maxspeed of a motor vehicle is allowed to exceed 30mph. Therefore, we might want to find out if the existing cycling infrastructure complies with the requirements for roads that have maxspeed of 30mph and over.
@@ -443,8 +444,8 @@ leeds_seg = leeds_speed_rec |> dplyr::filter(oi_maxspeed != "20 mph" &
 ```
 
 ```{r, eval=FALSE}
-tmap::tm_shape(leeds_seg["geometry"]) + 
-  tmap::tm_lines()
+tm_shape(leeds_seg["geometry"]) + 
+  tm_lines()
 ```
 
 **Task**: Modify the above example, apply to your data, and then plot it. What does it say about the existing cycling infrastructure?
