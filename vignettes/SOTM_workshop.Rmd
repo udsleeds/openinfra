@@ -180,6 +180,8 @@ leeds = osmextract::oe_get(
 leeds |> dplyr::glimpse()
 ```
 
+See the documentation associated with `oe_get()` on the package website or by entering the command `?oe_get` into the R console.
+
 ```{r download_detailed, eval=FALSE, echo=FALSE}
 leeds = osmextract::oe_get(
   place = "Leeds", # Note capital 'L'!
