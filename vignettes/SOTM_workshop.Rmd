@@ -168,10 +168,10 @@ This is a much smaller dataset, thus making computing much quicker.
 
 ```{r, eval=FALSE}
 # A useful function is `oe_match_pattern()` to search for patterns in a provider's database. It is helpful in indicating a correct region name for a given provider.
-osmextract::oe_match_pattern("leeds") 
+osmextract::oe_match_pattern("Leeds") 
 
 leeds = osmextract::oe_get(
-  place = "leeds", 
+  place = "Leeds", 
   provider = "bbbike", # Indicates the provider; default is geofabrik
   layer = "lines" # Default; returns linestring geometries (highways etch) 
 )
@@ -186,7 +186,7 @@ See the documentation associated with `oe_get()` on the package website or by en
 leeds = osmextract::oe_get(
   place = "Leeds",
   provider = "bbbike", 
-  layer = "lines", 
+  layer = "lines"
 )
 ```
 
@@ -224,7 +224,6 @@ Strangely (or not!) our Leeds data actually represents the whole of West Yorkshi
 
 ```
 # also it's useful to have a look at the downloaded data by plotting it 
-# it helps to 
 tm_shape(leeds |> dplyr::filter(!is.na("highway")))+
   tm_lines(col = "highway" )
 ```
@@ -302,7 +301,7 @@ leeds_defined = osmextract::oe_get(
 Alternatively, we can subset the `leeds` data, so we do not have to download data again.
 
 ```{r, eval=FALSE}
-leeds_defined2 = leeds[leeds_buffer, op = st_within] 
+leeds_defined2 = leeds[leeds_buffer, op = "st_within"] 
 ```
 
 You can plot this as follows:
@@ -478,7 +477,7 @@ Following this workshop, you should be able to create such infrastructure data p
 
 Here we will visualise the outputs from several `openinfra` fucntions.
 
-### oi_recode_road_class()
+### oi_recode_road_class() 
 
 This function recategorises OSM infrastructure data from the default `highway=*` values to one of the official UK road classifications. <br> With such information, one may wish to [infer traffic flow volumes](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6928227/) as a function of road classification. 
 
@@ -486,18 +485,16 @@ This function recategorises OSM infrastructure data from the default `highway=*`
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/road_desc_map.html", height = "650px")
 ```
 
-### oi_active_cycle()
+### oi_active_cycle() and oi_active_walk()
 
-The `oi_active_cycle` and `oi_active_walk` functions recategorises OSM infrastructure data based on whether or not the feature in question forms part of a usable transport network for cyclists or pedestrians.
+The `oi_active_cycle` and `oi_active_walk` functions recategorise OSM infrastructure data based on whether or not the feature in question forms part of a usable transport network for cyclists or pedestrians.
 
+**oi_active_cycle**
 ```{r out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_map.html", height = "650px")
 ```
 
-### oi_active_walk()
-
-The `oi_active_cycle` and `oi_active_walk` functions recategorises OSM infrastructure data based on whether or not the feature in question forms part of a usable transport network for cyclists or pedestrians.
-
+**oi_active_walk**
 ```{r out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/walk_map.html", height = "650px")
 ```
