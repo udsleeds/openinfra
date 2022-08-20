@@ -217,6 +217,27 @@ Strangely (or not!) our Leeds data actually represents the whole of West Yorkshi
 This is because BBBike only provides results for rectangular datasets. 
 To refine this network further we can apply spatial subsetting.
 
+## Getting data with `osmdata`
+
+Another package for getting OSM data is `osmdata`, which gets data from the Overpass API rather than from bulk .pbf files.
+`osmdata` is ideal for getting small amounts of data from OSM, e.g. the boundary representing Leeds, as shown in the code chunk below.
+
+```{r osmdata_boundary, eval=FALSE}
+leeds_boundary = osmdata::getbb("Leeds", format_out = "sf_polygon", limit = 1)
+qtm(leeds_boundary)
+```
+
+After running the lines of code above you should see the following which is the boundary for Leeds:
+
+![](https://user-images.githubusercontent.com/1825120/185735290-1cbc8b8c-b0f9-4647-b66d-87801ab0d315.png)
+
+Task: get the boundary for Florence using a similar technique.
+
+```{r, echo=FALSE, eval=FALSE}
+
+```
+
+
 ## Spatial subsetting
 
 Next we will subset Leeds city from `leeds` dataset.
