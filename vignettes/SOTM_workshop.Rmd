@@ -258,7 +258,7 @@ After running the lines of code above you should see the following which is the 
 
 ![](https://user-images.githubusercontent.com/1825120/185735290-1cbc8b8c-b0f9-4647-b66d-87801ab0d315.png)
 
-Task: get the boundary for Florence (Firenze in Italian) using the same technique.
+**Task**: try get the boundary for Florence (Firenze in Italian) using the same technique.
 
 ```{r, echo=FALSE, eval=FALSE}
 firenze_boundary = osmdata::getbb("firenze", format_out = "sf_polygon", limit = 1)
