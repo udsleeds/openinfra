@@ -22,11 +22,13 @@ Function to recategorise OSM data, combining both the \code{name} & \code{ref} f
 for an OSM feature, or whichever is available.
 }
 \details{
-This fucntion analyses OSM features, specifically the \code{name} and
+This function analyses OSM features, specifically the \code{name} and
 \code{ref} fields that contain a road name (i.e. Otley Road) and the road
 reference field (i.e A62). If both the \code{name} and \code{ref} appear, then
 \code{oi_road_name} will be \code{name | ref}, otherwise \code{oi_road_name} will be
 whichever field appears within the OSM data.
+
+Note: the \code{osm_sf} must contain the following tags: \code{c("name", "ref")}
 }
 \examples{
 data = example_data
