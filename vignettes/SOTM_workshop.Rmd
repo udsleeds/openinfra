@@ -551,7 +551,7 @@ Here we will visualise the outputs from several `openinfra` fucntions.
 This function recategorises OSM infrastructure data from the default `highway=*` values to one of the official UK road classifications. <br> With such information, one may wish to [infer traffic flow volumes](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6928227/) as a function of road classification. 
 
 ```{r visualisation_frame, out.width="100%", echo=FALSE, include=TRUE}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/road_desc_map.html", height = "650px")
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/2500m_LCC_map_road_desc.html", height = "650px")
 ```
 
 ### oi_active_cycle() and oi_active_walk()
@@ -560,12 +560,12 @@ The `oi_active_cycle` and `oi_active_walk` functions recategorise OSM infrastruc
 
 **oi_active_cycle**
 ```{r out.width="100%", echo=FALSE, include=TRUE}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_map.html", height = "650px")
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/2500m_LCC_map_active_cycle.html", height = "650px")
 ```
 
 **oi_active_walk**
 ```{r out.width="100%", echo=FALSE, include=TRUE}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/walk_map.html", height = "650px")
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/2500m_LCC_map_active_walk.html", height = "650px")
 ```
 
 ### oi_clean_maxspeed_uk()
@@ -575,7 +575,7 @@ This function recategorises default OSM `maxspeed` values to  be compliant with 
 
 
 ```{r vis_frame, out.width="100%", echo=FALSE, include=TRUE}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/maxspeed_map.html", height = "650px")
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/2500m_LCC_fig_maxspeed.html", height = "650px")
 ```
 
 ### oi_is_lit()
@@ -591,7 +591,7 @@ Clearly, in built up urban areas it is likely that there will be lighting. Howev
 Such information may be valuable if you would like to establish a safe active travel network that is suitable to use after dark.
 
 ```{r out.width="100%", echo=FALSE, include=TRUE}
-knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/is_lit_map.html", height = "650px")
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/2500m_LCC_fig_is_lit.html", height = "650px")
 ```
 
 # Next steps
