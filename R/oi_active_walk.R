@@ -15,6 +15,7 @@
 #' [`oe_get_network`](https://rdrr.io/cran/osmextract/man/oe_get_network.html)
 #' function, part of the 
 #' [`osmextract`](https://rdrr.io/cran/osmextract/) package.
+#' @details Note: the `osm_sf` must contain the following tags: `c("highway", "foot", "access", "service")`
 #' @export oi_active_walk
 #' @examples 
 #' data = example_data

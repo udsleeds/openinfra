@@ -31,6 +31,8 @@ This function mimics the walking filtering steps applied by the
 \href{https://rdrr.io/cran/osmextract/man/oe_get_network.html}{\code{oe_get_network}}
 function, part of the
 \href{https://rdrr.io/cran/osmextract/}{\code{osmextract}} package.
+
+Note: the \code{osm_sf} must contain the following tags: \code{c("highway", "foot", "access", "service")}
 }
 \examples{
 data = example_data
