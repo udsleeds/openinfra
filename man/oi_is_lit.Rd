@@ -33,6 +33,8 @@ This function adds a new column, \code{oi_is_lit} containing values "yes"
 , "no", whether or not the feature is lit. The value "maybe" is assigned when
 there is a lack of data to distinguish - not implying the presence or lack of
 lighting, but a lack of data to identify.
+
+Note: the \code{osm_sf} must contain the following tags: \code{c("lit", "lit_by_led")}
 }
 \examples{
 data = example_data

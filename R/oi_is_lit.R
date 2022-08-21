@@ -12,6 +12,7 @@
 #' , "no", whether or not the feature is lit. The value "maybe" is assigned when
 #' there is a lack of data to distinguish - not implying the presence or lack of
 #' lighting, but a lack of data to identify.
+#' @details Note: the `osm_sf` must contain the following tags: `c("lit", "lit_by_led")`
 #' @export oi_is_lit
 #' 
 #' @examples
