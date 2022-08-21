@@ -75,7 +75,7 @@ pkgs = c(
 These can be installed with the following command:
 
 ```{r install_okgs, message=FALSE, eval=FALSE}
-install.packages(pkgs, repos = "http://cran.us.r-project.org")
+install.packages(pkgs, repos = "http://cran.us.r-project.org", dependencies = TRUE)
 ```
 
 You can install additional packages, including the development versions of the `osmextract` and `openinfra` packages as follows:
