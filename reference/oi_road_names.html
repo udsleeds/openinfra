@@ -109,11 +109,12 @@ ref fields of the feature, if they are included.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>This fucntion analyses OSM features, specifically the <code>name</code> and
+    <p>This function analyses OSM features, specifically the <code>name</code> and
 <code>ref</code> fields that contain a road name (i.e. Otley Road) and the road
 reference field (i.e A62). If both the <code>name</code> and <code>ref</code> appear, then
 <code>oi_road_name</code> will be <code>name | ref</code>, otherwise <code>oi_road_name</code> will be
 whichever field appears within the OSM data.</p>
+<p>Note: the <code>osm_sf</code> must contain the following tags: <code>c("name", "ref")</code></p>
     </div>
 
     <div id="ref-examples">
