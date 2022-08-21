@@ -12,6 +12,15 @@
 #' @return The `osm_sf` data frame is returned with additional inclusive mobility columns returned.
 #' @importFrom readr parse_number
 #' @importFrom stringr str_detect
+#' @details Note: the `osm_sf` must contain the following tags: `c("cycleway",
+#'    "bicycle", "wheelchair", "kerb", "disabled", "mobility_scooter", "foot",
+#'    "handicap", "lit", "access", "sidewalk", "footway", "incline", "width",
+#'    "smoothness", "est_width", "sidewalk_left", "ramp_wheelchair", "priority",
+#'    "footway_left", "sidewalk_both_surface", "footway_surface", "pedestrian",
+#'    "footway_right", "ramp", "sidewalk_right", "sidewalk_both_width", "path",
+#'    "sidewalk_left_width", "sidewalk_right_width", "sidewalk_right_surface",
+#'    "sidewalk_left_surface", "maxspeed", "segregated", "sloped_curb",
+#'    "surface", "tactile_paving")`
 #' @export oi_inclusive_mobility
 #' @examples
 #' library(sf)

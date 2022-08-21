@@ -26,6 +26,8 @@ This function is based on the Inclusive Mobility (IM) guide
 See details in the link above, the function's source code, and our
 justification
 \href{https://udsleeds.github.io/openinfra/articles/im_get.html}{vignette}.
+
+Note: the \code{osm_sf} must contain the following tags: \code{c("cycleway", "bicycle", "wheelchair", "kerb", "disabled", "mobility_scooter", "foot", "handicap", "lit", "access", "sidewalk", "footway", "incline", "width", "smoothness", "est_width", "sidewalk_left", "ramp_wheelchair", "priority", "footway_left", "sidewalk_both_surface", "footway_surface", "pedestrian", "footway_right", "ramp", "sidewalk_right", "sidewalk_both_width", "path", "sidewalk_left_width", "sidewalk_right_width", "sidewalk_right_surface", "sidewalk_left_surface", "maxspeed", "segregated", "sloped_curb", "surface", "tactile_paving")}
 }
 \examples{
 library(sf)
