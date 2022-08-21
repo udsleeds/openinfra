@@ -1,6 +1,6 @@
 #' Re-classifies the maxspeed column of an OSM data frame to be compliant with current [UK speed limits](https://www.gov.uk/speed-limits). The clean re-coded speeds are stoed in `oi_maxspeed`.
 #'
-#' @usage oi_clean_maxspeed_uk(osm_sf, no_NA = FALSE, del = FALSE)
+#' @usage oi_clean_maxspeed_uk(osm_sf, no_NA = FALSE, del = FALSE) 
 #'
 #' @param osm_sf - A `sf` and `data.frame` object containing OpenStreetMap infrastructure data, obtained from the [`osmextract`](https://github.com/ropensci/osmextract) function.
 #'
@@ -9,6 +9,9 @@
 #' @param del - Boolean, `FALSE` by default. If `TRUE` then the original `maxspeed` column is deleted and only `oi_maxspeed` is returned.
 #'
 #' @return  The `osm_sf` simple features data frame is returned with the maxspeed column values cleaned based on `allowed_speeds`.
+#' 
+#' @details Note: the `osm_sf` param must contain the following tags: `c("maxspeed", "higway")`
+#' 
 #' @export oi_clean_maxspeed_uk
 #' 
 #' @examples 
