@@ -336,7 +336,8 @@ tm_shape(firenze_boundary) +
 
 ## Getting a boundary with a buffer
 
-Let's get everything within a 2.5 km radius of central Leeds, which has coordinates of -1.549, 53.801:
+Let's get everything within a 2.5 km radius of central Leeds, which has coordinates of -1.549, 53.801:<br>
+You can change the size of the circular buffer by altering the `dist` parameter (metres)
 
 ```{r}
 leeds_centre_point = sf::st_sfc(sf::st_point(c(-1.549, 53.801)), crs = "EPSG:4326")
