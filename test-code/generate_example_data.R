@@ -95,43 +95,43 @@ tmap::tmap_mode("view")
 # Re-coded Road Descriptions / Class
 map_road_desc = tmap::tm_shape(data_pack_road_desc %>% dplyr::select("oi_road_desc")) + 
   tmap::tm_lines(col = "oi_road_desc", title.col = "Recoded Road Descriptions") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+  tmap::tm_layout(title = "Recoded Road Descriptions - 2.5km Buffer at Leeds City Centre", legend.bg.alpha = 0.5, legend.bg.color = "white" )
 tmap::tmap_save(map_road_desc, "2500m_LCC_map_road_desc.html")
 
 # OSM Highway Values
 map_norm_highway = tmap::tm_shape(data_pack %>% dplyr::select("highway")) + 
   tmap::tm_lines(col = "highway", title.col = "OSM Highway Values") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+  tmap::tm_layout(title = "Default OSM Highway Values - 2.5km Buffer at Leeds City Centre ", legend.bg.alpha = 0.5, legend.bg.color = "white" )
 tmap::tmap_save(map_norm_highway, "2500m_LCC_map_norm_highway.html")
 
 # oi_active_cycle() oi_cycle
 map_active_cycle = tmap::tm_shape(data_pack_cycle %>% dplyr::select("oi_cycle")) + 
   tmap::tm_lines(col = "oi_cycle", title.col = "Cyclable Ways", palette = c("red", "green")) + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+  tmap::tm_layout(title = "Cyclable OSM Infrastructure - 2.5km Buffer at Leeds City Centre", legend.bg.alpha = 0.5, legend.bg.color = "white" )
 tmap::tmap_save(map_active_cycle, "2500m_LCC_map_active_cycle.html")
 
 # oi_active_walk() oi_walk
 map_active_walk = tmap::tm_shape(data_pack_walk %>% dplyr::select("oi_walk")) + 
   tmap::tm_lines(col = "oi_walk", title.col = "Walkable Ways", palette = c("red", "green")) + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+  tmap::tm_layout(title = "Walkable OSM Infrastructure - 2.5km Buffer at Leeds City Centre", legend.bg.alpha = 0.5, legend.bg.color = "white" )
 tmap::tmap_save(map_active_walk, "2500m_LCC_map_active_walk.html")
 
 # oi_clean_maxspeed_uk() oi_maxspeed
 map_maxspeed = tmap::tm_shape(data_pack_maxspeed %>% dplyr::select("oi_maxspeed")) + 
   tmap::tm_lines(col = "oi_maxspeed", title.col = "Recategorised Maxspeed") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+  tmap::tm_layout(title = "Cleaned UK Maxspeed Values - 2.5km Buffer at Leeds City Centre", legend.bg.alpha = 0.5, legend.bg.color = "white" )
 tmap::tmap_save(map_maxspeed, "2500m_LCC_fig_maxspeed.html")
 
 # oi_is_lit() oi_is_lit
 map_is_lit = tmap::tm_shape(data_pack_lit %>% dplyr::select("oi_is_lit")) + 
   tmap::tm_lines(col = "oi_is_lit", title.col = "Presence of Lighting") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+  tmap::tm_layout(title = "Presence of Lighting on OSM Ways - 2.5km Buffer at Leeds City Centre", legend.bg.alpha = 0.5, legend.bg.color = "white" )
 tmap::tmap_save(map_is_lit, "2500m_LCC_fig_is_lit.html")
 
 # oi_road_names() oi_name
 map_road_names = tmap::tm_shape(data_pack_road_name %>% dplyr::select("oi_name")) + 
   tmap::tm_lines(col = "oi_name", title.col = "OSM Road Names") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+  tmap::tm_layout(title = "Recoded Road Names - 2.5km Buffer at Leeds City Centre", legend.bg.alpha = 0.5, legend.bg.color = "white" )
 tmap::tmap_save(map_road_names, "2500m_LCC_fig_road_names.html")
 
 
