@@ -20,6 +20,7 @@
 #' @param osm_sf - A `sf` and `data.frame` object containing OpenStreetMap infrastructure data, obtained from the [`osmextract`](https://github.com/ropensci/osmextract) function.
 #' @param del If `TRUE`, features not re-coded to one of the 8 road classifications are removed. `FALSE` by default.
 #' @return  The \code{osm_sf} simple features data frame is returned with additional columns road_class and road_desc based on Chan and Cooper's road classifications.
+#' @details Note: the `osm_sf` must contain the following tags: `c("highway", "oneway")`
 #' @export oi_recode_road_class
 #' 
 #' @examples 

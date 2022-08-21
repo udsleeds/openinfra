@@ -33,6 +33,9 @@ Re-classifies data based on the following highway key values:\tabular{lll}{
    1 \tab Local Roads \tab highway = living_street OR highway = residential OR highway = unclassified \cr
    0 \tab Traffic-free Paths \tab highway = cycleway \cr
 }
+
+
+Note: the \code{osm_sf} must contain the following tags: \code{c("highway", "oneway")}
 }
 \examples{
 library(sf)
