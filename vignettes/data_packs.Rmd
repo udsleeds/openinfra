@@ -524,7 +524,7 @@ The current example data pack for "Leeds" - contains outputs: <br>
 ### Default OSM Highways
 
 Please note that a 7.5Km circular buffer (centred at Leeds City Centre) has been applied to this map so that the map can be hosted on this website. (max filesize 25Mb)<br>
-As can be seen, the default network has a variety of `higway` values and is rather confusing. 
+As can be seen, the default network has a variety of `highway` values and is rather confusing. 
 ```{r out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/total_leeds_LAD.html", height = "650px")
 ```
