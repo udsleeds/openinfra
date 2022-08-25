@@ -25,12 +25,13 @@
 # Key parameters  ---------------------------------------------------------
 
 overwrite_network = FALSE             # Overwrite existing network geojsons? 
-overwrite_datapack = TRUE            # Overwrite existing data pack geojsons? 
+overwrite_datapack = FALSE            # Overwrite existing data pack geojsons? 
 local_save_data_pack = TRUE           # Save data packs locally?  
 piggyback_data_packs = TRUE           # Upload data packs to releases? 
 save_formats = c(".geojson", ".gpkg") # Data pack file formats
 release_tag = "0.4"                   # Releases tag for piggyback
 creation_date = "25_08_2022"          # Date of download for england-latest.osm
+lad_limit = 1:100                      # Limits number of LADs to be processed
 
 # File path or URL to LAD bounding polygons
 LAD_polygons_path = paste0("https://github.com/udsleeds/openinfra/raw/",
@@ -122,7 +123,7 @@ eng_latest_fp = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
 # Download LAD boundary polygons
 LADs = sf::read_sf(LAD_polygons_path)
 LADs = sf::st_make_valid(LADs)
-LADs = LADs[1:25, ] # only use first 5 whilst testing. (comment out when done)
+LADs = LADs[lad_limit, ] # only use first 5 whilst testing. (comment out when done)
 LAD_polys = LADs %>% dplyr::select(c("LAD21NM", "geometry"))
 
 # Create & save default OSM networks per LAD -------------------------------
@@ -201,7 +202,7 @@ data_pack_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
                        "openinfra/data_packs/", creation_date, "/")
 
 # For all network files, generate a data pack.
-for (network_filename in network_files[1:25]){
+for (network_filename in network_files[lad_limit]){
   # Load current LAD network
   region_name = gsub(".geojson", "", network_filename)
   message(paste0("Opening file: ", network_filename, " @ ", 
@@ -230,7 +231,8 @@ for (network_filename in network_files[1:25]){
   # Apply all openinfra functions to network (create the data pack)
   network_data_pack = oi_active_cycle(network, remove = FALSE)
   network_data_pack = oi_active_walk(network_data_pack, remove = FALSE)
-  network_data_pack = oi_clean_maxspeed_uk(network_data_pack, no_NA = FALSE, del = FALSE)
+  network_data_pack = oi_clean_maxspeed_uk(network_data_pack, no_NA = FALSE,
+                                           del = FALSE)
   network_data_pack = oi_inclusive_mobility(network_data_pack)
   network_data_pack = oi_is_lit(network_data_pack, remove = FALSE)
   network_data_pack = oi_recode_road_class(network_data_pack, del = FALSE)
@@ -254,6 +256,7 @@ for (network_filename in network_files[1:25]){
       sf::st_write(network_data_pack, paste0(data_pack_dir, data_pack_filename), append = FALSE) 
     }
   }
+  
   # Upload data packs with piggyback
   if (piggyback_data_packs){
     for (f in save_formats){
