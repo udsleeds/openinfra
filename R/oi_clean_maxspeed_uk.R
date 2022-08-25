@@ -38,7 +38,10 @@ oi_clean_maxspeed_uk = function(osm_sf, no_NA = FALSE, del = FALSE) {
       (maxspeed == "national" & highway %!in% c("motorway", "motorway_link")) ~ "60 mph",  
       
       # maxspeed == national, when on standard (i.e Non-Residential) dual carriageway
-      (maxspeed == "national" & highway %in% c("trunk", "trunk_link")) ~ "70 mph",
+      # Default is 60 mph - if there is physical separation this is 70 mph, but 
+      # assume that if there is separation then maxspeed tag = 70 mph. Rather be
+      # conservative stating 60 mph if not stated.
+      (maxspeed == "national" & highway %in% c("trunk", "trunk_link")) ~ "60 mph",
       
       # maxspeed == (20|30|40|50|60|70 --> + mph)
       maxspeed == "20" ~ "20 mph",
