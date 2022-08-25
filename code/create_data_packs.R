@@ -30,7 +30,7 @@ local_save_data_pack = TRUE           # Save data packs locally?
 piggyback_data_packs = TRUE           # Upload data packs to releases? 
 save_formats = c(".geojson", ".gpkg") # Data pack file formats
 release_tag = "0.4"                   # Releases tag for piggyback
-creation_date = "25_08_2022"
+creation_date = "25_08_2022"          # Date of download for england-latest.osm
 
 # File path or URL to LAD bounding polygons
 LAD_polygons_path = paste0("https://github.com/udsleeds/openinfra/raw/",
