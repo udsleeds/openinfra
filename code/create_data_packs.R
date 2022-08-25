@@ -1,37 +1,29 @@
-# Info  -------------------------------------------------------------------
-# This script contains the workflow that generates the transport infrastructure
-# data packs for each Local Authority District (LAD) within England - we look to
-# update this workflow to also contain the LADs of Scotland and potentially 
-# Norther Ireland (NI) provided tags here are consistent with the rest of the 
-# United Kingdom (UK).
-
-# Workflow proposal: 
-# 1 - Download England-latest.osm.pbf and store lcoally
-
-# 2 - For each LAD, get default OSM networks by subsetting from England-latest
-#     using oe_read(), pointing to local England-latest as input file. Save each 
-#     LAD network as a .geojson
-
-# 3 - For each LAD network, read the .geojson and load into R, then apply the 
-#     openinfra functions to create a data pack for that LAD
-
-# 4 - Write the data pack locally as both .geojson and .gpkg
-
-# 5 - Upload the local data packs to github releases using piggyback package
-
-
 ################################################################################
-# Flight Notes:                                                                #
-# You'll need to un-comment parts of this script that require internet to work #
-# for example:                                                                 #
-#     - oe_get() (downloading data for england-latest)   X                     #
-#     - Library Installs                                 X                     #
-#     - Obtaining LAD polygons from github               X                     #
+# Info  -------------------------------------------------------------------    #
+# This script contains the workflow that generates transport infrastructure    #
+# data packs for each Local Authority District (LAD) within England - we look  #
+# to update this workflow to also contain the LADs of Scotland and potentially #
+# Norther Ireland (NI) provided tags here are consistent with the rest of the  #
+# United Kingdom (UK).                                                         #
+#                                                                              #
+# Workflow proposal:                                                           #
+# 1 - Download England-latest.osm.pbf and store locally                        #
+#                                                                              #
+# 2 - For each LAD, get default OSM networks by subsetting from England-latest #
+#     using oe_read(), pointing to local England-latest as input file. Save    #
+#     each LAD network as a .geojson                                           #
+#                                                                              #
+# 3 - For each LAD network, read the .geojson and load into R, then apply the  #
+#     openinfra functions to create a data pack for that LAD                   #
+#                                                                              #
+# 4 - Write the data pack locally as both .geojson and .gpkg                   #
+#                                                                              #
+# 5 - Upload the local data packs to github releases using piggyback package   #
+#                                                                              #
 ################################################################################
-
 
 # Library installs --------------------------------------------------------
-# Run this section if you are missing any of the required libraries imported
+# Run this section if you are missing any of the required libraries from
 # within Library imports. 
 
 pkgs = c("remotes",
@@ -50,17 +42,17 @@ for (pkg in pkgs){
   }
 }
 
-# Check if osmextract is installed - install if not
+# Check if osmextract dev is installed - install if not
 if (!("osmextract" %in% installed.packages())){
   remotes::install_github("ropensci/osmextract")
 } 
 
-# Check if openinfra is installed - install if not
+# Check if openinfradev is installed - install if not
 if (!("openinfra" %in% installed.packages())){
   remotes::install_github("udsleeds/openinfra")
 }
 
-# Remove remotes from pkgs - not needed after installing above
+# Remove remotes from pkgs - not needed after installing dev packages above
 pkgs = pkgs[! pkgs %in% "remotes"]
 
 # Library imports ---------------------------------------------------------
@@ -241,7 +233,8 @@ for (network_filename in network_files[1:25]){
   network_data_pack = oi_clean_maxspeed_uk(network_data_pack, no_NA = FALSE, del = FALSE)
   network_data_pack = oi_inclusive_mobility(network_data_pack)
   network_data_pack = oi_is_lit(network_data_pack, remove = FALSE)
-  network_data_pack = oi_recode_road_class(network_data_pack)
+  network_data_pack = oi_recode_road_class(network_data_pack, del = FALSE)
+  network_data_pack = oi_road_names(network_data_pack)
   
   # Select relevant columns for data packs
   network_data_pack = network_data_pack %>%
