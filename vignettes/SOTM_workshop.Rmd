@@ -299,7 +299,15 @@ To refine this network further we can apply spatial subsetting.
 
 ## Defining your own area (optional)
 
-You can subset the downloaded datasets using `mapview` and `mapedit` packages (which you need to have installed if you run this section) to manually define an area, get its coordinates to perform spatial subsetting.
+You can subset the downloaded datasets using `mapview` and `mapedit` packages (which you need to have installed if you run this section)[^2] to manually define an area, get its coordinates to perform spatial subsetting.
+
+[^2]: These can be installed with: 
+
+    ```{r, install_mapview_and_mapedit, message=FALSE, eval=FALSE}
+    install.packages(c("mapview", "mapedit"))
+    ```
+
+    ## 
 
 ```{r, eval=FALSE}
 map_leeds = mapview::mapview(sotm_data) # create an object containing interactive map  
@@ -311,7 +319,15 @@ box
 ## Getting data with `osmdata` (optional)
 
 Another package for getting OSM data is `osmdata`, which gets data from the Overpass API rather than from bulk .pbf files.
-`osmdata` is ideal for getting small amounts of data from OSM, e.g. the boundary representing Leeds, as shown in the code chunk below (you need to have the `osmdata` package installed to run this).
+`osmdata` is ideal for getting small amounts of data from OSM, e.g. the boundary representing Leeds, as shown in the code chunk below (you need to have the `osmdata` package installed to run this)[^3].
+
+[^3]: This can be installed with: 
+
+    ```{r install_osmdata, message=FALSE, eval=FALSE}
+    install.packages("osmdata")
+    ```
+
+    ##
 
 ```{r osmdata_boundary, eval=FALSE}
 leeds_boundary = osmdata::getbb("Leeds", format_out = "sf_polygon", limit = 1)
