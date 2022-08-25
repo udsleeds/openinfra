@@ -302,7 +302,7 @@ To refine this network further we can apply spatial subsetting.
 You can subset the downloaded datasets using `mapview` and `mapedit` packages (which you need to have installed if you run this section) to manually define an area, get its coordinates to perform spatial subsetting.
 
 ```{r, eval=FALSE}
-map_leeds = mapview::mapview(leeds) # create an object containing interactive map  
+map_leeds = mapview::mapview(sotm_data) # create an object containing interactive map  
 map_leeds_edit = mapedit::editMap(map_leeds) # use `mapedit` package to draw a new polygon
 box = sf::st_bbox(map_leeds_edit$drawn$geometry) # extract the coordinates of a new polygon
 box
