@@ -208,12 +208,16 @@ for (network_filename in network_files[1:25]){
                  format(Sys.time(), "%a %b %d %X %Y")))
   network = sf::read_sf(paste0(network_dir, network_filename))
   
-  # Check if this data pack already exists: overwrite or not
+  # Check if this data pack already exists
   if (network_filename %in% substring(gsub("_data_pack", "", list.files(data_pack_dir)), 12 )){
     # In this instance the data pack already exists - what to do next... ?
     if (overwrite_datapack){
-      # overwrite the existing data pack...
-      # (do nothing, code below will overwrite existing data pack)
+      # Delete data pack .geojson
+      unlink(paste0(creation_date,"_datapack_",network_filename)) 
+      # Delete data pack .gpkg
+      unlink(paste0(creation_date,"_datapack_",
+                    sub(".geojson", ".gpkg", network_filename)))
+      # Nothing else - code below will re-write new data pack.
     } else {
       # Don't overwrite the data pack, move onto the next region
       message(paste0("Error:" , region_name, 
