@@ -22,6 +22,32 @@
 #                                                                              #
 ################################################################################
 
+# Key parameters  ---------------------------------------------------------
+
+overwrite_network = FALSE             # Overwrite existing network geojsons? 
+overwrite_datapack = FALSE            # Overwrite existing data pack geojsons? 
+local_save_data_pack = TRUE           # Save data packs locally?  
+piggyback_data_packs = TRUE           # Upload data packs to releases? 
+save_formats = c(".geojson", ".gpkg") # Data pack file formats
+release_tag = "0.4"                   # Releases tag for piggyback
+creation_date = "25_08_2022"
+
+# File path or URL to LAD bounding polygons
+LAD_polygons_path = paste0("https://github.com/udsleeds/openinfra/raw/",
+                           "main/data-small/lads_joined_2021.geojson")
+# File path to store default OSM geojson networks
+network_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/openinfra",
+                     "/data_pack_networks/")
+# File path to store default OSM geojson networks
+data_pack_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
+                       "openinfra/data_packs/")
+
+if (piggyback_data_packs){
+  # If uploading, local save must be true as pigggyback needs a local 
+  # file to upload
+  local_save_data_pack = TRUE 
+}
+
 # Library installs --------------------------------------------------------
 # Run this section if you are missing any of the required libraries from
 # within Library imports. 
@@ -59,34 +85,7 @@ pkgs = pkgs[! pkgs %in% "remotes"]
 pkgs = c(pkgs, "osmextract", "openinfra")
 lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
 
-
-# Key parameters  ---------------------------------------------------------
-
-overwrite_network = FALSE             # Overwrite existing network geojsons? 
-overwrite_datapack = FALSE            # Overwrite existing data pack geojsons? 
-local_save_data_pack = TRUE           # Save data packs locally?  
-piggyback_data_packs = TRUE           # Upload data packs to releases? 
-save_formats = c(".geojson", ".gpkg") # Data pack file formats
-release_tag = "0.3"                   # Releases tag for piggyback
-creation_date = "25_08_2022"
-
-# File path or URL to LAD bounding polygons
-LAD_polygons_path = paste0("https://github.com/udsleeds/openinfra/raw/",
-                          "main/data-small/lads_joined_2021.geojson")
-# File path to store default OSM geojson networks
-network_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/openinfra",
-                     "/data_pack_networks/")
-# File path to store default OSM geojson networks
-data_pack_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
-                       "openinfra/data_packs/")
-
-if (piggyback_data_packs){
-  # If uploading, local save must be true as pigggyback needs a local 
-  # file to upload
-  local_save_data_pack = TRUE 
-}
 # Create required directories ---------------------------------------------
-
 #Create directory for current date to store england-latest.osm.pbf
 dir.create(paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
                   "eng_osm_downloads/", creation_date))
