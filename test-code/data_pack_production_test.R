@@ -129,31 +129,3 @@ for (filename in network_files){
   sf::st_write(network_data_pack, paste0(data_pack_dir, filename))
   print(paste("Data pack created for LAD:", gsub("_data_pack.geojson","",filename), "@",format(Sys.time(), "%a %b %d %X %Y")))
 }
-
-#_________MAPSSSSS____________________________________
-
-#cycle_map = tmap::tm_shape(test_network_datapack) + 
-#  tmap::tm_lines(col = "oi_cycle")
-#tmap::tmap_save(cycle_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/cycle_map.html')
-
-#walk_map = tmap::tm_shape(test_network_datapack) + 
-#  tmap::tm_lines(col = "oi_walk")
-#tmap::tmap_save(walk_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/walk_map.html')
-
-#maxspeed_map = tmap::tm_shape(test_network_datapack) + 
-#  tmap::tm_lines(col = "oi_maxspeed")
-#tmap::tmap_save(maxspeed_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/maxspeed_map.html')
-
-#im_map = tmap::tm_shape(test_network_datapack %>% dplyr::select(c("im_kerb", "im_footway", "im_footpath", "im_crossing", 
-#                                                                  "im_footway_imp", "im_light", "im_tactile", "im_surface_paved", "im_surface",
-#                                                                  "im_width", "im_width_est"))) + 
-#  tmap::tm_lines()
-#tmap::tmap_save(im_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/im_map.html')
-
-#is_lit_map = tmap::tm_shape(test_network_datapack) + 
-#  tmap::tm_lines(col = "oi_is_lit")
-#tmap::tmap_save(is_lit_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/is_lit_map.html')
-
-#road_desc_map = tmap::tm_shape(test_network_datapack) + 
-#  tmap::tm_lines(col = "road_desc")
-#tmap::tmap_save(road_desc_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/road_desc_map.html')
