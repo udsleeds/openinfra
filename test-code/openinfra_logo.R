@@ -1,57 +1,37 @@
-# Generate the OpenInfra hex logo. 
+#Generate the OpenInfra hex logo. 
 
+
+# Load libraries --------------------------------------------------------------
 library(hexSticker)
 library(openinfra)
-library(tmap)
 library(ggplot2)
 library(sf)
 
+# Load package data. ----------------------------------------------------------
 logo_data = openinfra::sotm_data
 
-geom_only_logo_plot = plot(logo_data$geometry)
+# Try see if you can change the spatial buffer to be a Hexagon centred at LCC so that it fits nicely in the hexSticker. 
+leeds_centre_point = sf::st_sfc(sf::st_point(c(-1.549, 53.801)), crs = "EPSG:4326")
+leeds_centre_buffer = sf::st_buffer(leeds_centre_point, dist = 1750) # radius in m
+
+# Full or buffered data. ------------------------------------------------------
+#logo_data_buffed = logo_data
+logo_data_buffed = logo_data[leeds_centre_buffer, op = st_within]
+
+# Create ggplot of data. ------------------------------------------------------
+logo_geom = logo_data_buffed$geometry 
+
+logo_plt = ggplot2::ggplot(data = logo_geom) + 
+  ggplot2::geom_sf(mapping = aes(size = .15)) + # Specify linestring size
+  scale_size_identity()
 
 
-logo_plot = tmap::tm_shape(logo_data) + 
-  tmap::tm_lines()
-#___________________
+logo_plt = logo_plt + theme_void() # Remove lat long axes 
+logo_plt
 
-logo_geom <- logo_data$geometry 
-logo_geom = logo_geom %>% st_crop(logo_geom)
-
-logo_plt <- ggplot2::ggplot(data = logo_geom) + 
-  ggplot2::geom_sf()
-
-logo_plt <- logo_plt + theme_void() + theme_transparent()
-
-
-ggplot(data = logo_data) 
-
-# hexSticker example ------------------------------------------------------
+# Create hexSticker  --=--------------------------------------------------------
 s = sticker( logo_plt,
-             package="openinfra", p_color = "black", p_x =1, p_y =2, p_size=20, s_x=1, s_y=1, s_width=1.8, s_height=1.8,
+             package="openinfra", p_color = "black", p_x =1, p_y =2, p_size=20, s_x=1, s_y=1, s_width=1.8, s_height=1.8, dpi = 900,
+             white_around_sticker = TRUE,
              filename="~openinfra_hex_logo_fullmap.png")
-plot(s)
-
-
-#______________________________________________
-
-
-
-
-
-
-
-
-imgurl = system.file('/home/james/Desktop/openinfra_logo.png', package="openinfra")
-
-imgurl = "https://user-images.githubusercontent.com/1825120/185739316-4ba87157-aab3-4d92-bf4c-5960e509e0c8.png"
-
-sticker(imgurl, package="openinfra", p_size=20, s_x=1, s_y=.75, s_width=.6,
-        filename="/home/james/Desktop/openinfra_hex_logo.png")
-
-
-
-s <- sticker(subview = logi,
-             package="hexSticker", p_size=20, s_x=.8, s_y=.6, s_width=1.4, s_height=1.2,
-             filename="inst/figures/baseplot.png")
 plot(s)
