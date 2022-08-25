@@ -95,7 +95,7 @@ dir.create(paste0(network_dir, creation_date))
 # Create dir for current date to store data packs created from default networks
 dir.create(paste0(data_pack_dir, creation_date))
 
-# Get required data ------------------------------------------------------------
+# Get required data -------------------------------------------------------
 
 # Tags required to make data packs
 required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
@@ -105,7 +105,7 @@ required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
                   "admin_level", "name", "ref")
 
 
-# Download OSM data
+# Download & save OSM data
 dl_eng_latest = oe_get(
   place = "England",
   extra_tags = required_tags,
@@ -115,7 +115,7 @@ dl_eng_latest = oe_get(
                               "openinfra/eng_osm_downloads/", creation_date)
 )
 
-# File path to downloaded (above) england-latest.osm.pbf
+# File path to the downloaded (above) england-latest.osm.pbf
 eng_latest_fp = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
                        "eng_osm_downloads/", creation_date,
                        "/geofabrik_england-latest.osm.pbf")
@@ -123,10 +123,10 @@ eng_latest_fp = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
 # Download LAD boundary polygons
 LADs = sf::read_sf(LAD_polygons_path)
 LADs = sf::st_make_valid(LADs)
-LADs = LADs[1:25, ] # only use first 5 whilst testing.
+LADs = LADs[1:25, ] # only use first 5 whilst testing. (comment out when done)
 LAD_polys = LADs %>% dplyr::select(c("LAD21NM", "geometry"))
 
-# Create default OSM networks per LAD -------------------------------------
+# Create & save default OSM networks per LAD -------------------------------
 
 # Specify default parsing requirements 
 translate_options = c(
@@ -140,9 +140,6 @@ network_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
 message(c("Creating data packs now ", format(Sys.time(), "%a %b %d %X %Y")))
 
 # Iterates through all LADs, saving a geojson of each default OSM network. 
-# Note - we can probably just apply openinfra functions within here to create
-# the data packs before uploading them to releases in one
-
 for (region_name in LADs$LAD21NM){
   # Generate file name
   filename = paste0(gsub(" ", "_", region_name), ".geojson")
@@ -276,4 +273,3 @@ for (network_filename in network_files[1:25]){
 #zip(zipfile = paste0(data_pack_basename, ".zip"),
 #    files = paste0(data_pack_basename, "_shp"))
 #piggyback::pb_upload(paste0(data_pack_basename, ".zip"))
-
