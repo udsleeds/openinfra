@@ -25,7 +25,7 @@
 # Key parameters  ---------------------------------------------------------
 
 overwrite_network = FALSE             # Overwrite existing network geojsons? 
-overwrite_datapack = FALSE            # Overwrite existing data pack geojsons? 
+overwrite_datapack = TRUE            # Overwrite existing data pack geojsons? 
 local_save_data_pack = TRUE           # Save data packs locally?  
 piggyback_data_packs = TRUE           # Upload data packs to releases? 
 save_formats = c(".geojson", ".gpkg") # Data pack file formats
@@ -209,13 +209,13 @@ for (network_filename in network_files[1:25]){
   network = sf::read_sf(paste0(network_dir, network_filename))
   
   # Check if this data pack already exists
-  if (network_filename %in% substring(gsub("_data_pack", "", list.files(data_pack_dir)), 12 )){
+  if (network_filename %in% substring(gsub("_data_pack", "", list.files(data_pack_dir)), 21 )){
     # In this instance the data pack already exists - what to do next... ?
     if (overwrite_datapack){
       # Delete data pack .geojson
-      unlink(paste0(creation_date,"_datapack_",network_filename)) 
+      unlink(paste0(data_pack_dir, creation_date,"_datapack_",network_filename)) 
       # Delete data pack .gpkg
-      unlink(paste0(creation_date,"_datapack_",
+      unlink(paste0(data_pack_dir, creation_date,"_datapack_",
                     sub(".geojson", ".gpkg", network_filename)))
       # Nothing else - code below will re-write new data pack.
     } else {
