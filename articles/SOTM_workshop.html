@@ -102,7 +102,7 @@
       <h1 data-toc-skip>SOTM 2022 Workshop - OSM for sustainable transport planning: getting started</h1>
                         <h4 data-toc-skip class="author">James Hulse, Greta Timaite, Robin Lovelace</h4>
             
-            <h4 data-toc-skip class="date">2022-08-24</h4>
+            <h4 data-toc-skip class="date">2022-08-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/udsleeds/openinfra/blob/HEAD/vignettes/SOTM_workshop.Rmd" class="external-link"><code>vignettes/SOTM_workshop.Rmd</code></a></small>
       <div class="hidden name"><code>SOTM_workshop.Rmd</code></div>
@@ -346,7 +346,7 @@ This workshop covers:
 </h3>
 <p>You can subset the downloaded datasets using <code>mapview</code> and <code>mapedit</code> packages (which you need to have installed if you run this section) to manually define an area, get its coordinates to perform spatial subsetting.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">map_leeds</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="fu">mapview</span><span class="op">(</span><span class="va">leeds</span><span class="op">)</span> <span class="co"># create an object containing interactive map  </span></span>
+<code class="sourceCode R"><span><span class="va">map_leeds</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="fu">mapview</span><span class="op">(</span><span class="va">sotm_data</span><span class="op">)</span> <span class="co"># create an object containing interactive map  </span></span>
 <span><span class="va">map_leeds_edit</span> <span class="op">=</span> <span class="fu">mapedit</span><span class="fu">::</span><span class="fu">editMap</span><span class="op">(</span><span class="va">map_leeds</span><span class="op">)</span> <span class="co"># use `mapedit` package to draw a new polygon</span></span>
 <span><span class="va">box</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span><span class="va">map_leeds_edit</span><span class="op">$</span><span class="va">drawn</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span> <span class="co"># extract the coordinates of a new polygon</span></span>
 <span><span class="va">box</span></span></code></pre></div>
