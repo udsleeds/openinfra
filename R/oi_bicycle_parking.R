@@ -19,8 +19,9 @@
 #' @export oi_bicycle_parking 
 #' @examples
 #' internal_data = example_data
-#' example_data = example_data %>% dplyr::mutate(amenity = NA)
+#' #example_data = example_data %>% dplyr::mutate(amenity = NA)
 #' example_output = oi_bicycle_parking(example_data)
+#' example_output = example_output %>% dplyr::filter(oi_cycle_parking == "yes")
 #' plot(example_output["oi_cycle_parking"])
 oi_bicycle_parking = function(osm_sf, remove = FALSE){
   osm_sf_recat = osm_sf %>% 
