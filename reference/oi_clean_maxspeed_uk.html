@@ -124,10 +124,10 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">internal_data</span> <span class="op">=</span> <span class="va">example_data</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">internal_data</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 29911    29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 22390    28</span>
 <span class="r-in"><span><span class="va">output</span> <span class="op">=</span> <span class="fu">oi_clean_maxspeed_uk</span><span class="op">(</span><span class="va">internal_data</span>, no_NA <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3606   30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2024   29</span>
 <span class="r-in"><span><span class="co">#tmap::qtm(output["oi_maxspeed"])</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#' # Advanced plot with tmap - un-comment following four lines to run! </span></span></span>
