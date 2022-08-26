@@ -13,7 +13,7 @@ devtools::load_all()
 all_extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
                    "kerb", "footway", "sidewalk", "cycleway", "segregated", "highway",
                    "crossing", "lit", "tactile_paving", "surface", "smoothness", "width",
-                   "est_width", "lit_by_led", "ref")
+                   "est_width", "lit_by_led", "ref", "amenity")
 
 # Set place name
 place_name = "Leeds"
@@ -49,32 +49,57 @@ print(c(place_name,"provider is:",  provider))
 # Buffer Setup ------------------------------------------------------------
 
 # Setting up the circular buffer around specified (long, lat) coord
-leeds_centre_point = sf::st_sfc(sf::st_point(coords), crs = crs)
-leeds_buffer = sf::st_buffer(leeds_centre_point, dist = radius)
+place_centre_point = sf::st_sfc(sf::st_point(coords), crs = crs)
+circle_buffer = sf::st_buffer(place_centre_point, dist = radius)
 
 
 
 # Get OSM Data ------------------------------------------------------------
 
-
-# Total dataset for leeds - no travel mode specified
+# Download Data
 total_place = osmextract::oe_get(
-  place = place_name,
-  provider = provider,
-  boundary = circle_buffer,
-  boundary_type = "clipsrc",
-  layer = "lines",
-  never_skip_vectortranslate = TRUE,
+  place = place_name, 
+  download_only = TRUE,
   force_download = TRUE,
-  quiet = FALSE,
-  extra_tags = all_extra_tags
+  skip_vectortranslate = TRUE,
+  never_skip_vectortranslate = FALSE,
+  download_directory = osmextract::oe_download_directory()
 )
 
-# Subset the data to desired radius 
-total_place = total_place %>% dplyr::filter(! is.na(highway))
-osm_sf= total_place[circle_buffer, op = st_within]
+# File path of downloaded file
+fp = paste0(osmextract::oe_download_directory(), "/bbbike_Leeds.osm.pbf")
 
-#osm_sf = total_place
+# Read place "lines" layer
+place_lines = osmextract::oe_read(
+  file_path = fp, 
+  never_skip_vectortranslate = TRUE, 
+  layer = "lines",
+  extra_tags = all_extra_tags,
+  boundary = circle_buffer,
+  boundary_type = "clipsrc"
+)
+
+# Read place "points" layer
+place_points = osmextract::oe_read(
+  file_path = fp, 
+  never_skip_vectortranslate = TRUE,
+  layer = "points",
+  extra_tags = all_extra_tags,
+  boundary = circle_buffer,
+  boundary_type = "clipsrc"
+)
+
+# Remove columns with different names
+place_points = within(place_points, rm("address", "is_in", "place"))
+place_lines = within(place_lines, rm("waterway", "aerialway", "z_order"))
+
+# Combine place layers
+total_place = rbind(place_lines, place_points)
+
+
+# Save package data -------------------------------------------------------
+
+
 
 # Create Data Pack Visuals ------------------------------------------------
 
@@ -96,43 +121,43 @@ tmap::tmap_mode("view")
 map_road_desc = tmap::tm_shape(data_pack_road_desc %>% dplyr::select("oi_road_desc")) + 
   tmap::tm_lines(col = "oi_road_desc", title.col = "Recoded Road Descriptions") + 
   tmap::tm_layout(title = "Recoded Road Descriptions - 2.5km Buffer at Leeds City Centre", legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(map_road_desc, "2500m_LCC_map_road_desc.html")
+#tmap::tmap_save(map_road_desc, "2500m_LCC_map_road_desc.html")
 
 # OSM Highway Values
 map_norm_highway = tmap::tm_shape(data_pack %>% dplyr::select("highway")) + 
   tmap::tm_lines(col = "highway", title.col = "OSM Highway Values") + 
   tmap::tm_layout(title = "Default OSM Highway Values - 2.5km Buffer at Leeds City Centre ", legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(map_norm_highway, "2500m_LCC_map_norm_highway.html")
+#tmap::tmap_save(map_norm_highway, "2500m_LCC_map_norm_highway.html")
 
 # oi_active_cycle() oi_cycle
 map_active_cycle = tmap::tm_shape(data_pack_cycle %>% dplyr::select("oi_cycle")) + 
   tmap::tm_lines(col = "oi_cycle", title.col = "Cyclable Ways", palette = c("red", "green")) + 
   tmap::tm_layout(title = "Cyclable OSM Infrastructure - 2.5km Buffer at Leeds City Centre", legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(map_active_cycle, "2500m_LCC_map_active_cycle.html")
+#tmap::tmap_save(map_active_cycle, "2500m_LCC_map_active_cycle.html")
 
 # oi_active_walk() oi_walk
 map_active_walk = tmap::tm_shape(data_pack_walk %>% dplyr::select("oi_walk")) + 
   tmap::tm_lines(col = "oi_walk", title.col = "Walkable Ways", palette = c("red", "green")) + 
   tmap::tm_layout(title = "Walkable OSM Infrastructure - 2.5km Buffer at Leeds City Centre", legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(map_active_walk, "2500m_LCC_map_active_walk.html")
+#tmap::tmap_save(map_active_walk, "2500m_LCC_map_active_walk.html")
 
 # oi_clean_maxspeed_uk() oi_maxspeed
 map_maxspeed = tmap::tm_shape(data_pack_maxspeed %>% dplyr::select("oi_maxspeed")) + 
   tmap::tm_lines(col = "oi_maxspeed", title.col = "Recategorised Maxspeed") + 
   tmap::tm_layout(title = "Cleaned UK Maxspeed Values - 2.5km Buffer at Leeds City Centre", legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(map_maxspeed, "2500m_LCC_fig_maxspeed.html")
+#tmap::tmap_save(map_maxspeed, "2500m_LCC_fig_maxspeed.html")
 
 # oi_is_lit() oi_is_lit
 map_is_lit = tmap::tm_shape(data_pack_lit %>% dplyr::select("oi_is_lit")) + 
   tmap::tm_lines(col = "oi_is_lit", title.col = "Presence of Lighting") + 
   tmap::tm_layout(title = "Presence of Lighting on OSM Ways - 2.5km Buffer at Leeds City Centre", legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(map_is_lit, "2500m_LCC_fig_is_lit.html")
+#tmap::tmap_save(map_is_lit, "2500m_LCC_fig_is_lit.html")
 
 # oi_road_names() oi_name
 map_road_names = tmap::tm_shape(data_pack_road_name %>% dplyr::select("oi_name")) + 
   tmap::tm_lines(col = "oi_name", title.col = "OSM Road Names") + 
   tmap::tm_layout(title = "Recoded Road Names - 2.5km Buffer at Leeds City Centre", legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(map_road_names, "2500m_LCC_fig_road_names.html")
+#tmap::tmap_save(map_road_names, "2500m_LCC_fig_road_names.html")
 
 
 # SOTM 2022 Presentation Figures ------------------------------------------
