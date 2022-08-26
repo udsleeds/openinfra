@@ -1,6 +1,5 @@
 #' OSM infrastructure data used in creation of transport infrastructure data packs.
 #' 
-#' Contains all columns required for IM function, oi_recode_max_speed, oi_recode_road_, oi_active_cycle, oi_is_lit.
 #' 
 #' @docType data
 #' @keywords dataset

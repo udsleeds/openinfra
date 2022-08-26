@@ -14,7 +14,7 @@ A data frame with 29,911 features described by 29 variables.
 example_data
 }
 \description{
-Contains all columns required for IM function, oi_recode_max_speed, oi_recode_road_, oi_active_cycle, oi_is_lit.
+OSM infrastructure data used in creation of transport infrastructure data packs.
 }
 \examples{
 library(sf)
