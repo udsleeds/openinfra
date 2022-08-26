@@ -31,7 +31,7 @@ piggyback_data_packs = TRUE           # Upload data packs to releases?
 save_formats = c(".geojson", ".gpkg") # Data pack file formats
 release_tag = "0.4"                   # Releases tag for piggyback
 creation_date = "25_08_2022"          # Date of download for england-latest.osm
-lad_limit = 1:100                      # Limits number of LADs to be processed
+lad_limit = 1:330                     # Limits number of LADs to be processed
 
 # File path or URL to LAD bounding polygons
 LAD_polygons_path = paste0("https://github.com/udsleeds/openinfra/raw/",
@@ -252,17 +252,17 @@ for (network_filename in network_files[lad_limit]){
       #region_name
       data_pack_filename = paste0(creation_date, "_", "datapack_",
                                   gsub(".geojson", "", network_filename), f)
-      message("Writing data pack for: ", region_name, "with format: ", f)
+      message("Writing data pack for: ", region_name, " with format: ", f)
       sf::st_write(network_data_pack, paste0(data_pack_dir, data_pack_filename), append = FALSE) 
     }
   }
   
-  # Upload data packs with piggyback
+  # Upload data packs with piggyback 
   if (piggyback_data_packs){
     for (f in save_formats){
       data_pack_filename = paste0(creation_date, "_", "datapack_",
                                   gsub(".geojson", "", network_filename), f)
-      message("Uploading data pack for: ", region_name, "with format: ", f)
+      message("Uploading data pack for: ", region_name, " with format: ", f)
       piggyback::pb_upload(paste0(data_pack_dir, data_pack_filename), tag = release_tag)
     }
   }
