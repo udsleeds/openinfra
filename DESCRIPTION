@@ -2,7 +2,7 @@ Package: openinfra
 Title: Get, Use and Understand Open Data on Transport Infrastructure
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Greta", "Timaite", email = "g.timaite@leeds.ac.uk", role = c("aut", "cre"),
+    person("Greta", "Timaite", email = "g.timaite@leeds.ac.uk", role = c("aut"),
            comment = c(ORCID = "0000-0001-5679-1111")),
     person("Robin", "Lovelace", role = c("aut"),
            comment = c(ORCID = "0000-0001-5679-6536")),
