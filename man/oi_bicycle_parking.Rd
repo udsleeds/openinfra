@@ -2,7 +2,7 @@
 % Please edit documentation in R/oi_bicycle_parking.R
 \name{oi_bicycle_parking}
 \alias{oi_bicycle_parking}
-\title{Identify for bicycle parking.}
+\title{Identify bicycle parking places from OSM}
 \usage{
 oi_bicycle_parking(osm_sf, remove = FALSE)
 }
@@ -42,5 +42,5 @@ layer \code{"points"} must be requested when using \code{osmextract::oe_get()})
 internal_data = example_data
 example_data = example_data \%>\% dplyr::mutate(amenity = NA)
 example_output = oi_bicycle_parking(example_data)
-
+plot(example_output \%>\%  dplyr::filter(oi_cycle_parking == "yes"))
 }

@@ -1,4 +1,4 @@
-#' Identify for bicycle parking.
+#' Identify bicycle parking places from OSM
 #'
 #' This function re-categorises OSM data, adding a column to an OSM network 
 #' `oi_cycle_parking` with value `"yes"` if a node/way within the OSM network has
