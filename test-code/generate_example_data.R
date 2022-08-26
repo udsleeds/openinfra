@@ -94,11 +94,16 @@ place_points = within(place_points, rm("address", "is_in", "place"))
 place_lines = within(place_lines, rm("waterway", "aerialway", "z_order"))
 
 # Combine place layers
-total_place = rbind(place_lines, place_points)
+example_data = rbind(place_lines, place_points)
+
+
+# Visualise Data ----------------------------------------------------------
+tmap_mode("view")
+qtm(example_data)
 
 
 # Save package data -------------------------------------------------------
-
+usethis::use_data(example_data, overwrite = TRUE)
 
 
 # Create Data Pack Visuals ------------------------------------------------
