@@ -2,13 +2,14 @@ Package: openinfra
 Title: Get, Use and Understand Open Data on Transport Infrastructure
 Version: 0.0.0.9000
 Authors@R: c(
+    person("James", "Hulse", role = c("aut", "cre"),
+           email = "hulse.jjc@sky.com",
+           comment = c(ORCID = "0000-0001-6885-8191")),
     person("Greta", "Timaite", email = "g.timaite@leeds.ac.uk", role = c("aut"),
            comment = c(ORCID = "0000-0001-5679-1111")),
     person("Robin", "Lovelace", role = c("aut"),
-           comment = c(ORCID = "0000-0001-5679-6536")),
-    person("James", "Hulse", role = c("aut", "cre"),
-           email = "hulse.jjc@sky.com",
-           comment = c(ORCID = "0000-0001-6885-8191"))
+           comment = c(ORCID = "0000-0001-5679-6536"))
+
   )
 Description: This package contains code and example data to explore the utility of
   open data for transport planning.
