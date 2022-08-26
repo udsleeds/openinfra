@@ -70,7 +70,7 @@ total_place = osmextract::oe_get(
 fp = paste0(osmextract::oe_download_directory(), "/bbbike_Leeds.osm.pbf")
 
 # Read place "lines" layer
-place_lines = osmextract::oe_read(
+example_data = osmextract::oe_read(
   file_path = fp, 
   never_skip_vectortranslate = TRUE, 
   layer = "lines",
@@ -80,7 +80,7 @@ place_lines = osmextract::oe_read(
 )
 
 # Read place "points" layer
-place_points = osmextract::oe_read(
+example_data_pois = osmextract::oe_read(
   file_path = fp, 
   never_skip_vectortranslate = TRUE,
   layer = "points",
@@ -90,21 +90,17 @@ place_points = osmextract::oe_read(
 )
 
 # Remove columns with different names
-place_points = within(place_points, rm("address", "is_in", "place"))
-place_lines = within(place_lines, rm("waterway", "aerialway", "z_order"))
+to_combine_pois = within(example_data_pois, rm("address", "is_in", "place"))
+to_combine_ways = within(example_data, rm("waterway", "aerialway", "z_order"))
 
 # Combine place layers
-example_data = rbind(place_lines, place_points)
-
-
-# Visualise Data ----------------------------------------------------------
-tmap_mode("view")
-qtm(example_data)
+example_data_combined = rbind(to_combine_pois, to_combine_ways)
 
 
 # Save package data -------------------------------------------------------
+# Un-comment the below to save created package data
 usethis::use_data(example_data, overwrite = TRUE)
-
+usethis::use_data(example_data_pois, overwrite = TRUE)
 
 # Create Data Pack Visuals ------------------------------------------------
 
