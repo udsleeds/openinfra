@@ -122,3 +122,30 @@ transport_regions %>% tmap::qtm(title = 'Coloured transport regions of England',
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/Coloured_England_transport_regions_4.html", height = "1500px") 
 ```
 
+
+
+## Transport Regions by Country
+
+### Northern Ireland
+```{r}
+NI_LADs = c("Causeway Coast and Glens", "Derry City and Strabane", "Belfast",
+            "Fermanagh and Omagh", "Mid Ulster", "Mid and East Antrim", 
+            "Antrim and Newtownabbey", "Armagh City, Banbridge and Craigavon",
+            "Newry, Mourne and Down", "Lisburn and Castlereagh",
+            "Ards and North Down", "Causeway Coast and Glens")
+
+```
+
+```{r}
+Scotland_LADs = c("South Ayrshire", "South Lanarkshire", "Scottish Borders",
+                  "East Ayrshire", "East Lothian", "Midlothian",
+                  "City of Edinburgh", "West Lothian", "North Lanarkshire",
+                  "Glasgow City", "East Renfrewshire", "North Ayrshire",
+                  "Argyll and Bute", "Renfrewshire", "Inverclyde", "Fife",
+                  "West Dunbartonshire", "East Dunbartonshire", "Stirling",
+                  "Falkirk", "Clackmannanshire", "Perth and Kinross",
+                  "Dundee City", "Na h-Eileanan Siar", "Highland",
+                  "Shetland Islands", "Orkney Islands", "Moray", "Aberdeenshire",
+                  "Aberdeen City")
+```
+
