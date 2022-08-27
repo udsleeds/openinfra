@@ -123,19 +123,15 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">internal_data</span> <span class="op">=</span> <span class="va">example_data</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">internal_data</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 13198    31</span>
 <span class="r-in"><span><span class="va">output</span> <span class="op">=</span> <span class="fu">oi_clean_maxspeed_uk</span><span class="op">(</span><span class="va">internal_data</span>, no_NA <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2018   32</span>
-<span class="r-in"><span><span class="co">#tmap::qtm(output["oi_maxspeed"])</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">#' # Advanced plot with tmap - un-comment following four lines to run! </span></span></span>
-<span class="r-in"><span><span class="co"># tmap_mode("view")</span></span></span>
-<span class="r-in"><span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">output</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">oi_maxspeed</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_lines.html" class="external-link">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"oi_maxspeed"</span>, title.col <span class="op">=</span> <span class="st">"Cleaned maxspeed"</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html" class="external-link">tm_layout</a></span><span class="op">(</span>legend.bg.color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">output</span><span class="op">[</span><span class="st">"oi_maxspeed"</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="oi_clean_maxspeed_uk-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span> </span></span>
+<span class="r-in"><span><span class="co">#' # Advanced plot with tmap - un-comment following four lines to run! </span></span></span>
+<span class="r-in"><span><span class="co">#' tmap_mode("view")</span></span></span>
+<span class="r-in"><span><span class="co">#' tmap::tm_shape(output |&gt; dplyr::select(oi_maxspeed)) +</span></span></span>
+<span class="r-in"><span><span class="co">#' tmap::tm_lines(col = "oi_maxspeed", title.col = "Cleaned maxspeed") +</span></span></span>
+<span class="r-in"><span><span class="co">#' tmap::tm_layout(legend.bg.color = "white")</span></span></span>
 </code></pre></div>
     </div>
   </div>
