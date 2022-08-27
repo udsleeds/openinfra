@@ -35,15 +35,13 @@ Note: the \code{osm_sf} param must contain the following tags: \code{c("maxspeed
 \examples{
 library(sf)
 internal_data = example_data
-dim(internal_data)
 output = oi_clean_maxspeed_uk(internal_data, no_NA = TRUE)
-dim(output)
-#tmap::qtm(output["oi_maxspeed"])
-
+plot(output["oi_maxspeed"])
+ 
 #' # Advanced plot with tmap - un-comment following four lines to run! 
-# tmap_mode("view")
- tmap::tm_shape(output |> dplyr::select(oi_maxspeed)) +
-  tmap::tm_lines(col = "oi_maxspeed", title.col = "Cleaned maxspeed") +
-  tmap::tm_layout(legend.bg.color = "white")
+#' tmap_mode("view")
+#' tmap::tm_shape(output |> dplyr::select(oi_maxspeed)) +
+#' tmap::tm_lines(col = "oi_maxspeed", title.col = "Cleaned maxspeed") +
+#' tmap::tm_layout(legend.bg.color = "white")
 }
 \keyword{datasets}
