@@ -40,7 +40,6 @@ layer \code{"points"} must be requested when using \code{osmextract::oe_get()})
 }
 \examples{
 data = example_data_pois
-#example_data = example_data \%>\% dplyr::mutate(amenity = NA)
 example_output = oi_bicycle_parking(data)
 example_output = example_output \%>\% dplyr::filter(oi_cycle_parking == "yes")
 plot(example_output["oi_cycle_parking"])
