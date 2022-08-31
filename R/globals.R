@@ -7,3 +7,5 @@ utils::globalVariables(c("oi_road_class"))
 utils::globalVariables(c("maxspeed", "oi_maxspeed"))
 # oi_inclusive_mobility
 utils::globalVariables(c("kerb", "width", "est_width"))
+# oi_bicycle_parking
+utils::globalVariables(c("oi_cycle_parking"))
