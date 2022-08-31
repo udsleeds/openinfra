@@ -19,7 +19,7 @@ required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
                   "highway", "crossing", "lit", "tactile_paving", "surface",
                   "smoothness", "width", "est_width", "lit_by_led", "boundary",
                   "admin_level", "name", "ref", "cycleway:left",
-                  "cycleway:right")
+                  "cycleway:right", "cycleway:both")
 
 # Get data ----------------------------------------------------------------
 
@@ -58,9 +58,6 @@ no_NA_cycleway_lanes_leeds = leeds_network %>% dplyr::filter(! is.na(cycleway))
 width_vc = as.data.frame(table(no_NA_cycleway_lanes_leeds$width))
 no_NA_width_cycleway_leeds = no_NA_cycleway_lanes_leeds %>% dplyr::filter(! is.na(width))
 
-
-# oi_classify_cycle_ways --------------------------------------------------
-
 ################################################################################
 # Create a function that can classify a way used for cycling as being either:  #
 #     - Fully Kerbed Cycle Track                                               #
@@ -86,17 +83,30 @@ no_NA_width_cycleway_leeds = no_NA_cycleway_lanes_leeds %>% dplyr::filter(! is.n
 #                                                                              #
 ################################################################################
 
+# Apply oi_clean_maxspeed_uk to find maxspeeds of 20 mph or less (good for mixed
+# traffic cycling)
+library(openinfra)
+leeds_osmex_cycling = oi_clean_maxspeed_uk(leeds_osmex_cycling)
 
 
 # Mixed Traffic -----------------------------------------------------------
 # any road with a maxspeed <= 20 mph is suitable - find this with 
 # oi_clean_maxspeed
 
-leeds_mixed_traffic = leeds_osmex_cycling %>% dplyr::filter(
-  cycleway %in% c("no", "none", "opposite")
-)
-
-
+leeds_mixed_traffic = leeds_osmex_cycling %>% 
+  dplyr::mutate(oi_cycle_mixed = dplyr::case_when( 
+    # No cycling geometry present & maxspeed compliant with LTN1/20
+    (cycleway %in% c("no", "none", "opposite")) & 
+      (oi_maxspeed == "20 mph") ~ "yes",
+    
+    # No cycling geometry is present
+    (cycleway %in% c("no", "none", "opposite")) &
+      (oi_maxspeed != "20 mph") ~ "yes - wrong speed",
+    
+    (cycleway %in% c("no", "none", "opposite")) & 
+      (is.na(maxspeed)) ~ "yes - missing speed"
+    ))
+  
 
 # Cycle lanes  ------------------------------------------------------------
 
@@ -125,9 +135,10 @@ leeds_segregated = leeds_osmex_cycling %>%
     # Segregated tag indicates if a cycleway/footpath is shared with pedestrians
     # by default this cannot be a cycleway on the road if pedestrians are okay
     # and segregation is okay. 
-  ))
+  )) 
 
-
+# Remove NAs from networks
+leeds_mixed_traffic = leeds_mixed_traffic %>%  dplyr::filter(! is.na(oi_cycle_mixed))
 leeds_cycle_lanes = leeds_cycle_lanes %>% dplyr::filter(! is.na(oi_cycle_lane))
 leeds_segregated = leeds_segregated %>% dplyr::filter(! is.na(oi_cycle_seg))
 # Visualise the data ------------------------------------------------------
@@ -138,7 +149,7 @@ visualise = tmap::tm_shape(leeds_cycle_lanes) +
     tmap::tm_lines(col = "oi_cycle_lane", palette = "red") + 
   
   tmap::tm_shape(leeds_mixed_traffic) + 
-    tmap::tm_lines(col = "highway") + 
+    tmap::tm_lines(col = "oi_cycle_mixed", palette = c("blue", "orange", "black")) + 
   
   tmap::tm_shape(leeds_segregated) + 
     tmap::tm_lines(col = "oi_cycle_seg", palette = "green")
