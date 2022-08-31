@@ -47,6 +47,8 @@ leeds_osmex_cycling = osmextract::oe_get_network(
   force_vectortranslate = TRUE
 )
 
+leeds_osmex_cycling = leeds_osmex_cycling[leeds_lad_poly, ]
+
 
 # Tag Distribution Analysis ----------------------------------------------------------------
 cycleway_values = as.data.frame(table(leeds_network$cycleway))
@@ -83,36 +85,62 @@ no_NA_width_cycleway_leeds = no_NA_cycleway_lanes_leeds %>% dplyr::filter(! is.n
 #                                                                              #
 #                                                                              #
 ################################################################################
+
+
+
+# Mixed Traffic -----------------------------------------------------------
+# any road with a maxspeed <= 20 mph is suitable - find this with 
+# oi_clean_maxspeed
+
 leeds_mixed_traffic = leeds_osmex_cycling %>% dplyr::filter(
   cycleway %in% c("no", "none", "opposite")
 )
 
 
-leeds_cycle_lanes = leeds_osmex_cycling %>% 
-  # Capture Obvious cycle lanes
-  dplyr::filter(cycleway %in% c("lane")) %>% 
-  # Capture more obscure cycle lanes
-  dplyr::filter(cycleway_left %in% c("lane")) %>% 
-  dplyr::filter(cycleway_right %in% c("lane"))
+
+# Cycle lanes  ------------------------------------------------------------
+
+leeds_cycle_lanes = leeds_osmex_cycling %>%
+  dplyr::mutate(oi_cycle_lane = dplyr::case_when(
+    # Capture Obvious cycle lanes
+    cycleway %in% c("lane") ~ "yes",
+    # Capture more obscure cycle lanes
+    cycleway_left %in% c("lane") ~ "yes",
+    cycleway_right %in% c("lane") ~ "yes",
+    cycleway_both %in% c("lane") ~ "yes"
+  ))
 
 
-# Each application of dplyr::filter REMOVES features, thus you cannot apply it three
-# times to form a network, the network will be whatever the last filter was.
+# Protected cycling -------------------------------------------------------
 
 leeds_segregated = leeds_osmex_cycling %>% 
-  # Captures obvious track lanes - separated by definition
-  dplyr::filter(cycleway %in% c("track")) %>% #& (cycleway_left %in% c("track")) & (cycleway_right %in% c("track")) )
-  # Captures more obscure track lanes 
-  #dplyr::filter(cycleway_left %in% c("track")) #%>%
-  dplyr::filter(cycleway_right %in% c("track"))
-  
+  dplyr::mutate(oi_cycle_seg = dplyr::case_when(
+    # Captures obvious track lanes - separated by definition
+    cycleway %in% c("track") ~ "yes",
+    # Captures more obscure track lanes 
+    cycleway_left %in% c("track") ~ "yes",
+    cycleway_right %in% c("track") ~ "yes",
+    cycleway_both %in% c("track") ~ "yes"
+    
+    # Segregated tag indicates if a cycleway/footpath is shared with pedestrians
+    # by default this cannot be a cycleway on the road if pedestrians are okay
+    # and segregation is okay. 
+  ))
+
+
+leeds_cycle_lanes = leeds_cycle_lanes %>% dplyr::filter(! is.na(oi_cycle_lane))
+leeds_segregated = leeds_segregated %>% dplyr::filter(! is.na(oi_cycle_seg))
+# Visualise the data ------------------------------------------------------
+
+tmap::tmap_mode("view")
+
 visualise = tmap::tm_shape(leeds_cycle_lanes) + 
-    tmap::tm_lines(col = "highway") + 
+    tmap::tm_lines(col = "oi_cycle_lane", palette = "red") + 
   
   tmap::tm_shape(leeds_mixed_traffic) + 
     tmap::tm_lines(col = "highway") + 
   
   tmap::tm_shape(leeds_segregated) + 
-    tmap::tm_lines(col = "highway")
+    tmap::tm_lines(col = "oi_cycle_seg", palette = "green")
 
 visualise

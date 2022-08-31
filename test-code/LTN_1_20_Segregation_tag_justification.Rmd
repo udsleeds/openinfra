@@ -17,12 +17,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #### Use Tags
 
-**cycleway\|cycleway_left\|cycleway_right = ["track"](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dtrack)** 
+**cycleway|cycleway_left|cycleway_right|cycleway_both = ["track"](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dtrack)** 
 <br><br>This tag for a feature ([typically applied to roads with highway=\* tag](https://taginfo.openstreetmap.org/tags/cycleway=track#combinations)) that contains a cycle track (a track separated from the road by curbs, parking lots, grass verges, trees or another physical barrier, but is running parallel to and next to the road. [source](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dtrack))
 
 #### Ignore Tags
 
-**cycleway\|cycleway_left\|cycleway_right = ["seperate"](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dseparate)** 
+**cycleway|cycleway_left|cycleway_right|cycleway_both = ["seperate"](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dseparate)** 
 <br><br>Ignored as this tag value does not capture cycling infrastructure. Rather, it indicates that cycling infrastructure does exist near to this feature, but it is mapped by another geometry (In other words - if infrastructure is tagged with seperate it means the geometry for a cyclelane exists and is **NOT** part of the currecnt feature) 
 
 ### Cycle Lanes
