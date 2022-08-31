@@ -13,7 +13,8 @@
 #' `oi_cycle_parking` containing the value `"yes"` if this feature allows 
 #' bicycle parking.
 #' @details - Note: the input `osm_sf` must containt the following tags:
-#' `c("amenity")`. Note that as most (if not all) amenity tags for bicycle 
+#' `c("amenity")`.
+#' - Note that as most (if not all) amenity tags for bicycle 
 #' parking are assigned to nodes, the `osm_sf` must also contain nodes. (the
 #' layer `"points"` must be requested when using `osmextract::oe_get()`)
 #' @export oi_bicycle_parking 

@@ -33,7 +33,8 @@ facilities for bicycle parking.
 \details{
 \itemize{
 \item Note: the input \code{osm_sf} must containt the following tags:
-\code{c("amenity")}. Note that as most (if not all) amenity tags for bicycle
+\code{c("amenity")}.
+\item Note that as most (if not all) amenity tags for bicycle
 parking are assigned to nodes, the \code{osm_sf} must also contain nodes. (the
 layer \code{"points"} must be requested when using \code{osmextract::oe_get()})
 }
