@@ -47,14 +47,17 @@ leeds_osmex_cycling = osmextract::oe_get_network(
   force_vectortranslate = TRUE
 )
 
+# Subset the area to Leeds only, not entire West Yorkshire.
 leeds_osmex_cycling = leeds_osmex_cycling[leeds_lad_poly, ]
 
 
 # Tag Distribution Analysis ----------------------------------------------------------------
 cycleway_values = as.data.frame(table(leeds_network$cycleway))
 
+# Remove NA cycleways
 no_NA_cycleway_lanes_leeds = leeds_network %>% dplyr::filter(! is.na(cycleway))
 
+# Analyse the distribution of width tags along with cycleway tag
 width_vc = as.data.frame(table(no_NA_cycleway_lanes_leeds$width))
 no_NA_width_cycleway_leeds = no_NA_cycleway_lanes_leeds %>% dplyr::filter(! is.na(width))
 
