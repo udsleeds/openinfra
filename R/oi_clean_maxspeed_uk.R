@@ -40,6 +40,10 @@ oi_clean_maxspeed_uk = function(osm_sf, no_NA = FALSE, del = FALSE) {
       # conservative stating 60 mph if not stated.
       (maxspeed == "national" & highway %in% c("trunk", "trunk_link")) ~ "60 mph",
       
+      # Catch maxspeeds of 5, 10, 15 and set to 20 mph
+      maxspeed %in% c("5", "10", "15", 
+                      "5 mph", "10 mph", "15 mph") ~ "< 20 mph",
+      
       # maxspeed == (20|30|40|50|60|70 --> + mph)
       maxspeed == "20" ~ "20 mph",
       maxspeed == "30" ~ "30 mph",
