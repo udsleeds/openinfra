@@ -6,13 +6,14 @@ editor_options:
 
 # OpenInfra: Utilising OpenStreetMap for sustainable transport planning
 
-Investment in active modes of transport offers multiple benefits while simultaneously tackling climate, health and cost-of-living crises.
-New policies, investment programs and government agencies tasked with enabling walking, cycling and wheeling uptake demand high quality and geographically specific evidence to ensure that resources allocated to active travel are spent effectively.
+Investment in active travel modes offers multiple benefits while simultaneously tackling climate, health and cost-of-living crises.
+
+New policies, investment programs and government agencies tasked with enabling active travel uptake demands high quality, geographically specific evidence to ensure that resources allocated to active travel are spent effectively.
 
 The OpenInfra project explores the potential of open data sources to meet this demand.
-The focus is on OpenStreetMap (OSM), an open and free editable map of the entire planet built by volunteers.
-Our hypothesis was that OSM data can support decision-making processes, and assist in the prioritisation of new active travel infrastructure.
-In this presentation we will present our findings that broadly support the hypothesis, with some limitations, based on data driven comparison OSM sources with official datasets such as Transport for London's Cycling Infrastructure Database (CID).
-Our work is not only of academic interest.
-We present transport infrastructure data packs aimed at transport planners working in every local authority in England.
-The data-driven and approach, implemented in the [open source openinfra package](https://github.com/udsleeds/openinfra) enables others to reproduce the findings and adapt our work for their own mobility and health research needs.
+Specifically, OpenStreetMap (OSM), an open and free editable map of the entire planet built by volunteers.
+We hypothesise that OSM data can support decision-making processes, and the prioritisation of new active travel infrastructure.
+
+Our findings broadly support this hypothesis, with some limitations, based on data driven comparison of OSM sources with official datasets such as Transport for London's Cycling Infrastructure Database (CID). Additionally, we present transport infrastructure data packs aimed at supporting transport planners working for every local authority in England.
+
+The data-driven approach, implemented in the [open source openinfra package](https://github.com/udsleeds/openinfra) enables others to reproduce the findings and adapt our work for their own mobility and health research needs.
