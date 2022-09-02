@@ -1,9 +1,11 @@
-#' Re-classifies the maxspeed column of an OSM data frame to be compliant with current [UK speed limits](https://www.gov.uk/speed-limits). The clean re-coded speeds are stoed in `oi_maxspeed`.
+#' Re-classifies the maxspeed column of an OSM data frame to be compliant with current [UK speed limits](https://www.gov.uk/speed-limits). 
+#' 
+#' The clean re-coded speeds are stored in `openinfra_maxspeed`.
 #'
 #' @usage oi_clean_maxspeed_uk(osm_sf, no_NA = FALSE, del = FALSE) 
 #' @param osm_sf - A `sf` and `data.frame` object containing OpenStreetMap infrastructure data, obtained from the [`osmextract`](https://github.com/ropensci/osmextract) function.
 #' @param no_NA - Boolean, `FALSE` by default. If `TRUE` then any oi_maxspeed == NA are removed. (i.e. maxspeed value is NOT compliant with [UK speed limits](https://www.gov.uk/speed-limits)) are removed from \code{osm_sf}.
-#' @param del - Boolean, `FALSE` by default. If `TRUE` then the original `maxspeed` column is deleted and only `oi_maxspeed` is returned.
+#' @param del - Boolean, `FALSE` by default. If `TRUE` then the original `maxspeed` column is deleted and only `openinfra_maxspeed` is returned.
 #' @return  The `osm_sf` simple features data frame is returned with the maxspeed column values cleaned based on `allowed_speeds`.
 #' @details Note: the `osm_sf` param must contain the following tags: `c("maxspeed", "highway")`
 #' @export oi_clean_maxspeed_uk
@@ -11,15 +13,13 @@
 #' library(sf)
 #' internal_data = example_data
 #' output = oi_clean_maxspeed_uk(internal_data, no_NA = TRUE)
-#' plot(output["oi_maxspeed"])
+#' plot(output["openinfra_maxspeed"])
 #'  
 #' #' # Advanced plot with tmap - un-comment following four lines to run! 
 #' #' tmap_mode("view")
-#' #' tmap::tm_shape(output |> dplyr::select(oi_maxspeed)) +
-#' #' tmap::tm_lines(col = "oi_maxspeed", title.col = "Cleaned maxspeed") +
+#' #' tmap::tm_shape(output |> dplyr::select(openinfra_maxspeed)) +
+#' #' tmap::tm_lines(col = "openinfra_maxspeed", title.col = "Cleaned maxspeed") +
 #' #' tmap::tm_layout(legend.bg.color = "white")
-"oi_clean_maxspeed_uk"
-
 
 oi_clean_maxspeed_uk = function(osm_sf, no_NA = FALSE, del = FALSE) {
   
@@ -27,7 +27,7 @@ oi_clean_maxspeed_uk = function(osm_sf, no_NA = FALSE, del = FALSE) {
   `%!in%` = Negate(`%in%`)
   
   osm_clean = osm_sf %>%
-    dplyr::mutate(oi_maxspeed = dplyr::case_when(
+    dplyr::mutate(openinfra_maxspeed = dplyr::case_when(
       # maxspeed == national, when on motorway
       (maxspeed == "national" & highway %in% c("motorway", "motorway_link")) ~ "70 mph",
       
@@ -63,7 +63,7 @@ oi_clean_maxspeed_uk = function(osm_sf, no_NA = FALSE, del = FALSE) {
   
   if (no_NA){
     # if TURE, will remove features if their oi_maxspeed == NA
-    osm_clean = osm_clean %>% dplyr::filter(!is.na(oi_maxspeed))
+    osm_clean = osm_clean %>% dplyr::filter(!is.na(openinfra_maxspeed))
   }
   
   if (del){

@@ -14,8 +14,8 @@ OpenStreetMap infrastructure data.
 }}
 }
 \value{
-an sf object with oi_road_name column added, indicating the name and
-ref fields of the feature, if they are included.
+an sf object with openinfra_road_name column added, indicating the
+name and ref fields of the feature, if they are included.
 }
 \description{
 Function to recategorise OSM data, combining both the \code{name} & \code{ref} field
@@ -25,8 +25,8 @@ for an OSM feature, or whichever is available.
 This function analyses OSM features, specifically the \code{name} and
 \code{ref} fields that contain a road name (i.e. Otley Road) and the road
 reference field (i.e A62). If both the \code{name} and \code{ref} appear, then
-\code{oi_road_name} will be \code{name | ref}, otherwise \code{oi_road_name} will be
-whichever field appears within the OSM data.
+\code{openinfra_road_name} will be \code{name | ref}, otherwise \code{openinfra_road_name}
+will be whichever field appears within the OSM data.
 
 Note: the \code{osm_sf} must contain the following tags: \code{c("name", "ref")}
 }

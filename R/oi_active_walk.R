@@ -20,9 +20,10 @@
 #' @examples 
 #' data = example_data
 #' example_output = oi_active_walk(data)
+
 oi_active_walk = function(osm_sf, remove = FALSE){
   #browser() #<-- Uncomment to debug function.
-  osm_sf_walking = osm_sf %>% dplyr::mutate(oi_walk = dplyr::case_when(
+  osm_sf_walking = osm_sf %>% dplyr::mutate(openinfra_walk = dplyr::case_when(
     
     # Highway tag cannot be NA
     is.na(highway) ~ "no",
@@ -55,11 +56,11 @@ oi_active_walk = function(osm_sf, remove = FALSE){
   ))
   
   # find features that do not contain "no" and set as "yes"
-  osm_sf_walking$oi_walk[is.na(osm_sf_walking$oi_walk)] = "yes"
+  osm_sf_walking$openinfra_walk[is.na(osm_sf_walking$openinfra_walk)] = "yes"
   
   # If remove = TRUE, filter out features that have oi_walking == "no"
   if (remove){
-    osm_sf_walking = osm_sf_walking %>% dplyr::filter(osm_sf_walking$oi_walk == "yes")
+    osm_sf_walking = osm_sf_walking %>% dplyr::filter(osm_sf_walking$openinfra_walk == "yes")
   }
   
   return(osm_sf_walking)

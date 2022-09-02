@@ -8,17 +8,25 @@ oi_recode_road_class(osm_sf, del = FALSE)
 }
 \arguments{
 \item{osm_sf}{\itemize{
-\item A \code{sf} and \code{data.frame} object containing OpenStreetMap infrastructure data, obtained from the \href{https://github.com/ropensci/osmextract}{\code{osmextract}} function.
+\item A \code{sf} and \code{data.frame} object containing OpenStreetMap
+infrastructure data, obtained from the
+\href{https://github.com/ropensci/osmextract}{\code{osmextract}} function.
 }}
 
-\item{del}{If \code{TRUE}, features not re-coded to one of the 8 road classifications are removed. \code{FALSE} by default.}
+\item{del}{If \code{TRUE}, features not re-coded to one of the 8 road
+classifications are removed. \code{FALSE} by default.}
 }
 \value{
-The \code{osm_sf} simple features data frame is returned with additional columns road_class and road_desc based on Chan and Cooper's road classifications.
+The \code{osm_sf} simple features data frame is returned with
+additional columns openinfra_road_class and openinfra_road_desc based on
+Chan and Cooper's road classifications.
 }
 \description{
-Determines road classification defined by \href{https://www.nature.com/articles/s41598-019-55669-8}{Chan and Cooper's} work.
-Specifically re-classifies roads as one of 8 road classes (0-7) specified in the following \href{https://www.nature.com/articles/s41598-019-55669-8/tables/6}{table},
+Determines road classification defined by
+\href{https://www.nature.com/articles/s41598-019-55669-8}{Chan and Cooper's} work.
+Specifically re-classifies roads as one of 8 road classes (0-7) specified in
+the following
+\href{https://www.nature.com/articles/s41598-019-55669-8/tables/6}{table},
 depending on each features \verb{highway=} key values.
 }
 \details{
@@ -35,22 +43,19 @@ Re-classifies data based on the following highway key values:\tabular{lll}{
 }
 
 
-Note: the \code{osm_sf} must contain the following tags: \code{c("highway", "oneway")}
+Note: the \code{osm_sf} must contain the following tags:
+\code{c("highway", "oneway")}
 }
 \examples{
 library(sf)
-u_data_large = paste0("https://github.com/udsleeds/openinfra/releases",
-                      "/download/v0.2/bbbike_leeds_27_6_22.geojson")
-u_data_small = paste0("https://github.com/udsleeds/openinfra/releases",
-                      "/download/v0.2/30_06_22_bbbike_LCC_func_example_5_75km.geojson")
 internal_data = example_data
 output = oi_recode_road_class(internal_data, del = FALSE)
 # Quick plot:
- plot(output["oi_road_desc"], key.pos = 1)
+ plot(output["openinfra_road_desc"], key.pos = 1)
 
 # Advanced plot with tmap - un-comment following four lines to run! 
 # tmap_mode("view")
-# tmap::tm_shape(output |> dplyr::select(road_desc)) +
-#  tmap::tm_lines(col = "road_desc", title.col = "Road class") +
+# tmap::tm_shape(output |> dplyr::select(openinfra_road_desc)) +
+#  tmap::tm_lines(col = "openinfra_road_desc", title.col = "Road class") +
 #  tmap::tm_layout(legend.bg.color = "white")
 }

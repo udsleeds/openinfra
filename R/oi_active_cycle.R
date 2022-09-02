@@ -20,11 +20,12 @@
 #' @examples
 #' data = example_data
 #' example_output = oi_active_cycle(data)
-#' #plot(output["oi_cycle"], key.pos = 1)
-#' 
+#' #plot(output["openinfra_cycle"], key.pos = 1)
+#'
+
 oi_active_cycle = function(osm_sf, remove=FALSE){
   #browser() # Uncomment to debug
-  osm_sf_cycle = osm_sf %>% dplyr::mutate(oi_cycle = dplyr::case_when(
+  osm_sf_cycle = osm_sf %>% dplyr::mutate(openinfra_cycle = dplyr::case_when(
     
     # Highway cannot be NA
     is.na(highway) ~ "no",
@@ -57,11 +58,11 @@ oi_active_cycle = function(osm_sf, remove=FALSE){
   
   # Case_when above should have added "no" to all inappropriate features, now 
   # find features that do not contain "no" and set as "yes"
-  osm_sf_cycle$oi_cycle[is.na(osm_sf_cycle$oi_cycle)] = "yes"
+  osm_sf_cycle$openinfra_cycle[is.na(osm_sf_cycle$openinfra_cycle)] = "yes"
   
   # If remove = TRUE, filter out features that have oi_cycle == "no"
   if (remove){
-    osm_sf_cycle = osm_sf_cycle %>% dplyr::filter(osm_sf_cycle$oi_cycle == "yes")
+    osm_sf_cycle = osm_sf_cycle %>% dplyr::filter(osm_sf_cycle$openinfra_cycle == "yes")
   }
   return(osm_sf_cycle)
 }

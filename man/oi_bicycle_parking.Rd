@@ -21,13 +21,13 @@ bicycle parking.
 \value{
 \itemize{
 \item The provided \code{osm_sf} is returned with an additional column,
-\code{oi_cycle_parking} containing the value \code{"yes"} if this feature allows
+\code{openinfra_cycle_parking} containing the value \code{"yes"} if this feature allows
 bicycle parking.
 }
 }
 \description{
 This function re-categorises OSM data, adding a column to an OSM network
-\code{oi_cycle_parking} with value \code{"yes"} if a node/way within the OSM network has
+\code{openinfra_cycle_parking} with value \code{"yes"} if a node/way within the OSM network has
 facilities for bicycle parking.
 }
 \details{
@@ -42,6 +42,6 @@ layer \code{"points"} must be requested when using \code{osmextract::oe_get()})
 \examples{
 data = example_data_pois
 example_output = oi_bicycle_parking(data)
-example_output = example_output \%>\% dplyr::filter(oi_cycle_parking == "yes")
-plot(example_output["oi_cycle_parking"])
+example_output = example_output \%>\% dplyr::filter(openinfra_cycle_parking == "yes")
+plot(example_output["openinfra_cycle_parking"])
 }

@@ -37,6 +37,6 @@ Note: the \code{osm_sf} must contain the following tags: \code{c("highway", "bic
 \examples{
 data = example_data
 example_output = oi_active_cycle(data)
-#plot(output["oi_cycle"], key.pos = 1)
+#plot(output["openinfra_cycle"], key.pos = 1)
 
 }

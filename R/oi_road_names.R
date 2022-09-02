@@ -4,13 +4,13 @@
 #' @usage oi_road_names(osm_sf)
 #' @param osm_sf - A Simple Features `sf` and `data.frame` object containing 
 #'        OpenStreetMap infrastructure data. 
-#' @return an sf object with oi_road_name column added, indicating the name and
-#'   ref fields of the feature, if they are included.
+#' @return an sf object with openinfra_road_name column added, indicating the 
+#'   name and ref fields of the feature, if they are included.
 #' @details This function analyses OSM features, specifically the `name` and 
 #'   `ref` fields that contain a road name (i.e. Otley Road) and the road 
 #'   reference field (i.e A62). If both the `name` and `ref` appear, then 
-#'   `oi_road_name` will be `name | ref`, otherwise `oi_road_name` will be 
-#'   whichever field appears within the OSM data. 
+#'   `openinfra_road_name` will be `name | ref`, otherwise `openinfra_road_name`
+#'   will be whichever field appears within the OSM data. 
 #'   
 #'   Note: the `osm_sf` must contain the following tags: `c("name", "ref")`
 #' @export oi_road_names
@@ -20,7 +20,7 @@
 #' example_output = oi_road_names(data)
 
 oi_road_names = function(osm_sf){
-  osm_edited = osm_sf %>% dplyr::mutate(oi_name = dplyr::case_when(
+  osm_edited = osm_sf %>% dplyr::mutate(openinfra_road_name = dplyr::case_when(
     # name & ref are there
     (! is.na(name) & ! is.na(ref)) ~ paste0(name, ", ", ref),
     
