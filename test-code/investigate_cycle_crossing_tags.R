@@ -1,6 +1,27 @@
 # Test script to investigating cyclway="crossing" tag distributins. 
 
+# LTN Guide Context -------------------------------------------------------
 
+
+# [10.4.1 LTN1/20 Guide Definition]
+# Cycle crossings are mid-link stand-alone
+# facilities to enable cyclists to cross a carriageway that
+# would otherwise form a hazardous or impenetrable
+# barrier on the cycle route network. Crossings may also
+# form part of junction treatments where cyclists are taken
+# off the carriageway. They may be used to connect
+# off-highway cycle routes across a major road and enable
+# connections with quieter street networks via cycle-only
+# access points.
+
+# Crossings can be divided into the following types:
+#  Uncontrolled Crossings:
+#     - With or without crossings
+#      
+#  Controlled crossings
+#     - Cycle priority crossing using give-way markings
+#     - Parallel crossing
+#     - Signal controlled - Toucan and Cycle Signal Crossings.
 
 # Imports -----------------------------------------------------------------
 
@@ -21,7 +42,8 @@ leeds_centre_point = sf::st_sfc(sf::st_point(c(-1.549, 53.801)),
 leeds_buffer = sf::st_buffer(leeds_centre_point, dist = 5000)
 
 # Required tags
-needed_tags = c("amenity", "cycleway", "bicycle")
+needed_tags = c("amenity", "cycleway", "bicycle", "crossing", "crossing:island",
+                "crossing:ref", "crossing_ref")
 
 # Get data
 leeds = oe_get(
@@ -40,6 +62,8 @@ leeds = leeds %>% dplyr::filter(! is.na(highway))
 
 # Investigate additional tags ---------------------------------------------
 
+leeds_crossings = leeds %>% dplyr::filter(cycleway == "crossing")
+
 leeds_analyse = leeds %>% dplyr::filter(cycleway == "crossing")
 
 more_tags = leeds_analyse %>% dplyr::select(other_tags)
@@ -49,4 +73,14 @@ more_tags = leeds_analyse %>% dplyr::select(other_tags)
 # site - see here: https://taginfo.openstreetmap.org/keys/crossing#values
 
 # Most notably are the additional values assigned to the "crossing" key which
-# can be used to classify the type of corssing present.  
+# can be used to classify the type of crossing present.
+
+# Most important seem to be crossing = c("marked", "unmarked", "uncontrolled",
+# "traffic_signals", "zebra").
+
+# Additionally we should be excluding, or at least making note of crossings that
+# require cyclists to dismount (bicycle="dismount") as LTN1/20 implies that 
+# there should be no need to cyclists to dismount, and if this is a requirement
+# due to a busy junction (shared with pedestrians) then a separate piece of 
+# infrastructure should be created for cyclists.
+
