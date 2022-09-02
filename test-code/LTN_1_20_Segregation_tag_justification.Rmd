@@ -20,6 +20,9 @@ knitr::opts_chunk$set(echo = TRUE)
 **cycleway|cycleway_left|cycleway_right|cycleway_both = ["track"](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dtrack)** 
 <br><br>This tag for a feature ([typically applied to roads with highway=\* tag](https://taginfo.openstreetmap.org/tags/cycleway=track#combinations)) that contains a cycle track (a track separated from the road by curbs, parking lots, grass verges, trees or another physical barrier, but is running parallel to and next to the road. [source](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dtrack))
 
+**highway = ["cycleway"](https://wiki.openstreetmap.org/wiki/Tag:highway%3Dcycleway)**
+<br><br>The highway=cycleway tag indicates a **separate** (thus segregated) way for the use of cyclists.
+
 #### Ignore Tags
 
 **cycleway|cycleway_left|cycleway_right|cycleway_both = ["seperate"](https://wiki.openstreetmap.org/wiki/Tag:cycleway%3Dseparate)** 
