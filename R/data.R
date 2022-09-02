@@ -5,7 +5,7 @@
 #' @source {[generate_example_data.R](https://github.com/udsleeds/openinfra/blob/main/test-code/generate_example_data.R)}
 #' @examples
 #' library(sf)
-#' example_data   # Lazy Loading. Data becomes visible as soon as it is requested. 
+#' colnames(example_data)
 "example_data"
 
 #' OSM infrastructure data used in SOTM2022 workshop & figures for SOTM2022. 
@@ -15,7 +15,7 @@
 #' @source {[generate_example_data.R](https://github.com/udsleeds/openinfra/blob/main/test-code/generate_example_data.R)}
 #' @examples
 #' library(sf)
-#' sotm_data   # Lazy Loading. Data becomes visible as soon as it is requested. 
+#' colanmes(sotm_data)
 "sotm_data"
 
 #' OSM points data used in the creation of transport infrastructure data packs.
@@ -25,5 +25,5 @@
 #' @source {[generate_example_data.R](https://github.com/udsleeds/openinfra/blob/main/test-code/generate_example_data.R)}
 #' @examples 
 #' library(sf)
-#' example_data_pois
+#' colnames(example_data_pois)
 "example_data_pois"
