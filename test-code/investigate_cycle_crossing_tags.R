@@ -84,3 +84,16 @@ more_tags = leeds_analyse %>% dplyr::select(other_tags)
 # due to a busy junction (shared with pedestrians) then a separate piece of 
 # infrastructure should be created for cyclists.
 
+
+# Testing oi_cycle_crossings function -------------------------------------
+devtools::load_all()
+
+func_output = oi_cycle_crossings(leeds)
+vc_output = as.data.frame(table(func_output$openinfra_cycle_crossings))
+
+func_output = func_output %>% dplyr::filter(openinfra_cycle_crossings == "yes")
+
+tmap::tmap_mode("view")
+tmap::tm_shape(func_output) + 
+  tmap::tm_lines(col = "openinfra_cycle_crossings")
+
