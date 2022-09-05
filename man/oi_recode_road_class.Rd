@@ -4,7 +4,7 @@
 \alias{oi_recode_road_class}
 \title{Re-classifies OSM Roads}
 \usage{
-oi_recode_road_class(osm_sf, remove=FALSE)
+oi_recode_road_class(osm_sf, del=FALSE)
 }
 \arguments{
 \item{osm_sf}{\itemize{
