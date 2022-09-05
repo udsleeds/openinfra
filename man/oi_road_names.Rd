@@ -13,7 +13,7 @@ oi_road_names(osm_sf)
 OpenStreetMap infrastructure data.
 }}
 
-\item{remvoe}{\itemize{
+\item{remove}{\itemize{
 \item If TRUE, will remove all features that still have a NA for
 openinfra_road_name column (removes nameless features).
 }}

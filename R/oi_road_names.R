@@ -4,7 +4,7 @@
 #' @usage oi_road_names(osm_sf)
 #' @param osm_sf - A Simple Features `sf` and `data.frame` object containing 
 #'   OpenStreetMap infrastructure data.
-#' @param remvoe - If TRUE, will remove all features that still have a NA for
+#' @param remove - If TRUE, will remove all features that still have a NA for
 #'   openinfra_road_name column (removes nameless features).
 #' @return an sf object with openinfra_road_name column added, indicating the 
 #'   name and ref fields of the feature, if they are included.
