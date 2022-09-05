@@ -13,10 +13,7 @@ infrastructure data, obtained from the
 \href{https://github.com/ropensci/osmextract}{\code{osmextract}} function.
 }}
 
-\item{del}{If \code{TRUE}, features not re-coded to one of the 8 road
-classifications are removed. \code{FALSE} by default.}
-
-\item{remove}{\itemize{
+\item{del}{\itemize{
 \item If TRUE, will remove roads not recategorised by the function
 into one of the pre-set definitions.
 }}

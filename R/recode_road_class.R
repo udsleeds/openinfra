@@ -25,7 +25,7 @@
 #'    [`osmextract`](https://github.com/ropensci/osmextract) function.
 #' @param del If `TRUE`, features not re-coded to one of the 8 road 
 #'    classifications are removed. `FALSE` by default.
-#' @param remove - If TRUE, will remove roads not recategorised by the function
+#' @param del - If TRUE, will remove roads not recategorised by the function
 #'   into one of the pre-set definitions.
 #' @usage oi_recode_road_class(osm_sf, del=FALSE)
 #' @return  The \code{osm_sf} simple features data frame is returned with 
