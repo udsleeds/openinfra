@@ -27,6 +27,7 @@
 #'    classifications are removed. `FALSE` by default.
 #' @param remove - If TRUE, will remove roads not recategorised by the function
 #'   into one of the pre-set definitions.
+#' @usage oi_recode_road_class(osm_sf, remove=FALSE)
 #' @return  The \code{osm_sf} simple features data frame is returned with 
 #'     additional columns openinfra_road_class and openinfra_road_desc based on 
 #'     Chan and Cooper's road classifications.
