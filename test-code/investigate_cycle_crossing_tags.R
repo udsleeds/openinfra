@@ -14,7 +14,6 @@
 # connections with quieter street networks via cycle-only
 # access points.
 
-# Crossings can be divided into the following types:
 #  Uncontrolled Crossings:
 #     - With or without crossings
 #      
