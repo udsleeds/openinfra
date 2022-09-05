@@ -4,7 +4,7 @@
 \alias{oi_cycle_crossings}
 \title{Function to get OSM data based on cyclist crossing infrastructure.}
 \usage{
-oi_bicycle_parking(osm_sf, remove=FALSE)
+oi_cycle_crossings(osm_sf, remove=FALSE)
 }
 \arguments{
 \item{osm_sf}{\itemize{

@@ -1,7 +1,7 @@
 #' Function to get OSM data based on cyclist crossing infrastructure.
 #' 
 #' 
-#' @usage oi_bicycle_parking(osm_sf, remove=FALSE)
+#' @usage oi_cycle_crossings(osm_sf, remove=FALSE)
 #' @param osm_sf - A `sf` and `data.frame` object containing OpenStreetMap 
 #'   infrastructure data, obtained from the 
 #'   [`osmextract`](https://github.com/ropensci/osmextract) function.
