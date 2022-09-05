@@ -20,8 +20,6 @@
 #' example_output = oi_cycle_crossings(data)
 #' plot(example_output["openinfra_cycle_crossings"])
 #'   
-# TODO: Finnish RoxyGen documentation comments for new oi_cycle_crossings function.
-# TODO: Create oi_cycle_crossing function that gets OSM data on road crossings for cyclists
 
 oi_cycle_crossings = function(osm_sf, remove=FALSE){
   osm_sf_crossings = osm_sf %>% 
