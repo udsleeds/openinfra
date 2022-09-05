@@ -115,7 +115,9 @@ Identifies the presence of cycle parking facilities based on OSM data.
 ```{r out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/road_namesmap.html", height = "650px")
 ```
-
+Recategorises OSM to provide more descriptive road names useful for discussion and targeted analysis. 
+<br><br>
+For example, [`osm_id:23200835`](https://www.openstreetmap.org/way/23200835) is less useful as a name than, `Lovell Park Road`
 <br><br>
 
 ## Setup
