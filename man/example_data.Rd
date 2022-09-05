@@ -18,6 +18,6 @@ OSM ways data used in the creation of transport infrastructure data packs.
 }
 \examples{
 library(sf)
-example_data   # Lazy Loading. Data becomes visible as soon as it is requested. 
+colnames(example_data)
 }
 \keyword{dataset}

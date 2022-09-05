@@ -18,6 +18,6 @@ OSM infrastructure data used in SOTM2022 workshop & figures for SOTM2022.
 }
 \examples{
 library(sf)
-sotm_data   # Lazy Loading. Data becomes visible as soon as it is requested. 
+colnames(sotm_data)
 }
 \keyword{dataset}

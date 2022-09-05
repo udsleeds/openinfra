@@ -15,7 +15,7 @@
 #' @source {[generate_example_data.R](https://github.com/udsleeds/openinfra/blob/main/test-code/generate_example_data.R)}
 #' @examples
 #' library(sf)
-#' colanmes(sotm_data)
+#' colnames(sotm_data)
 "sotm_data"
 
 #' OSM points data used in the creation of transport infrastructure data packs.

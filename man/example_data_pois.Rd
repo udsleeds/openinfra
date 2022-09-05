@@ -18,6 +18,6 @@ OSM points data used in the creation of transport infrastructure data packs.
 }
 \examples{
 library(sf)
-example_data_pois
+colnames(example_data_pois)
 }
 \keyword{dataset}
