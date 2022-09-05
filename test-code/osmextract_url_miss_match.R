@@ -3,6 +3,7 @@
 # Bug2: Cannot read downloaded files with oe_read. 
 
 # Installs & Imports ------------------------------------------------------
+required_tags = all_extra_tags
 
 remotes::install_github("ropensci/osmextract")
 remotes::install_github("udsleeds/openinfra")
@@ -43,3 +44,29 @@ test_file_dl = oe_download(file_url = url,
 filenames = list.files("/home/james/Desktop/r_dl_tests/")
 
 message("downloaded files:    ", gsub(".osm.pbf", ".osm.pbf    ", filenames))
+
+
+read_bbb = oe_read("/home/james/Desktop/r_dl_tests/bbbike_Leeds.osm.pbf") 
+read_geo = oe_read("/home/james/Desktop/r_dl_tests/geofabrik_Leeds.osm.pbf")
+read_man = oe_read("/home/james/Desktop/r_dl_tests/west-yorkshire-latest.osm.pbf")
+
+read_bbb_clip = oe_read(
+  file_path = "/home/james/Desktop/r_dl_tests/bbbike_Leeds.osm.pbf",
+  boundary = leeds_buffer,
+  boundary_type = "clipsrc"
+)
+
+read_bbb_full = oe_read(
+  file_path = "/home/james/Desktop/r_dl_tests/bbbike_Leeds.osm.pbf",
+  extra_tags = required_tags,
+  boundary = leeds_buffer,
+  boundary_type = "clipsrc"
+)
+
+
+default_test = oe_get(
+  place = "Leeds",
+  layer = "lines",
+  boundary = leeds_buffer,
+  boundary_type = "clipsrc"
+)
