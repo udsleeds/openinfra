@@ -99,79 +99,16 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">sotm_data</span>   <span class="co"># Lazy Loading. Data becomes visible as soon as it is requested. </span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 11741 features and 33 fields</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: MULTILINESTRING</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: -1.586987 ymin: 53.77848 xmax: -1.510255 ymax: 53.82399</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> First 10 features:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     osm_id               name      highway waterway aerialway barrier man_made</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1709451        Armley Road unclassified     &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1709456        Hanover Way     tertiary     &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  1709460         Hyde Place  residential     &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  2390554    Armley Gyratory        trunk     &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2447535 Ingram Distributor        trunk     &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  2526748       Hunslet Road primary_link     &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  2526750               &lt;NA&gt;   trunk_link     &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2956848         Manor View  residential     &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2956850       Manor Avenue  residential     &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 2956851         Raven Road  residential     &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    foot bicycle access service maxspeed oneway kerb footway sidewalk cycleway</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;    yes &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;   30 mph   &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;   20 mph   &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   yes     yes   &lt;NA&gt;    &lt;NA&gt;   40 mph    yes &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   yes     yes   &lt;NA&gt;    &lt;NA&gt;   40 mph    yes &lt;NA&gt;    &lt;NA&gt;       no     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;   30 mph    yes &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;    yes &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    segregated crossing  lit tactile_paving surface smoothness width est_width</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;           &lt;NA&gt;    &lt;NA&gt;       &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        &lt;NA&gt;     &lt;NA&gt;  yes           &lt;NA&gt;    &lt;NA&gt;       &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;           &lt;NA&gt;    &lt;NA&gt;       &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        &lt;NA&gt;     &lt;NA&gt;  yes           &lt;NA&gt;    &lt;NA&gt;       &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        &lt;NA&gt;     &lt;NA&gt;  yes           &lt;NA&gt;    &lt;NA&gt;       &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        &lt;NA&gt;     &lt;NA&gt;  yes           &lt;NA&gt;    &lt;NA&gt;       &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;           &lt;NA&gt;    &lt;NA&gt;       &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;           &lt;NA&gt;    &lt;NA&gt;       &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;           &lt;NA&gt;    &lt;NA&gt;       &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10       &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;           &lt;NA&gt;    &lt;NA&gt;       &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    lit_by_led boundary admin_level  ref cycleway_left cycleway_right z_order</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;       4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt;  A58          &lt;NA&gt;           &lt;NA&gt;       8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt;  A58          &lt;NA&gt;           &lt;NA&gt;       8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;       7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;       8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10       &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt; &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                      other_tags</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                                                                                                                                                                  "lanes"=&gt;"1"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                                                                                                                                                                                          &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                                                                                                                                                                                                          &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                                                                                   "horse"=&gt;"yes","junction"=&gt;"roundabout","lanes"=&gt;"3","motorcar"=&gt;"yes","traffic_restriction"=&gt;"no_stopping"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  "horse"=&gt;"yes","lanes"=&gt;"2","motorcar"=&gt;"yes","old_name"=&gt;"Gelderd Road","source:ref"=&gt;"photograph","source_ref:ref"=&gt;"http://www.flickr.com/photos/pobice/3336544566/","traffic_restriction"=&gt;"no_stopping"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                                                                                                                                                                      "lanes"=&gt;"2","turn:lanes"=&gt;"right|right"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                                                                                                                                                                                                          &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                                                                                                                                                                                                          &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                                                                                                                                                                                                          &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                                                                                                                                                                                                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                          geometry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  MULTILINESTRING ((-1.574397...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  MULTILINESTRING ((-1.55754 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  MULTILINESTRING ((-1.558721...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  MULTILINESTRING ((-1.5688 5...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  MULTILINESTRING ((-1.566073...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  MULTILINESTRING ((-1.532446...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  MULTILINESTRING ((-1.525161...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  MULTILINESTRING ((-1.573466...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  MULTILINESTRING ((-1.573725...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 MULTILINESTRING ((-1.574657...</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sotm_data</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "osm_id"         "name"           "highway"        "waterway"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "aerialway"      "barrier"        "man_made"       "foot"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "bicycle"        "access"         "service"        "maxspeed"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "oneway"         "kerb"           "footway"        "sidewalk"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "cycleway"       "segregated"     "crossing"       "lit"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "tactile_paving" "surface"        "smoothness"     "width"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "est_width"      "lit_by_led"     "boundary"       "admin_level"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29] "ref"            "cycleway_left"  "cycleway_right" "z_order"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [33] "other_tags"     "geometry"      </span>
 </code></pre></div>
     </div>
   </div>
