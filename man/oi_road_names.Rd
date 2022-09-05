@@ -5,7 +5,7 @@
 \title{Function to recategorise OSM data, combining both the \code{name} & \code{ref} field
 for an OSM feature, or whichever is available.}
 \usage{
-oi_road_names(osm_sf)
+oi_road_names(osm_sf, remove=FALSE)
 }
 \arguments{
 \item{osm_sf}{\itemize{

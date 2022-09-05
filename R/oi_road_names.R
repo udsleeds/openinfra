@@ -1,7 +1,7 @@
 #' Function to recategorise OSM data, combining both the `name` & `ref` field
 #' for an OSM feature, or whichever is available. 
 #'
-#' @usage oi_road_names(osm_sf)
+#' @usage oi_road_names(osm_sf, remove=FALSE)
 #' @param osm_sf - A Simple Features `sf` and `data.frame` object containing 
 #'   OpenStreetMap infrastructure data.
 #' @param remove - If TRUE, will remove all features that still have a NA for
