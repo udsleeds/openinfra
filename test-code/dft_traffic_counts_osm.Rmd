@@ -6,7 +6,6 @@ editor_options:
 ---
 
 The goal of this notebook is no explore the usefulness of motor traffic count data in deciding which highways can be categorized as pedestrian friendly in OSM.
-NOTE: move to West Yorkshire example
 
 ```{r}
 library(readr)
