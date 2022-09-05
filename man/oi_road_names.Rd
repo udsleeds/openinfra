@@ -12,6 +12,11 @@ oi_road_names(osm_sf)
 \item A Simple Features \code{sf} and \code{data.frame} object containing
 OpenStreetMap infrastructure data.
 }}
+
+\item{remvoe}{\itemize{
+\item If TRUE, will remove all features that still have a NA for
+openinfra_road_name column (removes nameless features).
+}}
 }
 \value{
 an sf object with openinfra_road_name column added, indicating the
