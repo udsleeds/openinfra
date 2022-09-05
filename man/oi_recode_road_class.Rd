@@ -15,6 +15,11 @@ infrastructure data, obtained from the
 
 \item{del}{If \code{TRUE}, features not re-coded to one of the 8 road
 classifications are removed. \code{FALSE} by default.}
+
+\item{remove}{\itemize{
+\item If TRUE, will remove roads not recategorised by the function
+into one of the pre-set definitions.
+}}
 }
 \value{
 The \code{osm_sf} simple features data frame is returned with
