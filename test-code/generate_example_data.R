@@ -14,7 +14,7 @@ all_extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
                    "highway", "crossing", "lit", "tactile_paving", "surface",
                    "smoothness", "width", "est_width", "lit_by_led", "ref",
                    "amenity", "cycleway_left", "cycleway_right", 
-                   "cycleway_both"
+                   "cycleway_both", "separation"
                    )
 
 translate_options = c(
