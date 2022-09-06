@@ -59,7 +59,6 @@ place_centre_point = sf::st_sfc(sf::st_point(coords), crs = crs)
 circle_buffer = sf::st_buffer(place_centre_point, dist = radius)
 
 
-
 # Get OSM Data ------------------------------------------------------------
 
 # Download Data
@@ -111,46 +110,46 @@ usethis::use_data(example_data, overwrite = TRUE)
 usethis::use_data(example_data_pois, overwrite = TRUE)
 
 # SOTM 2022 Presentation Figures ------------------------------------------
-tmap_mode("plot")
+#tmap_mode("plot")
 
 # Re-coded Road Descriptions / Class
-fig_road_desc = tmap::tm_shape(data_pack_road_desc %>% dplyr::select("oi_road_desc")) + 
-  tmap::tm_lines(col = "oi_road_desc", title.col = "Recoded Road Descriptions") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(fig_road_desc, "fig_road_desc.jpg")
+#fig_road_desc = tmap::tm_shape(data_pack_road_desc %>% dplyr::select("oi_road_desc")) + 
+#  tmap::tm_lines(col = "oi_road_desc", title.col = "Recoded Road Descriptions") + 
+#  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+#tmap::tmap_save(fig_road_desc, "fig_road_desc.jpg")
 
 # OSM Highway Values
-fig_norm_highway = tmap::tm_shape(data_pack %>% dplyr::select("highway")) + 
-  tmap::tm_lines(col = "highway", title.col = "OSM Highway Values") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(fig_norm_highway, "fig_norm_highway.jpg")
+#fig_norm_highway = tmap::tm_shape(data_pack %>% dplyr::select("highway")) + 
+#  tmap::tm_lines(col = "highway", title.col = "OSM Highway Values") + 
+#  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+#tmap::tmap_save(fig_norm_highway, "fig_norm_highway.jpg")
 
 # oi_active_cycle() oi_cycle
-fig_active_cycle = tmap::tm_shape(data_pack_cycle %>% dplyr::select("oi_cycle")) + 
-  tmap::tm_lines(col = "oi_cycle", title.col = "Cyclable Ways", palette = c("red", "green")) + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(fig_active_cycle, "fig_active_cycle.jpg")
+#fig_active_cycle = tmap::tm_shape(data_pack_cycle %>% dplyr::select("oi_cycle")) + 
+#  tmap::tm_lines(col = "oi_cycle", title.col = "Cyclable Ways", palette = c("red", "green")) + 
+#  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+#tmap::tmap_save(fig_active_cycle, "fig_active_cycle.jpg")
 
 # oi_active_walk() oi_walk
-fig_active_walk = tmap::tm_shape(data_pack_walk %>% dplyr::select("oi_walk")) + 
-  tmap::tm_lines(col = "oi_walk", title.col = "Walkable Ways", palette = c("red", "green")) + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(fig_active_walk, "fig_active_walk.jpg")
+#fig_active_walk = tmap::tm_shape(data_pack_walk %>% dplyr::select("oi_walk")) + 
+#  tmap::tm_lines(col = "oi_walk", title.col = "Walkable Ways", palette = c("red", "green")) + 
+#  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+#tmap::tmap_save(fig_active_walk, "fig_active_walk.jpg")
 
 # oi_clean_maxspeed_uk() oi_maxspeed
-fig_maxspeed = tmap::tm_shape(data_pack_maxspeed %>% dplyr::select("oi_maxspeed")) + 
-  tmap::tm_lines(col = "oi_maxspeed", title.col = "Recategorised Maxspeed") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(fig_maxspeed, "fig_maxspeed.jpg")
+#fig_maxspeed = tmap::tm_shape(data_pack_maxspeed %>% dplyr::select("oi_maxspeed")) + 
+#  tmap::tm_lines(col = "oi_maxspeed", title.col = "Recategorised Maxspeed") + 
+#  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+#tmap::tmap_save(fig_maxspeed, "fig_maxspeed.jpg")
 
 # oi_is_lit() oi_is_lit
-fig_is_lit = tmap::tm_shape(data_pack_lit %>% dplyr::select("oi_is_lit")) + 
-  tmap::tm_lines(col = "oi_is_lit", title.col = "Presence of Lighting") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(fig_is_lit, "fig_is_lit.jpg")
+#fig_is_lit = tmap::tm_shape(data_pack_lit %>% dplyr::select("oi_is_lit")) + 
+#  tmap::tm_lines(col = "oi_is_lit", title.col = "Presence of Lighting") + 
+#  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+#tmap::tmap_save(fig_is_lit, "fig_is_lit.jpg")
 
 # oi_road_names() oi_name
-fig_road_names = tmap::tm_shape(data_pack_road_name %>% dplyr::select("oi_name")) + 
-  tmap::tm_lines(col = "oi_name", title.col = "OSM Road Names") + 
-  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
-tmap::tmap_save(fig_road_names, "fig_road_names.jpg")
+#fig_road_names = tmap::tm_shape(data_pack_road_name %>% dplyr::select("oi_name")) + 
+#  tmap::tm_lines(col = "oi_name", title.col = "OSM Road Names") + 
+#  tmap::tm_layout( legend.bg.alpha = 0.5, legend.bg.color = "white" )
+#tmap::tmap_save(fig_road_names, "fig_road_names.jpg")
