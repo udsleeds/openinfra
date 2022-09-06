@@ -22,9 +22,12 @@ coords = c(-1.548567, 53.801277)
 # later specify your own network ("cycling", "walking", "driving")
 # as all necessary tags are within all_extra_tags
 all_extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
-                   "kerb", "footway", "sidewalk", "cycleway", "segregated", "highway",
-                   "crossing", "lit", "tactile_paving", "surface", "smoothness", "width",
-                   "est_width", "lit_by_led", "ref")
+                   "kerb", "footway", "sidewalk", "cycleway", "segregated", 
+                   "highway", "crossing", "lit", "tactile_paving", "surface",
+                   "smoothness", "width", "est_width", "lit_by_led", "ref",
+                   "amenity", "cycleway_left", "cycleway_right", 
+                   "cycleway_both",
+                   )
 
 # Save data params.
 save_data = FALSE
