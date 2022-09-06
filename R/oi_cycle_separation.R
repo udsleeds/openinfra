@@ -53,32 +53,33 @@ oi_cycle_separation = function(osm_sf, remove=FALSE){
      
       # No cycling geometry present & maxspeed compliant with LTN1/20
       (cycleway %in% c("no", "none", "opposite")) & 
-        (openinfra_maxspeed == "20 mph") ~ "yes - 20 mph",
+        (openinfra_maxspeed == "20 mph") ~ "Mixed - 20 mph",
       
       (cycleway %in% c("no", "none", "opposite")) & 
-        (openinfra_maxspeed == "< 20 mph") ~ "yes - < 20 mph", 
+        (openinfra_maxspeed == "< 20 mph") ~ "Mixed - < 20 mph", 
       
       # No cycling geometry present & missing maxspeed tag 
       (cycleway %in% c("no", "none", "opposite")) & 
-        (is.na(maxspeed)) ~ "yes - NA maxspeed",
+        (is.na(maxspeed)) ~ "Mixed - NA maxspeed",
       
 
 # Segregated cycling infrastructure ---------------------------------------
      # Captures obvious cycle tracks - separated by definition
-     cycleway %in% c("track") ~ "yes - track",
+     cycleway %in% c("track") ~ "segregated - track",
      # Captures more obscure track lanes
-     cycleway_left %in% c("track") ~ "yes - track",
-     cycleway_right %in% c("track") ~ "yes - track",
-     cycleway_both %in% c("track") ~ "yes - track",
+     cycleway_left %in% c("track") ~ "segregated - track",
+     cycleway_right %in% c("track") ~ "segregated - track",
+     cycleway_both %in% c("track") ~ "segregated - track",
 
      # Captures highway=cycleway (fully separated by definition)
-     (highway %in% c("cycleway")) ~ "yes - cycleway",
+     (highway %in% c("cycleway")) ~ "segregated - cycleway",
      (highway %in% c("cycleway")) & 
-       (separation == "no") ~ "shared cycleway",
+       (separation == "no") ~ "segregated shared use cycleway",
 
      # Captures other cycling paths with shared use (may remove?)
      (highway %in% c("path")) & (bicycle %in% c("designated")) ~ "yes - path"
 
-     # For LTN1/20 separation SHOULD be used when 
+     # For LTN1/20 separation SHOULD be used when cycling adjacent to roads, but
+     # how to we determine this in OSM?
     ))
 }
