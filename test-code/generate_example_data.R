@@ -4,8 +4,7 @@ library("tmap")
 library("dplyr")
 library("sf")
 
-devtools::load_all()
-
+#devtools::load_all()
 
 # All extra tags - by requesting all of these extra_tags, you can
 # later specify your own network ("cycling", "walking", "driving")
@@ -15,8 +14,12 @@ all_extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
                    "highway", "crossing", "lit", "tactile_paving", "surface",
                    "smoothness", "width", "est_width", "lit_by_led", "ref",
                    "amenity", "cycleway_left", "cycleway_right", 
-                   "cycleway_both",
+                   "cycleway_both"
                    )
+
+translate_options = c(
+  "-nlt", "PROMOTE_TO_MULTI")#,       # Check this
+#  "-where", "highway IS NOT NULL")  # Highway cannot be NA
 
 # Set place name
 place_name = "Leeds"
@@ -75,7 +78,8 @@ fp = paste0(osmextract::oe_download_directory(), "/bbbike_Leeds.osm.pbf")
 # Read place "lines" layer
 example_data = osmextract::oe_read(
   file_path = fp, 
-  never_skip_vectortranslate = TRUE, 
+  never_skip_vectortranslate = TRUE,
+  vectortranslate_options = translate_options,
   layer = "lines",
   extra_tags = all_extra_tags,
   boundary = circle_buffer,
@@ -86,6 +90,7 @@ example_data = osmextract::oe_read(
 example_data_pois = osmextract::oe_read(
   file_path = fp, 
   never_skip_vectortranslate = TRUE,
+  vectortranslate_options = translate_options,
   layer = "points",
   extra_tags = all_extra_tags,
   boundary = circle_buffer,
