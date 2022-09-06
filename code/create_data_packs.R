@@ -42,9 +42,12 @@ lines_network_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra",
 # File path to store default OSM geojson networks of points layer
 points_network_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra",
                            "/openinfra/data_pack_networks/points/")
-# File path to store default OSM geojson networks
-data_pack_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
-                       "openinfra/data_packs/")
+# File path to store lines data packs as geojson files
+lines_data_pack_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
+                       "openinfra/data_packs/lines/")
+# File path to store points data packs as geojson files
+points_data_pack_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
+                              "openinfra/data_packs/points/")
 
 if (piggyback_data_packs){
   # If uploading, local save must be true as pigggyback needs a local 
@@ -99,7 +102,9 @@ dir.create(paste0(lines_network_dir, creation_date))  # Lines dir
 dir.create(paste0(points_network_dir, creation_date)) # Points dir
 
 # Create dir for current date to store data packs created from default networks
-dir.create(paste0(data_pack_dir, creation_date))
+dir.create(paste0(lines_data_pack_dir, creation_date))
+
+dir.create(paste0(points_data_pack_dir, creation_date))
 
 # Get required data -------------------------------------------------------
 
@@ -348,10 +353,12 @@ for (network_filename in lines_network_files){
   lines_network_data_pack = oi_road_names(lines_network_data_pack)
   lines_network_data_pack = oi_bicycle_parking(lines_network_data_pack,
                                                remove = FALSE)
+  lines_network_data_pack = oi_cycle_crossings(lines_network_data_pack, 
+                                               remove=FALSE)
   
   # Select relevant columns for data packs
   lines_network_data_pack = lines_network_data_pack %>%
-    select(osm_id, highway, matches(match = "oi_|im_"))
+    select(osm_id, highway, matches(match = "openinfra_|im_"))
   # Put geometry column at the end (good sf practice)
   lines_network_data_pack = sf::st_sf( lines_network_data_pack %>%
                                    sf::st_drop_geometry(),
@@ -440,7 +447,7 @@ for (network_filename in points_network_files){
   
   # Select relevant columns for data packs
   points_network_data_pack = points_network_data_pack %>%
-    select(osm_id, highway, matches(match = "oi_|im_"))
+    select(osm_id, highway, matches(match = "openinfra_|im_"))
   # Put geometry column at the end (good sf practice)
   points_network_data_pack = sf::st_sf(points_network_data_pack %>%
                                          sf::st_drop_geometry(),
