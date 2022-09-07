@@ -23,10 +23,6 @@
 #' example_output = oi_cycle_separation(data)
 #' plot(example_output["openinfra_cycle_infra"]) 
 
-
-# TODO: Finish oi_cycle_infa RoxyGen documentation. 
-# TODO: Finish new oi_cycle_infra function code
-
 oi_cycle_separation = function(osm_sf, remove=FALSE){
   # We need to use the oi_clean_maxspeed function to be able to assess the speed
   # limits for mixed traffic criteria - that or we just apply the other function

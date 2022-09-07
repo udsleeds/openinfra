@@ -4,7 +4,7 @@
 \alias{oi_cycle_separation}
 \title{Function to recategorise OSM data based on the type of cycle infrastructure.}
 \usage{
-oi_cycle_infra(osm_sf, remove=FALSE)
+oi_cycle_separation(osm_sf, remove=FALSE)
 }
 \arguments{
 \item{osm_sf}{\itemize{
