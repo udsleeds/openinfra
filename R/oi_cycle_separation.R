@@ -6,7 +6,7 @@
 #'
 #'  **Note**: The `osm_sf` must contain the following tags: c("cycleway", 
 #'  "cycleway_left", "cycleway_right", "cycleway_both")   
-#' @usage oi_cycle_infra(osm_sf, remove=FALSE)
+#' @usage oi_cycle_separation(osm_sf, remove=FALSE)
 #' @param osm_sf - A `sf` and `data.frame` object containing OpenStreetMap 
 #'   infrastructure data, obtained from the 
 #'   [`osmextract`](https://github.com/ropensci/osmextract) function.
