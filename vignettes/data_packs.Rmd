@@ -237,7 +237,7 @@ leeds_points_datapack = leeds_points_datapack %>% dplyr::filter(! is.na(openinfr
 #Visualise Data
 tmap::tmap_mode("view")
 tmap::tm_shape(leeds_points_datapack) + 
-  tmap::tm_bubbles(col = "openinfra_cycle_parking", size=0.2)
+  tmap::tm_bubbles(col = "openinfra_cycle_parking", size=0.1)
 
 ```
 
