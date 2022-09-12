@@ -120,6 +120,13 @@ Recategorises OSM to provide more descriptive road names useful for discussion a
 For example, [`osm_id:23200835`](https://www.openstreetmap.org/way/23200835) is less useful as a name than, `Lovell Park Road`
 <br><br>
 
+### Dedicated Cycling Infrastructure 
+```{r out.width="100%", echo=FALSE, include=TRUE}
+knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_infra_map.html", height = "650px")
+```
+This function identifies the type of cycling infrastructure, with respect to the level of separation from carriageways, from OSM data. 
+Such infrastructure consists of on carriageway infrastructure (cycling lanes, mixed traffic, shared busway/lanes) and protected infrastructure (cycle tracks and ways, stepped cycleways, kerb separated cycleways) where _protected_ implies some form of physical separation from the carriageway. 
+
 ## Data Pack Production Workflow
 
 The English data pack outputs, with examples visualised above, are produced using the following, reproducible, workflow: 
@@ -243,7 +250,7 @@ tmap::tm_shape(leeds_points_datapack) +
 
 Thus concludes the reproducible example creation of the transport infrastructure data packs.
 <br><br>
-Below we see how each of the openinfra functions has been defined and the processing steps applied to OSM data. 
+Below we see how each of the openinfra functions has been defined, thus the processing steps applied to OSM data in data pack creation. 
 <br><br>
 
 ## Data Packs: openinfra Function Definitions
