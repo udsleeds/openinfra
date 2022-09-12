@@ -246,7 +246,7 @@ Thus concludes the reproducible example creation of the transport infrastructure
 Below we see how each of the openinfra functions has been defined and the processing steps applied to OSM data. 
 <br><br>
 
-### Data Packs: openinfra Function Definitions
+## Data Packs: openinfra Function Definitions
 
 This section covers the current openinfra (`oi_`) functions utilised to recategorise and add value to OSM infrastructure network data. <br><br> 
 Each openinfra function is defined and described below. 
