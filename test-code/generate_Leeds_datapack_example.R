@@ -23,7 +23,9 @@ required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
                   "kerb", "footway", "sidewalk", "cycleway", "segregated", 
                   "highway", "crossing", "lit", "tactile_paving", "surface", 
                   "smoothness", "width", "est_width", "lit_by_led", "ref", 
-                  "amenity")
+                  "amenity", "sidewalk", "sidewalk:left", "sidewalk:right", 
+                  "sidewalk:both", "source:maxspeed", "maxspeed:type", 
+                  "zone:maxspeed", "zone:traffic", "maxspeed", "HFCS", "rural")
 
 # Data acquisition ---------------------------------------------------------
 
@@ -74,21 +76,14 @@ clean_maxspeed_pack = oi_clean_maxspeed_uk(lines_network, no_NA=FALSE, del=FALSE
 road_names_pack = oi_road_names(lines_network, remove=TRUE)
 cycle_crossings_pack = oi_cycle_crossings(lines_network, remove=TRUE)
 IM_pack = oi_inclusive_mobility(lines_network)
+#TODO: add below functions to data pack examples
+cycle_infra_pack = oi_cycle_separation(lines_network)
 
 # Points networks below
 cycle_parking_pack = oi_bicycle_parking(points_network, remove=TRUE)
 
 # TODO: review if this can be deleted
 # old code  ---------------------------------------------------------------
-
-
-
-#a_test_network = oi_active_cycle(a_test_network, remove = FALSE)
-#a_test_network = oi_active_walk(a_test_network, remove = FALSE)
-#a_test_network = oi_clean_maxspeed_uk(a_test_network, no_NA = FALSE, del = FALSE)
-#a_test_network = oi_inclusive_mobility(a_test_network)
-#a_test_network = oi_is_lit(a_test_network, remove = FALSE)
-#a_test_network = recode_road_class(a_test_network)
 
 # Select relevant columns for data_pack
 # test_network_datapack = a_test_network %>% dplyr::select(c(
@@ -181,6 +176,9 @@ tmap::tmap_save(im_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfr
 cycle_parking_map = tmap::tm_shape(cycle_parking_pack) + 
   tmap::tm_dots(col = "openinfra_cycle_parking")
 tmap::tmap_save(cycle_parking_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/cycle_parking_map.html')
+
+# 10
+cycle_infra_map = tmap::tm_shape()
 
 
 # Load maps into R --------------------------------------------------------
