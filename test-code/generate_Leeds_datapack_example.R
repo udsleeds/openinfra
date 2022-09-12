@@ -25,7 +25,8 @@ required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
                   "smoothness", "width", "est_width", "lit_by_led", "ref", 
                   "amenity", "sidewalk", "sidewalk:left", "sidewalk:right", 
                   "sidewalk:both", "source:maxspeed", "maxspeed:type", 
-                  "zone:maxspeed", "zone:traffic", "maxspeed", "HFCS", "rural")
+                  "zone:maxspeed", "zone:traffic", "maxspeed", "HFCS", "rural",
+                  "cycleway_left", "cycleway_right", "cycleway_both")
 
 # Data acquisition ---------------------------------------------------------
 
@@ -43,8 +44,11 @@ leeds_lines_network = oe_get(
   boundary_type = "clipsrc",
   force_download = TRUE
 )
-# Remove NA highways (waterways, railways, aerialways, etc.)
-leeds_lines_network = leeds_lines_network %>% dplyr::filter(! is.na(highway))
+
+# Load reproducible example
+leeds_lines_network = sf::read_sf(paste0("https://github.com/udsleeds/openinfr",
+                                         "a/releases/download/0.4.2/leeds_line",
+                                         "s_network.geojson"))
 
 # Download points network. 
 leeds_pois_network = osmextract::oe_get(
@@ -56,13 +60,19 @@ leeds_pois_network = osmextract::oe_get(
   force_download = TRUE,
   never_skip_vectortranslate = TRUE
 )
+
+# Load reproducible example
+leeds_pois_network = sf::read_sf(paste0("https://github.com/udsleeds/openinfra",
+                                        "/releases/download/0.4.2/leeds_points",
+                                        "_network.geojson"))
+# GeoJsons of Leeds networks obtained with osmextract 28/08/2022.
+
 # Data processing ---------------------------------------------------------
+# Remove NA highways (waterways, railways, aerialways, etc.)
+leeds_lines_network = leeds_lines_network %>% dplyr::filter(! is.na(highway))
+
 lines_network = leeds_lines_network
 points_network = leeds_pois_network
-
-# GeoJson of Leeds network obtained with osmextract 2/07/2022.
-# TODO: upload the data used here to releases so this can be reproducible.  
-#a_test_network = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/v0.2/Leeds.geojson")
 
 
 # Create data packs. ------------------------------------------------------
@@ -92,6 +102,8 @@ cycle_parking_pack = oi_bicycle_parking(points_network, remove=TRUE)
 #   "im_footway_imp", "im_light", "im_tactile", "im_surface_paved", "im_surface",
 #   "im_width", "im_width_est")
 # )
+
+# Put geometry column at the end of the data.frame - good sf practice. 
 #a_test_network = a_test_network %>%
 #  select(osm_id, highway, matches(match = "oi_|im_"))
 #a_test_network = sf::st_sf(
@@ -178,20 +190,33 @@ cycle_parking_map = tmap::tm_shape(cycle_parking_pack) +
 tmap::tmap_save(cycle_parking_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/cycle_parking_map.html')
 
 # 10
-cycle_infra_map = tmap::tm_shape()
+cycle_infra_map = tmap::tm_shape(cycle_infra_pack) + 
+  tmap::tm_lines(col = "openinfra_cycle_infra")
+tmap::tmap_save(cycle_infra_map, "/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/cycle_infra_map.html")
 
 
 # Load maps into R --------------------------------------------------------
-# Lines 
+# Lines
+#1
 active_cycle_map
+#2
 active_walk_map
+#3
 road_desc_map
+#4
 is_lit_map
+#5
 clean_maxspeed_map
+#6
 road_names_map
+#7
 cycle_crossings_map
+#8
 im_map
+#10
+cycle_inframap
 
 # Points
+#9
 cycle_parking_map
 
