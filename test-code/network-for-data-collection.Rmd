@@ -1,0 +1,33 @@
+---
+title: Generating route network segments to prioritise data collection
+output: github_document
+---
+
+```{r, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+# set-up parameters
+local_authority_name = "Leeds"
+```
+
+
+# Create a buffer with high cycling potential
+
+```{r}
+rnet_pct = pct::get_pct_rnet("west-yorkshire")
+rnet_top = rnet_pct |> 
+  top_frac(n = 0.1, wt = govtarget_slc)
+plot(rnet_pct$geometry, col = "grey")
+plot(rnet_top$geometry, add = TRUE)
+```
+
+
+```{r}
+routes_fast = pct::get_pct_routes_fast("west-yorkshire")
+routes_fast = pct::get_pct_routes_quiet("west-yorkshire")
+```
+
+around parts of the route network with high levels of cycling under the Government Target scenario in the PCT
+That will look something like this:
+Pull out key bits of cycle infrastructure (of all types) from OSM within the buffer
+Get fast and quiet routes that pass through the bits of network of interest from the previous stage 
