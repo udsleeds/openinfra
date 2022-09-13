@@ -1,6 +1,6 @@
 #' Function to recategorise OSM data based on the type of cycle infrastructure.
 #' 
-#' @details This function recetegorises OSM data on cycling infrastrcutre to one of the 
+#' @details This function recetegorises OSM data on cycling infrastructure to one of the 
 #'   protection categories defined within the LTN1/20 guidance (Mixed Traffic | 
 #'   Cycle Lanes | Protected Cycling Space).
 #'
@@ -20,8 +20,8 @@
 #' @examples
 #' library(sf)
 #' data = example_data
-#' example_output = oi_cycle_separation(data)
-#' plot(example_output["openinfra_cycle_infra"]) 
+#' example_output = oi_cycle_separation(data, remove=TRUE)
+#' plot(example_output$geometry) 
 
 oi_cycle_separation = function(osm_sf, remove=FALSE){
   # We need to use the oi_clean_maxspeed function to be able to assess the speed
@@ -36,46 +36,65 @@ oi_cycle_separation = function(osm_sf, remove=FALSE){
   osm_cycle_infra = osm_sf %>% 
     dplyr::mutate(openinfra_cycle_infra = dplyr::case_when(
 
+      #TODO: investigate highway=path & surface=* combinations
+      
 # Get cycle lanes ---------------------------------------------------------
-      # Obvious cycle lanes
-      cycleway %in% c("lane") ~ "cycle lane",
+      
+# Obvious cycle lanes
+      cycleway %in% c("lane", "opposite_lane") ~ "cycle lane",
       # More obscure cycle lanes
-      cycleway_left %in% c("lane") ~ "cycle lane",
-      cycleway_right %in% c("lane") ~ "cycle lane",
-      cycleway_both %in% c("lane") ~ "cycle lane",
+      cycleway_left %in% c("lane", "opposite_lane") ~ "cycle lane",
+      cycleway_right %in% c("lane", "opposite_lane") ~ "cycle lane",
+      cycleway_both %in% c("lane", "opposite_lane") ~ "cycle lane",
+
+      # Catches cycleway crossings (crossing carriageways)
+      cycleway %in% c("crossing") ~ "cycle crossing",
       
 
 # Mixed traffic condition -------------------------------------------------
      
       # No cycling geometry present & maxspeed compliant with LTN1/20
       (cycleway %in% c("no", "none", "opposite")) & 
-        (openinfra_maxspeed == "20 mph") ~ "Mixed - 20 mph",
+        (openinfra_maxspeed == "20 mph") ~ "Mixed traffic - 20 mph",
       
       (cycleway %in% c("no", "none", "opposite")) & 
-        (openinfra_maxspeed == "< 20 mph") ~ "Mixed - < 20 mph", 
+        (openinfra_maxspeed == "< 20 mph") ~ "Mixed traffic - < 20 mph", 
       
       # No cycling geometry present & missing maxspeed tag 
       (cycleway %in% c("no", "none", "opposite")) & 
-        (is.na(maxspeed)) ~ "Mixed - NA maxspeed",
-      
+        (is.na(maxspeed)) ~ "Mixed traffic - NA maxspeed",
+
+      # Cycleway is "share_busway" condition - still mixed with traffic
+      (cycleway %in% c("share_busway", "shared_lane")) ~ "shared lane/busway",
 
 # Segregated cycling infrastructure ---------------------------------------
      # Captures obvious cycle tracks - separated by definition
-     cycleway %in% c("track") ~ "segregated - track",
+     cycleway %in% c("track") ~ "segregated - cycleway/track",
      # Captures more obscure track lanes
-     cycleway_left %in% c("track") ~ "segregated - track",
-     cycleway_right %in% c("track") ~ "segregated - track",
-     cycleway_both %in% c("track") ~ "segregated - track",
+     cycleway_left %in% c("track") ~ "segregated - cycleway/track",
+     cycleway_right %in% c("track") ~ "segregated - cycleway/track",
+     cycleway_both %in% c("track") ~ "segregated - cycleway/track",
 
      # Captures highway=cycleway (fully separated by definition)
-     (highway %in% c("cycleway")) ~ "segregated - cycleway",
+     (highway %in% c("cycleway")) ~ "segregated - cycleway/track",
      (highway %in% c("cycleway")) & 
        (separation == "no") ~ "segregated shared use cycleway",
 
      # Captures other cycling paths with shared use (may remove?)
-     (highway %in% c("path")) & (bicycle %in% c("designated")) ~ "yes - path"
+     (highway %in% c("path")) & (bicycle %in% c("designated", "yes")) & 
+     ((surface %in% c("asphalt", "ashphalt", "paved", "concrete", 
+                     "paving_stones", "compacted", "fine_gravel", "sett")) |
+     (smoothness %in% c("excellent", "good", "intermediate", "very_good",
+                        "medium", "good or excellent", "intermediate;good",
+                        "good;intermediate", "good;excellent")))
+     ~ "yes - path"
 
      # For LTN1/20 separation SHOULD be used when cycling adjacent to roads, but
      # how to we determine this in OSM?
     ))
+  
+  if (remove){
+    osm_cycle_infra = osm_cycle_infra %>% dplyr::filter(! is.na(openinfra_cycle_infra))
+  }
+  
 }

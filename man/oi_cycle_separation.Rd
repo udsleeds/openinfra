@@ -28,7 +28,7 @@ infrastructure, and the level of protection provided by the infrastructure
 Function to recategorise OSM data based on the type of cycle infrastructure.
 }
 \details{
-This function recetegorises OSM data on cycling infrastrcutre to one of the
+This function recetegorises OSM data on cycling infrastructure to one of the
 protection categories defined within the LTN1/20 guidance (Mixed Traffic |
 Cycle Lanes | Protected Cycling Space).
 
@@ -38,6 +38,6 @@ Cycle Lanes | Protected Cycling Space).
 \examples{
 library(sf)
 data = example_data
-example_output = oi_cycle_separation(data)
-plot(example_output["openinfra_cycle_infra"]) 
+example_output = oi_cycle_separation(data, remove=TRUE)
+plot(example_output$geometry) 
 }
