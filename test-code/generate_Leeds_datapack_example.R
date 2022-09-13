@@ -26,7 +26,8 @@ required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
                   "amenity", "sidewalk", "sidewalk:left", "sidewalk:right", 
                   "sidewalk:both", "source:maxspeed", "maxspeed:type", 
                   "zone:maxspeed", "zone:traffic", "maxspeed", "HFCS", "rural",
-                  "cycleway_left", "cycleway_right", "cycleway_both")
+                  "cycleway_left", "cycleway_right", "cycleway_both",
+                  "separation" )
 
 # Data acquisition ---------------------------------------------------------
 
@@ -44,11 +45,11 @@ leeds_lines_network = oe_get(
   boundary_type = "clipsrc",
   force_download = TRUE
 )
-
+# TODO : Update lines & pois network to contain new required tags. 
 # Load reproducible example
-leeds_lines_network = sf::read_sf(paste0("https://github.com/udsleeds/openinfr",
-                                         "a/releases/download/0.4.2/leeds_line",
-                                         "s_network.geojson"))
+#leeds_lines_network = sf::read_sf(paste0("https://github.com/udsleeds/openinfr",
+#                                         "a/releases/download/0.4.2/leeds_line",
+#                                         "s_network.geojson"))
 
 # Download points network. 
 leeds_pois_network = osmextract::oe_get(
@@ -62,9 +63,9 @@ leeds_pois_network = osmextract::oe_get(
 )
 
 # Load reproducible example
-leeds_pois_network = sf::read_sf(paste0("https://github.com/udsleeds/openinfra",
-                                        "/releases/download/0.4.2/leeds_points",
-                                        "_network.geojson"))
+#leeds_pois_network = sf::read_sf(paste0("https://github.com/udsleeds/openinfra",
+#                                        "/releases/download/0.4.2/leeds_points",
+#                                        "_network.geojson"))
 # GeoJsons of Leeds networks obtained with osmextract 28/08/2022.
 
 # Data processing ---------------------------------------------------------
@@ -87,7 +88,7 @@ road_names_pack = oi_road_names(lines_network, remove=TRUE)
 cycle_crossings_pack = oi_cycle_crossings(lines_network, remove=TRUE)
 IM_pack = oi_inclusive_mobility(lines_network)
 #TODO: add below functions to data pack examples
-cycle_infra_pack = oi_cycle_separation(lines_network)
+cycle_infra_pack = oi_cycle_separation(lines_network, remove=TRUE)
 
 # Points networks below
 cycle_parking_pack = oi_bicycle_parking(points_network, remove=TRUE)
@@ -96,16 +97,10 @@ cycle_parking_pack = oi_bicycle_parking(points_network, remove=TRUE)
 # old code  ---------------------------------------------------------------
 
 # Select relevant columns for data_pack
-# test_network_datapack = a_test_network %>% dplyr::select(c(
-#   "osm_id", "highway", "road_desc", "oi_maxspeed", "oi_walk", "oi_cycle",
-#   "oi_is_lit", "im_kerb", "im_footway", "im_footpath", "im_crossing", 
-#   "im_footway_imp", "im_light", "im_tactile", "im_surface_paved", "im_surface",
-#   "im_width", "im_width_est")
-# )
-
-# Put geometry column at the end of the data.frame - good sf practice. 
 #a_test_network = a_test_network %>%
 #  select(osm_id, highway, matches(match = "oi_|im_"))
+
+# Put geometry column at the end of the data.frame - good sf practice. 
 #a_test_network = sf::st_sf(
 #  a_test_network %>% sf::st_drop_geometry(),
 #  geometry = a_test_network$geometry
@@ -137,54 +132,54 @@ cycle_parking_pack = oi_bicycle_parking(points_network, remove=TRUE)
 # Create example plots ----------------------------------------------------
 
 #___________MAPS_____________________________
-#0 Default OSM highway values
+# 0 Default OSM highway values
 default_OSM_highways = tmap::tm_shape(lines_network) + 
   tmap::tm_lines(col = "highway")
 tmap::tmap_save(default_OSM_highways, "/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/deault_OSM_highways.html")
 
-#1
+# 1
 active_cycle_map = tmap::tm_shape(active_cycle_pack) + 
   tmap::tm_lines(col = "openinfra_cycle")
 tmap::tmap_save(active_cycle_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/active_cycle_map.html')
 
-#2
+# 2
 active_walk_map = tmap::tm_shape(active_walk_pack) + 
   tmap::tm_lines(col = "openinfra_walk")
 tmap::tmap_save(active_walk_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/active_walk_map.html')
 
-#3
+# 3
 road_desc_map = tmap::tm_shape(recode_road_pack) + 
   tmap::tm_lines(col = "openinfra_road_desc")
 tmap::tmap_save(road_desc_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/road_desc_map.html')
 
-#4
+# 4
 is_lit_map = tmap::tm_shape(is_lit_pack) + 
   tmap::tm_lines(col = "openinfra_is_lit")
 tmap::tmap_save(is_lit_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/is_lit_map.html')
 
-#5
+# 5
 clean_maxspeed_map = tmap::tm_shape(clean_maxspeed_pack) + 
   tmap::tm_lines(col = "openinfra_maxspeed")
 tmap::tmap_save(clean_maxspeed_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/clean_maxspeed_map.html')
 
-#6
+# 6
 road_names_map = tmap::tm_shape(road_names_pack) + 
   tmap::tm_lines(col = "openinfra_road_name")
 tmap::tmap_save(road_names_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/road_names_map.html')
 
-#7
+# 7
 cycle_crossings_map = tmap::tm_shape(cycle_crossings_pack) + 
   tmap::tm_lines(col = "openinfra_cycle_crossings")
 tmap::tmap_save(cycle_crossings_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/cycle_crossings_map.html')
 
-#8
+# 8
 im_map = tmap::tm_shape(IM_pack %>% dplyr::select(c("openinfra_im_kerb", "openinfra_im_footway", "openinfra_im_footpath", "openinfra_im_crossing", 
                                                                   "openinfra_im_footway_imp", "openinfra_im_light", "openinfra_im_tactile", "openinfra_im_surface_paved", "openinfra_im_surface",
                                                                   "openinfra_im_width", "openinfra_im_width_est"))) + 
   tmap::tm_lines()
 tmap::tmap_save(im_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/im_map.html')
 
-#9 
+# 9 
 cycle_parking_map = tmap::tm_shape(cycle_parking_pack) + 
   tmap::tm_dots(col = "openinfra_cycle_parking")
 tmap::tmap_save(cycle_parking_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/cycle_parking_map.html')
@@ -197,26 +192,27 @@ tmap::tmap_save(cycle_infra_map, "/home/james/Desktop/LIDA_OSM_Project/openinfra
 
 # Load maps into R --------------------------------------------------------
 # Lines
-#1
+# 1
 active_cycle_map
-#2
+# 2
 active_walk_map
-#3
+# 3
 road_desc_map
-#4
+# 4
 is_lit_map
-#5
+# 5
 clean_maxspeed_map
-#6
+# 6
 road_names_map
-#7
+# 7
 cycle_crossings_map
-#8
+# 8
 im_map
-#10
-cycle_inframap
+# 10
+cycle_infra_map
+#591 --> 655
 
 # Points
-#9
+# 9
 cycle_parking_map
 
