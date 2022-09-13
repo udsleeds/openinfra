@@ -6,14 +6,14 @@ editor_options:
 
 # OpenInfra: Utilising OpenStreetMap for sustainable transport planning
 
-Investment in active travel modes contributes to tackling climate, health, and cost-of-living crises.
+Investment in active travel modes contributes to tackling climate, health, and cost-of-living crises. 
 
-New policies, investment programs, and government agencies demand high quality, geographically specific data to ensure effective resource allocation.
+New policies, investment programs, and government agencies demand high quality, geographically specific data to ensure effective resource allocation. 
 
-OpenInfra project explores the potential of open data sources to meet this demand. Specifically, OpenStreetMap (OSM), a free, open, crodwsourced map of the entire world, is explored.
+The OpenInfra project explores the potential of open data sources to meet this demand. Specifically, OpenStreetMap (OSM), a free, open, crowdsourced map of the entire world, is explored. 
 
-We hypothesise that OSM data can support local decision-making processes, and the prioritisation of new active travel infrastructure.
+We hypothesise that OSM data can support local decision-making processes, and the prioritisation of new active travel infrastructure. 
 
-Our findings broadly support, with some limitations, the initial hypothesis. This will be done through comparison of OSM data with official datasets, e.g. Transport for London's Cycling Infrastructure Database. Additionally, we present transport infrastructure data packs aimed at supporting transport planners working for every local authority in England.
+Our findings broadly support, with some limitations, the initial hypothesis. This will be done through comparison of OSM data with official datasets, e.g. Transport for London's Cycling Infrastructure Database. Additionally, we present transport infrastructure data packs aimed at supporting transport planners working for every local authority in England. 
 
-Project outputs are open, thus enabling others to reproduce and adapt for personal needs. Project repository can be found on GitHub: https://github.com/udsleeds/openinfra
+Project outputs are open, thus enabling others to reproduce and adapt for personal needs. The project repository can be found on GitHub: https://github.com/udsleeds/openinfra 
