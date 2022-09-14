@@ -147,6 +147,8 @@ for(RN in RNs){
   rnet_top_10 = subset(rnet_top_10, select = -c(desc) )
   rnet_top_10 = rnet_top_10 %>% dplyr::mutate(desc ="90% percentile routes")
   
+  # Add fast & quiet routes too!
+  
   
   # Plot routes with highest cycling potential, overlayed with top 10% of routes
   RegionMap = tmap::tm_shape(rnet_pct) + 
@@ -165,6 +167,85 @@ for(RN in RNs){
   tmap::tmap_save(RegionMap, filepath)
 } 
 
+
+
+# Get cycling infrastructure with oi_cycle_separation ---------------------
+
+regions = pct::pct_regions
+r_names = regions$region_name
+r_geoms = regions$geometry	
+
+# Get england-latest data (to be subset for each region)
+creation_date = "14_09_2022"
+GAIST_eng_latest_dir = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_eng_latest/'
+fp = paste0(GAIST_eng_latest_dir, creation_date, "/")
+
+# Create DL directory if not already present
+dir.create(fp)
+
+eng_dl = osmextract::oe_get(
+  place = "England",
+  extra_tags = required_tags,
+  download_only = TRUE,
+  skip_vectortranslate = TRUE, 
+  download_directory = fp)
+  
+eng_latest_fp = paste0(fp, "geofabrik_england-latest.osm.pbf")
+  
+  
+for(i in 1:nrow(regions)){
+    
+  RN = r_names[i] # Region Name
+  RG = r_geoms[i] # Region Geometry
+    
+  # Get OSM data using region geometry
+  message("Getting ", RN, " region data.")
+    
+  translate_options = c(
+    "-nlt", "PROMOTE_TO_MULTI",       # Check this
+    "-where", "highway IS NOT NULL")   # Highway cannot be NA
+    
+  required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
+                    "kerb", "footway", "sidewalk", "cycleway", "segregated", 
+                    "highway", "crossing", "lit", "tactile_paving", "surface",
+                    "smoothness", "width", "est_width", "lit_by_led", "ref",
+                    "amenity", "cycleway_left", "cycleway_right", 
+                    "cycleway_both", "separation"
+                   )
+  
+  # Get region data  
+  r_data = osmextract::oe_read(
+    eng_latest_fp,
+    vectortranslate_options = translate_options,
+    layer = "lines",
+    extra_tags = required_tags,
+    boundary = RG,
+    boundary_type = "clipsrc",
+    quiet = TRUE
+  )
+    
+  # Create cycle infra network
+  cycle_infra_network = openinfra::oi_cycle_separation(r_data, remove=TRUE)
+    
+    
+  # Save the network as a geojson?
+  GAIST_fp = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_cycle_infra_networks/'
+  file_name = paste0(RN, "_cycle_infra_network.geojson")
+    
+  sf::st_write(cycle_infra_network, paste0(GAIST_fp, file_name))
+    
+}
+
+for(RN in RNs){
+  # Add check for existing files, don't want to be downloading too many.
+  
+}
+
+url = "https://github.com/udsleeds/openinfraresults/releases/download/cycle_infra/leicestershire_cycle_infra_network.geojson"
+test_network = sf::read_sf(url)
+tmap::tmap_mode("plot")
+
+tmap::qtm(test_network$openinfra_cycle_infra)
 # Create a buffer with high cycling potential -----------------------------
 
 #rnet_pct = pct::get_pct_rnet(RN)
