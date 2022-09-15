@@ -1,10 +1,9 @@
 
 # Library imports ---------------------------------------------------------
-library(tidyverse)
-library(pct)
-library(dplyr)
-library(tmap)
-
+pkgs = c("od", "tmaptools", "stplanr", "tidyverse", "pct", "dplyr", "tmap",
+         "sf")
+#install.packages(pkgs)
+lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
 
 # Function to find best matched LAN --> RN --------------------------------
 
@@ -79,6 +78,134 @@ get_region_name = function(LAN, auto_match=FALSE){
 # message("Best matched place is: ", best_matched_place$lad16nm, ", ",
 #         best_matched_place$region_name)
 # RN = best_matched_place$region_name
+
+
+# LIDA Example test -------------------------------------------------------
+
+# lida_point = tmaptools::geocode_OSM("Worsley Building, Leeds")
+# leeds_point = tmaptools::geocode_OSM("leeds")
+# 
+# c_m_coordiantes = rbind(lida_point$coords, leeds_point$coords)
+# c_m_od = od::points_to_od(p = c_m_coordiantes, interzone_only = TRUE)
+# c_m_desire_line = od::odc_to_sf(c_m_od[-(1:2)])[1, ]
+# lida_buffer = stplanr::geo_buffer(c_m_desire_line, dist = 2000)
+
+
+# Leicestershire test -----------------------------------------------------
+# Param setup
+pkgs = c("od", "tmaptools", "stplanr", "tidyverse", "pct", "dplyr", "tmap",
+         "sf")
+#install.packages(pkgs)
+lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
+
+region_name = "leicestershire"
+radius = 150 # metres
+osm_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
+             "kerb", "footway", "sidewalk", "cycleway", "segregated", 
+             "highway", "crossing", "lit", "tactile_paving", "surface",
+             "smoothness", "width", "est_width", "lit_by_led", "ref",
+             "amenity", "cycleway_left", "cycleway_right", 
+             "cycleway_both", "separation")
+translate_options = c(
+  "-nlt", "PROMOTE_TO_MULTI",       # Check this
+  "-where", "highway IS NOT NULL") 
+
+
+rnet_pct = pct::get_pct_rnet(region_name)
+# Top 10% of routes
+rnet_pct_top10 = rnet_pct |>
+  top_frac(n = 0.1, wt = rnet_pct$govtarget_slc)
+
+# Visualise entire network & top 10%
+plot(rnet_pct$geometry, col = "grey")
+plot(rnet_pct_top10$geometry, col= "red", add = TRUE)
+
+# Create buffer around top 10% routes (150 metres)
+test_buffer = stplanr::geo_buffer(rnet_pct_top10, dist = 150)
+# Combine unique polygon buffers
+test_union = test_buffer %>% summarise(geometry = sf::st_union(geometry))
+# Visualise the MultiPolygon union
+plot(test_union)
+
+# Note: thanks to the spatial queries, osmextract does have some issue finding
+#       well defined areas from providers - as such this may commonly 
+#       re-download england-latest.osm.pbf - maybe it would be wiser to DL the 
+#       eng-latest and continually spatially subset this file/network?
+# This is the case... use local england_latest.
+creation_date = "14_09_2022"
+GAIST_eng_latest_dir = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_eng_latest/'
+fp = paste0(GAIST_eng_latest_dir, creation_date, "/")
+eng_latest_fp = paste0(fp, "geofabrik_england-latest.osm.pbf")
+
+# Acquire OSM data
+test_osm_data = osmextract::oe_get(place = "Leicestershire", layer = "lines", extra_tags = osm_tags)
+# Apply union buffer, leaving only ways within buffer of top 10% routes
+test_osm_data_buffed = test_osm_data[test_union, ]
+# Visualise the buffered network
+plot(test_osm_data_buffed$geometry)
+
+# Apply openinfra function, leaving only cycling infra related data behind
+test_osm_data_cycling = openinfra::oi_cycle_separation(test_osm_data_buffed, remove=TRUE)
+# Re-apply the remove part - maybe this is broken in oi_cycle_separation ???...
+test_osm_data_cycling_rebuffed = test_osm_data_cycling %>% dplyr::filter(! is.na(openinfra_cycle_infra))
+# Visualise cycling network within top10% routes buffer
+plot(test_osm_data_cycling_rebuffed$geometry)
+
+# Acquire data for buffered regions
+osm_data = osmextract::oe_read(
+  file_path = eng_latest_fp,
+  layer = "lines",
+  vectortranslate_options = translate_options,
+  never_skip_vectortranslate = TRUE,
+  force_vectortranslate = TRUE,
+  extra_tags = osm_tags,
+  boundary = test_union,
+  boundary_type = "spat", # Maybe investigate the other clipping options?
+  quiet = FALSE
+)
+
+osm_data = osmextract::oe_get(
+  place = test_union, 
+  layer = "lines",
+  vectortranslate_options = translate_options,
+  never_skip_vectortranslate = TRUE,
+  force_vectortranslate = TRUE,
+  extra_tags = osm_tags,
+  boundary = test_union, 
+  boundary_type = "spat",
+  quiet = FALSE
+ )
+
+osm_data_cycling = openinfra::oi_cycle_separation(osm_data)
+
+# Once OSM data has been acquired, apply oi_cycle_separation to find cycling 
+#   infrastructure only within the buffer
+oe_osm_data = osm_data
+# No need to buffer the data as this was done in download using "spat" 
+oe_osm_data_cycling = openinfra::oi_cycle_separation(oe_osm_data, remove = TRUE)
+# Visualise the data
+#plot(oe_osm_data_cycling$geometry)
+tmap::qtm(oe_osm_data_cycling)
+
+tmap::tm_shape(test_union) + 
+  tmap::tm_polygons(alpha = 0.45) + 
+tmap::tm_shape(oe_osm_data_cycling) + 
+  tmap::tm_lines(col = "openinfra_cycle_infra")
+
+clipped_data_within = oe_osm_data_cycling[test_union, , op=st_within]
+
+tmap::tm_shape(test_union) + 
+  tmap::tm_polygons(alpha = 0.45) + 
+tmap::tm_shape(clipped_data_within) + 
+  tmap::tm_lines(col = "openinfra_cycle_infra")
+
+clipped_data_intersect = oe_osm_data_cycling[test_union, , op=st_intersects]
+
+tmap::tm_shape(test_union) + 
+  tmap::tm_polygons(alpha = 0.45) + 
+tmap::tm_shape(clipped_data_intersect) + 
+  tmap::tm_lines(col = "openinfra_cycle_infra")
+
 # Set-up ------------------------------------------------------------------
 
 
@@ -124,7 +251,7 @@ GAIST_pct_network_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openin",
 # }
 
 
-# Iterate over region names -----------------------------------------------
+# Iterate over region names | Create & save interactive plots of PCT routes----
 
 # Get unique, non-NA region names only
 RNs = pct_regions_lookup %>% dplyr::filter(! is.na(region_name))
@@ -236,16 +363,25 @@ for(i in 1:nrow(regions)){
     
 }
 
+
+# next steps  -------------------------------------------------------------
+
+
 for(RN in RNs){
   # Add check for existing files, don't want to be downloading too many.
   
 }
 
+
+# Testing visualisation ----------------------------------------------------
+
+
 url = "https://github.com/udsleeds/openinfraresults/releases/download/cycle_infra/leicestershire_cycle_infra_network.geojson"
 test_network = sf::read_sf(url)
-tmap::tmap_mode("plot")
+test_network = test_network %>% dplyr::filter(! is.na(openinfra_cycle_infra))
+tmap::tmap_mode("view")
 
-tmap::qtm(test_network$openinfra_cycle_infra)
+tmap::qtm(test_network)
 # Create a buffer with high cycling potential -----------------------------
 
 #rnet_pct = pct::get_pct_rnet(RN)
