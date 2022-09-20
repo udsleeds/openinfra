@@ -52,8 +52,37 @@ sf::write_sf(transport_regions_2022, "data-small/transport_regions_2022.geojson"
 # Get and process MSOA data -----------------------------------------------
 
 
-msoas = 
+#msoas = sf::read_sf("https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Middle_layer_Super_Output_Areas_.December_2021._Boundaries_Full_Clipped_EW_.BFC.geojson")#MSOA Middle Layer Super Output Area code here
+msoas = sf::read_sf('/home/james/Desktop/LIDA_OSM_Project/openinfra/openinfraresults/data/Middle_layer_Super_Output_Areas_(December_2021)_Boundaries_Full_Clipped_EW_(BFC).geojson')
 
+msoas_2021_england = msoas |> 
+  filter(str_detect(string = MSOA21CD, pattern = "E")) |> 
+  select(MSOA21CD, MSOA21NM)
+
+msoas_2021_scotland = msoas |> 
+  filter(str_detect(string = MSOA21CD, pattern = "S")) |> 
+  select(MSOA21CD, MSOA21NM)
+plot(msoas_2021_scotland$geometry)
+
+msoas_2021_wales = msoas |> 
+  filter(str_detect(string = MSOA21CD, pattern = "W")) |> 
+  select(MSOA21CD, MSOA21NM)
+plot(msoas_2021_wales$geometry)
+
+countries = msoas |> 
+  # filter(!str_detect(string = LAD22CD, pattern = "E")) |> 
+  mutate(
+    Country = case_when(
+      str_detect(string = MSOA21CD, pattern = "S") ~ "Scotland",
+      str_detect(string = MSOA21CD, pattern = "W") ~ "Wales",
+      str_detect(string = MSOA21CD, pattern = "N") ~ "Northern Ireland",
+      str_detect(string = MSOA21CD, pattern = "E") ~ "England"
+    )
+  ) |> 
+  group_by(Country) |> 
+  summarise(n = n(), middle_super_ouput_names = paste0(MSOA21NM, collapse = ", "))
+
+sf::write_sf(transport_regions_2022, "data-small/transport_regions_msoas_2022.geojson")
 
 # Previous regions code ---------------------------------------------------
 
