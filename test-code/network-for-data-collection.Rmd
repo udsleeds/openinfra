@@ -24,7 +24,7 @@ plot(rnet_top$geometry, add = TRUE)
 
 ```{r}
 routes_fast = pct::get_pct_routes_fast("west-yorkshire")
-routes_fast = pct::get_pct_routes_quiet("west-yorkshire")
+routes_quiet = pct::get_pct_routes_quiet("west-yorkshire")
 ```
 
 around parts of the route network with high levels of cycling under the Government Target scenario in the PCT
