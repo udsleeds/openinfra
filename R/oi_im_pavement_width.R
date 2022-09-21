@@ -14,7 +14,8 @@
 #' data = example_data
 #' output = oi_im_pavement_width(data)
 #' plot(output["openinfra_im_width_est"])
-#' plot(output["openinfra_im_width"])
+#' # Uncomment below to plot other columns
+#' # plot(output["openinfra_im_width"])
 
 oi_im_pavement_width = function(osm_sf){
   # Assesses way width - either < 1.5 meters, 1.5-2 meters, or > 2 meters.

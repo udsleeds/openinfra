@@ -10,12 +10,13 @@
 #'   respectively.
 #' @details Note: the `osm_sf` must contain the following tags: `c("surface", 
 #'   "smoothness")`
-#'   
-#'   
-
-# TODO: finish splitting these into a single function - assess whether 
-#       im_surface is really needed. Also, does it catch roads (asphalt etc.)
-
+#' @export
+#' @examples
+#' data = example_data
+#' output = oi_im_surfaces(data)
+#' plot(output["openinfra_im_paved_surface"])
+#' # Uncomment below to plot other columns
+#' #plot(output["openinfra_im_surface_level"])
 
 oi_im_surfaces = function(osm_sf){
   # Assesses whether surface is paved, unpaved, or other

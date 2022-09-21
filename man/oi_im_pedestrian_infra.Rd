@@ -28,6 +28,7 @@ Note: the \code{osm_sf} must contain the following tags: \code{c( "footway", "si
 data = example_data
 output = oi_im_pedestrian_infra(data)
 plot(output["openinfra_im_footway"])
+# Uncomment below to plot other columns
 #plot(output["openinfra_im_footpath"])
 #plot(output["openinfra_im_crossing"])
 #plot(output["openinfra_im_footway_imp"])

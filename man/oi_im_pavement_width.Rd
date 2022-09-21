@@ -28,5 +28,6 @@ Note: the \code{osm_sf} must contain the following tags: \code{c("width",  "est_
 data = example_data
 output = oi_im_pavement_width(data)
 plot(output["openinfra_im_width_est"])
-plot(output["openinfra_im_width"])
+# Uncomment below to plot other columns
+# plot(output["openinfra_im_width"])
 }

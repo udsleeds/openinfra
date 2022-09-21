@@ -25,3 +25,10 @@ Function to assess surfaces of OSM ways.
 \details{
 Note: the \code{osm_sf} must contain the following tags: \code{c("surface",  "smoothness")}
 }
+\examples{
+data = example_data
+output = oi_im_surfaces(data)
+plot(output["openinfra_im_paved_surface"])
+# Uncomment below to plot other columns
+#plot(output["openinfra_im_surface_level"])
+}

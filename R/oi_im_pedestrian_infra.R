@@ -15,6 +15,7 @@
 #' data = example_data
 #' output = oi_im_pedestrian_infra(data)
 #' plot(output["openinfra_im_footway"])
+#' # Uncomment below to plot other columns
 #' #plot(output["openinfra_im_footpath"])
 #' #plot(output["openinfra_im_crossing"])
 #' #plot(output["openinfra_im_footway_imp"])
@@ -80,8 +81,3 @@ oi_im_pedestrian_infra = function(osm_sf){
   
   return(osm_sf_im)
 }
-
-#1 # openinfra_im_footway | ["footway", "sidewalk", "cyclewalk", "foot", "segregated"] | ("yes", "no") 
-#2 # openinfra_im_footpath | ["highway", "openinfra_im_footway", "foot", "access", "segregated"] | ("yes", "no")
-#3 # openinfra_im_crossing (pedestrian) | ["crossing", "highway", "footway"] | ("give-way", "signal-controlled", "yes" ,"no")
-#4 # openinfra_im_imp_footway | ["openinfra_im_footway", "openinfra_im_footpath", "openinfra_im_crossing"] | ("yes", "no")
