@@ -94,7 +94,8 @@ oi_cycle_separation = function(osm_sf, remove=FALSE){
     ))
   
   if (remove){
-    osm_cycle_infra = osm_cycle_infra %>% dplyr::filter(! is.na(openinfra_cycle_infra))
+    osm_cycle_infra = osm_cycle_infra %>% 
+      dplyr::filter(! is.na(openinfra_cycle_infra))
   }
   
 }
