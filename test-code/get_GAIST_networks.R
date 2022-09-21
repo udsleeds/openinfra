@@ -152,7 +152,7 @@ test_osm_data_cycling_rebuffed = test_osm_data_cycling %>% dplyr::filter(! is.na
 plot(test_osm_data_cycling_rebuffed$geometry)
 
 # Acquire data for buffered regions
-osm_data = osmextract::oe_read(
+read_osm_data = osmextract::oe_read(
   file_path = eng_latest_fp,
   layer = "lines",
   vectortranslate_options = translate_options,
@@ -257,9 +257,10 @@ GAIST_pct_network_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openin",
 RNs = pct_regions_lookup %>% dplyr::filter(! is.na(region_name))
 RNs = unique(RNs$region_name)
 
-
 for(RN in RNs){
 
+  #TODO: Add check for existing files, don't want to save too many. 
+  
   message("Loading region name: ", RN)
 
   # Get pct route network
@@ -324,6 +325,8 @@ for(i in 1:nrow(regions)){
     
   RN = r_names[i] # Region Name
   RG = r_geoms[i] # Region Geometry
+  
+  #TODO: Add check for existing files, don't want to save too many. 
     
   # Get OSM data using region geometry
   message("Getting ", RN, " region data.")
@@ -362,16 +365,6 @@ for(i in 1:nrow(regions)){
   sf::st_write(cycle_infra_network, paste0(GAIST_fp, file_name))
     
 }
-
-
-# next steps  -------------------------------------------------------------
-
-
-for(RN in RNs){
-  # Add check for existing files, don't want to be downloading too many.
-  
-}
-
 
 # Testing visualisation ----------------------------------------------------
 
