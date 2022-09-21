@@ -44,7 +44,7 @@ oi_inclusive_mobility = function(osm_sf) {
         !is.na(cycleway) & # map cycling infrastructure that is an inherent part of the road
         foot %in% c("yes", "designated") |
         segregated %in% "yes"
-      ~ "yes",
+      ~ "footway",
       TRUE ~ "no" 
     ) 
     ) %>% 
@@ -58,16 +58,16 @@ oi_inclusive_mobility = function(osm_sf) {
         ! foot %in% c("no", "private") | 
         ! access %in% c("no", "private") &
         segregated %in% "no" # shared space
-      ~ "yes",
+      ~ "footpath",
       TRUE ~ "no"
     )
     ) %>%
     
     # Assesses presence of a crossing and what type: give-way, signal controlled, none, or yes (but the type is unknown)
     dplyr::mutate(openinfra_im_crossing = dplyr::case_when(
-      stringr::str_detect(crossing, "zebra|uncontr|marked")~ "give-way",
-      stringr::str_detect(crossing, "toucan|pedex|puffin|equestrian|light|signal")~ "signal-controlled",
-      highway %in% "crossing" | footway  %in% "crossing" | !is.na(crossing) ~ "yes",
+      stringr::str_detect(crossing, "zebra|uncontr|marked")~ "give-way crossing",
+      stringr::str_detect(crossing, "toucan|pedex|puffin|equestrian|light|signal")~ "signal-controlled crossing",
+      highway %in% "crossing" | footway  %in% "crossing" | !is.na(crossing) ~ "unknown crossing type",
       TRUE ~ "no"
     )) %>% 
     
@@ -76,7 +76,7 @@ oi_inclusive_mobility = function(osm_sf) {
       openinfra_im_footway %in% "no" &
         openinfra_im_footpath %in% "no" &
         openinfra_im_crossing %in% "no"
-      ~ "yes",
+      ~ "implied footway",
       TRUE ~ "no"
     )
     ) %>% 
@@ -112,7 +112,7 @@ oi_inclusive_mobility = function(osm_sf) {
         ~ "unpaved",
         stringr::str_detect(surface, "unpav|compact|gravel|rock|pebble|ground|dirt|grass|mud|sand|woodchips|snow|ice|salt")
         ~ "unpaved",
-        TRUE & !is.na(surface) ~ "other"
+        (TRUE & !is.na(surface)) ~ "other"
       )
     ) %>% 
     # Assesses whether surface is even or uneven
