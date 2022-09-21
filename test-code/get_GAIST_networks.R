@@ -92,11 +92,8 @@ get_region_name = function(LAN, auto_match=FALSE){
 
 
 # Leicestershire test -----------------------------------------------------
-# Param setup
-pkgs = c("od", "tmaptools", "stplanr", "tidyverse", "pct", "dplyr", "tmap",
-         "sf")
-#install.packages(pkgs)
-lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
+
+############# Param setup 
 
 region_name = "leicestershire"
 radius = 150 # metres
@@ -106,53 +103,96 @@ osm_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
              "smoothness", "width", "est_width", "lit_by_led", "ref",
              "amenity", "cycleway_left", "cycleway_right", 
              "cycleway_both", "separation")
+
+# Define translate options (from osmextract docs I think)
 translate_options = c(
   "-nlt", "PROMOTE_TO_MULTI",       # Check this
   "-where", "highway IS NOT NULL") 
 
+# Info for locally stored england-latest.osm.pbf
+creation_date = "14_09_2022"
+GAIST_eng_latest_dir = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_eng_latest/'
 
+############# Get PCT Routes data 
+
+############### INVESTIGATE PCT LAYERS _ DELETE AFTER ##########################
+a_rnet_pct = pct::get_pct_rnet(region_name)
+a_fast_pct = pct::get_pct_routes_fast(region_name)
+a_quiet_pct = pct::get_pct_routes_quiet(region_name)
+
+plot(a_fast_pct$geometry, col = "red")
+plot(a_quiet_pct$geometry, col= "blue", add = TRUE)
+plot(a_rnet_pct$geometry, col = "grey", add = TRUE)
+
+tmap::tmap_mode("view")
+
+plot = tmap::tm_shape(a_fast_pct) + 
+  tmap::tm_lines(palette = c("red")) +
+tmap::tm_shape(a_quiet_pct) + 
+  tmap::tm_lines(palette = c("blue")) + 
+tmap::tm_shape(a_rnet_pct) + 
+  tmap::tm_lines(palette = c("blue"))
+
+tmap::tmap_save(plot, "/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/test_pct_plot.html")
+
+# Remove geometries
+a_rnet_pct_no_geom = sf::st_drop_geometry(a_rnet_pct)
+a_fast_pct_no_geom = sf::st_drop_geometry(a_fast_pct)
+a_quiet_pct_no_geom = sf::st_drop_geometry(a_quiet_pct)
+
+a_look = dplyr::inner_join(a_fast_pct_no_geom, a_quiet_pct_no_geom)
+
+# Test overlaps
+library(dplyr)
+#a_fast_quiet_look = dplyr::inner_join(a_fast_pct, a_quiet_pct)
+a_fast_quiet_look = sf::st_join(a_fast_pct, a_quiet_pct, join=st_disjoint)
+################################################################################
+
+# Get default, fast, AND quiet PCT Routes
 rnet_pct = pct::get_pct_rnet(region_name)
-# Top 10% of routes
+rnet_pct_fast = pct::get_pct_routes_fast(region_name)
+rnet_pct_quiet = pct::get_pct_routes_quiet(region_name)
+
+# Get top 10% of default, fast, AND quiet routes
 rnet_pct_top10 = rnet_pct |>
   top_frac(n = 0.1, wt = rnet_pct$govtarget_slc)
+rnet_pct_fast_top10 = rnet_pct_fast |>
+  top_frac(n = 0.1, wt = rnet_pct_fast$govtarget_slc)
+# CANNOT BE DONE FOR QUIET AS NO GOVTARGET_SLC COLUMN
+#rnet_pct_quiet_top10 = rnet_pct_quiet |>
+#  top_frac(n = 0.1, wt = rnet_pct_quiet$govtarget_slc)
 
 # Visualise entire network & top 10%
 plot(rnet_pct$geometry, col = "grey")
 plot(rnet_pct_top10$geometry, col= "red", add = TRUE)
 
+# Visualise entire fast network & top 10%
+plot(rnet_pct_fast$geometry, col = "grey")
+plot(rnet_pct_fast_top10$geometry, col= "red", add = TRUE)
+
+############# Apply spatial buffer around PCT routes
+
 # Create buffer around top 10% routes (150 metres)
-test_buffer = stplanr::geo_buffer(rnet_pct_top10, dist = 150)
+test_buffer = stplanr::geo_buffer(rnet_pct_top10, dist = radius)
 # Combine unique polygon buffers
 test_union = test_buffer %>% summarise(geometry = sf::st_union(geometry))
 # Visualise the MultiPolygon union
 plot(test_union)
 
-# Note: thanks to the spatial queries, osmextract does have some issue finding
-#       well defined areas from providers - as such this may commonly 
-#       re-download england-latest.osm.pbf - maybe it would be wiser to DL the 
-#       eng-latest and continually spatially subset this file/network?
-# This is the case... use local england_latest.
-creation_date = "14_09_2022"
-GAIST_eng_latest_dir = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_eng_latest/'
+# For the fast networks
+fast_buffer = stplanr::geo_buffer(rnet_pct_fast_top10, dist = radius)
+fast_union = fast_buffer %>% summarise(geometry = sf::st_union(geometry))
+plot(fast_union)
+
+############# Use spatial buffer to get OSM data (w osmextract)
+
+# Get filepath for locally stored englanf-latest.osm.pbf file
 fp = paste0(GAIST_eng_latest_dir, creation_date, "/")
 eng_latest_fp = paste0(fp, "geofabrik_england-latest.osm.pbf")
 
-# Acquire OSM data
-test_osm_data = osmextract::oe_get(place = "Leicestershire", layer = "lines", extra_tags = osm_tags)
-# Apply union buffer, leaving only ways within buffer of top 10% routes
-test_osm_data_buffed = test_osm_data[test_union, ]
-# Visualise the buffered network
-plot(test_osm_data_buffed$geometry)
-
-# Apply openinfra function, leaving only cycling infra related data behind
-test_osm_data_cycling = openinfra::oi_cycle_separation(test_osm_data_buffed, remove=TRUE)
-# Re-apply the remove part - maybe this is broken in oi_cycle_separation ???...
-test_osm_data_cycling_rebuffed = test_osm_data_cycling %>% dplyr::filter(! is.na(openinfra_cycle_infra))
-# Visualise cycling network within top10% routes buffer
-plot(test_osm_data_cycling_rebuffed$geometry)
 
 # Acquire data for buffered regions
-read_osm_data = osmextract::oe_read(
+oe_osm_data = osmextract::oe_read(
   file_path = eng_latest_fp,
   layer = "lines",
   vectortranslate_options = translate_options,
@@ -160,32 +200,31 @@ read_osm_data = osmextract::oe_read(
   force_vectortranslate = TRUE,
   extra_tags = osm_tags,
   boundary = test_union,
-  boundary_type = "spat", # Maybe investigate the other clipping options?
+  boundary_type = "spat", 
   quiet = FALSE
 )
 
-osm_data = osmextract::oe_get(
-  place = test_union, 
+# For fast buffer
+oe_osm_data_fast = osmextract::oe_read(
+  file_path = eng_latest_fp,
   layer = "lines",
   vectortranslate_options = translate_options,
   never_skip_vectortranslate = TRUE,
   force_vectortranslate = TRUE,
   extra_tags = osm_tags,
-  boundary = test_union, 
-  boundary_type = "spat",
+  boundary = fast_union,
+  boundary_type = "spat", 
   quiet = FALSE
- )
+)
 
-osm_data_cycling = openinfra::oi_cycle_separation(osm_data)
 
-# Once OSM data has been acquired, apply oi_cycle_separation to find cycling 
-#   infrastructure only within the buffer
-oe_osm_data = osm_data
-# No need to buffer the data as this was done in download using "spat" 
-oe_osm_data_cycling = openinfra::oi_cycle_separation(oe_osm_data, remove = TRUE)
-# Visualise the data
-#plot(oe_osm_data_cycling$geometry)
-tmap::qtm(oe_osm_data_cycling)
+# Apply spatial buffer ("spat" in somextract not the best... but it works...)
+oe_osm_data_buffed = oe_osm_data[test_union, ]
+
+# Apply openinfra function, leaving only cycling infra related data behind
+oe_osm_data_cycling = openinfra::oi_cycle_separation(oe_osm_data_buffed, remove = TRUE)
+
+############# Visualise the outputs (different subsetting ops)
 
 tmap::tm_shape(test_union) + 
   tmap::tm_polygons(alpha = 0.45) + 
@@ -200,13 +239,17 @@ tmap::tm_shape(clipped_data_within) +
   tmap::tm_lines(col = "openinfra_cycle_infra")
 
 clipped_data_intersect = oe_osm_data_cycling[test_union, , op=st_intersects]
+clipped_data_intersect = clipped_data_intersect %>% dplyr::filter(! is.na(openinfra_cycle_infra))
 
-tmap::tm_shape(test_union) + 
+map = tmap::tm_shape(test_union) + 
   tmap::tm_polygons(alpha = 0.45) + 
 tmap::tm_shape(clipped_data_intersect) + 
   tmap::tm_lines(col = "openinfra_cycle_infra")
 
-# Set-up ------------------------------------------------------------------
+# comment after saving
+tmap::tmap_save(map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/email_GAIST_example.html')
+
+++# Set-up ------------------------------------------------------------------
 
 
 # Get all Local Authority Names
