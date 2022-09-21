@@ -20,14 +20,14 @@ region_name = "leeds"
 
 #required_tags = c(colnames(openinfra::sotm_data))
 required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
-                  "kerb", "footway", "sidewalk", "cycleway", "segregated", 
-                  "highway", "crossing", "lit", "tactile_paving", "surface", 
-                  "smoothness", "width", "est_width", "lit_by_led", "ref", 
-                  "amenity", "sidewalk", "sidewalk:left", "sidewalk:right", 
-                  "sidewalk:both", "source:maxspeed", "maxspeed:type", 
+                  "kerb", "footway", "sidewalk", "cycleway", "segregated",
+                  "highway", "crossing", "lit", "tactile_paving", "surface",
+                  "smoothness", "width", "est_width", "lit_by_led", "ref",
+                  "amenity", "sidewalk", "sidewalk:left", "sidewalk:right",
+                  "sidewalk:both", "source:maxspeed", "maxspeed:type",
                   "zone:maxspeed", "zone:traffic", "maxspeed", "HFCS", "rural",
                   "cycleway_left", "cycleway_right", "cycleway_both",
-                  "separation" )
+                  "separation")
 
 # Data acquisition ---------------------------------------------------------
 
