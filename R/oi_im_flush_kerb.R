@@ -33,7 +33,7 @@ oi_im_flush_kerb = function(osm_sf){
       (TRUE & !is.na(kerb)) ~ "unknown",
       is.na(kerb) ~ "missing data"
     )) |>
-    dplyr::mutate(openinfra_accessible_kerb = dplyr::case_when(
+    dplyr::mutate(openinfra_im_accessible_kerb = dplyr::case_when(
       # Based on assessments above, assesses whether the kerb is accessible
       # for wheelchair users. Definitions decided based on kerb wiki below.
       # See: https://wiki.openstreetmap.org/wiki/Key:kerb
