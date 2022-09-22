@@ -4,9 +4,15 @@
 #' @param osm_sf - A `sf` and `data.frame` object containing OpenStreetMap 
 #'   infrastructure data, obtained from the 
 #'   [`osmextract`](https://github.com/ropensci/osmextract) package.
-#' @return The `osm_sf` data frame is returned with additional 
-#'   `openinfra_im_pedestrian_infra` column, containing descriptive values on 
-#'   pedestrian infrastructure.
+#' @return The `osm_sf` data frame is returned with additional columns added:
+#'   `openinfra_im_footway` which assesses the presence of footways with values
+#'   `c("footway", "no")`. `openinfra_im_footpath` which assesses the presence
+#'   of footpaths with values `c("footpath", "no")`. `openinfra_im_crossing`
+#'   which assesses the presence and type of pedestrian crossing with values
+#'   `c("give-way crossing", "signal-controlled crossing",
+#'   "unknown crossing type", "no")`. `openinfra_im_footway_imp` which assesses
+#'   the presence of implied footways not implicitly tagged with values 
+#'   `c("implied footway", "no")`.
 #' @details Note: the `osm_sf` must contain the following tags: `c(
 #'   "footway", "sidewalk", "cycleway", "foot", "segregated", "access", 
 #'   "crossing", "footway")`

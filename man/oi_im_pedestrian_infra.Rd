@@ -14,9 +14,14 @@ infrastructure data, obtained from the
 }}
 }
 \value{
-The \code{osm_sf} data frame is returned with additional
-\code{openinfra_im_pedestrian_infra} column, containing descriptive values on
-pedestrian infrastructure.
+The \code{osm_sf} data frame is returned with additional columns added:
+\code{openinfra_im_footway} which assesses the presence of footways with values
+\code{c("footway", "no")}. \code{openinfra_im_footpath} which assesses the presence
+of footpaths with values \code{c("footpath", "no")}. \code{openinfra_im_crossing}
+which assesses the presence and type of pedestrian crossing with values
+\code{c("give-way crossing", "signal-controlled crossing", "unknown crossing type", "no")}. \code{openinfra_im_footway_imp} which assesses
+the presence of implied footways not implicitly tagged with values
+\code{c("implied footway", "no")}.
 }
 \description{
 Function to assess pedestrian infrastructure data.
