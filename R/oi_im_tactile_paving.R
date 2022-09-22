@@ -5,7 +5,7 @@
 #'   infrastructure data, obtained from the 
 #'   [`osmextract`](https://github.com/ropensci/osmextract) package.
 #' @return The `osm_sf` data frame is returned with additional 
-#'   `openinfra_im_tactile_paving` column, containing values "yes", "no".
+#'   `openinfra_im_tactile_paving` column, containing values `c("yes", "no")`
 #' @details Note: the `osm_sf` must contain the following tags: `c(
 #'   "tactile_paving")`
 #' @export

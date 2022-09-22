@@ -15,7 +15,7 @@ infrastructure data, obtained from the
 }
 \value{
 The \code{osm_sf} data frame is returned with additional
-\code{openinfra_im_tactile_paving} column, containing values "yes", "no".
+\code{openinfra_im_tactile_paving} column, containing values \code{c("yes", "no")}
 }
 \description{
 Function to assess the presence of tactile paving.
