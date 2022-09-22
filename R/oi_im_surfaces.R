@@ -5,7 +5,10 @@
 #'   infrastructure data, obtained using the 
 #'   [`osmextract`](https://github.com/ropensci/osmextract) package.
 #' @return the `osm_sf` is returned with additional columns 
-#'   `openinfra_im_surface_paved` and `openinfra_im_surface` containing values
+#'   `openinfra_im_paved_surface` which assesses the presence and type of paving
+#'   with values `c("paved", "unpaved", "unknown")` and 
+#'   `openinfra_im_surface_level` which assesses whether a way is even or 
+#'   uneven with values `c("even", "uneven")`
 #'   on presence of surface paving, and whether or not the surface is even 
 #'   respectively.
 #' @details Note: the `osm_sf` must contain the following tags: `c("surface", 
@@ -38,7 +41,7 @@ oi_im_surfaces = function(osm_sf){
                                  "|grass|mud|sand|woodchips|snow|ice|salt"))   
       ~ "unpaved",
       
-      TRUE & !is.na(surface) ~ "other"
+      TRUE & !is.na(surface) ~ "unknown"
     )) %>%
 
     # Assesses whether surface is even or uneven

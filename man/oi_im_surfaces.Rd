@@ -15,7 +15,10 @@ infrastructure data, obtained using the
 }
 \value{
 the \code{osm_sf} is returned with additional columns
-\code{openinfra_im_surface_paved} and \code{openinfra_im_surface} containing values
+\code{openinfra_im_paved_surface} which assesses the presence and type of paving
+with values \code{c("paved", "unpaved", "unknown")} and
+\code{openinfra_im_surface_level} which assesses whether a way is even or
+uneven with values \code{c("even", "uneven")}
 on presence of surface paving, and whether or not the surface is even
 respectively.
 }
