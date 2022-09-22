@@ -30,5 +30,5 @@ Note: the \code{osm_sf} must contain the following tags: \code{c("kerb")}
 data = example_data
 output = oi_im_flush_kerb(data)
 output = output \%>\% dplyr::filter(! is.na(openinfra_im_flush_kerb))
-plot(output[,"openinfra_im_flush_kerb"])
+plot(output[,"openinfra_im_kerb"])
 }
