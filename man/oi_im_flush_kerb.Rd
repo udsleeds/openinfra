@@ -15,7 +15,10 @@ infrastructure data, obtained from the
 }
 \value{
 The \code{osm_sf} data frame is returned with additional
-\code{openinfra_im_flush_kerb} column.
+columns \code{openinfra_im_kerb}, assessing the presence and type of kerb with
+values \code{c("lowered kerb", "flush kerb", "no kerb", "raised kerb", "rolled kerb", "normal kerb", "unknown", "missing data")} and
+\code{openinfra_accessible_kerb}, assesses accessibility of kerb for
+pedestrians with impaired mobility with values \code{c("wheelchair - yes",  "wheelchair - no", "lacking data")}.
 }
 \description{
 Function to assess whether a kerb (where tagged) is flush or not.
