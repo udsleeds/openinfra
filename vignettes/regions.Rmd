@@ -34,11 +34,11 @@ Note that these packages must already be installed before importing. To install 
 
 ## Local authorities of the UK
 
-Downloading, reading and plotting the Local Authority Districts (LADs) of the UK
+Downloading, reading and plotting the Local Authority Districts (LADs) of the United Kingdom (UK) & Northern Ireland (NI).
 
 ```{r}
 # Download data from the openinfra repo
-url_regions_lad = "https://github.com/udsleeds/openinfra/raw/main/data-small/lads_joined_2021.geojson"
+url_regions_lad = "https://github.com/udsleeds/openinfra/releases/download/v0.1/Local_Authority_Districts_.May_2022._UK_BSC.geojson"
 
 # Load data into a Simple Features frame
 regions_lad = read_sf(url_regions_lad)
@@ -57,7 +57,7 @@ plot(regions_lad)
 
 ### Interactive map of local authorities
 
-Here we look to create an interactive plot of all local authority districts within UK & NI whereby clicking on each local authority brings up additional information associated with that local authority. <br> We can do this by changing the `tmap_mode()` from `'plot'` to `'view'`. Note that when in `tmap_mode('plot')` plots are not interactive
+Here we look to create an interactive plot of all LADs within UK & NI whereby clicking on each local authority brings up additional information associated with that local authority. <br> We can do this by changing the `tmap_mode()` from `'plot'` to `'view'`. Note that when in `tmap_mode('plot')` plots are not interactive
 
 ```{r}
 # Set tmap mode to interactive
@@ -72,9 +72,9 @@ sf::sf_use_s2(use_s2 = FALSE)
 regions_lad %>% tmap::qtm(title = 'LADs of UK & NI')
 ```
 ```{r, echo=FALSE, include=TRUE, out.width="900px"}
+#TODO: Update interactive maps hosted on openinfraresults
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/LADs_UK_NI_1.html", height = "850px")
 ```
-
 
 <br> Here we call another interactive map of all the LADs, but this time we have colour coded the LADs based on the region they reside in
 
@@ -83,6 +83,7 @@ tmap_options(max.categories = 78) # We increase max categories so that every tra
 regions_lad %>% tmap::qtm(fill = 'Region_name', title = 'LADs of UK & NI coloured by region')
 ```
 ```{r, echo=FALSE, include=TRUE, out.width="900px"}
+#TODO: Update interactive maps hosted on openinfraresults
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/LADs_UK_NI_region_coloured_2.html", height = "1500px")
 ```
 <br><br>
@@ -93,7 +94,7 @@ Downloading, reading and plotting the transport regions of England
 
 ```{r}
 # Download data from the openinfra repo
-url_transport_regions = "https://github.com/udsleeds/openinfra/raw/main/data-small/regions_new.geojson"
+url_transport_regions = "https://github.com/udsleeds/openinfra/releases/download/0.4.2/transport_authorities_2022.geojson"
 
 # Load data into a Simple Features frame
 transport_regions = read_sf(url_transport_regions)
@@ -110,6 +111,7 @@ Here we look to create an interactive plot of all local transport regions within
 transport_regions %>% tmap::qtm(title = 'Transport regions of England')
 ```
 ```{r, echo=FALSE, include=TRUE, out.width="900px"}
+#TODO: Update interactive maps hosted on openinfraresults
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/England_transport_regions_3.html", height = "850px")
 ```
 
@@ -118,13 +120,15 @@ knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/Engl
 transport_regions %>% tmap::qtm(title = 'Coloured transport regions of England', fill = 'Region_name')
 
 ```
+
 ```{r, echo=FALSE, include=TRUE, out.width="900px"}
+#TODO: Update interactive maps hosted on openinfraresults
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/Coloured_England_transport_regions_4.html", height = "1500px") 
 ```
 
 
 
-## Transport Regions by Country
+## LADs by Country
 
 ### Northern Ireland
 ```{r}
@@ -147,5 +151,14 @@ Scotland_LADs = c("South Ayrshire", "South Lanarkshire", "Scottish Borders",
                   "Dundee City", "Na h-Eileanan Siar", "Highland",
                   "Shetland Islands", "Orkney Islands", "Moray", "Aberdeenshire",
                   "Aberdeen City")
+```
+
+```{r}
+Welsh_LADs = c("Isle of Anglesey", "Flintshire", "Denbighshire", "Conwy", 
+               "Gwynedd", "	Powys", "Ceredigion", "Pembrokeshire", 
+               "Carmarthenshire", "Monmouthshire", "Newport", "Torfaen", 
+               "Blaenau Gwent", "Merthyr Tydfil", "Rhondda Cynon Taf", "Cardiff",
+               "Vale of Glamorgan", "Bridgend", "Neath Port Talbot", "Swansea",
+               "Caerphilly", "Wrexham")
 ```
 

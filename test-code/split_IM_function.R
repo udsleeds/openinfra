@@ -13,7 +13,6 @@
 #3 # openinfra_im_crossing (pedestrian) | ["crossing", "highway", "footway"] | ("give-way", "signal-controlled", "yes" ,"no")
 #4 # openinfra_im_imp_footway | ["openinfra_im_footway", "openinfra_im_footpath", "openinfra_im_crossing"] | ("yes", "no")
 #5 # openinfra_im_tactile | ["tactile_paving"] | ("yes", "no")
-#TODO: test the functionality of im_surface_paved, does this classify roads as paved? 
 #6 # openinfra_im_surface_paved (detects if surface is paved or not) not sure of use - this will classify roads as being paved (asphalt)
 #c # | [highway, surface, ] | ("paved", "unpaved", "other")
 #7 # openinfra_im_surface (just use surface tag -values descriptive enough) (currently even/un-even) | ["smoothness", "surface", "openinfra_im_surface_paved"] | ("even", "uneven")

@@ -29,11 +29,15 @@ overwrite_datapack = FALSE            # Overwrite existing data pack geojsons?
 local_save_data_pack = TRUE           # Save data packs locally?  
 piggyback_data_packs = TRUE           # Upload data packs to releases? 
 save_formats = c(".geojson", ".gpkg") # Data pack file formats
-release_tag = "0.4.2"                 # Releases tag for piggyback
-creation_date = "31_08_2022"          # Date of download for england-latest.osm
+release_tag = "0.5"                   # Releases tag for piggyback
+creation_date = "2022_09_21"          # Date of download for england-latest.osm
 lad_limit = 1:330                     # Limits number of LADs to be processed
+# Uncomment below if not using local dev package versions
+devtools::load_all()
 
 # File path or URL to LAD bounding polygons
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 LAD_polygons_path = paste0("https://github.com/udsleeds/openinfra/raw/",
                            "main/data-small/lads_joined_2021.geojson")
 # Updated polygons (https://github.com/udsleeds/openinfra/issues/137)
@@ -43,6 +47,17 @@ updated_LAD_polygon_paths = paste0("https://github.com/udsleeds/openinfra/",
 updated_LAD_TA_lookup_url = paste0("https://github.com/udsleeds/openinfra/",
                                    "files/9597336/lad_ta_region_",
                                    "lookup_atf3.csv")
+=======
+=======
+>>>>>>> Stashed changes
+LAD_polygons_path = paste0("https://github.com/udsleeds/openinfra/releases/",
+                           "download/v0.1/Local_Authority_Districts_.",
+                           "May_2022._UK_BSC.geojson")
+
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 # File path to store default OSM geojson networks of lines layer
 lines_network_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra",
                            "/openinfra/data_pack_networks/lines/")
@@ -120,7 +135,8 @@ required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
                   "kerb", "footway", "sidewalk", "cycleway", "segregated", 
                   "highway", "crossing", "lit", "tactile_paving", "surface", 
                   "smoothness", "width", "est_width", "lit_by_led", "boundary",
-                  "admin_level", "name", "ref", "amenity")
+                  "admin_level", "name", "ref", "amenity", "cycleway_left", 
+                  "cycleway_right", "cycleway_both")
 
 
 # Download & save OSM data
@@ -168,23 +184,20 @@ Welsh_LADs = c("Isle of Anglesey", "Flintshire", "Denbighshire", "Conwy",
                "Carmarthenshire", "Monmouthshire", "Newport", "Torfaen", 
                "Blaenau Gwent", "Merthyr Tydfil", "Rhondda Cynon Taf", "Cardiff",
                "Vale of Glamorgan", "Bridgend", "Neath Port Talbot", "Swansea",
-               "Caerphilly", "Wrexham"
-               )
+               "Caerphilly", "Wrexham")
 
-#aLADs = LADs
-#aLADs = aLADs %>% dplyr::filter(! LAD21NM %in% Scotland_LADs)
-#aLADs = aLADs %>% dplyr::filter(! LAD21NM %in% NI_LADs)
+
 # Remove Scottish LADs
-LADs = LADs %>%  dplyr::filter(! LAD21NM %in% Scotland_LADs)
+LADs = LADs %>%  dplyr::filter(! LAD22NM %in% Scotland_LADs)
 # Remove NI LADs
-LADs = LADs %>% dplyr::filter(! LAD21NM %in% NI_LADs)
+LADs = LADs %>% dplyr::filter(! LAD22NM %in% NI_LADs)
 # Remove Welsh LADs
-LADs = LADs %>% dplyr::filter(! LAD21NM %in% Welsh_LADs)
+LADs = LADs %>% dplyr::filter(! LAD22NM %in% Welsh_LADs)
 
-LADs = LADs %>% dplyr::filter(! is.na(LAD21NM))
+LADs = LADs %>% dplyr::filter(! is.na(LAD22NM))
 
 #LADs = LADs[lad_limit, ] # only use first 5 whilst testing. (comment out when done)
-LAD_polys = LADs %>% dplyr::select(c("LAD21NM", "geometry"))
+LAD_polys = LADs %>% dplyr::select(c("LAD22NM", "geometry"))
 
 # Create & save default OSM networks per LAD -------------------------------
 
@@ -202,7 +215,7 @@ points_network_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
 
 # Create & save default OSM line networks per LAD -------------------------
 # Iterates through all LADs, saving a geojson of each default OSM lines network. 
-for (region_name in LADs$LAD21NM){
+for (region_name in LADs$LAD22NM){
   # Generate file name
   filename = paste0(gsub(" ", "_", region_name), ".geojson")
   
@@ -228,7 +241,7 @@ for (region_name in LADs$LAD21NM){
   
   # Get current LAD polygon
   subset_poly = LAD_polys %>% 
-    dplyr::filter(LAD_polys$LAD21NM == region_name) %>% 
+    dplyr::filter(LAD_polys$LAD22NM == region_name) %>% 
     dplyr::select("geometry")
   # Check if polygon is invalid, fixes if it is.
   subet_poly = sf::st_make_valid(subset_poly)
@@ -257,7 +270,7 @@ for (region_name in LADs$LAD21NM){
 
 # Create & save default OSM point networks per LAD -----------------------
 # Iterates through all LADs, saving a geojson of each default OSM point network. 
-for (region_name in LADs$LAD21NM){
+for (region_name in LADs$LAD22NM){
   # Generate file name
   filename = paste0(gsub(" ", "_", region_name), ".geojson")
   
@@ -283,7 +296,7 @@ for (region_name in LADs$LAD21NM){
   
   # Get current LAD polygon
   subset_poly = LAD_polys %>% 
-    dplyr::filter(LAD_polys$LAD21NM == region_name) %>% 
+    dplyr::filter(LAD_polys$LAD22NM == region_name) %>% 
     dplyr::select("geometry")
   # Check if polygon is invalid, fixes if it is.
   # subet_poly = sf::st_make_valid(subset_poly) #(already done above I think)
@@ -319,8 +332,9 @@ lines_network_files = list.files(lines_network_dir) # Load stored files
 #                           store these locally - maybe add boolean check ?)
 lines_data_pack_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
                        "openinfra/data_packs/lines/", creation_date, "/")
-#network_files = network_files %>% dplyr::filter(! is.na(network_files))
-# For all lines network files, generate a lines data pack.
+
+# For all LAD lines network files, generate a lines data pack.
+level = "lad"
 for (network_filename in lines_network_files){
   # Check for current LAD lines network
   region_name = gsub(".geojson", "", network_filename)
@@ -355,7 +369,14 @@ for (network_filename in lines_network_files){
                                            remove = FALSE)
   lines_network_data_pack = oi_clean_maxspeed_uk(lines_network_data_pack,
                                                  no_NA = FALSE, del = FALSE)
-  lines_network_data_pack = oi_inclusive_mobility(lines_network_data_pack)
+  #lines_network_data_pack = oi_inclusive_mobility(lines_network_data_pack)
+  
+  lines_network_data_pack = oi_im_flush_kerb(lines_network_data_pack)
+  lines_network_data_pack = oi_im_pavement_width(lines_network_data_pack)
+  lines_network_data_pack = oi_im_pedestrian_infra(lines_network_data_pack)
+  lines_network_data_pack = oi_im_surfaces(lines_network_data_pack)
+  lines_network_data_pack =oi_im_tactile_paving(lines_network_data_pack)
+    
   lines_network_data_pack = oi_is_lit(lines_network_data_pack, remove = FALSE)
   lines_network_data_pack = oi_recode_road_class(lines_network_data_pack,
                                                  del = FALSE)
@@ -364,6 +385,8 @@ for (network_filename in lines_network_files){
                                                remove = FALSE)
   lines_network_data_pack = oi_cycle_crossings(lines_network_data_pack, 
                                                remove=FALSE)
+  lines_network_data_pack = oi_cycle_separation(lines_network_data_pack,
+                                                remove = FALSE)
   
   # Select relevant columns for data packs
   lines_network_data_pack = lines_network_data_pack %>%
@@ -377,8 +400,15 @@ for (network_filename in lines_network_files){
   if (local_save_data_pack) {
     for (f in save_formats){
       #region_name
-      data_pack_filename = paste0(creation_date, "_", "datapack_",
-                                  gsub(".geojson", "", network_filename), f)
+      #data_pack_filename = paste0(creation_date, "_", "datapack_",
+      #                            gsub(".geojson", "", network_filename), f)
+      
+      #filename format packname_level_regionname_yyyy-mm-dd.format
+      #for an example: datapack_lad_adur_2022-08-25.geojson
+      
+      data_pack_filename = paste0("datapack_", level, "_", region_name,
+                                  "_", creation_date, f)
+      
       message("Writing data pack for: ", region_name, " with format: ", f)
       sf::st_write(lines_network_data_pack,
                    paste0(lines_data_pack_dir,data_pack_filename),
@@ -389,8 +419,12 @@ for (network_filename in lines_network_files){
   # Upload lines data packs with piggyback 
   if (piggyback_data_packs){
     for (f in save_formats){
-      data_pack_filename = paste0(creation_date, "_", "datapack_",
-                                  gsub(".geojson", "", network_filename), f)
+      #data_pack_filename = paste0(creation_date, "_", "datapack_",
+      #                            gsub(".geojson", "", network_filename), f)
+      
+      data_pack_filename = paste0("datapack_", level, "_", region_name,
+                                  "_", creation_date, f)      
+      
       message("Uploading data pack for: ", region_name, " with format: ", f)
       
       ############change file name for upload to releases#######################
@@ -401,6 +435,7 @@ for (network_filename in lines_network_files){
       
       #piggyback::pb_upload(paste0(lines_data_pack_dir, data_pack_filename), 
       #                     tag = release_tag)
+      
       piggyback::pb_upload(upload_filename, tag = release_tag)
       file.rename(upload_filename, current_filename) # Change filename back 
     }
@@ -420,8 +455,9 @@ points_network_files = list.files(points_network_dir) # Load stored files
 #                           store these locally - maybe add boolean check ?)
 points_data_pack_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
                              "openinfra/data_packs/points/", creation_date, "/")
-#network_files = network_files %>% dplyr::filter(! is.na(network_files))
-# For all points network files, generate a lines data pack.
+
+# For all LAD points network files, generate a lines data pack.
+level = "lad"
 for (network_filename in points_network_files){
   # Check for current LAD lines network
   region_name = gsub(".geojson", "", network_filename)
@@ -433,11 +469,18 @@ for (network_filename in points_network_files){
     # In this instance the data pack already exists - what to do next... ?
     if (overwrite_datapack){
       # Delete data pack .geojson
-      unlink(paste0(points_data_pack_dir, creation_date,"_datapack_",
-                    network_filename)) 
+      #unlink(paste0(points_data_pack_dir, creation_date,"_datapack_",
+      #              network_filename))
+      unlink(paste0(points_data_pack_dir, "datapack_", level, 
+                    gsub(".geojson", "", network_filename), "_",
+                    creation_date, ".geojson"))
       # Delete data pack .gpkg
-      unlink(paste0(points_data_pack_dir, creation_date,"_datapack_",
-                    sub(".geojson", ".gpkg", network_filename)))
+      #unlink(paste0(points_data_pack_dir, creation_date,"_datapack_",
+      #              sub(".geojson", ".gpkg", network_filename)))
+      unlink(paste0(points_data_pack_dir, "datapack_", level, 
+                    gsub(".geojson", "", network_filename), "_",
+                    creation_date, ".gpkg"))
+      
       # Nothing else - code below will re-write new data pack.
     } else {
       # Don't overwrite the data pack, move onto the next region
@@ -466,8 +509,11 @@ for (network_filename in points_network_files){
   if (local_save_data_pack) {
     for (f in save_formats){
       #region_name
-      data_pack_filename = paste0(creation_date, "_", "datapack_",
-                                  gsub(".geojson", "", network_filename), f)
+      #data_pack_filename = paste0(creation_date, "_", "datapack_",
+      #                            gsub(".geojson", "", network_filename), f)
+      data_pack_filename = paste0("datapack_", level, "_", 
+                                  gsub(".geojson", "", network_filename), "_",
+                                  creation_date, f)
       message("Writing points data pack for: ", region_name,
               " with format: ", f)
       sf::st_write(points_network_data_pack,
@@ -479,8 +525,12 @@ for (network_filename in points_network_files){
   # Upload points data packs with piggyback 
   if (piggyback_data_packs){
     for (f in save_formats){
-      data_pack_filename = paste0(creation_date, "_", "datapack_",
-                                  gsub(".geojson", "", network_filename), f)
+      #data_pack_filename = paste0(creation_date, "_", "datapack_",
+      #                            gsub(".geojson", "", network_filename), f)
+      data_pack_filename = paste0("datapack_", level, "_", 
+                                  gsub(".geojson", "", network_filename), "_",
+                                  creation_date, f)
+      
       message("Uploading points data pack for: ", region_name,
               " with format: ", f)
       ############change file name for upload to releases#######################
@@ -500,29 +550,29 @@ for (network_filename in points_network_files){
 # points data packs to gh releases using piggyback.
 
 # Upload lines data packs:
-message("Uploading lines data packs now")
-for (lines_network_filename in lines_network_files){
-  region_name = gsub(".geojson", "", lines_network_filename)
-  
-  if (piggyback_data_packs){
-    for (f in save_formats){
-      data_pack_filename = paste0(creation_date, "_", "datapack_",
-                                  gsub(".geojson", "", lines_network_filename), f)
-      message("Uploading lines data pack for: ", region_name, " with format: ", f)
-      
-      ############change file name for upload to releases#######################
-      current_filename = paste0(lines_data_pack_dir, data_pack_filename)
-      upload_filename = gsub("datapack", "lines_datapack", current_filename)
-      file.rename(current_filename, upload_filename)
-      ##########################################################################
-      
-      #piggyback::pb_upload(paste0(lines_data_pack_dir, data_pack_filename), 
-      #                     tag = release_tag)
-      piggyback::pb_upload(upload_filename, tag = release_tag)
-      file.rename(upload_filename, current_filename) # Change filename back 
-    }
-  }
-}
+#message("Uploading lines data packs now")
+#for (lines_network_filename in lines_network_files){
+#  region_name = gsub(".geojson", "", lines_network_filename)
+#  
+#  if (piggyback_data_packs){
+#    for (f in save_formats){
+#      data_pack_filename = paste0(creation_date, "_", "datapack_",
+#                                  gsub(".geojson", "", lines_network_filename), f)
+#      message("Uploading lines data pack for: ", region_name, " with format: ", f)
+#      
+#      ############change file name for upload to releases#######################
+#      current_filename = paste0(lines_data_pack_dir, data_pack_filename)
+#      upload_filename = gsub("datapack", "lines_datapack", current_filename)
+#      file.rename(current_filename, upload_filename)
+#      ##########################################################################
+#      
+#      #piggyback::pb_upload(paste0(lines_data_pack_dir, data_pack_filename), 
+#      #                     tag = release_tag)
+#      piggyback::pb_upload(upload_filename, tag = release_tag)
+#      file.rename(upload_filename, current_filename) # Change filename back 
+#    }
+#  }
+#}
 
 # Upload points data packs
 #message("Uploading points data packs now")

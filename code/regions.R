@@ -6,7 +6,7 @@ tmap_mode("view")
 sf::sf_use_s2(FALSE)
 
 
-# Get a process LADs ------------------------------------------------------
+# Get and process LADs ------------------------------------------------------
 
 # https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-may-2022-uk-bsc/explore?location=55.223511%2C-3.317025%2C6.92
 
@@ -52,7 +52,7 @@ sf::write_sf(transport_regions_2022, "data-small/transport_regions_2022.geojson"
 # Get and process MSOA data -----------------------------------------------
 
 
-#msoas = sf::read_sf("https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Middle_layer_Super_Output_Areas_.December_2021._Boundaries_Full_Clipped_EW_.BFC.geojson")#MSOA Middle Layer Super Output Area code here
+#MSOA Middle Layer Super Output Area code here
 msoas = sf::read_sf('/home/james/Desktop/LIDA_OSM_Project/openinfra/openinfraresults/data/Middle_layer_Super_Output_Areas_(December_2021)_Boundaries_Full_Clipped_EW_(BFC).geojson')
 
 msoas_2021_england = msoas |> 
@@ -62,15 +62,14 @@ msoas_2021_england = msoas |>
 msoas_2021_scotland = msoas |> 
   filter(str_detect(string = MSOA21CD, pattern = "S")) |> 
   select(MSOA21CD, MSOA21NM)
-plot(msoas_2021_scotland$geometry)
+#plot(msoas_2021_scotland$geometry)
 
 msoas_2021_wales = msoas |> 
   filter(str_detect(string = MSOA21CD, pattern = "W")) |> 
   select(MSOA21CD, MSOA21NM)
-plot(msoas_2021_wales$geometry)
+#plot(msoas_2021_wales$geometry)
 
 countries = msoas |> 
-  # filter(!str_detect(string = LAD22CD, pattern = "E")) |> 
   mutate(
     Country = case_when(
       str_detect(string = MSOA21CD, pattern = "S") ~ "Scotland",
@@ -83,6 +82,97 @@ countries = msoas |>
   summarise(n = n(), middle_super_ouput_names = paste0(MSOA21NM, collapse = ", "))
 
 sf::write_sf(transport_regions_2022, "data-small/transport_regions_msoas_2022.geojson")
+
+# Add population data -----------------------------------------------------
+
+# https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/middlesuperoutputareamidyearpopulationestimates
+
+# Download population data from ONS published 2020
+u = "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/middlesuperoutputareamidyearpopulationestimates/mid2020sape23dt4/sape23dt4mid2020msoasyoaestimatesunformatted.xlsx"
+f = basename(u)
+download.file(u, f)
+# Read population data from downloaded excel file
+msoas_population_meta = readxl::read_excel(f)
+msoas_population = readxl::read_excel(f, sheet = 4, skip = 3)
+
+# Uncomment below to install {ukboundaries}
+# remotes::install_github("Robinlovelace/ukboundaries")
+
+#TODO: Can this not use 2022 MSOAS ? 
+# Get all 2011 msoas boundaries
+msoas = ukboundaries::msoa2011_vsimple |> 
+  sf::st_point_on_surface()
+
+# Check each region in msoas_pop is in msoas
+summary(msoas_population$`MSOA Code` %in% msoas$msoa11cd)
+
+# Set 2nd column of msoas as 1st column of msoas_population [MSOA Code]
+names(msoas)[2] = names(msoas_population)[1]
+
+# Joins msoas columns (7) onto msoas_population (98) to total (104) using
+# MSOA Code as a join identifier
+msoas_population_joined = dplyr::left_join(msoas, msoas_population)
+
+# Gets all English MSOAs (MSOA Codes begining "E") and returns select columns
+msoas_population_england = msoas_population_joined |> 
+  dplyr::filter(stringr::str_detect(string = `MSOA Code`, pattern = "E")) |> 
+  dplyr::select(msoa11cd = `MSOA Code`, msoa11nm, Population = `All Ages`, `LA name (2021 boundaries)`)
+
+# Plots the geometry of English MSOAs as points
+plot(msoas_population_england$geometry)
+
+# Save dataset of populations of English MSOAs
+sf::st_write(msoas_population_england, "data/msoas_population_england_2020_point_on_surface.geojson")
+
+# Sums & prints total population of England (summed from all MSOAs)
+sum(msoas_population_england$Population)
+
+################################################################################
+# Robin's code I don't quite understand (whats transport_authorities_atf4 ?)
+sf::sf_use_s2(FALSE)
+msoas_population_joined = sf::st_join(
+  msoas_population_joined,
+  transport_authorities_atf4 |> dplyr::select(Region_name))
+
+transport_authorities_population = msoas_population_joined |> 
+  sf::st_drop_geometry() |> 
+  dplyr::group_by(Region_name) |> 
+  dplyr::summarise(across(`All Ages`:`90+`, sum))
+################################################################################
+
+# Local Authority (LA) populations -----------------------------------------
+
+# Groups MSOAs by LAs to obtain LA populations
+LA_populations = msoas_population_joined |>
+  dplyr::group_by(`LA name (2018 boundaries)`) |> 
+  # For columns (All Ages --> 90+), sums MSOA pops to obtain LA pops
+  dplyr::summarise(across(`All Ages`:`90+`, sum))
+
+# Rename to more appropriate column name
+LA_populations = LA_populations %>% 
+  dplyr::rename(la_name = `LA name (2018 boundaries)`)
+
+# Plots LAs
+tmap::tm_shape(LA_populations) + 
+  tmap::tm_dots(col = "la_name")
+
+sf::st_write(LA_populations, "data/LA_population_stats_by_age_UK_NI_2022.geojson")
+
+# Using LA --> Transport regions lookup sent to me by Robin the other day, can 
+# we report on region_level stats too? 
+# Load LAD --> TA Rgion Loookup
+lad_ta_region_lookup = read_csv("data-small/lad_ta_region_lookup_atf3.csv")
+
+# Join TA Region Names to LADs
+region_populations = left_join(lad_ta_region_lookup, LA_populations,
+                               by = c("LAD22NM" = "la_name"))
+# Groupby TA Region name & sum LAD populations to obtain TA Region populations
+region_populations = region_populations %>% 
+  dplyr::group_by(Region_name) %>% 
+  dplyr::summarise(across(`All Ages`:`90+`, sum))
+
+NA_region_pops = region_populations %>% dplyr::filter(is.na(`All Ages`))
+# A number of regions have NA
 
 # Previous regions code ---------------------------------------------------
 
