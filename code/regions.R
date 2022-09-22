@@ -161,15 +161,21 @@ sf::st_write(LA_populations, "data/LA_population_stats_by_age_UK_NI_2022.geojson
 # Using LA --> Transport regions lookup sent to me by Robin the other day, can 
 # we report on region_level stats too? 
 # Load LAD --> TA Rgion Loookup
+
+# Transport Authority (TA) Region level populations -----------------------
+
+# Load LAD --> TA Region lookup table
 lad_ta_region_lookup = read_csv("data-small/lad_ta_region_lookup_atf3.csv")
 
-# Join TA Region Names to LADs
+# Join TA Region Names to LADs so we can group by TA region
 region_populations = left_join(lad_ta_region_lookup, LA_populations,
                                by = c("LAD22NM" = "la_name"))
-# Groupby TA Region name & sum LAD populations to obtain TA Region populations
+# Group by TA Region name & sum LAD populations to obtain TA Region populations
 region_populations = region_populations %>% 
   dplyr::group_by(Region_name) %>% 
   dplyr::summarise(across(`All Ages`:`90+`, sum))
+sf::st_write(region_populations, "data/region_population_stats_by_age_UK_NI_2022.geojson")
+
 
 NA_region_pops = region_populations %>% dplyr::filter(is.na(`All Ages`))
 # A number of regions have NA
