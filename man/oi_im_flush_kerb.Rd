@@ -20,9 +20,7 @@ values \code{c("lowered kerb", "flush kerb", "no kerb", "raised kerb", "rolled k
 \code{openinfra_accessible_kerb}, assesses accessibility of kerb for
 pedestrians with impaired mobility with values \code{c("wheelchair - yes",  "wheelchair - no", "lacking data")} and \code{openinfra_im_flush_kerb} which
 assesses whether or not there is a flush kerb compliant with the latest
-\link{Inclusive Mobility}(https://www.gov.uk/government/publications/inclusive
--mobility-making-transport-accessible-for-passengers-and-pedestrians)
-Guidance.
+\href{https://tinyurl.com/IM-guide-link}{Inclusive Mobility} Guidance.
 }
 \description{
 Function to assess whether a kerb (where tagged) is flush or not.

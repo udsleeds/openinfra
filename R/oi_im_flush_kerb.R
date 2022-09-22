@@ -12,9 +12,7 @@
 #'   pedestrians with impaired mobility with values `c("wheelchair - yes", 
 #'   "wheelchair - no", "lacking data")` and `openinfra_im_flush_kerb` which
 #'   assesses whether or not there is a flush kerb compliant with the latest
-#'   [Inclusive Mobility](https://www.gov.uk/government/publications/inclusive
-#'   -mobility-making-transport-accessible-for-passengers-and-pedestrians)
-#'   Guidance.
+#'   [Inclusive Mobility](https://tinyurl.com/IM-guide-link) Guidance.
 #' @details Note: the `osm_sf` must contain the following tags: `c("kerb")`
 #' @export
 #' @examples 
