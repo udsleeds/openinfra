@@ -36,28 +36,10 @@ lad_limit = 1:330                     # Limits number of LADs to be processed
 devtools::load_all()
 
 # File path or URL to LAD bounding polygons
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-LAD_polygons_path = paste0("https://github.com/udsleeds/openinfra/raw/",
-                           "main/data-small/lads_joined_2021.geojson")
-# Updated polygons (https://github.com/udsleeds/openinfra/issues/137)
-updated_LAD_polygon_paths = paste0("https://github.com/udsleeds/openinfra/",
-                                   "releases/download/0.4.2/",
-                                   "transport_authorities_2022.geojson")
-updated_LAD_TA_lookup_url = paste0("https://github.com/udsleeds/openinfra/",
-                                   "files/9597336/lad_ta_region_",
-                                   "lookup_atf3.csv")
-=======
-=======
->>>>>>> Stashed changes
 LAD_polygons_path = paste0("https://github.com/udsleeds/openinfra/releases/",
                            "download/v0.1/Local_Authority_Districts_.",
                            "May_2022._UK_BSC.geojson")
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 # File path to store default OSM geojson networks of lines layer
 lines_network_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra",
                            "/openinfra/data_pack_networks/lines/")
@@ -158,8 +140,6 @@ eng_latest_fp = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
 # Get LAD Boundaries ------------------------------------------------------
 # Download LAD boundary polygons
 LADs = sf::read_sf(LAD_polygons_path)
-LADs_NEW = sf::read_sf(updated_LAD_polygon_paths)
-LAD_TA_lookup = read.csv(url(updated_LAD_TA_lookup_url))
 LADs = sf::st_make_valid(LADs)
 
 Scotland_LADs = c("South Ayrshire", "South Lanarkshire", "Scottish Borders",
