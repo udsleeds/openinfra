@@ -21,7 +21,7 @@
 
 oi_im_flush_kerb = function(osm_sf){
 
-  osm_sf_im = osm_sf |>
+  osm_sf_im = osm_sf %>% 
     # Assesses the presence of a kerb, and what type of kerb it is.
     dplyr::mutate(openinfra_im_kerb = dplyr::case_when(
       stringr::str_detect(kerb, "lower") ~ "lowered kerb",
@@ -32,7 +32,7 @@ oi_im_flush_kerb = function(osm_sf){
       kerb %in% c("yes", "regular", "normal") ~ "normal kerb",
       (TRUE & !is.na(kerb)) ~ "unknown",
       is.na(kerb) ~ "missing data"
-    )) |>
+    )) %>% 
     dplyr::mutate(openinfra_im_accessible_kerb = dplyr::case_when(
       # Based on assessments above, assesses whether the kerb is accessible
       # for wheelchair users. Definitions decided based on kerb wiki below.
