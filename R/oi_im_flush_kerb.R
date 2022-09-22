@@ -16,7 +16,7 @@
 #' @examples 
 #' data = example_data
 #' output = oi_im_flush_kerb(data)
-#' output = output %>% dplyr::filter(! is.na(openinfra_im_flush_kerb))
+#' output = output %>% dplyr::filter(! is.na(openinfra_im_kerb))
 #' plot(output[,"openinfra_im_kerb"])
 
 oi_im_flush_kerb = function(osm_sf){
