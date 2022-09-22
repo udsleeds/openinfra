@@ -10,20 +10,24 @@
 #'   "rolled kerb", "normal kerb", "unknown", "missing data")` and
 #'   `openinfra_accessible_kerb`, assesses accessibility of kerb for 
 #'   pedestrians with impaired mobility with values `c("wheelchair - yes", 
-#'   "wheelchair - no", "lacking data")`.
+#'   "wheelchair - no", "lacking data")` and `openinfra_im_flush_kerb` which
+#'   assesses whether or not there is a flush kerb compliant with the latest
+#'   [Inclusive Mobility](https://www.gov.uk/government/publications/inclusive
+#'   -mobility-making-transport-accessible-for-passengers-and-pedestrians)
+#'   Guidance.
 #' @details Note: the `osm_sf` must contain the following tags: `c("kerb")`
 #' @export
 #' @examples 
 #' data = example_data
 #' output = oi_im_flush_kerb(data)
-#' output = output %>% dplyr::filter(! is.na(openinfra_im_kerb))
-#' plot(output[,"openinfra_im_kerb"])
+#' output = output %>% dplyr::filter(! is.na(openinfra_kerb))
+#' plot(output[,"openinfra_kerb"])
 
 oi_im_flush_kerb = function(osm_sf){
 
   osm_sf_im = osm_sf %>% 
     # Assesses the presence of a kerb, and what type of kerb it is.
-    dplyr::mutate(openinfra_im_kerb = dplyr::case_when(
+    dplyr::mutate(openinfra_kerb = dplyr::case_when(
       stringr::str_detect(kerb, "lower") ~ "lowered kerb",
       kerb == "flush" ~ "flush kerb",
       kerb %in% c("no", "none", "flat") ~ "no kerb", 
@@ -42,6 +46,9 @@ oi_im_flush_kerb = function(osm_sf){
       openinfra_im_kerb %in% c("raised kerb", "rolled kerb", "normal kerb"
                                ) ~ "wheelchair - no",
       openinfra_im_kerb %in% c("unknown", "missing data") ~ "lacking data"
+    )) %>% 
+    dplyr::mutate(openinfra_im_flush_kerb = dplyr::case_when(
+      openinfra_kerb %in% c("flush kerb", "no kerb") ~ "yes"
     ))
   
   return(osm_sf_im)
