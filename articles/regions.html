@@ -134,10 +134,10 @@
 <div class="section level2">
 <h2 id="local-authorities-of-the-uk">Local authorities of the UK<a class="anchor" aria-label="anchor" href="#local-authorities-of-the-uk"></a>
 </h2>
-<p>Downloading, reading and plotting the Local Authority Districts (LADs) of the UK</p>
+<p>Downloading, reading and plotting the Local Authority Districts (LADs) of the United Kingdom (UK) &amp; Northern Ireland (NI).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Download data from the openinfra repo</span></span>
-<span><span class="va">url_regions_lad</span> <span class="op">=</span> <span class="st">"https://github.com/udsleeds/openinfra/raw/main/data-small/lads_joined_2021.geojson"</span></span>
+<span><span class="va">url_regions_lad</span> <span class="op">=</span> <span class="st">"https://github.com/udsleeds/openinfra/releases/download/v0.1/Local_Authority_Districts_.May_2022._UK_BSC.geojson"</span></span>
 <span></span>
 <span><span class="co"># Load data into a Simple Features frame</span></span>
 <span><span class="va">regions_lad</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="va">url_regions_lad</span><span class="op">)</span></span>
@@ -155,7 +155,7 @@
 <div class="section level3">
 <h3 id="interactive-map-of-local-authorities">Interactive map of local authorities<a class="anchor" aria-label="anchor" href="#interactive-map-of-local-authorities"></a>
 </h3>
-<p>Here we look to create an interactive plot of all local authority districts within UK &amp; NI whereby clicking on each local authority brings up additional information associated with that local authority. <br> We can do this by changing the <code><a href="https://rdrr.io/pkg/tmap/man/tmap_mode.html" class="external-link">tmap_mode()</a></code> from <code>'plot'</code> to <code>'view'</code>. Note that when in <code>tmap_mode('plot')</code> plots are not interactive</p>
+<p>Here we look to create an interactive plot of all LADs within UK &amp; NI whereby clicking on each local authority brings up additional information associated with that local authority. <br> We can do this by changing the <code><a href="https://rdrr.io/pkg/tmap/man/tmap_mode.html" class="external-link">tmap_mode()</a></code> from <code>'plot'</code> to <code>'view'</code>. Note that when in <code>tmap_mode('plot')</code> plots are not interactive</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Set tmap mode to interactive</span></span>
 <span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_mode.html" class="external-link">tmap_mode</a></span><span class="op">(</span><span class="st">'view'</span><span class="op">)</span> <span class="co"># After this, all qtm() plots will be interactive</span></span>
@@ -182,7 +182,7 @@
 <p>Downloading, reading and plotting the transport regions of England</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Download data from the openinfra repo</span></span>
-<span><span class="va">url_transport_regions</span> <span class="op">=</span> <span class="st">"https://github.com/udsleeds/openinfra/raw/main/data-small/regions_new.geojson"</span></span>
+<span><span class="va">url_transport_regions</span> <span class="op">=</span> <span class="st">"https://github.com/udsleeds/openinfra/releases/download/0.4.2/transport_authorities_2022.geojson"</span></span>
 <span></span>
 <span><span class="co"># Load data into a Simple Features frame</span></span>
 <span><span class="va">transport_regions</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="va">url_transport_regions</span><span class="op">)</span></span>
@@ -206,7 +206,7 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="transport-regions-by-country">Transport Regions by Country<a class="anchor" aria-label="anchor" href="#transport-regions-by-country"></a>
+<h2 id="lads-by-country">LADs by Country<a class="anchor" aria-label="anchor" href="#lads-by-country"></a>
 </h2>
 <div class="section level3">
 <h3 id="northern-ireland">Northern Ireland<a class="anchor" aria-label="anchor" href="#northern-ireland"></a>
@@ -228,6 +228,13 @@
 <span>                  <span class="st">"Dundee City"</span>, <span class="st">"Na h-Eileanan Siar"</span>, <span class="st">"Highland"</span>,</span>
 <span>                  <span class="st">"Shetland Islands"</span>, <span class="st">"Orkney Islands"</span>, <span class="st">"Moray"</span>, <span class="st">"Aberdeenshire"</span>,</span>
 <span>                  <span class="st">"Aberdeen City"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Welsh_LADs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Isle of Anglesey"</span>, <span class="st">"Flintshire"</span>, <span class="st">"Denbighshire"</span>, <span class="st">"Conwy"</span>, </span>
+<span>               <span class="st">"Gwynedd"</span>, <span class="st">" Powys"</span>, <span class="st">"Ceredigion"</span>, <span class="st">"Pembrokeshire"</span>, </span>
+<span>               <span class="st">"Carmarthenshire"</span>, <span class="st">"Monmouthshire"</span>, <span class="st">"Newport"</span>, <span class="st">"Torfaen"</span>, </span>
+<span>               <span class="st">"Blaenau Gwent"</span>, <span class="st">"Merthyr Tydfil"</span>, <span class="st">"Rhondda Cynon Taf"</span>, <span class="st">"Cardiff"</span>,</span>
+<span>               <span class="st">"Vale of Glamorgan"</span>, <span class="st">"Bridgend"</span>, <span class="st">"Neath Port Talbot"</span>, <span class="st">"Swansea"</span>,</span>
+<span>               <span class="st">"Caerphilly"</span>, <span class="st">"Wrexham"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </div>
