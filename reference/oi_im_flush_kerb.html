@@ -104,7 +104,9 @@ infrastructure data, obtained from the
 columns <code>openinfra_im_kerb</code>, assessing the presence and type of kerb with
 values <code>c("lowered kerb", "flush kerb", "no kerb", "raised kerb", "rolled kerb", "normal kerb", "unknown", "missing data")</code> and
 <code>openinfra_accessible_kerb</code>, assesses accessibility of kerb for
-pedestrians with impaired mobility with values <code>c("wheelchair - yes",  "wheelchair - no", "lacking data")</code>.</p>
+pedestrians with impaired mobility with values <code>c("wheelchair - yes",  "wheelchair - no", "lacking data")</code> and <code>openinfra_im_flush_kerb</code> which
+assesses whether or not there is a flush kerb compliant with the latest
+<a href="https://tinyurl.com/IM-guide-link" class="external-link">Inclusive Mobility</a> Guidance.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -115,8 +117,8 @@ pedestrians with impaired mobility with values <code>c("wheelchair - yes",  "whe
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">data</span> <span class="op">=</span> <span class="va">example_data</span></span></span>
 <span class="r-in"><span><span class="va">output</span> <span class="op">=</span> <span class="fu">oi_im_flush_kerb</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">output</span> <span class="op">=</span> <span class="va">output</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">openinfra_im_kerb</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">output</span><span class="op">[</span>,<span class="st">"openinfra_im_kerb"</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">output</span> <span class="op">=</span> <span class="va">output</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">openinfra_kerb</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">output</span><span class="op">[</span>,<span class="st">"openinfra_kerb"</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="oi_im_flush_kerb-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
