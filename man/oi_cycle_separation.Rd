@@ -20,9 +20,9 @@ part of any dedicated cycling infrastructure.
 }
 \value{
 The provided \code{osm_sf} is returned with an additional column,
-\code{openinfra_cycle_infa}, which indicates if a way is part of cycling
-infrastructure, and the level of protection provided by the infrastructure
-("mixed traffic", "cycle lanes", "protected cycling space")
+\code{openinfra_cycle_infa}, which indicates the type of cycling infrastructure
+mapped as being one of the following values:
+\verb{c("[cycle crossing](https://tinyurl.com/cycle-crossing)", "[cycle lane](https://tinyurl.com/cycle-lane)", "Mixed traffic - 20 mph" (no cycling infrastructure, carriageway maxspeed is 20 mph), "Mixed traffic - NA maxspeed" (no cycling infrastructure,  carriageway maxspeed value is NA), "Segregated - cycleway/track" ( infrastructure is segregated by definitions and is either a  [cycleway](https://tinyurl.com/higway-cycleway) or a  [cycle track](https://tinyurl.com/cycle-track)),  "shared lane/busway" (there is a lane drawn for cyclists, but it is either shared with a [busway](https://tinyurl.com/sahre-bus) or a  [shared lane](https://tinyurl.com/share-lane) with carriageway users)}
 }
 \description{
 Function to recategorise OSM data based on the type of cycle infrastructure.
