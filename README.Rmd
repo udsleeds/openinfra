@@ -34,7 +34,7 @@ Interventions boosting physical activity represent a 'magic bullet', tackling ob
 Active travel is a rapidly growing topic of multi-disciplinary research but has received limited attention from data science perspectives, with a recent paper on modelling cycle network growth [@orozco_datadriven_2020] providing a notable exception.
 The work will be grounded in geographic data science, building on previous studies assessing open datasets for transport applications [@ferster_using_2020; @haklay_how_2010a].
 
-In the post-pandemic world, active modes will be even more important due to reduced public transport capacities, as highlighted by the Department for Transport's £250m Active Travel Fund (ATF) and £2b allocated to walking and cycling over the next 5 years in the UK alone.
+In the post-pandemic world, active modes will be even more important due to reduced public transport capacities, as highlighted by the Department for Transport's £250m Active Travel Fund (ATF) and £2bn allocated to walking and cycling over the next 5 years in the UK alone.
 
 New policies and investment programs such as the ATF have led to increased demand for local evidence to inform interventions ranging from new cycleways to improved pavement quality.
 This project will the potential of open access transport sources such as OpenStreetMap (OSM) and Ordnance Survey Open Roads (OSOR) datasets, and associated tools, for transport planning to meet active travel objectives.
@@ -63,7 +63,7 @@ There are already good tools open tools for working with transport infrastructur
 These, and packages written in other languages such as Julia and Python, are largely academic-led and technical projects with little uptake among practitioners. 
 This project will explore the landscape of open transport infrastructure, describe and critique how active travel infrastructure is represented, and document how practitioners can better use open data for evidence-based, transparent and participatory active travel interventions.
 
-Local authority planners and other stakeholders have more data than ever before on transport systems to support their work, especially in relation to travel *behaviour* thanks to datasets from traffic counts, travel surveys and open access tools such as the Propensity to Cycle Tool 
+Local authority planners and other stakeholders have more data than ever before on transport systems to support their work, especially in relation to travel *behaviour* thanks to datasets from traffic counts, travel surveys and open access tools such as the Propensity to Cycle Tool.
 
 However, there is less accessible data on travel *infrastructure*, especially in relation to walking and cycling.
 Good practice on designing for active travel is well known [@departmentfortransport_manual_2007; @parkin_designing_2018] and increasingly recommended/enforced.
@@ -416,7 +416,7 @@ There is lots more we can do with this data and other open transport datasets, a
 - To get a deeper understanding of using geographic research transport research, Chapter 12 of the book Geocomputation with R is a great place to start: https://geocompr.robinlovelace.net/transport.html
 - For more on A/B Street scenarios, see here: https://a-b-street.github.io/docs/dev/formats/scenarios.html
 
-For any questions, feel free to ask in a GitHub issue track assocated with any of the repositories mentioned in this guide.
+For any questions, feel free to ask in a GitHub issue track associated with any of the repositories mentioned in this guide.
 
 
 # References

@@ -21,7 +21,7 @@ Haklay 2010).
 
 In the post-pandemic world, active modes will be even more important due
 to reduced public transport capacities, as highlighted by the Department
-for Transport’s £250m Active Travel Fund (ATF) and £2b allocated to
+for Transport’s £250m Active Travel Fund (ATF) and £2bn allocated to
 walking and cycling over the next 5 years in the UK alone.
 
 New policies and investment programs such as the ATF have led to
@@ -93,7 +93,7 @@ Local authority planners and other stakeholders have more data than ever
 before on transport systems to support their work, especially in
 relation to travel *behaviour* thanks to datasets from traffic counts,
 travel surveys and open access tools such as the Propensity to Cycle
-Tool
+Tool.
 
 However, there is less accessible data on travel *infrastructure*,
 especially in relation to walking and cycling. Good practice on
@@ -447,7 +447,7 @@ the most important uses for sustainable transport planning.
 -   For more on A/B Street scenarios, see here:
     <https://a-b-street.github.io/docs/dev/formats/scenarios.html>
 
-For any questions, feel free to ask in a GitHub issue track assocated
+For any questions, feel free to ask in a GitHub issue track associated
 with any of the repositories mentioned in this guide.
 
 # References
@@ -515,8 +515,8 @@ Lovelace, Robin, Joseph Talbot, Malcolm Morgan, and Martin Lucas-Smith.
 
 <div id="ref-lucas-smith_mapping_2021" class="csl-entry">
 
-Lucas-Smith, Martin. 2021. “Mapping Modal Filters and LTNs.”
-CycleStreets. July 25, 2021.
+Lucas-Smith, Martin and Nuttall, Simon. 2021. “Mapping Modal Filters and LTNs.”
+CycleStreets Ltd. July 25, 2021.
 <https://www.cyclestreets.org/news/2021/07/25/mapping-ltns/>.
 
 </div>
