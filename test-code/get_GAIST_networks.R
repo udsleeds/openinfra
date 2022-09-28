@@ -456,4 +456,3 @@ tmap::qtm(test_network)
 # 3. Send that to GAIST people as for feedback + say we'll develop more refined examples
 # 4. Use a slightly refined method for Coventry, e.g. focusing on interesting cycle infrastructure first
 # 5. Generate example for Leeds and other places in conversation with Kayley, Brian etc.
-# 41e8d586947661e67fd9936f04a70b79c9807a
