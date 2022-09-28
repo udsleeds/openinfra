@@ -20,7 +20,7 @@
 #'   "Mixed traffic - 20 mph" (no cycling infrastructure, carriageway maxspeed
 #'   is 20 mph), "Mixed traffic - NA maxspeed" (no cycling infrastructure, 
 #'   carriageway maxspeed value is NA), "Segregated - cycleway/track" (
-#'   infrastructure is segregated by definitions and is either a 
+#'   infrastructure is segregated from carriageway by definition and is either a 
 #'   [cycleway](https://tinyurl.com/higway-cycleway) or a 
 #'   [cycle track](https://tinyurl.com/cycle-track)), 
 #'   "shared lane/busway" (there is a lane drawn for cyclists, but it is either
