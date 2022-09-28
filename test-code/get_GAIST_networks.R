@@ -1,8 +1,8 @@
 
 # Library imports ---------------------------------------------------------
-pkgs = c("od", "tmaptools", "stplanr", "tidyverse", "pct", "dplyr", "tmap",
-         "sf")
-#install.packages(pkgs)
+pkgs = c("od", "tmaptools", "stplanr", "tidyverse", "pct", "dplyr", "tmap", "sf")
+
+# install.packages(pkgs)
 lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
 
 # Function to find best matched LAN --> RN --------------------------------
@@ -448,3 +448,13 @@ tmap::qtm(test_network)
 #TODO: Ask Kayley the preferred geographical area coverage of each network pack (MSOA/LSOA/LAD/Region)
 #TODO: Investigate the coverage of national cycling routes, following on from Martin's comments on GitHub. 
 
+
+# Ideas from Robin --------------------------------------------------------
+
+# 1. Create an example to show the structure of the data e.g. in 'coventry-centra-pct-simple' folder e.g. called route-network.geojson
+# 2. Add existing cycle infra layer into that folder, e.g. called osm-cycle-infrastructure.geojson # datapack product!
+# 3. Add the buffer on which the routes
+# 3. Send that to GAIST people as for feedback + say we'll develop more refined examples
+# 4. Use a slightly refined method for Coventry, e.g. focusing on interesting cycle infrastructure first
+# 5. Generate example for Leeds and other places in conversation with Kayley, Brian etc.
+# 
