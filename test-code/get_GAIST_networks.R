@@ -249,7 +249,8 @@ tmap::tm_shape(clipped_data_intersect) +
 # comment after saving
 tmap::tmap_save(map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/email_GAIST_example.html')
 
-++# Set-up ------------------------------------------------------------------
+
+# Set-up ------------------------------------------------------------------
 
 
 # Get all Local Authority Names
@@ -305,7 +306,7 @@ for(RN in RNs){
   #TODO: Add check for existing files, don't want to save too many. 
   
   message("Loading region name: ", RN)
-
+  
   # Get pct route network
   rnet_pct = pct::get_pct_rnet(RN)
   rnet_pct = rnet_pct %>% dplyr::mutate(desc = "Default routes")
@@ -342,6 +343,17 @@ for(RN in RNs){
 
 # Get cycling infrastructure with oi_cycle_separation ---------------------
 
+##########################################################################
+# General Workflow: 
+# 1 - Download England-latest.osm.pbf
+# 2 - For each `area` in `list of areas`, get the OSM data for each area.
+# 3 - Apply the oi_cycle_separation() function to get only cycle infra. 
+# 4 - Save each area as a .geojson, upload to GAIST releases ? 
+#
+# If some form of prioritisation is required, utilise pct routes for this.
+#    should this be done, need to make clear limitations of data (2011 census & work commute data)
+###########################################################################
+
 regions = pct::pct_regions
 r_names = regions$region_name
 r_geoms = regions$geometry	
@@ -365,12 +377,12 @@ eng_latest_fp = paste0(fp, "geofabrik_england-latest.osm.pbf")
   
   
 for(i in 1:nrow(regions)){
-    
+  
   RN = r_names[i] # Region Name
   RG = r_geoms[i] # Region Geometry
   
   #TODO: Add check for existing files, don't want to save too many. 
-    
+  
   # Get OSM data using region geometry
   message("Getting ", RN, " region data.")
     
@@ -406,7 +418,6 @@ for(i in 1:nrow(regions)){
   file_name = paste0(RN, "_cycle_infra_network.geojson")
     
   sf::st_write(cycle_infra_network, paste0(GAIST_fp, file_name))
-    
 }
 
 # Testing visualisation ----------------------------------------------------
@@ -429,3 +440,11 @@ tmap::qtm(test_network)
 # Plot routes with highest potential, overlayed with top 10% of routes
 #plot(rnet_pct$geometry, col = "grey")
 #plot(rnet_top_10$geometry, add = TRUE)
+
+
+
+# Comments / Questions.   -------------------------------------------------
+
+#TODO: Ask Kayley the preferred geographical area coverage of each network pack (MSOA/LSOA/LAD/Region)
+#TODO: Investigate the coverage of national cycling routes, following on from Martin's comments on GitHub. 
+
