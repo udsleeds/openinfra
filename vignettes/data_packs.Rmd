@@ -94,6 +94,7 @@ Such information may be utilised to assess routes for safe active travel after d
 
 ### Cleaned Maximum Speeds (UK)
 ```{r vis_frame, out.width="100%", echo=FALSE, include=TRUE}
+#TODO: Update this plot - should not be inferring "missing data", rather assumed to be standard speedlimit for specific road type. 
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/clean_maxspeed_map.html", height = "650px")
 ```
 Recategorised UK maximum road speed values. Based on the official [UK speed limits](https://www.gov.uk/speed-limits).
