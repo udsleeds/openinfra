@@ -1,0 +1,36 @@
+Date: 2022-10-31
+Time: 10:00 - 14:30
+
+Preliminary schedule: 
+10:00-10:15 -> registration
+10:15-10:35 -> Introduction to OpenStreetMap
+10:35-10:55 -> OpenStreetMap and active travel
+11:00-11:30 -> Demonstrating how to contribute to OpenStreetMap
+11:30-11:45 -> Break
+11:45-12:00 -> Getting ready for the fieldwork
+12:00-12:45 -> Fieldwork 1
+12:45-13:30 -> Lunch (provided)
+13:30-14:15 -> Fieldwork 2
+
+**Mapathon even description**
+
+For the first time an active travel mapathon is being organised in Leeds! 
+
+What is an active travel mapathon? First things first, a mapathon is an organised and coordinated mapping activity during which we will be going out to Leeds city centre to add data to OpenStreetMap. Active travel refers to walking, wheeling, and cycling as a mode of transportation. Thus, in this event we will be adding data that is essential for active travel planning.
+
+Why is this important? Increasing active travel uptake can help decarbonize transport system and improve physical and psychological wellbeing. To increase uptake, it is essential to have data which could be used to inform decision-making in regard to planning and building new active travel infrastructure. Alas, this data is, more often than not, lacking at a governmental level. 
+
+We believe that one way of addressing the aforementioned issue is to combine citizen science and open data. Thus, we want you to join us in creating open data about our local environment that could be used by policy makers, researchers, and you.
+
+In this event:
+1. learn about OpenStreetMap;
+2. learn how to contribute to OpenStreetMap by adding data;
+3. understand how and why OpenStreetMap data can help plan active travel infrastructure;
+4. meet like-minded people;
+5. we will be more than pleased to share resources for getting started with OSM data analysis in R to improve your data science skills; :)
+
+Prerequisites: We do not expect any prior knowledge of OpenStreetMap or mapping -- you will be introduced to the tips and tricks. However, we do expect you to have a working smartphone that supports either StreetComplete (Android) or Go Map!! (iOS) apps (internet required for both). Also we will ask you to create an account with OpenStreetMap. The instructions will be sent before the start of the event.
+
+The event is being organised and will be run by Robin Lovelace, Gregory Marler, James Hulse, and Greta Timaite with support from the Leeds Institute for Data Analytics (LIDA).
+
+If you have any questions, please contact Greta via email: g.timaite@warwick.ac.uk
