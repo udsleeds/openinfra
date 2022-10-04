@@ -50,54 +50,57 @@ oi_cycle_separation = function(osm_sf, remove=FALSE){
       
 # Get cycle lanes ---------------------------------------------------------
       
-# Obvious cycle lanes
-      cycleway %in% c("lane", "opposite_lane") ~ "cycle lane",
+      # Obvious cycle lanes
+      cycleway %in% c("lane", "opposite_lane") ~ "on road cycle lane",
       # More obscure cycle lanes
-      cycleway_left %in% c("lane", "opposite_lane") ~ "cycle lane",
-      cycleway_right %in% c("lane", "opposite_lane") ~ "cycle lane",
-      cycleway_both %in% c("lane", "opposite_lane") ~ "cycle lane",
+      cycleway_left %in% c("lane", "opposite_lane") ~ "on road cycle lane",
+      cycleway_right %in% c("lane", "opposite_lane") ~ "on road cycle lane",
+      cycleway_both %in% c("lane", "opposite_lane") ~ "on road cycle lane",
 
       # Catches cycleway crossings (crossing carriageways)
-      cycleway %in% c("crossing") ~ "cycle crossing",
+      cycleway %in% c("crossing") ~ "on road cycle crossing",
       
 
-# Mixed traffic condition -------------------------------------------------
+# Known mixed traffic condition -------------------------------------------------
      
       # No cycling geometry present & maxspeed compliant with LTN1/20
       (cycleway %in% c("no", "none", "opposite")) & 
-        (openinfra_maxspeed == "20 mph") ~ "Mixed traffic - 20 mph",
+        (openinfra_maxspeed == "20 mph") ~ "On road mixed traffic @ 20 mph",
       
       (cycleway %in% c("no", "none", "opposite")) & 
-        (openinfra_maxspeed == "< 20 mph") ~ "Mixed traffic - < 20 mph", 
+        (openinfra_maxspeed == "< 20 mph") ~ "On road mixed traffic @ < 20 mph", 
       
       # No cycling geometry present & missing maxspeed tag 
       (cycleway %in% c("no", "none", "opposite")) & 
-        (is.na(maxspeed)) ~ "Mixed traffic - NA maxspeed",
+        (is.na(maxspeed)) ~ "On road mixed traffic - NA maxspeed",
 
       # Cycleway is "share_busway" condition - still mixed with traffic
-      (cycleway %in% c("share_busway", "shared_lane")) ~ "shared lane/busway",
+      (cycleway %in% c("share_busway", "shared_lane")) ~ "On road shared bus/taxi lane",
 
-# Segregated cycling infrastructure ---------------------------------------
+# Segregated (from carriageway) cycling infrastructure -------------------
+    
      # Captures obvious cycle tracks - separated by definition
      cycleway %in% c("track") ~ "segregated - cycleway/track",
      # Captures more obscure track lanes
-     cycleway_left %in% c("track") ~ "segregated - cycleway/track",
-     cycleway_right %in% c("track") ~ "segregated - cycleway/track",
-     cycleway_both %in% c("track") ~ "segregated - cycleway/track",
+     cycleway_left %in% c("track") ~ "road segregated - cycleway/track",
+     cycleway_right %in% c("track") ~ "road segregated - cycleway/track",
+     cycleway_both %in% c("track") ~ "road segregated - cycleway/track",
 
      # Captures highway=cycleway (fully separated by definition)
-     (highway %in% c("cycleway")) ~ "segregated - cycleway/track",
+     (highway %in% c("cycleway")) ~ "road segregated - cycleway/track",
      (highway %in% c("cycleway")) & 
-       (separation == "no") ~ "segregated shared use cycleway",
+       (separation == "no") ~ "road segregated - shared use cycleway",
 
      # Captures other cycling paths with shared use (may remove?)
      (highway %in% c("path")) & (bicycle %in% c("designated", "yes")) & 
+     
+     # The surface quality check assures no rough gravel footpaths are included
      ((surface %in% c("asphalt", "ashphalt", "paved", "concrete", 
                      "paving_stones", "compacted", "fine_gravel", "sett")) |
      (smoothness %in% c("excellent", "good", "intermediate", "very_good",
                         "medium", "good or excellent", "intermediate;good",
                         "good;intermediate", "good;excellent")))
-     ~ "yes - path"
+     ~ "appropriately smooth road segregated path"
 
      # For LTN1/20 separation SHOULD be used when cycling adjacent to roads, but
      # how to we determine this in OSM?
