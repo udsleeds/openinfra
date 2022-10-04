@@ -46,7 +46,8 @@ oi_cycle_separation = function(osm_sf, remove=FALSE){
   osm_cycle_infra = osm_sf %>% 
     dplyr::mutate(openinfra_cycle_infra = dplyr::case_when(
 
-      #TODO: investigate highway=path & surface=* combinations
+      #TODO: investigate highway=path & surface=* infra combinations
+      #TODO: Investigate the bicycle=yes & highway=* infra combinations
       
 # Get cycle lanes ---------------------------------------------------------
       
