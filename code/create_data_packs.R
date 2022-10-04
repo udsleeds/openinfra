@@ -32,7 +32,7 @@ save_formats = c(".geojson", ".gpkg") # Data pack file formats
 release_tag = "0.5"                   # Releases tag for piggyback
 creation_date = "2022_09_21"          # Date of download for england-latest.osm
 lad_limit = 1:330                     # Limits number of LADs to be processed
-# Uncomment below if not using local dev package versions
+# Comment below if not using local dev package versions
 devtools::load_all()
 
 # File path or URL to LAD bounding polygons
@@ -79,12 +79,12 @@ for (pkg in pkgs){
   }
 }
 
-# Check if osmextract dev is installed - install if not
+# Check if osmextract dev is installed - install it if not
 if (!("osmextract" %in% installed.packages())){
   remotes::install_github("ropensci/osmextract")
 } 
 
-# Check if openinfradev is installed - install if not
+# Check if openinfradev is installed - install it if not
 if (!("openinfra" %in% installed.packages())){
   remotes::install_github("udsleeds/openinfra")
 }
@@ -114,11 +114,14 @@ dir.create(paste0(points_data_pack_dir, creation_date))
 
 # Tags required to make data packs
 required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
-                  "kerb", "footway", "sidewalk", "cycleway", "segregated", 
-                  "highway", "crossing", "lit", "tactile_paving", "surface", 
-                  "smoothness", "width", "est_width", "lit_by_led", "boundary",
-                  "admin_level", "name", "ref", "amenity", "cycleway_left", 
-                  "cycleway_right", "cycleway_both")
+                  "kerb", "footway", "sidewalk", "cycleway", "segregated",
+                  "highway", "crossing", "lit", "tactile_paving", "surface",
+                  "smoothness", "width", "est_width", "lit_by_led", "ref",
+                  "amenity", "sidewalk", "sidewalk:left", "sidewalk:right",
+                  "sidewalk:both", "source:maxspeed", "maxspeed:type",
+                  "zone:maxspeed", "zone:traffic", "maxspeed", "HFCS", "rural",
+                  "cycleway_left", "cycleway_right", "cycleway_both",
+                  "separation")
 
 
 # Download & save OSM data
@@ -142,38 +145,18 @@ eng_latest_fp = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
 LADs = sf::read_sf(LAD_polygons_path)
 LADs = sf::st_make_valid(LADs)
 
-Scotland_LADs = c("South Ayrshire", "South Lanarkshire", "Scottish Borders",
-                  "East Ayrshire", "East Lothian", "Midlothian",
-                  "City of Edinburgh", "West Lothian", "North Lanarkshire",
-                  "Glasgow City", "East Renfrewshire", "North Ayrshire",
-                  "Argyll and Bute", "Renfrewshire", "Inverclyde", "Fife",
-                  "West Dunbartonshire", "East Dunbartonshire", "Stirling",
-                  "Falkirk", "Clackmannanshire", "Perth and Kinross",
-                  "Dundee City", "Na h-Eileanan Siar", "Highland",
-                  "Shetland Islands", "Orkney Islands", "Moray", "Aberdeenshire",
-                  "Aberdeen City", "Angus")
-
-NI_LADs = c("Causeway Coast and Glens", "Derry City and Strabane", "Belfast",
-            "Fermanagh and Omagh", "Mid Ulster", "Mid and East Antrim", 
-            "Antrim and Newtownabbey", "Armagh City, Banbridge and Craigavon",
-            "Newry, Mourne and Down", "Lisburn and Castlereagh",
-            "Ards and North Down", "Causeway Coast and Glens")
-
-Welsh_LADs = c("Isle of Anglesey", "Flintshire", "Denbighshire", "Conwy", 
-               "Gwynedd", "	Powys", "Ceredigion", "Pembrokeshire", 
-               "Carmarthenshire", "Monmouthshire", "Newport", "Torfaen", 
-               "Blaenau Gwent", "Merthyr Tydfil", "Rhondda Cynon Taf", "Cardiff",
-               "Vale of Glamorgan", "Bridgend", "Neath Port Talbot", "Swansea",
-               "Caerphilly", "Wrexham")
-
+english_lads = LADs %>% dplyr::filter(stringr::str_detect(string = LAD22CD, pattern="E"))
+welsh_lads = LADs %>% dplyr::filter(stringr::str_detect(string = LAD22CD, pattern = "W"))
+scottish_lads = LADs %>% dplyr::filter(stringr::str_detect(string = LAD22CD, pattern = "S"))
+ni_lads = LADs %>% dplyr::filter(stringr::str_detect(string = LAD22CD, pattern = "N"))
 
 # Remove Scottish LADs
-LADs = LADs %>%  dplyr::filter(! LAD22NM %in% Scotland_LADs)
+LADs = LADs %>%  dplyr::filter(! LAD22NM %in% scottish_lads$LAD22NM)
 # Remove NI LADs
-LADs = LADs %>% dplyr::filter(! LAD22NM %in% NI_LADs)
+LADs = LADs %>% dplyr::filter(! LAD22NM %in% ni_lads$LAD22NM)
 # Remove Welsh LADs
-LADs = LADs %>% dplyr::filter(! LAD22NM %in% Welsh_LADs)
-
+LADs = LADs %>% dplyr::filter(! LAD22NM %in% welsh_lads$LAD22NM)
+# Remove NA LADs
 LADs = LADs %>% dplyr::filter(! is.na(LAD22NM))
 
 #LADs = LADs[lad_limit, ] # only use first 5 whilst testing. (comment out when done)
@@ -208,13 +191,11 @@ for (region_name in LADs$LAD22NM){
       message(region_name, " lines network found - overwrite is TRUE so re-writing")
       # (Do nothing here, network will be overwritten by code below)
     
-      } else{
+      }else{
       # Don't overwrite network, move to the next region.
-      #message(paste("Skipping:", region_name,
-      #              "as network .geojson already exists"))
       next
     }
-  } else {
+  }else{
     # The network geojson does not exist
     message(paste(region_name, " lines network not found - creating now."))
   }
@@ -342,9 +323,10 @@ for (network_filename in lines_network_files){
   message(paste(region_name, "lines data pack missing - creating now."))
   # Load the current LAD lines network
   lines_network = sf::read_sf(paste0(lines_network_dir, network_filename))
-  
+  message("lines -- ", dim(lines_network))
   # Apply all openinfra functions to network (create the data pack)
   lines_network_data_pack = oi_active_cycle(lines_network, remove = FALSE)
+  message("1st DP -- ", dim(lines_network_data_pack))
   lines_network_data_pack = oi_active_walk(lines_network_data_pack,
                                            remove = FALSE)
   lines_network_data_pack = oi_clean_maxspeed_uk(lines_network_data_pack,
@@ -355,7 +337,7 @@ for (network_filename in lines_network_files){
   lines_network_data_pack = oi_im_pavement_width(lines_network_data_pack)
   lines_network_data_pack = oi_im_pedestrian_infra(lines_network_data_pack)
   lines_network_data_pack = oi_im_surfaces(lines_network_data_pack)
-  lines_network_data_pack =oi_im_tactile_paving(lines_network_data_pack)
+  lines_network_data_pack = oi_im_tactile_paving(lines_network_data_pack)
     
   lines_network_data_pack = oi_is_lit(lines_network_data_pack, remove = FALSE)
   lines_network_data_pack = oi_recode_road_class(lines_network_data_pack,
@@ -365,12 +347,17 @@ for (network_filename in lines_network_files){
                                                remove = FALSE)
   lines_network_data_pack = oi_cycle_crossings(lines_network_data_pack, 
                                                remove=FALSE)
+  message("2L DP -- ", dim(lines_network_data_pack))
   lines_network_data_pack = oi_cycle_separation(lines_network_data_pack,
                                                 remove = FALSE)
+  message("Final DP -- ", dim(lines_network_data_pack))
+  force(lines_network_data_pack)
+  message("1")
   
   # Select relevant columns for data packs
   lines_network_data_pack = lines_network_data_pack %>%
     select(osm_id, highway, matches(match = "openinfra_|im_"))
+  message("2")
   # Put geometry column at the end (good sf practice)
   lines_network_data_pack = sf::st_sf( lines_network_data_pack %>%
                                    sf::st_drop_geometry(),
