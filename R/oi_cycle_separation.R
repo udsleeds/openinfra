@@ -80,7 +80,7 @@ oi_cycle_separation = function(osm_sf, remove=FALSE){
 # Segregated (from carriageway) cycling infrastructure -------------------
     
      # Captures obvious cycle tracks - separated by definition
-     cycleway %in% c("track") ~ "segregated - cycleway/track",
+     cycleway %in% c("track") ~ "road segregated - cycleway/track",
      # Captures more obscure track lanes
      cycleway_left %in% c("track") ~ "road segregated - cycleway/track",
      cycleway_right %in% c("track") ~ "road segregated - cycleway/track",

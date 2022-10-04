@@ -62,218 +62,207 @@ get_region_name = function(LAN, auto_match=FALSE){
   }
 }
 
-# LIDA Example test -------------------------------------------------------
-
-# lida_point = tmaptools::geocode_OSM("Worsley Building, Leeds")
-# leeds_point = tmaptools::geocode_OSM("leeds")
-# 
-# c_m_coordiantes = rbind(lida_point$coords, leeds_point$coords)
-# c_m_od = od::points_to_od(p = c_m_coordiantes, interzone_only = TRUE)
-# c_m_desire_line = od::odc_to_sf(c_m_od[-(1:2)])[1, ]
-# lida_buffer = stplanr::geo_buffer(c_m_desire_line, dist = 2000)
-
-
 # Leicestershire test -----------------------------------------------------
 
 #### Param setup 
 
-region_name = "leicestershire"
-radius = 150 # metres
-osm_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
-             "kerb", "footway", "sidewalk", "cycleway", "segregated", 
-             "highway", "crossing", "lit", "tactile_paving", "surface",
-             "smoothness", "width", "est_width", "lit_by_led", "ref",
-             "amenity", "cycleway_left", "cycleway_right", 
-             "cycleway_both", "separation")
-
-# Define translate options (from osmextract docs I think)
-translate_options = c(
-  "-nlt", "PROMOTE_TO_MULTI",       # Check this
-  "-where", "highway IS NOT NULL") 
-
-# Info for locally stored england-latest.osm.pbf
-creation_date = "14_09_2022"
-GAIST_eng_latest_dir = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_eng_latest/'
-
-##### Get PCT Routes data 
-
-# Get default, fast, and quiet pct routes
-rnet_pct = pct::get_pct_rnet(region_name)
-rnet_pct_fast = pct::get_pct_routes_fast(region_name)
-rnet_pct_quiet = pct::get_pct_routes_quiet(region_name)
-
-# Get top 10% of default, fast, and quiet routes
-rnet_pct_top10 = rnet_pct |>
-  top_frac(n = 0.1, wt = rnet_pct$govtarget_slc)
-rnet_pct_fast_top10 = rnet_pct_fast |>
-  top_frac(n = 0.1, wt = rnet_pct_fast$govtarget_slc)
-
-# Visualise entire network & top 10%
-plot(rnet_pct$geometry, col = "grey")
-plot(rnet_pct_top10$geometry, col= "red", add = TRUE)
-
-
-############# Apply spatial buffer around PCT routes
-
-# Create buffer around top 10% routes (150 metres)
-test_buffer = stplanr::geo_buffer(rnet_pct_top10, dist = radius)
-
-# Combine unique polygon buffers
-test_union = test_buffer %>% summarise(geometry = sf::st_union(geometry))
-# Visualise the MultiPolygon union
-plot(test_union)
-
-
-############# Use spatial buffer to get OSM data (w osmextract)
-
-# Get filepath for locally stored england-latest.osm.pbf file
-fp = paste0(GAIST_eng_latest_dir, creation_date, "/")
-eng_latest_fp = paste0(fp, "geofabrik_england-latest.osm.pbf")
-
-
-# Acquire data for buffered regions
-oe_osm_data = osmextract::oe_read(
-  file_path = eng_latest_fp,
-  layer = "lines",
-  vectortranslate_options = translate_options,
-  never_skip_vectortranslate = TRUE,
-  force_vectortranslate = TRUE,
-  extra_tags = osm_tags,
-  boundary = test_union,
-  boundary_type = "spat", 
-  quiet = FALSE
-)
-
-
-# Apply spatial buffer ("spat" in somextract not the best... but it works...)
-oe_osm_data_buffed = oe_osm_data[test_union, ]
-
-# Apply openinfra function, leaving only cycling infra related data behind
-oe_osm_data_cycling = openinfra::oi_cycle_separation(oe_osm_data_buffed, remove = TRUE)
-unbuffed_cycle_data = openinfra::oi_cycle_separation(oe_osm_data, remove = TRUE)
-############# Visualise the outputs of different sub-setting operations
-
-tmap::tm_shape(test_union) + 
-  tmap::tm_polygons(alpha = 0.45) + 
-  tmap::tm_shape(unbuffed_cycle_data) + 
-  tmap::tm_lines(col = "openinfra_cycle_infra")
-
-tmap::tm_shape(test_union) + 
-  tmap::tm_polygons(alpha = 0.45) + 
-tmap::tm_shape(oe_osm_data_cycling) + 
-  tmap::tm_lines(col = "openinfra_cycle_infra")
-
-clipped_data_within = oe_osm_data_cycling[test_union, , op=st_within]
-
-tmap::tm_shape(test_union) + 
-  tmap::tm_polygons(alpha = 0.45) + 
-tmap::tm_shape(clipped_data_within) + 
-  tmap::tm_lines(col = "openinfra_cycle_infra")
-
-clipped_data_intersect = oe_osm_data_cycling[test_union, , op=st_intersects]
-clipped_data_intersect = clipped_data_intersect %>% dplyr::filter(! is.na(openinfra_cycle_infra))
-
-map = tmap::tm_shape(test_union) + 
-  tmap::tm_polygons(alpha = 0.45) + 
-tmap::tm_shape(clipped_data_intersect) + 
-  tmap::tm_lines(col = "openinfra_cycle_infra")
-
-# comment after saving
-#tmap::tmap_save(map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/email_GAIST_example.html')
-
-# Get cycling infrastructure with oi_cycle_separation ---------------------
-
-##########################################################################
-# General Workflow: 
-# 1 - Download England-latest.osm.pbf
-# 2 - For each `area` in `list of areas`, get the OSM data for each area.
-# 3 - Apply the oi_cycle_separation() function to get only cycle infra. 
-# 4 - Save each area as a .geojson, upload to GAIST releases ? 
-#
-# If some form of prioritisation is required, utilise pct routes for this.
-#    should this be done, need to make clear limitations of data 
-#    (2011 census & work commute data)
-###########################################################################
-
-# Uncomment below
-
-# regions = pct::pct_regions
-# r_names = regions$region_name
-# r_geoms = regions$geometry	
+# region_name = "leicestershire"
+# radius = 150 # metres
+# osm_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
+#              "kerb", "footway", "sidewalk", "cycleway", "segregated", 
+#              "highway", "crossing", "lit", "tactile_paving", "surface",
+#              "smoothness", "width", "est_width", "lit_by_led", "ref",
+#              "amenity", "cycleway_left", "cycleway_right", 
+#              "cycleway_both", "separation")
 # 
-# # Get england-latest data (to be subset for each region)
+# # Define translate options (from osmextract docs I think)
+# translate_options = c(
+#   "-nlt", "PROMOTE_TO_MULTI",       # Check this
+#   "-where", "highway IS NOT NULL") 
+# 
+# # Info for locally stored england-latest.osm.pbf
 # creation_date = "14_09_2022"
 # GAIST_eng_latest_dir = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_eng_latest/'
+
+# ##### Get PCT Routes data 
+# 
+# # Get default, fast, and quiet pct routes
+# rnet_pct = pct::get_pct_rnet(region_name)
+# rnet_pct_fast = pct::get_pct_routes_fast(region_name)
+# rnet_pct_quiet = pct::get_pct_routes_quiet(region_name)
+# 
+# # Get top 10% of default, fast, and quiet routes
+# rnet_pct_top10 = rnet_pct |>
+#   top_frac(n = 0.1, wt = rnet_pct$govtarget_slc)
+# rnet_pct_fast_top10 = rnet_pct_fast |>
+#   top_frac(n = 0.1, wt = rnet_pct_fast$govtarget_slc)
+# 
+# # Visualise entire network & top 10%
+# plot(rnet_pct$geometry, col = "grey")
+# plot(rnet_pct_top10$geometry, col= "red", add = TRUE)
+# 
+# 
+# ############# Apply spatial buffer around PCT routes
+# 
+# # Create buffer around top 10% routes (150 metres)
+# test_buffer = stplanr::geo_buffer(rnet_pct_top10, dist = radius)
+# 
+# # Combine unique polygon buffers
+# test_union = test_buffer %>% summarise(geometry = sf::st_union(geometry))
+# # Visualise the MultiPolygon union
+# plot(test_union)
+# 
+# 
+# ############# Use spatial buffer to get OSM data (w osmextract)
+# 
+# # Get filepath for locally stored england-latest.osm.pbf file
 # fp = paste0(GAIST_eng_latest_dir, creation_date, "/")
-# 
-# # Create DL directory if not already present
-# dir.create(fp)
-# 
-# eng_dl = osmextract::oe_get(
-#   place = "England",
-#   extra_tags = required_tags,
-#   download_only = TRUE,
-#   skip_vectortranslate = TRUE, 
-#   download_directory = fp)
-# 
-# # Filepath for england_latest
 # eng_latest_fp = paste0(fp, "geofabrik_england-latest.osm.pbf")
-#   
-#   
-# for(i in 1:nrow(regions)){
-#   
-#   RN = r_names[i] # Region Name
-#   RG = r_geoms[i] # Region Geometry
-#   
-#   #TODO: Add check for existing files, don't want to save too many. 
-#   
-#   # Get OSM data using region geometry
-#   message("Getting ", RN, " region data.")
-#     
-#   translate_options = c(
-#     "-nlt", "PROMOTE_TO_MULTI",       # Check this
-#     "-where", "highway IS NOT NULL")   # Highway cannot be NA
-#     
-#   required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
-#                     "kerb", "footway", "sidewalk", "cycleway", "segregated", 
-#                     "highway", "crossing", "lit", "tactile_paving", "surface",
-#                     "smoothness", "width", "est_width", "lit_by_led", "ref",
-#                     "amenity", "cycleway_left", "cycleway_right", 
-#                     "cycleway_both", "separation"
-#                    )
-#   
-#   # Get region data  
-#   r_data = osmextract::oe_read(
-#     eng_latest_fp,
-#     vectortranslate_options = translate_options,
-#     layer = "lines",
-#     extra_tags = required_tags,
-#     boundary = RG,
-#     boundary_type = "clipsrc",
-#     quiet = TRUE
-#   )
-#     
-#   # Create cycle infra network
-#   cycle_infra_network = openinfra::oi_cycle_separation(r_data, remove=TRUE)
-#     
-#   # Save the network as a geojson?
-#   GAIST_fp = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_cycle_infra_networks/'
-#   file_name = paste0(RN, "_cycle_infra_network.geojson")
-#     
-#   sf::st_write(cycle_infra_network, paste0(GAIST_fp, file_name))
-# }
-
-# Testing visualisation ----------------------------------------------------
-
-url = "https://github.com/udsleeds/openinfraresults/releases/download/cycle_infra/leicestershire_cycle_infra_network.geojson"
-test_network = sf::read_sf(url)
-test_network = test_network %>% dplyr::filter(! is.na(openinfra_cycle_infra))
-tmap::tmap_mode("view")
-
-tmap::qtm(test_network)
-
-tmap::tm_shape(test_network) +
-  tmap::tm_lines(col = "openinfra_cycle_infra")
+# 
+# 
+# # Acquire data for buffered regions
+# oe_osm_data = osmextract::oe_read(
+#   file_path = eng_latest_fp,
+#   layer = "lines",
+#   vectortranslate_options = translate_options,
+#   never_skip_vectortranslate = TRUE,
+#   force_vectortranslate = TRUE,
+#   extra_tags = osm_tags,
+#   boundary = test_union,
+#   boundary_type = "spat", 
+#   quiet = FALSE
+# )
+# 
+# 
+# # Apply spatial buffer ("spat" in somextract not the best... but it works...)
+# oe_osm_data_buffed = oe_osm_data[test_union, ]
+# 
+# # Apply openinfra function, leaving only cycling infra related data behind
+# oe_osm_data_cycling = openinfra::oi_cycle_separation(oe_osm_data_buffed, remove = TRUE)
+# unbuffed_cycle_data = openinfra::oi_cycle_separation(oe_osm_data, remove = TRUE)
+# ############# Visualise the outputs of different sub-setting operations
+# 
+# tmap::tm_shape(test_union) + 
+#   tmap::tm_polygons(alpha = 0.45) + 
+#   tmap::tm_shape(unbuffed_cycle_data) + 
+#   tmap::tm_lines(col = "openinfra_cycle_infra")
+# 
+# tmap::tm_shape(test_union) + 
+#   tmap::tm_polygons(alpha = 0.45) + 
+# tmap::tm_shape(oe_osm_data_cycling) + 
+#   tmap::tm_lines(col = "openinfra_cycle_infra")
+# 
+# clipped_data_within = oe_osm_data_cycling[test_union, , op=st_within]
+# 
+# tmap::tm_shape(test_union) + 
+#   tmap::tm_polygons(alpha = 0.45) + 
+# tmap::tm_shape(clipped_data_within) + 
+#   tmap::tm_lines(col = "openinfra_cycle_infra")
+# 
+# clipped_data_intersect = oe_osm_data_cycling[test_union, , op=st_intersects]
+# clipped_data_intersect = clipped_data_intersect %>% dplyr::filter(! is.na(openinfra_cycle_infra))
+# 
+# map = tmap::tm_shape(test_union) + 
+#   tmap::tm_polygons(alpha = 0.45) + 
+# tmap::tm_shape(clipped_data_intersect) + 
+#   tmap::tm_lines(col = "openinfra_cycle_infra")
+# 
+# # comment after saving
+# #tmap::tmap_save(map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/email_GAIST_example.html')
+# 
+# # Get cycling infrastructure with oi_cycle_separation ---------------------
+# 
+# ##########################################################################
+# # General Workflow: 
+# # 1 - Download England-latest.osm.pbf
+# # 2 - For each `area` in `list of areas`, get the OSM data for each area.
+# # 3 - Apply the oi_cycle_separation() function to get only cycle infra. 
+# # 4 - Save each area as a .geojson, upload to GAIST releases ? 
+# #
+# # If some form of prioritisation is required, utilise pct routes for this.
+# #    should this be done, need to make clear limitations of data 
+# #    (2011 census & work commute data)
+# ###########################################################################
+# 
+# # Uncomment below
+# 
+# # regions = pct::pct_regions
+# # r_names = regions$region_name
+# # r_geoms = regions$geometry	
+# # 
+# # # Get england-latest data (to be subset for each region)
+# # creation_date = "14_09_2022"
+# # GAIST_eng_latest_dir = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_eng_latest/'
+# # fp = paste0(GAIST_eng_latest_dir, creation_date, "/")
+# # 
+# # # Create DL directory if not already present
+# # dir.create(fp)
+# # 
+# # eng_dl = osmextract::oe_get(
+# #   place = "England",
+# #   extra_tags = required_tags,
+# #   download_only = TRUE,
+# #   skip_vectortranslate = TRUE, 
+# #   download_directory = fp)
+# # 
+# # # Filepath for england_latest
+# # eng_latest_fp = paste0(fp, "geofabrik_england-latest.osm.pbf")
+# #   
+# #   
+# # for(i in 1:nrow(regions)){
+# #   
+# #   RN = r_names[i] # Region Name
+# #   RG = r_geoms[i] # Region Geometry
+# #   
+# #   #TODO: Add check for existing files, don't want to save too many. 
+# #   
+# #   # Get OSM data using region geometry
+# #   message("Getting ", RN, " region data.")
+# #     
+# #   translate_options = c(
+# #     "-nlt", "PROMOTE_TO_MULTI",       # Check this
+# #     "-where", "highway IS NOT NULL")   # Highway cannot be NA
+# #     
+# #   required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
+# #                     "kerb", "footway", "sidewalk", "cycleway", "segregated", 
+# #                     "highway", "crossing", "lit", "tactile_paving", "surface",
+# #                     "smoothness", "width", "est_width", "lit_by_led", "ref",
+# #                     "amenity", "cycleway_left", "cycleway_right", 
+# #                     "cycleway_both", "separation"
+# #                    )
+# #   
+# #   # Get region data  
+# #   r_data = osmextract::oe_read(
+# #     eng_latest_fp,
+# #     vectortranslate_options = translate_options,
+# #     layer = "lines",
+# #     extra_tags = required_tags,
+# #     boundary = RG,
+# #     boundary_type = "clipsrc",
+# #     quiet = TRUE
+# #   )
+# #     
+# #   # Create cycle infra network
+# #   cycle_infra_network = openinfra::oi_cycle_separation(r_data, remove=TRUE)
+# #     
+# #   # Save the network as a geojson?
+# #   GAIST_fp = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_cycle_infra_networks/'
+# #   file_name = paste0(RN, "_cycle_infra_network.geojson")
+# #     
+# #   sf::st_write(cycle_infra_network, paste0(GAIST_fp, file_name))
+# # }
+# 
+# # Testing visualisation ----------------------------------------------------
+# 
+# url = "https://github.com/udsleeds/openinfraresults/releases/download/cycle_infra/leicestershire_cycle_infra_network.geojson"
+# test_network = sf::read_sf(url)
+# test_network = test_network %>% dplyr::filter(! is.na(openinfra_cycle_infra))
+# tmap::tmap_mode("view")
+# 
+# tmap::qtm(test_network)
+# 
+# tmap::tm_shape(test_network) +
+#   tmap::tm_lines(col = "openinfra_cycle_infra")
 
 # Comments / Questions.   -------------------------------------------------
 
@@ -305,8 +294,9 @@ translate_options = c(
   "-where", "highway IS NOT NULL") 
 
 # Info for locally stored england-latest.osm.pbf
-creation_date = "14_09_2022"
+creation_date = "2022_10_04"
 GAIST_eng_latest_dir = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_eng_latest/'
+
 
 # Local Authority name
 LA_name = "Leicester"
@@ -379,7 +369,7 @@ sf::st_write(rnet_pct_default_network, paste0(base_dir, "pct_routes_default.geoj
 sf::st_write(rnet_pct_default_network_top10, paste0(base_dir, "pct_routes_default_top_10%.geojson"), append = FALSE)
 
 
-# Visualise top 10% of default, fast & quiet pct routes.  -----------------
+# Get and visualise top 10% of default, fast & quiet pct routes.  -----------------
 
 rnet_pct_fast_network_top10 = rnet_pct_fast_network_top10 %>%
   dplyr::mutate(top_10_percent = "pct fast")
@@ -387,6 +377,8 @@ rnet_pct_quiet_network_top10 = rnet_pct_quiet_network_top10 %>%
   dplyr::mutate(top_10_percent = "pct quiet")
 rnet_pct_default_network_top10 = rnet_pct_default_network_top10 %>%
   dplyr::mutate(top_10_percent = "pct default")
+
+# Visualise
 
 # tmap::tm_shape(rnet_pct_fast_network_top10) + 
 #   tmap::tm_lines(col = "top_10_percent", palette = "red") + 
@@ -396,7 +388,6 @@ rnet_pct_default_network_top10 = rnet_pct_default_network_top10 %>%
 #   tmap::tm_lines(col = "top_10_percent", palette = "green") +
 # tmap::tm_shape(region_buffer) + 
 #   tmap::tm_polygons(alpha =0.45)
-
 
 # Apply spatial buffer to pct routes --------------------------------------
 
@@ -420,9 +411,25 @@ pct_routes_union = pct_routes_buffer["geometry"] %>% sf::st_union()
 
 # Acquire OSM data for given region ---------------------------------------
 
-# Get filepath for locally stored england-latest.osm.pbf file
+# Create DL directory if not already present & get england_latest file
 fp = paste0(GAIST_eng_latest_dir, creation_date, "/")
+dir.create(fp)
+
+# Get filepath for locally stored england-latest.osm.pbf file
 eng_latest_fp = paste0(fp, "geofabrik_england-latest.osm.pbf")
+check = file.exists(eng_latest_fp)
+
+if ( ! check){
+  # England-latest does not exist, so download.
+  eng_dl = osmextract::oe_get(
+    place = "England",
+    extra_tags = required_tags,
+    download_only = TRUE,
+    skip_vectortranslate = TRUE,
+    download_directory = fp)
+}else{
+  message("England-latest.osm.pbf file already downloaded")
+}
 
 
 # Acquire data for buffered regions
@@ -522,7 +529,5 @@ sf::st_write(buffed_cycle_lane_infra, paste0(base_dir, "pct_optimised_openinfra_
 # Mixed Traffic
 sf::st_write(buffed_mixed_traffic_infra, paste0(base_dir, "pct_optimised_openinfra_OSM_mixed_traffic_cycle_infra.geojson"), append = FALSE)
 
-
-
-diff = nrow(combined_openinfra_OSM)- nrow(combined_pct_optimised_openinfra_OSM)
-message("Applying the pct_optimised subsetting has remvoed ", diff, " features")
+# diff = nrow(combined_openinfra_OSM)- nrow(combined_pct_optimised_openinfra_OSM)
+# message("Applying the pct_optimised subsetting has remvoed ", diff, " features")
