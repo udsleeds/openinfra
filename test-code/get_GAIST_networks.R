@@ -108,17 +108,10 @@ rnet_pct_top10 = rnet_pct |>
 rnet_pct_fast_top10 = rnet_pct_fast |>
   top_frac(n = 0.1, wt = rnet_pct_fast$govtarget_slc)
 
-# CANNOT BE DONE FOR QUIET AS NO GOVTARGET_SLC COLUMN, use join
-#rnet_pct_quiet_top10 = rnet_pct_quiet |>
-#  top_frac(n = 0.1, wt = rnet_pct_quiet$govtarget_slc)
-
 # Visualise entire network & top 10%
 plot(rnet_pct$geometry, col = "grey")
 plot(rnet_pct_top10$geometry, col= "red", add = TRUE)
 
-# Visualise entire fast network & top 10%
-#plot(rnet_pct_fast$geometry, col = "grey")
-#plot(rnet_pct_fast_top10$geometry, col= "red", add = TRUE)
 
 ############# Apply spatial buffer around PCT routes
 
@@ -130,10 +123,6 @@ test_union = test_buffer %>% summarise(geometry = sf::st_union(geometry))
 # Visualise the MultiPolygon union
 plot(test_union)
 
-# For the fast networks
-fast_buffer = stplanr::geo_buffer(rnet_pct_fast_top10, dist = radius)
-fast_union = fast_buffer %>% summarise(geometry = sf::st_union(geometry))
-plot(fast_union)
 
 ############# Use spatial buffer to get OSM data (w osmextract)
 
@@ -155,19 +144,6 @@ oe_osm_data = osmextract::oe_read(
   quiet = FALSE
 )
 
-# Data for fast buffer
-oe_osm_data_fast = osmextract::oe_read(
-  file_path = eng_latest_fp,
-  layer = "lines",
-  vectortranslate_options = translate_options,
-  never_skip_vectortranslate = TRUE,
-  force_vectortranslate = TRUE,
-  extra_tags = osm_tags,
-  boundary = fast_union,
-  boundary_type = "spat", 
-  quiet = FALSE
-)
-
 
 # Apply spatial buffer ("spat" in somextract not the best... but it works...)
 oe_osm_data_buffed = oe_osm_data[test_union, ]
@@ -182,12 +158,12 @@ tmap::tm_shape(test_union) +
   tmap::tm_shape(unbuffed_cycle_data) + 
   tmap::tm_lines(col = "openinfra_cycle_infra")
 
-+tmap::tm_shape(test_union) + 
+tmap::tm_shape(test_union) + 
   tmap::tm_polygons(alpha = 0.45) + 
 tmap::tm_shape(oe_osm_data_cycling) + 
   tmap::tm_lines(col = "openinfra_cycle_infra")
 
-+clipped_data_within = oe_osm_data_cycling[test_union, , op=st_within]
+clipped_data_within = oe_osm_data_cycling[test_union, , op=st_within]
 
 tmap::tm_shape(test_union) + 
   tmap::tm_polygons(alpha = 0.45) + 
@@ -204,67 +180,6 @@ tmap::tm_shape(clipped_data_intersect) +
 
 # comment after saving
 #tmap::tmap_save(map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/email_GAIST_example.html')
-
-
-# Set-up ------------------------------------------------------------------
-
-
-# Get all Local Authority Names
-places = pct_regions_lookup %>% dplyr::filter(! is.na(region_name))
-LANs = places$lad16nm
-LANs = LANs[1:5] # Subset of LANs for testing purposes
-RN = get_region_name("Leiester")
-
-# Network directory to store geosjons or plots (static & htmls?)
-GAIST_pct_network_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openin",
-                               "fra/GAIST_PCT_Networks/")
-
-
-# Iterate over region names | Create & save interactive plots of PCT routes----
-
-# Get unique, non-NA region names only
-RNs = pct_regions_lookup %>% dplyr::filter(! is.na(region_name))
-RNs = unique(RNs$region_name)
-
-for(RN in RNs){
-
-  #TODO: Add check for existing files, don't want to save too many. 
-  
-  message("Loading region name: ", RN)
-  
-  # Get pct route network
-  rnet_pct = pct::get_pct_rnet(RN)
-  rnet_pct = rnet_pct %>% dplyr::mutate(desc = "Default routes")
-  
-  # Get top 10% of routes, scaled by the government uptake targets (SLC)
-  rnet_top_10 = rnet_pct |> 
-    top_frac(n = 0.1, wt = govtarget_slc)
-  
-  # Remove and replace desc column for legend
-  rnet_top_10 = subset(rnet_top_10, select = -c(desc) )
-  rnet_top_10 = rnet_top_10 %>% dplyr::mutate(desc ="90% percentile routes")
-  
-  # Add fast & quiet routes too!
-  
-  
-  # Plot routes with highest cycling potential, overlayed with top 10% of routes
-  RegionMap = tmap::tm_shape(rnet_pct) + 
-    tmap::tm_lines(col="desc", palette="black", title.col="Routes type") + 
-  tmap::tm_shape(rnet_top_10) + 
-    tmap::tm_lines(col="desc", palette="red", title.col="Routes type") + 
-    tmap::tm_layout(main.title = paste0("Region Name: ", str_to_title(RN)),
-                    #main.title.position = "centre",
-                    title = paste0("Region Name: ", RN),
-                    legend.bg.color = "grey",
-                    legend.bg.alpha = .4
-                    ) 
-
-  # Save the map
-  filepath = paste0(GAIST_pct_network_dir, RN, ".html")
-  tmap::tmap_save(RegionMap, filepath)
-} 
-
-
 
 # Get cycling infrastructure with oi_cycle_separation ---------------------
 
@@ -376,8 +291,25 @@ tmap::tm_shape(test_network) +
 
 
 # For Leicestershire, visualise the pct_routes, fast_routes, quiet_routes.
+
+osm_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
+             "kerb", "footway", "sidewalk", "cycleway", "segregated", 
+             "highway", "crossing", "lit", "tactile_paving", "surface",
+             "smoothness", "width", "est_width", "lit_by_led", "ref",
+             "amenity", "cycleway_left", "cycleway_right", 
+             "cycleway_both", "separation")
+
+# Define translate options (from osmextract docs I think)
+translate_options = c(
+  "-nlt", "PROMOTE_TO_MULTI",       # Check this
+  "-where", "highway IS NOT NULL") 
+
+# Info for locally stored england-latest.osm.pbf
+creation_date = "14_09_2022"
+GAIST_eng_latest_dir = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_eng_latest/'
+
 # Local Authority name
-LA_name = "Brighton"
+LA_name = "Leicester"
 # Gets region name that matches a pct region name from LA_name
 region_name = get_region_name(LA_name, auto_match = TRUE)
 
@@ -385,9 +317,10 @@ leicester_point = c(-1.133, 52.633)
 leeds_point = c(-1.549, 53.801)
 coventry_point = c(-1.511, 52.408)
 brighton_point = c(-0.153, 50.828)
+hackney_point = c(-0.054, 51.544)
 
 # Define spatial buffer (2km around city centre)
-region_centre_point = sf::st_sfc(sf::st_point(brighton_point), 
+region_centre_point = sf::st_sfc(sf::st_point(leicester_point), 
                                  crs = "EPSG:4326")
 region_buffer = stplanr::geo_buffer(region_centre_point, dist = 2000) #2km radius
 
@@ -436,14 +369,14 @@ base_dir = paste0(GAIST_network_dir, region_filename)
 dir.create(base_dir)
 
 # Save the buffered (2km pct routes for default, fast & quiet)
-sf::st_write(rnet_pct_fast_network, paste0(base_dir, "pct_routes_fast.geojson"))
-sf::st_write(rnet_pct_fast_network_top10, paste0(base_dir, "pct_routes_fast_top_10%.geojson"))
+sf::st_write(rnet_pct_fast_network, paste0(base_dir, "pct_routes_fast.geojson"), append = FALSE)
+sf::st_write(rnet_pct_fast_network_top10, paste0(base_dir, "pct_routes_fast_top_10%.geojson"), append = FALSE)
 
-sf::st_write(rnet_pct_quiet_network, paste0(base_dir, "pct_routes_quiet.geojson"))
-sf::st_write(rnet_pct_quiet_network_top10, paste0(base_dir, "pct_routes_quiet_top_10%.geojson"))
+sf::st_write(rnet_pct_quiet_network, paste0(base_dir, "pct_routes_quiet.geojson"), append = FALSE)
+sf::st_write(rnet_pct_quiet_network_top10, paste0(base_dir, "pct_routes_quiet_top_10%.geojson"), append = FALSE)
 
-sf::st_write(rnet_pct_default_network, paste0(base_dir, "pct_routes_default.geojson"))
-sf::st_write(rnet_pct_default_network_top10, paste0(base_dir, "pct_routes_default_top_10%.geojson"))
+sf::st_write(rnet_pct_default_network, paste0(base_dir, "pct_routes_default.geojson"), append = FALSE)
+sf::st_write(rnet_pct_default_network_top10, paste0(base_dir, "pct_routes_default_top_10%.geojson"), append = FALSE)
 
 
 # Visualise top 10% of default, fast & quiet pct routes.  -----------------
@@ -467,9 +400,8 @@ rnet_pct_default_network_top10 = rnet_pct_default_network_top10 %>%
 
 # Apply spatial buffer to pct routes --------------------------------------
 
-# pct_routes are combined linestrings from top 10% of routes for default, fast
-# and quiet routes. Select or remove routes from rbind below based on desired 
-# inclusion
+# pct_routes are combined linestrings from the top 10% of all route types
+# Select or remove routes from rbind below based on desired inclusion
 pct_routes = rbind(rnet_pct_fast_network_top10[c("geometry", "top_10_percent")],
                    rnet_pct_quiet_network_top10[c("geometry", "top_10_percent")],
                    rnet_pct_default_network_top10[c("geometry", "top_10_percent")]) 
@@ -515,20 +447,65 @@ osm_region_cycle_infra = openinfra::oi_cycle_separation(osm_region_data,
 # tmap::tm_shape(pct_routes_union) +
 #   tmap::tm_polygons(alpha = 0.45)
 
-# Save openinfra OSM cycle infrastructure within 2km city buffer
-sf::st_write(osm_region_cycle_infra, paste0(base_dir, "openinfra_OSM_cycle_infrastructure.geojson"))
+# When saving OSM networks, save them based on LTN protection level. That is:
+# A] Protected space for cyclists (Kerb segregated, stepped track, ligh segregation)
+# B] ON CARRAIGEWAY Cycle lanes (protected & mandatory)
+# C] Mixed traffic (no dedicated cycle infrastructure, mixed with on road traffic)
+#[A]
+protected_cycle_infra = osm_region_cycle_infra %>% 
+  dplyr::filter(openinfra_cycle_infra %in% c("segregated - cycleway/track", 
+                                             "segregated shared use cycleway",
+                                             "yes - path"))
+#[B]
+cycle_lane_infra = osm_region_cycle_infra %>% 
+  dplyr::filter(openinfra_cycle_infra %in% c("cycle lane", "cycle crossing"))
+#[C]
+mixed_traffic_infra = osm_region_cycle_infra %>% 
+  dplyr::filter(openinfra_cycle_infra %in% c("Mixed traffic - 20 mph",
+                                             "Mixed traffic - < 20 mph",
+                                             "Mixed traffic - NA maxspeed",
+                                             "shared lane/busway"))
 
-# Slight variation. Here we select routes that only intersect with the buffered pct_routes.
+# Save openinfra OSM cycle infrastructure within 2km city buffer:
+# Protected
+sf::st_write(protected_cycle_infra, paste0(base_dir, "openinfra_OSM_protected_cycle_infra.geojson"), append = FALSE)
+# Cycle Lanes
+sf::st_write(cycle_lane_infra, paste0(base_dir, "openinfra_OSM_cycle_lane_infra.geojson"), append = FALSE)
+# Mixed Traffic
+sf::st_write(mixed_traffic_infra, paste0(base_dir, "openinfra_OSM_mixed_traffic_cycle_infra.geojson"), append = FALSE)
+
+
+
+# OSM openinfra cycle infra that intersects pct union polygon -------------
+
 # (pct prioritised cycle infra selection)
 pct_optimised_region_cycle_infra = osm_region_cycle_infra[pct_routes_union, ]
 
 # Visualise the above
-tmap::tm_shape(pct_optimised_region_cycle_infra) +
-  tmap::tm_lines(col = "openinfra_cycle_infra") +
-  tmap::tm_shape(pct_routes_union) +
-  tmap::tm_polygons(alpha = 0.45)
+# tmap::tm_shape(pct_optimised_region_cycle_infra) +
+#   tmap::tm_lines(col = "openinfra_cycle_infra") +
+#   tmap::tm_shape(pct_routes_union) +
+#   tmap::tm_polygons(alpha = 0.45)
 
-# Save optimised openinfra OSM cycle infrastructure
-sf::st_write(pct_optimised_region_cycle_infra, paste0(base_dir, "pct_optimised_openinfra_OSM_cycle_infra.geojson"))
+#[A]
+buffed_protected_cycle_infra = pct_optimised_region_cycle_infra %>% 
+  dplyr::filter(openinfra_cycle_infra %in% c("segregated - cycleway/track", 
+                                             "segregated shared use cycleway",
+                                             "yes - path"))
+#[B]
+buffed_cycle_lane_infra = pct_optimised_region_cycle_infra %>% 
+  dplyr::filter(openinfra_cycle_infra %in% c("cycle lane", "cycle crossing"))
+#[C]
+buffed_mixed_traffic_infra = pct_optimised_region_cycle_infra %>% 
+  dplyr::filter(openinfra_cycle_infra %in% c("Mixed traffic - 20 mph",
+                                             "Mixed traffic - < 20 mph",
+                                             "Mixed traffic - NA maxspeed",
+                                             "shared lane/busway"))
 
-
+# Save pct optimised openinfra OSM cycle infrastructure within 2km city buffer
+# Protected
+sf::st_write(buffed_protected_cycle_infra, paste0(base_dir, "pct_optimised_openinfra_OSM_protected_cycle_infra.geojson"), append = FALSE)
+# Cycle Lanes
+sf::st_write(buffed_cycle_lane_infra, paste0(base_dir, "pct_optimised_openinfra_OSM_cycle_lane_infra.geojson"), append = FALSE)
+# Mixed Traffic
+sf::st_write(buffed_mixed_traffic_infra, paste0(base_dir, "pct_optimised_openinfra_OSM_mixed_traffic_cycle_infra.geojson"), append = FALSE)
