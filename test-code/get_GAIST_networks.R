@@ -442,6 +442,7 @@ osm_region_data = osmextract::oe_read(
 osm_region_cycle_infra = openinfra::oi_cycle_separation(osm_region_data, 
                                                         remove = TRUE)
 # Visualise above
+
 # tmap::tm_shape(osm_region_cycle_infra) +
 #   tmap::tm_lines(col = "openinfra_cycle_infra") +
 # tmap::tm_shape(pct_routes_union) +
