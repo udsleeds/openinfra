@@ -63,10 +63,7 @@ get_region_name = function(LAN, auto_match=FALSE){
   }
 }
 
-# Comments / Questions.   -------------------------------------------------
-
 #TODO: Investigate the coverage of national cycling routes, following on from Martin's comments on GitHub. 
-
 
 # Workflow below:
 
