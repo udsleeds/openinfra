@@ -467,6 +467,11 @@ mixed_traffic_infra = osm_region_cycle_infra %>%
                                              "Mixed traffic - NA maxspeed",
                                              "shared lane/busway"))
 
+# Combine the openinfra_OSM layers: 
+combined_openinfra_OSM = rbind(protected_cycle_infra[c("geometry", "openinfra_cycle_infra")],
+                               cycle_lane_infra[c("geometry", "openinfra_cycle_infra")],
+                               mixed_traffic_infra[c("geometry", "openinfra_cycle_infra")])
+
 # Save openinfra OSM cycle infrastructure within 2km city buffer:
 # Protected
 sf::st_write(protected_cycle_infra, paste0(base_dir, "openinfra_OSM_protected_cycle_infra.geojson"), append = FALSE)
@@ -503,6 +508,12 @@ buffed_mixed_traffic_infra = pct_optimised_region_cycle_infra %>%
                                              "Mixed traffic - NA maxspeed",
                                              "shared lane/busway"))
 
+# Combine the pct_optimised layers: 
+combined_pct_optimised_openinfra_OSM = rbind(buffed_protected_cycle_infra[c("geometry", "openinfra_cycle_infra")],
+                                             buffed_cycle_lane_infra[c("geometry", "openinfra_cycle_infra")],
+                                             buffed_mixed_traffic_infra[c("geometry", "openinfra_cycle_infra")])
+
+
 # Save pct optimised openinfra OSM cycle infrastructure within 2km city buffer
 # Protected
 sf::st_write(buffed_protected_cycle_infra, paste0(base_dir, "pct_optimised_openinfra_OSM_protected_cycle_infra.geojson"), append = FALSE)
@@ -510,3 +521,8 @@ sf::st_write(buffed_protected_cycle_infra, paste0(base_dir, "pct_optimised_openi
 sf::st_write(buffed_cycle_lane_infra, paste0(base_dir, "pct_optimised_openinfra_OSM_cycle_lane_infra.geojson"), append = FALSE)
 # Mixed Traffic
 sf::st_write(buffed_mixed_traffic_infra, paste0(base_dir, "pct_optimised_openinfra_OSM_mixed_traffic_cycle_infra.geojson"), append = FALSE)
+
+
+
+diff = nrow(combined_openinfra_OSM)- nrow(combined_pct_optimised_openinfra_OSM)
+message("Applying the pct_optimised subsetting has remvoed ", diff, " features")
