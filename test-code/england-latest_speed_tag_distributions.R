@@ -101,3 +101,21 @@ good_res_lit = lit_eng_res_highway_parsed %>% dplyr::filter(maxspeed <= 30)
 # maxspeed needs to be inferred.
 
 
+# Proposed test case for England-latest -----------------------------------
+
+lit_eng_res_highway = lit_eng_res_highway %>% 
+  dplyr::mutate(inferred_maxspeed = dplyr::case_when(
+    # as we are using `lit_eng_res_highway` we have already met the condition
+    # of highway=residential & highway is lit... need maxspeed is NA
+    is.na(maxspeed) ~ "i30 mph"
+  ))
+
+# i30 mph noting this speed is inferred
+message("# inferred speeds:", nrow(lit_eng_res_highway %>% dplyr::filter(inferred_maxspeed == "i30 mph")))
+
+# Visualise the inferred 30 mph maxspeeds
+tmap::tmap_mode("view")
+
+tmap::tm_shape(lit_eng_res_highway %>% dplyr::filter(inferred_maxspeed == "i30 mph")) + 
+  tmap::tm_lines(col = "inferred_maxspeed")
+
