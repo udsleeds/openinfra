@@ -86,8 +86,11 @@ is_lit_pack = oi_is_lit(lines_network, remove = FALSE)
 clean_maxspeed_pack = oi_clean_maxspeed_uk(lines_network, no_NA=FALSE, del=FALSE)
 road_names_pack = oi_road_names(lines_network, remove=TRUE)
 cycle_crossings_pack = oi_cycle_crossings(lines_network, remove=TRUE)
-IM_pack = oi_inclusive_mobility(lines_network)
-#TODO: add below functions to data pack examples
+im_flush_kerb_pack = oi_im_flush_kerb(lines_network)
+im_pavement_widths = oi_im_pavement_width(lines_network)
+im_pedestrian_infra = oi_im_pedestrian_infra(lines_network)
+im_surfaces = oi_im_surfaces(lines_network)
+im_tactile_paving = oi_im_tactile_paving(lines_network)
 cycle_infra_pack = oi_cycle_separation(lines_network, remove=TRUE)
 
 # Points networks below
@@ -175,12 +178,39 @@ cycle_crossings_map = tmap::tm_shape(cycle_crossings_pack) +
   tmap::tm_lines(col = "openinfra_cycle_crossings")
 tmap::tmap_save(cycle_crossings_map, paste0(dir_path, "cycle_crossings_map", f))
 
-# 8
-im_map = tmap::tm_shape(IM_pack %>% 
-                          dplyr::select(osm_id, highway,
-                                        matches(match = "openinfra_im_"))) + 
-         tmap::tm_lines()
-tmap::tmap_save(im_map, paste0(dir_path, "im_map", f))
+im_kerb_map = tmap::tm_shape(im_flush_kerb_pack %>% 
+                               dplyr::select(osm_id, highway,
+                                             matches(match = "openinfra_im_"))) + 
+  tmap::tm_lines()
+tmap::tmap_save(im_kerb_map, paste0(dir_path, "im_kerb_map", f))
+
+# 8.2
+im_pavements_map = tmap::tm_shape(im_pavements_pack %>% 
+                                     dplyr::select(osm_id, highway,
+                                                   matches(match = "openinfra_im_"))) + 
+  tmap::tm_lines()
+tmap::tmap_save(im_pavements_map, paste0(dir_path, "im_pavements_map", f))
+
+#8.3
+im_ped_infra_map = tmap::tm_shape(im_pedestrian_infra %>% 
+                                    dplyr::select(osm_id, highway, 
+                                                  matches(match = "openinfra_im_"))) +
+  tmap::tm_lines()
+tmap::tmap_save(im_ped_infra_map, paste0(dir_path, "im_ped_infra_map", f))
+
+#8.4
+im_surfaces_map = tmap::tm_shape(im_surfaces %>% 
+                                   dplyr::select(osm_id, highway,
+                                                 matches(match = "openinfra_im_"))) +
+  tmap::tm_lines()
+tmap::tmap_save(im_surfaces_map, paste0(dir_path, "im_surfaces_map", f))
+
+#8.5
+im_tactile_paving_map = tmap::tm_shape(im_tactile_paving %>% 
+                                         dplyr::select(osm_id, highway, 
+                                                       matches(match = "openinfra_im_"))) +
+  tmap::tm_lines()
+tmap::tmap_save(im_tactile_paving_map, paste0(dir_path, "im_tactile_paving_map", f))
 
 # 9 
 cycle_parking_map = tmap::tm_shape(cycle_parking_pack) + 
@@ -209,8 +239,18 @@ clean_maxspeed_map
 road_names_map
 # 7
 cycle_crossings_map
-# 8
-im_map
+
+# 8.1
+im_kerb_map
+# 8.2
+im_pavements_map
+# 8.3
+im_ped_infra_map
+# 8.4
+im_surfaces_map
+# 8.5
+im_tactile_paving_map
+
 # 10
 cycle_infra_map
 #591 --> 655
