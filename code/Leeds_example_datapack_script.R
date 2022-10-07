@@ -129,65 +129,68 @@ cycle_parking_pack = oi_bicycle_parking(points_network, remove=TRUE)
 #piggyback::pb_upload(paste0(data_pack_basename, ".zip"))
 
 
-# Create example plots ----------------------------------------------------
+# Create example plots for data_packs.Rmd ---------------------------------
+dir_path = "/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/"
+f = ".html"
 
 #___________MAPS_____________________________
 # 0 Default OSM highway values
 default_OSM_highways = tmap::tm_shape(lines_network) + 
   tmap::tm_lines(col = "highway")
-tmap::tmap_save(default_OSM_highways, "/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/deault_OSM_highways.html")
+tmap::tmap_save(default_OSM_highways, paste0(dir_path, "deault_OSM_highways", f))
 
 # 1
 active_cycle_map = tmap::tm_shape(active_cycle_pack) + 
   tmap::tm_lines(col = "openinfra_cycle")
-tmap::tmap_save(active_cycle_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/active_cycle_map.html')
+tmap::tmap_save(active_cycle_map, paste0(dir_path, "active_cycle_map", f))
 
 # 2
 active_walk_map = tmap::tm_shape(active_walk_pack) + 
   tmap::tm_lines(col = "openinfra_walk")
-tmap::tmap_save(active_walk_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/active_walk_map.html')
+tmap::tmap_save(active_walk_map, paste0(dir_path, "active_walk_map", f))
 
 # 3
 road_desc_map = tmap::tm_shape(recode_road_pack) + 
   tmap::tm_lines(col = "openinfra_road_desc")
-tmap::tmap_save(road_desc_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/road_desc_map.html')
+tmap::tmap_save(road_desc_map, paste0(dir_path, "road_desc_map", f))
 
 # 4
 is_lit_map = tmap::tm_shape(is_lit_pack) + 
   tmap::tm_lines(col = "openinfra_is_lit")
-tmap::tmap_save(is_lit_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/is_lit_map.html')
+tmap::tmap_save(is_lit_map, paste0(dir_path, "is_lit_map", f))
 
-# 5
+# 5 - Remove maxspeed == NA to stop "Missing" in map legend
+clean_maxspeed_pack = clean_maxspeed_pack %>% dplyr::filter(! is.na(openinfra_maxspeed))
 clean_maxspeed_map = tmap::tm_shape(clean_maxspeed_pack) + 
   tmap::tm_lines(col = "openinfra_maxspeed")
-tmap::tmap_save(clean_maxspeed_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/clean_maxspeed_map.html')
+tmap::tmap_save(clean_maxspeed_map, paste0(dir_path, "clean_maxspeed_map", f))
 
 # 6
 road_names_map = tmap::tm_shape(road_names_pack) + 
   tmap::tm_lines(col = "openinfra_road_name")
-tmap::tmap_save(road_names_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/road_names_map.html')
+tmap::tmap_save(road_names_map, paste0(dir_path, "road_names_map", f))
 
 # 7
 cycle_crossings_map = tmap::tm_shape(cycle_crossings_pack) + 
   tmap::tm_lines(col = "openinfra_cycle_crossings")
-tmap::tmap_save(cycle_crossings_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/cycle_crossings_map.html')
+tmap::tmap_save(cycle_crossings_map, paste0(dir_path, "cycle_crossings_map", f))
 
 # 8
-im_map = tmap::tm_shape(IM_pack %>% dplyr::select(c("openinfra_im_kerb", "openinfra_im_footway", "openinfra_im_footpath", "openinfra_im_crossing", 
-                                                                  "openinfra_im_footway_imp", "openinfra_im_light", "openinfra_im_tactile", "openinfra_im_surface_paved", "openinfra_im_surface",
-                                                                  "openinfra_im_width", "openinfra_im_width_est"))) + 
-  tmap::tm_lines()
-tmap::tmap_save(im_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/im_map.html')
+im_map = tmap::tm_shape(IM_pack %>% 
+                          dplyr::select(osm_id, highway,
+                                        matches(match = "openinfra_im_"))) + 
+         tmap::tm_lines()
+tmap::tmap_save(im_map, paste0(dir_path, "im_map", f))
 
 # 9 
 cycle_parking_map = tmap::tm_shape(cycle_parking_pack) + 
   tmap::tm_dots(col = "openinfra_cycle_parking")
-tmap::tmap_save(cycle_parking_map, '/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/cycle_parking_map.html')
+tmap::tmap_save(cycle_parking_map, paste0(dir_path, "cycle_parking_map" ,f))
 
 # 10
 cycle_infra_map = tmap::tm_shape(cycle_infra_pack) + 
   tmap::tm_lines(col = "openinfra_cycle_infra")
-tmap::tmap_save(cycle_infra_map, "/home/james/Desktop/LIDA_OSM_Project/openinfra/Openinfra htmls/cycle_infra_map.html")
+tmap::tmap_save(cycle_infra_map, paste0(dir_path, "cycle_infra_map", f))
 
 
 # Load maps into R --------------------------------------------------------
