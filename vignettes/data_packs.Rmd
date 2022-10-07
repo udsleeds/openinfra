@@ -79,7 +79,8 @@ An example application of this dataset could be highlighting the most likely roa
 ```{r out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/active_walk_map.html", height = "650px")
 ```
-<br>Much like the cycleable ways visualisation above, this visualisation shows ways that pedestrians legally have a right of way on. It does not assess or indicate any "friendliness" or "scenic-ness" of a way.
+
+Much like the cyclable ways visualisation above, this visualisation shows ways that pedestrians legally have a right of way on. It does not assess or indicate any "friendliness" or "scenic-ness" of a way.
 <br><br>
 
 ### Recategorised Presence of Street Lighting
@@ -98,6 +99,8 @@ Such information may be utilised to assess routes for safe active travel after d
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/clean_maxspeed_map.html", height = "650px")
 ```
 Recategorised UK maximum road speed values. Based on the official [UK speed limits](https://www.gov.uk/speed-limits).
+<br><br>
+Note that the potential lack of coverage for the maxspeed tag is due to the fact that this tag is usually not explicitly adeed, except where it is an exceptional value. See [#147](https://github.com/udsleeds/openinfra/issues/147) for more context. 
 <br><br>
 
 ### Presence of Cycle Crossings
