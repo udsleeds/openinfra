@@ -494,7 +494,7 @@ osm_sf = total_place
 
 osm_sf_road_recoded = oi_road_names(osm_sf) # recode_road_class(osm_sf) #openinfra::recode_road_class(osm_sf)
 data_pack = oi_clean_maxspeed_uk(osm_sf_road_recoded) #openinfra::oi_clean_maxspeed_uk(osm_sf_road_recoded)
-data_pack_IM = oi_inclusive_mobility(data_pack)
+data_pack_IM = inclusive_mobility_get(data_pack)
 data_pack_lit = oi_is_lit(data_pack)
 #data_pack_short = data_pack %>% dplyr::select(c("osm_id", "highway", "road_desc", "oi_maxspeed"))
 data_pack_IM = data_pack_IM %>% dplyr::select(c("highway", "im_footway", "im_footpath", "im_tactile"))
@@ -504,7 +504,7 @@ data_pack_road_name = oi_road_names(osm_sf)
 data_pack_cycle = oi_active_cycle(osm_sf)
 data_pack_walk = oi_active_walk(osm_sf)
 data_pack_maxspeed = oi_clean_maxspeed_uk(osm_sf)
-data_pack_IM = oi_inclusive_mobility(osm_sf)
+data_pack_IM = inclusive_mobility_get(osm_sf)
 data_pack_lit = oi_is_lit(osm_sf)
 data_pack_road_desc = oi_recode_road_class(osm_sf)
 

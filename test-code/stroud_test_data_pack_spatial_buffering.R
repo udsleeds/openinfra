@@ -35,8 +35,11 @@ stroud_max_speed = openinfra::oi_clean_maxspeed_uk(small_network, no_NA = TRUE)
 stroud_lighting = openinfra::oi_is_lit(small_network, remove = TRUE)
 stroud_walking = openinfra::oi_active_walk(small_network, remove = FALSE)
 stroud_cycling = openinfra::oi_active_cycle(small_network, remove = FALSE)
-stroud_IM = openinfra::oi_inclusive_mobility(small_network)
-
+stroud_im_flush_kerb = openinfra::oi_im_flush_kerb(small_network)
+stroud_im_pavement_widths = openinfra::oi_im_pavement_width(small_network)
+stroud_im_pedestrian_infra = openinfra::oi_im_pedestrian_infra(small_network)
+stroud_im_surfaces = openinfra::oi_im_surfaces(small_network)
+stroud_im_tactile_paving = openinfra::oi_im_tactile_paving(small_network)
 
 # Visualise our current output(s)!
 map =tmap::tm_shape(small_network) + 

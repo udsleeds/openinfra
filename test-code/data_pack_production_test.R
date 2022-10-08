@@ -112,7 +112,11 @@ for (filename in network_files){
   network = oi_active_cycle(network, remove = FALSE)
   network = oi_active_walk(network, remove = FALSE)
   network = oi_clean_maxspeed_uk(network, no_NA = FALSE, del = FALSE)
-  network = oi_inclusive_mobility(network)
+  network = oi_im_flush_kerb(network)
+  network = oi_im_pavement_width(network)
+  network = oi_im_pedestrian_infra(network)
+  network = oi_im_surfaces(network)
+  network = oi_im_tactile_paving(network)
   network = oi_is_lit(network, remove = FALSE)
   network = recode_road_class(network)
   
