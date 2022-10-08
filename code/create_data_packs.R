@@ -331,7 +331,6 @@ for (network_filename in lines_network_files){
                                            remove = FALSE)
   lines_network_data_pack = oi_clean_maxspeed_uk(lines_network_data_pack,
                                                  no_NA = FALSE, del = FALSE)
-  #lines_network_data_pack = oi_inclusive_mobility(lines_network_data_pack)
   
   lines_network_data_pack = oi_im_flush_kerb(lines_network_data_pack)
   lines_network_data_pack = oi_im_pavement_width(lines_network_data_pack)
@@ -356,7 +355,7 @@ for (network_filename in lines_network_files){
   
   # Select relevant columns for data packs
   lines_network_data_pack = lines_network_data_pack %>%
-    select(osm_id, highway, matches(match = "openinfra_|im_"))
+    select(osm_id, highway, matches(match = "openinfra_"))
   message("2")
   # Put geometry column at the end (good sf practice)
   lines_network_data_pack = sf::st_sf( lines_network_data_pack %>%
@@ -367,9 +366,6 @@ for (network_filename in lines_network_files){
   if (local_save_data_pack) {
     for (f in save_formats){
       #region_name
-      #data_pack_filename = paste0(creation_date, "_", "datapack_",
-      #                            gsub(".geojson", "", network_filename), f)
-      
       #filename format packname_level_regionname_yyyy-mm-dd.format
       #for an example: datapack_lad_adur_2022-08-25.geojson
       
@@ -466,7 +462,7 @@ for (network_filename in points_network_files){
   
   # Select relevant columns for data packs
   points_network_data_pack = points_network_data_pack %>%
-    select(osm_id, highway, matches(match = "openinfra_|im_"))
+    select(osm_id, highway, matches(match = "openinfra_"))
   # Put geometry column at the end (good sf practice)
   points_network_data_pack = sf::st_sf(points_network_data_pack %>%
                                          sf::st_drop_geometry(),

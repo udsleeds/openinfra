@@ -138,7 +138,12 @@ for (network_filename in lines_network_files){
                                            remove = FALSE)
   lines_network_data_pack = oi_clean_maxspeed_uk(lines_network_data_pack,
                                                  no_NA = FALSE, del = FALSE)
-  lines_network_data_pack = oi_inclusive_mobility(lines_network_data_pack)
+  lines_network_data_pack = oi_im_flush_kerb(lines_network_data_pack)
+  lines_network_data_pack = oi_im_pavement_width(lines_network_data_pack)
+  lines_network_data_pack = oi_im_pedestrian_infra(lines_network_data_pack)
+  lines_network_data_pack = oi_im_surfaces(lines_network_data_pack)
+  lines_network_data_pack = oi_im_tactile_paving(lines_network_data_pack)
+  
   lines_network_data_pack = oi_is_lit(lines_network_data_pack, remove = FALSE)
   lines_network_data_pack = oi_recode_road_class(lines_network_data_pack,
                                                  del = FALSE)
@@ -150,7 +155,7 @@ for (network_filename in lines_network_files){
   
   # Select relevant columns for data packs
   lines_network_data_pack = lines_network_data_pack %>%
-    select(osm_id, highway, matches(match = "openinfra_|im_"))
+    select(osm_id, highway, matches(match = "openinfra_"))
   # Put geometry column at the end (good sf practice)
   lines_network_data_pack = sf::st_sf( lines_network_data_pack %>%
                                          sf::st_drop_geometry(),
