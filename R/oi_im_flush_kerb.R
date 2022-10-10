@@ -1,52 +1,45 @@
-#' Function to assess whether a kerb (where tagged) is flush or not.
-#'
+#' Assesses whether a flush kerb is compliant with Inclusive Mobility guidance. 
+#' 
+#' This function is used to assess if a flush kerb is complicit with current 
+#' [Inclusive Mobility](https://tinyurl.com/IM-guide-link) guidance. The 
+#' function first assesses the presence of tactile paving, which should be 
+#' present for a compliant flush kerb, before assessing the kerb type.  
 #' @usage oi_im_flush_kerb(osm_sf)
 #' @param osm_sf - A `sf` and `data.frame` object containing OpenStreetMap 
 #'   infrastructure data, obtained from the 
 #'   [`osmextract`](https://github.com/ropensci/osmextract) package.
 #' @return The `osm_sf` data frame is returned with additional 
-#'   columns `openinfra_im_kerb`, assessing the presence and type of kerb with 
-#'   values `c("lowered kerb", "flush kerb", "no kerb", "raised kerb",
-#'   "rolled kerb", "normal kerb", "unknown", "missing data")` and
-#'   `openinfra_accessible_kerb`, assesses accessibility of kerb for 
-#'   pedestrians with impaired mobility with values `c("wheelchair - yes", 
-#'   "wheelchair - no", "lacking data")` and `openinfra_im_flush_kerb` which
-#'   assesses whether or not there is a flush kerb compliant with the latest
+#'   columns `openinfra_im_tactile_paving`, assessing the presence of tactile 
+#'   paving with values `c("yes", "no")`, and
+#'   `openinfra_im_flush_kerb`, which assesses whether or not there is a flush
+#'   kerb compliant with the latest
 #'   [Inclusive Mobility](https://tinyurl.com/IM-guide-link) Guidance.
-#' @details Note: the `osm_sf` must contain the following tags: `c("kerb")`
+#'   
+#' @details Note: `osm_sf` must contain the tags: `c("kerb", "tactile_paving")`.
 #' @export
 #' @examples 
 #' data = example_data
 #' output = oi_im_flush_kerb(data)
-#' output = output %>% dplyr::filter(! is.na(openinfra_kerb))
-#' plot(output[,"openinfra_kerb"])
+#' output = output %>% dplyr::filter(! is.na(openinfra_im_flush_kerb))
+#' plot(output[,"openinfra_im_flush_kerb"])
 
 oi_im_flush_kerb = function(osm_sf){
 
-  osm_sf_im = osm_sf %>% 
-    # Assesses the presence of a kerb, and what type of kerb it is.
-    dplyr::mutate(openinfra_kerb = dplyr::case_when(
-      stringr::str_detect(kerb, "lower") ~ "lowered kerb",
-      kerb == "flush" ~ "flush kerb",
-      kerb %in% c("no", "none", "flat") ~ "no kerb", 
-      kerb == "raised" ~ "raised kerb",
-      kerb == "rolled" ~ "rolled kerb",
-      kerb %in% c("yes", "regular", "normal") ~ "normal kerb",
-      (TRUE & !is.na(kerb)) ~ "unknown",
-      is.na(kerb) ~ "missing data"
-    )) %>% 
-    dplyr::mutate(openinfra_im_accessible_kerb = dplyr::case_when(
-      # Based on assessments above, assesses whether the kerb is accessible
-      # for wheelchair users. Definitions decided based on kerb wiki below.
-      # See: https://wiki.openstreetmap.org/wiki/Key:kerb
-      openinfra_kerb %in% c("lowered kerb", "flush kerb",
-                               "no kerb") ~ "wheelchair - yes",
-      openinfra_kerb %in% c("raised kerb", "rolled kerb", "normal kerb"
-                               ) ~ "wheelchair - no",
-      openinfra_kerb %in% c("unknown", "missing data") ~ "lacking data"
-    )) %>% 
+  osm_sf_im = osm_sf %>%
+    # For IM compliant flush kerbs, tactile paving should be present. 
+    dplyr::mutate(openinfra_im_tactile_paving = dplyr::case_when(
+      ! tactile_paving %in% c("no", "incorrect", "bad", "dangerous", 
+                              "incomplete", "wrong") & ! is.na(tactile_paving)
+      ~ "yes",
+      ! is.na(tactile_paving)
+      ~ "no"
+    )
+    ) %>% 
+    # Now we can assess IM flush kerbs using presence of tactile paving.
     dplyr::mutate(openinfra_im_flush_kerb = dplyr::case_when(
-      openinfra_kerb %in% c("flush kerb", "no kerb") ~ "yes"
+      kerb %in% c("flush", "no") & openinfra_im_tactile_paving == "yes"
+      ~ "yes",
+      TRUE ~ "no"
     ))
   
   return(osm_sf_im)

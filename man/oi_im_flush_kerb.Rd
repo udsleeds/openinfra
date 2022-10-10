@@ -2,7 +2,7 @@
 % Please edit documentation in R/oi_im_flush_kerb.R
 \name{oi_im_flush_kerb}
 \alias{oi_im_flush_kerb}
-\title{Function to assess whether a kerb (where tagged) is flush or not.}
+\title{Assesses whether a flush kerb is compliant with Inclusive Mobility guidance.}
 \usage{
 oi_im_flush_kerb(osm_sf)
 }
@@ -15,22 +15,24 @@ infrastructure data, obtained from the
 }
 \value{
 The \code{osm_sf} data frame is returned with additional
-columns \code{openinfra_im_kerb}, assessing the presence and type of kerb with
-values \code{c("lowered kerb", "flush kerb", "no kerb", "raised kerb", "rolled kerb", "normal kerb", "unknown", "missing data")} and
-\code{openinfra_accessible_kerb}, assesses accessibility of kerb for
-pedestrians with impaired mobility with values \code{c("wheelchair - yes",  "wheelchair - no", "lacking data")} and \code{openinfra_im_flush_kerb} which
-assesses whether or not there is a flush kerb compliant with the latest
+columns \code{openinfra_im_tactile_paving}, assessing the presence of tactile
+paving with values \code{c("yes", "no")}, and
+\code{openinfra_im_flush_kerb}, which assesses whether or not there is a flush
+kerb compliant with the latest
 \href{https://tinyurl.com/IM-guide-link}{Inclusive Mobility} Guidance.
 }
 \description{
-Function to assess whether a kerb (where tagged) is flush or not.
+This function is used to assess if a flush kerb is complicit with current
+\href{https://tinyurl.com/IM-guide-link}{Inclusive Mobility} guidance. The
+function first assesses the presence of tactile paving, which should be
+present for a compliant flush kerb, before assessing the kerb type.
 }
 \details{
-Note: the \code{osm_sf} must contain the following tags: \code{c("kerb")}
+Note: \code{osm_sf} must contain the tags: \code{c("kerb", "tactile_paving")}.
 }
 \examples{
 data = example_data
 output = oi_im_flush_kerb(data)
-output = output \%>\% dplyr::filter(! is.na(openinfra_kerb))
-plot(output[,"openinfra_kerb"])
+output = output \%>\% dplyr::filter(! is.na(openinfra_im_flush_kerb))
+plot(output[,"openinfra_im_flush_kerb"])
 }

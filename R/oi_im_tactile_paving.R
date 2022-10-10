@@ -17,7 +17,8 @@
 oi_im_tactile_paving = function(osm_sf){
   # Assesses the presence of tactile paving - either yes, no.
   osm_sf_im = osm_sf %>% dplyr::mutate(openinfra_im_tactile = dplyr::case_when(
-    ! tactile_paving %in% c("no", "incorrect", "bad") & ! is.na(tactile_paving)
+    ! tactile_paving %in% c("no", "incorrect", "bad", "dangerous", "incomplete",
+                            "wrong") & ! is.na(tactile_paving)
     ~ "yes",
     ! is.na(tactile_paving)
     ~ "no"
