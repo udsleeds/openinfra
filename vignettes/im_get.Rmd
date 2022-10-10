@@ -9,7 +9,25 @@ vignette: >
 
 The purpose of the `inclusive_mobility_get` function is to recategorize OSM data based on the recent Inclusive Mobility (IM) guide UK. The goal behind this is to encourage the use of crowd-sourced open data in the inclusive infrastructure planning. Indeed, the function has been written to encourage discussions around the applicability of open data and act as a starting point.
 
-It has to be noted that this function is a simplification of all the requirements outlined in the guide. There are a couple of reasons for this. First, while there is a large number of tags in OSM to create detailed maps, but the values imputed are not always IM guide-friendly. For example, in the guide 6 different types of tactile paving are outlined, yet those types are not key values in the OSM as it focused on the presence/absence of tactile paving. This, then, leads not only to the fact that not all OSM data can be sensibly recategorized based on the IM guide but also that it is highly unlikely that a single function could capture the detailed specifications outlined in the IM guide. 
+It has to be noted that this function is a simplification of all the requirements outlined in the guide. There are a couple of reasons for this. First, while there is a large number of tags in OSM to create detailed maps, but the values imputed are not always IM guide-friendly. For example, in the guide 6 different types of tactile paving are outlined, yet those types are not key values in the OSM as it focused on the presence/absence of tactile paving. This, then, leads not only to the fact that not all OSM data can be sensibly recategorized based on the IM guide but also that it is highly unlikely that a single function could capture the detailed specifications outlined in the IM guide.
+<br><br>
+
+# Function updates
+Please note that, as per [#129](https://github.com/udsleeds/openinfra/issues/129), the `oi_inclusive_mobility` function, based on the function defined below, has now been split into a number of sub-functions as described below: 
+
+| New Function | Assesses |
+| -------- | -------- | 
+| oi_im_flush_kerb| [Flush Kerb](https://udsleeds.github.io/openinfra/articles/im_get.html#kerb)|
+| oi_im_pavement_width | [Pavement Width](https://udsleeds.github.io/openinfra/articles/im_get.html#width) <br> [Estimated Width](https://udsleeds.github.io/openinfra/articles/im_get.html#width) |
+| oi_im_pedestrian_infra | [Footways](https://udsleeds.github.io/openinfra/articles/im_get.html#footways) <br> [Footpaths](https://udsleeds.github.io/openinfra/articles/im_get.html#footpaths) <br>[Implied Footways](https://udsleeds.github.io/openinfra/articles/im_get.html#implied-footways) <br> [Crossings](https://udsleeds.github.io/openinfra/articles/im_get.html#crossings)|
+| oi_im_surfaces | [Paved Surface](https://udsleeds.github.io/openinfra/articles/im_get.html#surface) <br> [Even Surface](https://udsleeds.github.io/openinfra/articles/im_get.html#surface) |
+| oi_im_tactile_paving | [Tactile Pacing](https://udsleeds.github.io/openinfra/articles/im_get.html#tactile-paving)|
+| oi_is_lit | [Lighting](https://udsleeds.github.io/openinfra/articles/im_get.html#lighting) | 
+| oi_clean_maxspeed_uk | [Speed](https://udsleeds.github.io/openinfra/articles/im_get.html#speed) | 
+
+<br>
+For further information, please see [documentation]() for the functions starting `oi_im_*`
+<br>
 
 # get osm
 ```{r, eval = F}
