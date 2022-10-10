@@ -254,7 +254,7 @@ tmap::tm_shape(leeds_points_datapack) +
 
 ```
 
-Thus concludes the reproducible example creation of the transport infrastructure data packs.
+This concludes the reproducible example creation of the transport infrastructure data packs.
 <br><br>
 Below we see how each of the openinfra functions has been defined, thus the processing steps applied to OSM data in data pack creation. 
 <br><br>
