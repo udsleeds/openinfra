@@ -4,7 +4,7 @@ author: "James Hulse"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Transport Infrastructure Data Packs}
+  %\VignetteIndexEntry{Transport Infrastructure Data Packs Documentation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
