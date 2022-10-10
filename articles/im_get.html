@@ -110,7 +110,55 @@
     
     
 <p>The purpose of the <code>inclusive_mobility_get</code> function is to recategorize OSM data based on the recent Inclusive Mobility (IM) guide UK. The goal behind this is to encourage the use of crowd-sourced open data in the inclusive infrastructure planning. Indeed, the function has been written to encourage discussions around the applicability of open data and act as a starting point.</p>
-<p>It has to be noted that this function is a simplification of all the requirements outlined in the guide. There are a couple of reasons for this. First, while there is a large number of tags in OSM to create detailed maps, but the values imputed are not always IM guide-friendly. For example, in the guide 6 different types of tactile paving are outlined, yet those types are not key values in the OSM as it focused on the presence/absence of tactile paving. This, then, leads not only to the fact that not all OSM data can be sensibly recategorized based on the IM guide but also that it is highly unlikely that a single function could capture the detailed specifications outlined in the IM guide.</p>
+<p>It has to be noted that this function is a simplification of all the requirements outlined in the guide. There are a couple of reasons for this. First, while there is a large number of tags in OSM to create detailed maps, but the values imputed are not always IM guide-friendly. For example, in the guide 6 different types of tactile paving are outlined, yet those types are not key values in the OSM as it focused on the presence/absence of tactile paving. This, then, leads not only to the fact that not all OSM data can be sensibly recategorized based on the IM guide but also that it is highly unlikely that a single function could capture the detailed specifications outlined in the IM guide. <br><br></p>
+<div class="section level2">
+<h2 id="function-updates">Function updates<a class="anchor" aria-label="anchor" href="#function-updates"></a>
+</h2>
+<p>Please note that, as per <a href="https://github.com/udsleeds/openinfra/issues/129" class="external-link">#129</a>, the <code>oi_inclusive_mobility</code> function, based on the function defined below, has now been split into a number of sub-functions as described below:</p>
+<table class="table">
+<thead><tr class="header">
+<th>New Function</th>
+<th>Assesses</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>oi_im_flush_kerb</td>
+<td><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#kerb" class="external-link">Flush Kerb</a></td>
+</tr>
+<tr class="even">
+<td>oi_im_pavement_width</td>
+<td>
+<a href="https://udsleeds.github.io/openinfra/articles/im_get.html#width" class="external-link">Pavement Width</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#width" class="external-link">Estimated Width</a>
+</td>
+</tr>
+<tr class="odd">
+<td>oi_im_pedestrian_infra</td>
+<td>
+<a href="https://udsleeds.github.io/openinfra/articles/im_get.html#footways" class="external-link">Footways</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#footpaths" class="external-link">Footpaths</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#implied-footways" class="external-link">Implied Footways</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#crossings" class="external-link">Crossings</a>
+</td>
+</tr>
+<tr class="even">
+<td>oi_im_surfaces</td>
+<td>
+<a href="https://udsleeds.github.io/openinfra/articles/im_get.html#surface" class="external-link">Paved Surface</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#surface" class="external-link">Even Surface</a>
+</td>
+</tr>
+<tr class="odd">
+<td>oi_im_tactile_paving</td>
+<td><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#tactile-paving" class="external-link">Tactile Pacing</a></td>
+</tr>
+<tr class="even">
+<td>oi_is_lit</td>
+<td><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#lighting" class="external-link">Lighting</a></td>
+</tr>
+<tr class="odd">
+<td>oi_clean_maxspeed_uk</td>
+<td><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#speed" class="external-link">Speed</a></td>
+</tr>
+</tbody>
+</table>
+<p><br> For further information, please see <a href="">documentation</a> for the functions starting <code>oi_im_*</code> <br></p>
+</div>
 <div class="section level2">
 <h2 id="get-osm">get osm<a class="anchor" aria-label="anchor" href="#get-osm"></a>
 </h2>
