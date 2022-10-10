@@ -130,21 +130,9 @@ For example, [`osm_id:23200835`](https://www.openstreetmap.org/way/23200835) is 
 ```{r out.width="100%", echo=FALSE, include=TRUE}
 knitr::include_url("https://udsleeds.github.io/openinfraresults/tmap/assets/cycle_infra_map.html", height = "650px")
 ```
+
 This function identifies the type of cycling infrastructure, with respect to the level of separation from carriageways, from OSM data. 
 Such infrastructure consists of on carriageway infrastructure (cycling lanes, mixed traffic, shared busway/lanes) and protected infrastructure (cycle tracks and ways, stepped cycleways, kerb separated cycleways) where _protected_ implies some form of physical separation from the carriageway. 
-
-## Data Pack Production Workflow
-
-The English data pack outputs, with examples visualised above, are produced using the following, reproducible, workflow: 
-
-- **1.** Download OSM data file for entirety of England <br><br>
-- **2.** For each [LAD](https://udsleeds.github.io/openinfra/articles/regions.html#interactive-map-of-local-authorities) polygon, get the OSM points & lines data from the previously downloaded England file & save each LAD default points lines network locally <br><br>
-- **3.** For each LAD points & lines network saved locally, load the network and apply the openinfra functions, recategorising the OSM data <br><br>
-- **4.** Save the newly created points & lines data packs locally, before uploading to GitHub releases <br><br>
-- **5.** Repeat **2 - 4** for each LAD within England
-
-The workflow described above is contained within the [create_data_packs.R](https://github.com/udsleeds/openinfra/blob/main/code/create_data_packs.R) script. <br><br>
-For ease of use, and segmenting long computation times, the above script has been split in two - [create_LAD_networks.R](https://github.com/udsleeds/openinfra/blob/main/code/create_LAD_networks.R) performing steps 1-2, and [create_upload_data_packs.R](https://github.com/udsleeds/openinfra/blob/main/code/create_upload_data_packs.R) for steps 3-4.
 
 ## Data Pack Column Definitions
 
@@ -162,103 +150,5 @@ This section defines the column names contained within each LAD data pack added 
 |openinfra_road_class|Reclassifies default OSM `highway` values to relevant UK highway classifications, with modifications used by [Chan and Cooper](https://www.nature.com/articles/s41598-019-55669-8)|
 |openinfra_road_names|Identifies the road name and reference (where available) of OSM ways and combines these to be more informative.<br> i.e. `osm_id=4004413` --> Headingly Lane, A660|
 
-## Example Data Pack Production - Leeds
-
-Here we cover a reproducible example of the creation of a transport infrastructure data pack from OSM data retrieved using [`osmextract`](https://github.com/ropensci/osmextract), the outputs of which are visualised above. 
-
-
-<br><br>
-This example concerns the LAD of Leeds, UK. <br>
-Note that a 2km circular buffer has been applied (centered at Long, Lat coords (-1.548567, 53.801277)) to reduce filesizes of the visualisations above.
-<br><br>
-
-### Getting Data
-```{r download_data}
-# Data downloaded through osmextract as shown below: 
-
-#total_place = osmextract::oe_get(
-#  place = "Leeds",
-#  provider = "bbbike",
-#  layer = "lines",
-#  never_skip_vectortranslate = TRUE,
-#  force_download = TRUE,
-#  quiet = FALSE,
-#  extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
-#                  "kerb", "footway", "sidewalk", "cycleway", "segregated", 
-#                  "highway", "crossing", "lit", "tactile_paving", "surface", 
-#                  "smoothness", "width", "est_width", "lit_by_led", "ref", 
-#                  "amenity")
-#)
-
-# For reproduciblity you may chose to use the example dataset from our releases.
-# You can create your own data using the oe_get() function above.
-leeds_lines_network = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/0.4.2/leeds_lines_network.geojson")
-leeds_points_network = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/0.4.2/leeds_points_network.geojson")
-```
-
-<br><br>
-
-### Applying Openinfra Functions - Adding Value 
-```{r function_application, eval=FALSE}
-# First we apply relevant functions to the "lines" (roads, paths, etc.) layer 
-leeds_lines_datapack = oi_active_cycle(leeds_lines_network)
-leeds_lines_datapack = oi_active_walk(leeds_lines_datapack)
-leeds_lines_datapack = oi_clean_maxspeed_uk(leeds_lines_datapack)
-leeds_lines_datapack = oi_cycle_crossings(leeds_lines_datapack)
-leeds_lines_datapack = oi_cycle_separation(leeds_lines_datapack)
-leeds_lines_datapack = oi_is_lit(leeds_lines_datapack)
-leeds_lines_datapack = oi_recode_road_class(leeds_lines_datapack)
-leeds_lines_datapack = oi_road_names(leeds_lines_datapack)
-
-# Now we create points data packs
-leeds_points_datapack = oi_bicycle_parking(leeds_points_network)
-
-```
-<br><br>
-
-### Selecting Relevant Columns for Data Pack
-```{r, create_data_pack, eval=FALSE}
-# Select relevant lines columns
-leeds_lines_datapack = leeds_lines_datapack %>% dplyr::select(c(
- "osm_id", "highway", matches(match = "openinfra_|im_")))
-
-# Append geometry as final column - good {sf} practice.
-leeds_lines_datapack = sf::st_sf(
-  leeds_lines_datapack %>% sf::st_drop_geometry(),
-  geometry = leeds_lines_datapack$geometry)
-
-# Select relevant points columns
-leeds_points_datapack = leeds_points_datapack %>% dplyr::select(c(
-  "osm_id", matches(match="openinfra_|im_")))
-
-# Append geometry as final column - good {sf} practice.
-leeds_points_datapack = sf::st_sf(
-  leeds_points_datapack %>% sf::st_drop_geometry(),
-  geometry = leeds_points_datapack$geometry)
-
-```
-
-### Example visualisation
-```{r visualise_example_pack}
-library(dplyr)
-
-# Get data for cell
-leeds_points_datapack = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/0.4.2/leeds_points_datapack.geojson")
-# Remove NA 
-leeds_points_datapack = leeds_points_datapack %>% dplyr::filter(! is.na(openinfra_cycle_parking)) 
-
-#Visualise Data
-tmap::tmap_mode("view")
-tmap::tm_shape(leeds_points_datapack) + 
-  tmap::tm_bubbles(col = "openinfra_cycle_parking", size=0.1)
-
-```
-
-This concludes the reproducible example creation of the transport infrastructure data packs.
-<br><br>
-Below we see how each of the openinfra functions has been defined, thus the processing steps applied to OSM data in data pack creation. 
-<br><br>
-
-## Data Packs: openinfra Function Definitions
-
-The openinfra package functions used to create the transport infrastructure data packs have documentation available [here](https://udsleeds.github.io/openinfra/reference/index.html). The source code for each function can be found in project [GitHub R/ directory](https://github.com/udsleeds/openinfra/tree/main/R).
+## Documentation
+For further information and documentation, including an example data pack production for Leeds, see the [data pack documentation](https://udsleeds.github.io/openinfra/articles/data_packs_documentation.html) vignette.

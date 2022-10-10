@@ -1,0 +1,138 @@
+---
+title: "data_packs_documentation"
+author: "James Hulse"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Transport Infrastructure Data Packs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data Packs Documentation
+This vignette acts as extended documentation of our transport infrastructure data packs for the following content:
+
+The contents of this vignette are as follows: 
+* Workflow for data pack production
+* Example data pack production (Leeds)
+* Openinfra function definitions and descriptions
+
+## Data Pack Production Workflow
+
+Openinfra tranport infrastructure data packs are produced using the following, reproducible, workflow: 
+
+- **1.** Download OSM data file for entirety of England <br><br>
+- **2.** For each [LAD](https://udsleeds.github.io/openinfra/articles/regions.html#interactive-map-of-local-authorities) polygon, get the OSM points & lines data from the previously downloaded England file & save each LAD default points lines network locally <br><br>
+- **3.** For each LAD points & lines network saved locally, load the network and apply the openinfra functions, recategorising the OSM data <br><br>
+- **4.** Save the newly created points & lines data packs locally, before uploading to GitHub releases <br><br>
+- **5.** Repeat **2 - 4** for each LAD within England
+
+The workflow described above is contained within the [create_data_packs.R](https://github.com/udsleeds/openinfra/blob/main/code/create_data_packs.R) script. <br><br>
+For ease of use, and segmenting long computation times, the above script has been split in two - [create_LAD_networks.R](https://github.com/udsleeds/openinfra/blob/main/code/create_LAD_networks.R) performing steps 1-2, and [create_upload_data_packs.R](https://github.com/udsleeds/openinfra/blob/main/code/create_upload_data_packs.R) for steps 3-4.
+
+
+## Example Data Pack Production - Leeds
+
+Here we cover a reproducible example of the creation of a transport infrastructure data pack from OSM data retrieved using [`osmextract`](https://github.com/ropensci/osmextract), the outputs of which are visualised above. 
+
+
+<br><br>
+This example concerns the LAD of Leeds, UK. <br>
+Note that a 2km circular buffer has been applied (centered at Long, Lat coords (-1.548567, 53.801277)) to reduce filesizes of the visualisations above.
+<br><br>
+
+### Getting Data
+```{r download_data}
+# Data downloaded through osmextract as shown below: 
+
+#total_place = osmextract::oe_get(
+#  place = "Leeds",
+#  provider = "bbbike",
+#  layer = "lines",
+#  never_skip_vectortranslate = TRUE,
+#  force_download = TRUE,
+#  quiet = FALSE,
+#  extra_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
+#                  "kerb", "footway", "sidewalk", "cycleway", "segregated", 
+#                  "highway", "crossing", "lit", "tactile_paving", "surface", 
+#                  "smoothness", "width", "est_width", "lit_by_led", "ref", 
+#                  "amenity")
+#)
+
+# For reproduciblity you may chose to use the example dataset from our releases.
+# You can create your own data using the oe_get() function above.
+leeds_lines_network = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/0.4.2/leeds_lines_network.geojson")
+leeds_points_network = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/0.4.2/leeds_points_network.geojson")
+```
+
+<br><br>
+
+### Applying Openinfra Functions - Adding Value 
+```{r function_application, eval=FALSE}
+# First we apply relevant functions to the "lines" (roads, paths, etc.) layer 
+leeds_lines_datapack = oi_active_cycle(leeds_lines_network)
+leeds_lines_datapack = oi_active_walk(leeds_lines_datapack)
+leeds_lines_datapack = oi_clean_maxspeed_uk(leeds_lines_datapack)
+leeds_lines_datapack = oi_cycle_crossings(leeds_lines_datapack)
+leeds_lines_datapack = oi_cycle_separation(leeds_lines_datapack)
+leeds_lines_datapack = oi_is_lit(leeds_lines_datapack)
+leeds_lines_datapack = oi_recode_road_class(leeds_lines_datapack)
+leeds_lines_datapack = oi_road_names(leeds_lines_datapack)
+
+# Now we create points data packs
+leeds_points_datapack = oi_bicycle_parking(leeds_points_network)
+
+```
+<br><br>
+
+### Selecting Relevant Columns for Data Pack
+```{r, create_data_pack, eval=FALSE}
+# Select relevant lines columns
+leeds_lines_datapack = leeds_lines_datapack %>% dplyr::select(c(
+ "osm_id", "highway", matches(match = "openinfra_|im_")))
+
+# Append geometry as final column - good {sf} practice.
+leeds_lines_datapack = sf::st_sf(
+  leeds_lines_datapack %>% sf::st_drop_geometry(),
+  geometry = leeds_lines_datapack$geometry)
+
+# Select relevant points columns
+leeds_points_datapack = leeds_points_datapack %>% dplyr::select(c(
+  "osm_id", matches(match="openinfra_|im_")))
+
+# Append geometry as final column - good {sf} practice.
+leeds_points_datapack = sf::st_sf(
+  leeds_points_datapack %>% sf::st_drop_geometry(),
+  geometry = leeds_points_datapack$geometry)
+
+```
+
+### Example visualisation
+```{r visualise_example_pack}
+library(dplyr)
+
+# Get data for cell
+leeds_points_datapack = sf::read_sf("https://github.com/udsleeds/openinfra/releases/download/0.4.2/leeds_points_datapack.geojson")
+# Remove NA 
+leeds_points_datapack = leeds_points_datapack %>% dplyr::filter(! is.na(openinfra_cycle_parking)) 
+
+#Visualise Data
+tmap::tmap_mode("view")
+tmap::tm_shape(leeds_points_datapack) + 
+  tmap::tm_bubbles(col = "openinfra_cycle_parking", size=0.1)
+
+```
+
+This concludes the reproducible example creation of the transport infrastructure data packs.
+<br><br>
+Below we see how each of the openinfra functions has been defined, thus the processing steps applied to OSM data in data pack creation. 
+<br><br>
+
+## Data Packs: openinfra Function Definitions
+
+The openinfra package functions used to create the transport infrastructure data packs have documentation available [here](https://udsleeds.github.io/openinfra/reference/index.html). The source code for each function can be found in project [GitHub R/ directory](https://github.com/udsleeds/openinfra/tree/main/R).
+
