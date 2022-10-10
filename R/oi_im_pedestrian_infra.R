@@ -1,5 +1,8 @@
 #' Function to assess pedestrian infrastructure data. 
 #'
+#' This function assesses types of pedestrian infrastructure based on 
+#' definitions from current Inclusive Mobility guidance. Types of assessed 
+#' infrastructure are: footways, footpaths, crossings, and implied footways.
 #' @usage oi_im_pedestrian_infra(osm_sf)
 #' @param osm_sf - A `sf` and `data.frame` object containing OpenStreetMap 
 #'   infrastructure data, obtained from the 

@@ -24,7 +24,9 @@ the presence of implied footways not implicitly tagged with values
 \code{c("implied footway", "no")}.
 }
 \description{
-Function to assess pedestrian infrastructure data.
+This function assesses types of pedestrian infrastructure based on
+definitions from current Inclusive Mobility guidance. Types of assessed
+infrastructure are: footways, footpaths, crossings, and implied footways.
 }
 \details{
 Note: the \code{osm_sf} must contain the following tags: \code{c( "footway", "sidewalk", "cycleway", "foot", "segregated", "access",  "crossing", "footway")}
