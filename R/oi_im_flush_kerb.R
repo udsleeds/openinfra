@@ -25,22 +25,15 @@
 
 oi_im_flush_kerb = function(osm_sf){
 
-  osm_sf_im = osm_sf %>%
-    # For IM compliant flush kerbs, tactile paving should be present. 
-    dplyr::mutate(openinfra_im_tactile_paving = dplyr::case_when(
-      ! tactile_paving %in% c("no", "incorrect", "bad", "dangerous", 
-                              "incomplete", "wrong") & ! is.na(tactile_paving)
-      ~ "yes",
-      ! is.na(tactile_paving)
-      ~ "no"
-    )
-    ) %>% 
-    # Now we can assess IM flush kerbs using presence of tactile paving.
+  # For IM compliant flush kerbs, tactile paving should be present. 
+  osm_sf_im = oi_im_tactile_paving(osm_sf)
+  
+  # Now we can assess IM flush kerbs using presence of tactile paving.
+  osm_sf_im = osm_sf_im %>% 
     dplyr::mutate(openinfra_im_flush_kerb = dplyr::case_when(
       kerb %in% c("flush", "no") & openinfra_im_tactile_paving == "yes"
       ~ "yes",
       TRUE ~ "no"
     ))
-  
   return(osm_sf_im)
   }

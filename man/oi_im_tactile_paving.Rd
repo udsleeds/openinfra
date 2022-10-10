@@ -2,7 +2,7 @@
 % Please edit documentation in R/oi_im_tactile_paving.R
 \name{oi_im_tactile_paving}
 \alias{oi_im_tactile_paving}
-\title{Function to assess the presence of tactile paving.}
+\title{Assess the presence of tactile paving from OSM data.}
 \usage{
 oi_im_tactile_paving(osm_sf)
 }
@@ -18,10 +18,10 @@ The \code{osm_sf} data frame is returned with additional
 \code{openinfra_im_tactile_paving} column, containing values \code{c("yes", "no")}
 }
 \description{
-Function to assess the presence of tactile paving.
+Assess the presence of tactile paving from OSM data.
 }
 \details{
-Note: the \code{osm_sf} must contain the following tags: \code{c( "tactile_paving")}
+Note: the \code{osm_sf} must contain the tag: \code{c("tactile_paving")}.
 }
 \examples{
 data = example_data
