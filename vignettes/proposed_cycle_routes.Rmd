@@ -1,0 +1,88 @@
+---
+title: "cycle_routes"
+author: "James Hulse"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Cycle Routes (National/Local) from OSM ways & relations
+
+From [#121](https://github.com/udsleeds/openinfra/issues/121) and [#146](https://github.com/udsleeds/openinfra/issues/146) we know there is a requirement to have named cycle routes (both Local - lcn, and National -ncn) included within the data packs. 
+
+These networks are represented in OSM data with the lcn (Local Cycle Network) and ncn (National Cycle Network) tags. Such tags are present on ways (legacy tagging) and relations (preferred way of mapping). 
+
+We can obtain OSM "lines" (ways) and "multilinestrings"/"other_relations" (relations) data from [`osmextract`](https://github.com/ropensci/osmextract) within [`oe_get()`](https://docs.ropensci.org/osmextract/reference/oe_get.html?q=oe_get#null) specifying the `layer` paramater. 
+
+Data from the relations layer (multilinestring & other_relations), by default, contains a number of extra tags than returned from the "lines" layer. Most notably: 
+* route=* - this key describes the type of route relation. i.e. "foot", "bicycle", "bus"
+* network=* - this key indicates the _scope_ of the route described. i.e. route="bicycle" & network="ncn" implies a cycle route that is part of a [national cycle network](https://www.sustrans.org.uk/national-cycle-network?gclid=CjwKCAjwqJSaBhBUEiwAg5W9p3jzntuPCSBESTAgh5JiNTZrbaC5buKYh3wpqF5seFiBUnP48dzmBhoCs58QAvD_BwE) route. See below for a list of possible cycle route values.
+* cycle_network=* due to generic use of "lcn", "ncn", "icn" in cycle route realtions, this tag may be used in places that require more granular network distinctions. 
+
+### Possible cycle & walking route values
+
+Sourced: [Bicycle, hiking and other recreational routes](https://wiki.openstreetmap.org/wiki/Key:network#Bicycle,_hiking_and_other_recreational_routes) --> [Cycle routes relations](https://wiki.openstreetmap.org/wiki/Cycle_routes#Relations)
+
+It is preferred to tag the cycle routes using relations instead of tagging the ways. But please check that a relation doesn't already exist for your chosen route before creating one. Links to country-specific overview pages of cycle networks are below.
+
+The tags on the relation are slightly modified from the standard tags. An example cycle route relation would have the following tags:
+
+| Tag | Comment |
+| -------- | -------- | 
+| type=route|     | 
+| route=bicycle/mtb| See mountainbike for details on tagging mountainbike routes.|
+| network=icn/ncn/rcn/lcn| Specify the network as an international route, a national route, a regional route, or a local route, as per the normal tagging of cycle routes. For tagging mountainbike routes more specific look here mountainbike| 
+| cycle_network=* | (optional) In countries that have (for instance) multiple regional route networks, this tag indicates the specific route system, much the way network=* does on road route relations.| 
+| ref=number| (optional) Numerical part of reference code of the route. (This formal limit was introduced originally to cater for a certain renderer, so using the full code should be fine too, as long as it can be read from signs along the route.) The network or cycle_network tag already distinguishes the type, so just use "ref" and not "ncn_ref" or similar.| 
+| name=* | (optional) The name of the route e.g. Jubilee Cycle Way| 
+| state=proposed| (optional) Routes are sometimes not official routes pending some negotiation or development -- the opencyclemap rendering shows these routes dotted.| 
+| distance=distance in km| (optional) The distance covered by a route in km| 
+| ascent=ascent in m| (optional) The ascent covered by a route in meters. If a route has start and end point at different altitude use descent too| 
+| descent=descent in m|(optional) The descent covered by a route in meters. Use it only if it differs from the ascent (different altitude at start/endpoint of a route). | 
+| roundtrip=yes/no| (optional) Use roundtrip=no to indicate that a route goes from A to B. Use roundtrip=yes to indicate that the start and finish of the route are at the same location (circular route).| 
+| colour=* | (optional) To indicate the official colour associated with a route. In the Waymarked Trails cycling map, the displayed ref/name of a route gets underlined in this colour (example).| 
+
+
+Further information on UK cycle routes, sourced from the [UK cycle routes OSM wiki](https://wiki.openstreetmap.org/wiki/Cycle_routes#Usage), is below: 
+
+![Screenshot from 2022-10-11 12-52-10](https://user-images.githubusercontent.com/58815827/195082654-500bc57d-725e-44ee-a87e-e211189cfdd3.png)
+
+
+
+## Data
+
+### Required Tags
+Tags required for the analysis of cycle routes include: 
+```
+minimum_tags = c("lcn", "lcn_ref", "ncn", "ncn_ref", "type", "route", "network", "cycle_network", "name")
+```
+### Tag Justifications
+
+ * lcn|lcn_ref|ncn|ncn_ref - these tags describe if a way is part of a national or local cycling network. *_ref is additional information on the network (i.e. ncn_ref 1 implies way is part of ncn 1)
+ * type - relation specific common key used to mark a relations type (important as we want to parse the "routes" values)
+ * route - relation specific common key used to mark what a relation captures (important as we want route relations for "bicycle", rather than say "bus")
+ * network - relation specific key that indicates the scope of a relation (typical values are lcn, ncn, rcn, icn)
+ * cycle_network - relation specific key to indicate more granular network descriptions (i.e. GB:London Cycle Network)
+ * name - standard OSM tag that allows naming of features. This tag **is only useful for reltaions where a name covers the entire reltaion, unlike ways where name=* will just be the name of the current way**
+
+## Processing
+
+### Relation Layer
+Processing steps applied to relations layer to obtain lcn & ncn routes. 
+ * 1 - relation `type` key must be == "route" (we want relations of cycle **routes**)
+ * 2 - relation `route` key must be == "bicycle" (we want cycling routes, not bus routes for example)
+ * 3 - relation `network` key must be == "lcn|ncn" (want realtions that capture local and national cycle routes only)
+ * 4 - relation `cycle_network` key is optional. Provides a more specific description of the cycle route that just ncn 5 (i.e. GB:London Cycle Network). If not NA, use this as a name/descriptior 
+ 
+Common [type](https://taginfo.openstreetmap.org/keys/type#values) key values. 
+Common [route](https://taginfo.openstreetmap.org/keys/route#values) key values. 
+Common [network](https://taginfo.openstreetmap.org/keys/network#values) key values.
+Common [cycle_network](https://taginfo.openstreetmap.org/keys/cycle_network#values) key values.
+
+Common [lcn](https://taginfo.openstreetmap.org/keys/lcn#values) key values.
+Common [ncn](https://taginfo.openstreetmap.org/keys/ncn#values) key values. 
+
+Note that `*_ref` key values for ncn & lcn routes do not have common key values, asthis field acts as a reference field for information on the cycle route (i.e for NCN 5, ncn_ref = 5)
