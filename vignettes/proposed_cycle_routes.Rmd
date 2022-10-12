@@ -120,4 +120,4 @@ Common [cycle_network](https://taginfo.openstreetmap.org/keys/cycle_network#valu
 Common [lcn](https://taginfo.openstreetmap.org/keys/lcn#values) key values.<br>
 Common [ncn](https://taginfo.openstreetmap.org/keys/ncn#values) key values.<br>
 
-Note that `*_ref` key values for ncn & lcn routes do not have common key values, asthis field acts as a reference field for information on the cycle route (i.e for NCN 5, ncn_ref = 5)
+Note that `*_ref` key values for ncn & lcn routes do not have common key values, as this field acts as a reference field for information on the cycle route (i.e for National Cycle Network **5**, then ncn_ref = 5)
