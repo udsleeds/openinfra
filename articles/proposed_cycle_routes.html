@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>cycle_routes • openinfra</title>
+<title>Proposed Cycle Routes (Local/National) • openinfra</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="cycle_routes">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Proposed Cycle Routes (Local/National)">
 <meta property="og:description" content="openinfra">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -77,7 +77,7 @@
       <a href="../articles/package_networks.html">Network definitions (pre-defined networks) by OSM data package</a>
     </li>
     <li>
-      <a href="../articles/proposed_cycle_routes.html">cycle_routes</a>
+      <a href="../articles/proposed_cycle_routes.html">Proposed Cycle Routes (Local/National)</a>
     </li>
     <li>
       <a href="../articles/regions.html">Transport regions in the UK</a>
@@ -105,7 +105,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>cycle_routes</h1>
+      <h1 data-toc-skip>Proposed Cycle Routes (Local/National)</h1>
                         <h4 data-toc-skip class="author">James Hulse</h4>
             
             <h4 data-toc-skip class="date">2022-10-12</h4>
@@ -248,14 +248,14 @@
 <ul>
 <li><p>1 - relations <code>type</code> key must be == “route” (we want relations of cycle <strong>routes</strong>)</p></li>
 <li><p>2 - relations <code>route</code> key must be == “bicycle” (we want cycling routes, not bus routes for example)</p></li>
-<li><p>3 - relations <code>network</code> key must be == “lcn|ncn” (want realtions that capture local and national cycle routes only)</p></li>
-<li><p>4 - relations <code>cycle_network</code> key is optional. Provides a more specific description of the cycle route that just ncn 5 (i.e. GB:London Cycle Network). If not NA, use this as a name/descriptior</p></li>
-<li><p>5 - relations <code>name</code> key is opetional, but for relations this will often describe the name of the route captured by the relation (i.e. LCN 25 or Surrey Cycleway)</p></li>
+<li><p>3 - relations <code>network</code> key must be == “lcn|ncn” (want relations that capture local and national cycle routes only)</p></li>
+<li><p>4 - relations <code>cycle_network</code> key is optional. Provides a more specific description of the cycle route that just ncn 5 (i.e. GB:London Cycle Network). If not NA, use this as a name/descriptor</p></li>
+<li><p>5 - relations <code>name</code> key is optional, but for relations this will often describe the name of the route captured by the relation (i.e. LCN 25 or Surrey Cycleway)</p></li>
 </ul>
 <p><strong>Common key values for ways and relations</strong></p>
 <p>Common <a href="https://taginfo.openstreetmap.org/keys/type#values" class="external-link">type</a> key values. <br> Common <a href="https://taginfo.openstreetmap.org/keys/route#values" class="external-link">route</a> key values. <br> Common <a href="https://taginfo.openstreetmap.org/keys/network#values" class="external-link">network</a> key values.<br> Common <a href="https://taginfo.openstreetmap.org/keys/cycle_network#values" class="external-link">cycle_network</a> key values.<br></p>
 <p>Common <a href="https://taginfo.openstreetmap.org/keys/lcn#values" class="external-link">lcn</a> key values.<br> Common <a href="https://taginfo.openstreetmap.org/keys/ncn#values" class="external-link">ncn</a> key values.<br></p>
-<p>Note that <code>*_ref</code> key values for ncn &amp; lcn routes do not have common key values, asthis field acts as a reference field for information on the cycle route (i.e for NCN 5, ncn_ref = 5)</p>
+<p>Note that <code>*_ref</code> key values for ncn &amp; lcn routes do not have common key values, as this field acts as a reference field for information on the cycle route (i.e for National Cycle Network <strong>5</strong>, then ncn_ref = 5)</p>
 </div>
 </div>
   </div>
