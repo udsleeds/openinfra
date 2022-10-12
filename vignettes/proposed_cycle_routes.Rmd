@@ -17,10 +17,15 @@ These networks are represented in OSM data with the lcn (Local Cycle Network) an
 
 We can obtain OSM "lines" (ways) and "multilinestrings"/"other_relations" (relations) data from [`osmextract`](https://github.com/ropensci/osmextract) within [`oe_get()`](https://docs.ropensci.org/osmextract/reference/oe_get.html?q=oe_get#null) specifying the `layer` paramater. 
 
-Data from the relations layer (multilinestring & other_relations), by default, contains a number of extra tags than returned from the "lines" layer. Most notably: 
+Data from the relations layer (multilinestring & other_relations), by default, contains a number of extra tags than returned from the "lines" layer. Most notably:
+
 * route=* - this key describes the type of route relation. i.e. "foot", "bicycle", "bus"
+
 * network=* - this key indicates the _scope_ of the route described. i.e. route="bicycle" & network="ncn" implies a cycle route that is part of a [national cycle network](https://www.sustrans.org.uk/national-cycle-network?gclid=CjwKCAjwqJSaBhBUEiwAg5W9p3jzntuPCSBESTAgh5JiNTZrbaC5buKYh3wpqF5seFiBUnP48dzmBhoCs58QAvD_BwE) route. See below for a list of possible cycle route values.
+
 * cycle_network=* due to generic use of "lcn", "ncn", "icn" in cycle route realtions, this tag may be used in places that require more granular network distinctions. 
+
+<br><br>
 
 ### Possible cycle & walking route values
 
@@ -50,7 +55,7 @@ Further information on UK cycle routes, sourced from the [UK cycle routes OSM wi
 
 ![Screenshot from 2022-10-11 12-52-10](https://user-images.githubusercontent.com/58815827/195082654-500bc57d-725e-44ee-a87e-e211189cfdd3.png)
 
-
+<br><br>
 
 ## Data
 
@@ -62,27 +67,57 @@ minimum_tags = c("lcn", "lcn_ref", "ncn", "ncn_ref", "type", "route", "network",
 ### Tag Justifications
 
  * lcn|lcn_ref|ncn|ncn_ref - these tags describe if a way is part of a national or local cycling network. *_ref is additional information on the network (i.e. ncn_ref 1 implies way is part of ncn 1)
+ 
  * type - relation specific common key used to mark a relations type (important as we want to parse the "routes" values)
+ 
  * route - relation specific common key used to mark what a relation captures (important as we want route relations for "bicycle", rather than say "bus")
+ 
  * network - relation specific key that indicates the scope of a relation (typical values are lcn, ncn, rcn, icn)
+ 
  * cycle_network - relation specific key to indicate more granular network descriptions (i.e. GB:London Cycle Network)
- * name - standard OSM tag that allows naming of features. This tag **is only useful for reltaions where a name covers the entire reltaion, unlike ways where name=* will just be the name of the current way**
+ 
+ * name - standard OSM tag that allows naming of features. This tag **is only useful for relations where a name covers the entire relation**, unlike ways, where the name=* key will be the name of the current way
+
+<br><br>
 
 ## Processing
 
-### Relation Layer
-Processing steps applied to relations layer to obtain lcn & ncn routes. 
- * 1 - relation `type` key must be == "route" (we want relations of cycle **routes**)
- * 2 - relation `route` key must be == "bicycle" (we want cycling routes, not bus routes for example)
- * 3 - relation `network` key must be == "lcn|ncn" (want realtions that capture local and national cycle routes only)
- * 4 - relation `cycle_network` key is optional. Provides a more specific description of the cycle route that just ncn 5 (i.e. GB:London Cycle Network). If not NA, use this as a name/descriptior 
- 
-Common [type](https://taginfo.openstreetmap.org/keys/type#values) key values. 
-Common [route](https://taginfo.openstreetmap.org/keys/route#values) key values. 
-Common [network](https://taginfo.openstreetmap.org/keys/network#values) key values.
-Common [cycle_network](https://taginfo.openstreetmap.org/keys/cycle_network#values) key values.
+### Ways Layer
 
-Common [lcn](https://taginfo.openstreetmap.org/keys/lcn#values) key values.
-Common [ncn](https://taginfo.openstreetmap.org/keys/ncn#values) key values. 
+Note that this is the legacy method for tagging lcn & ncn routes. Ideally this should now be done via a relation, rather than tagging highways with lcn=* / ncn=*.
+
+Processing steps applied to ways layer to obtain ways that form parts of a lcn / ncn route:
+
+ * 1 - ways `lcn`/`ncn` keys must be == "yes|proposed"
+
+ * 2 - ways `lcn_ref`/`ncn_ref` are optional. These keys indicate what route a way is apart of (i.e. ncn = "yes" & ncn_ref = 1 --> route: NCN 1) 
+
+And that is it!
+
+Whilst the `name` tag is useful for relations (relations will typically be named by `name` with the route they capture i.e. Surrey Cycleway), when considering ways the `name` key indicates the name of the current way, and not any relations that may contain it (i.e. although this way may be part of the Surrey Cycleway relation, its specific way name = "Long Lane Road")
+
+### Relation Layer
+
+Processing steps applied to relations layer to obtain lcn & ncn routes.
+
+ * 1 - relations `type` key must be == "route" (we want relations of cycle **routes**)
+
+ * 2 - relations `route` key must be == "bicycle" (we want cycling routes, not bus routes for example)
+
+ * 3 - relations `network` key must be == "lcn|ncn" (want realtions that capture local and national cycle routes only)
+
+ * 4 - relations `cycle_network` key is optional. Provides a more specific description of the cycle route that just ncn 5 (i.e. GB:London Cycle Network). If not NA, use this as a name/descriptior 
+
+ * 5 - relations `name` key is opetional, but for relations this will often describe the name of the route captured by the relation (i.e. LCN 25 or Surrey Cycleway)
+
+**Common key values for ways and relations**
+
+Common [type](https://taginfo.openstreetmap.org/keys/type#values) key values. <br>
+Common [route](https://taginfo.openstreetmap.org/keys/route#values) key values. <br>
+Common [network](https://taginfo.openstreetmap.org/keys/network#values) key values.<br>
+Common [cycle_network](https://taginfo.openstreetmap.org/keys/cycle_network#values) key values.<br>
+
+Common [lcn](https://taginfo.openstreetmap.org/keys/lcn#values) key values.<br>
+Common [ncn](https://taginfo.openstreetmap.org/keys/ncn#values) key values.<br>
 
 Note that `*_ref` key values for ncn & lcn routes do not have common key values, asthis field acts as a reference field for information on the cycle route (i.e for NCN 5, ncn_ref = 5)
