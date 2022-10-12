@@ -1,8 +1,12 @@
 ---
-title: "cycle_routes"
+title: "Proposed Cycle Routes (Local/National)"
 author: "James Hulse"
 date: "`r Sys.Date()`"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Proposed Cycle Routes (Local/National)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
@@ -104,11 +108,11 @@ Processing steps applied to relations layer to obtain lcn & ncn routes.
 
  * 2 - relations `route` key must be == "bicycle" (we want cycling routes, not bus routes for example)
 
- * 3 - relations `network` key must be == "lcn|ncn" (want realtions that capture local and national cycle routes only)
+ * 3 - relations `network` key must be == "lcn|ncn" (want relations that capture local and national cycle routes only)
 
- * 4 - relations `cycle_network` key is optional. Provides a more specific description of the cycle route that just ncn 5 (i.e. GB:London Cycle Network). If not NA, use this as a name/descriptior 
+ * 4 - relations `cycle_network` key is optional. Provides a more specific description of the cycle route that just ncn 5 (i.e. GB:London Cycle Network). If not NA, use this as a name/descriptor 
 
- * 5 - relations `name` key is opetional, but for relations this will often describe the name of the route captured by the relation (i.e. LCN 25 or Surrey Cycleway)
+ * 5 - relations `name` key is optional, but for relations this will often describe the name of the route captured by the relation (i.e. LCN 25 or Surrey Cycleway)
 
 **Common key values for ways and relations**
 
