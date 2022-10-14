@@ -1,5 +1,5 @@
 Date: 2022-10-31
-Time: 10:00 - 14:30
+Time: 10:00 - 15:00
 
 Preliminary schedule: 
 10:00-10:15 -> Registration
@@ -11,6 +11,7 @@ Preliminary schedule:
 12:00-12:45 -> Fieldwork 1
 12:45-13:30 -> Lunch (provided)
 13:30-14:15 -> Fieldwork 2
+14:15- TBC  -> End of day reflection & discussions
 
 **Mapathon event description**
 
@@ -18,9 +19,9 @@ For the first time an active travel mapathon is being organised in Leeds!
 
 What is an active travel mapathon? First things first, a mapathon is an organised and coordinated mapping activity during which we will be going out to Leeds city centre to collect and add data to OpenStreetMap (OSM), a free and open-source project looking to create a geographical database of the entire planet. Active travel refers to walking, wheeling, and cycling as a mode of transportation. Thus, in this event we will be adding data that is essential for active travel infrastructure planning.
 
-Why is this important? Increasing active travel uptake can help decarbonize transport systems and improve physical and psychological wellbeing. To increase uptake, it is essential to have specific geographic data which could be used as evidence to inform decision-making processes with regards to the planning and building or upgrading of active travel infrastructure. Alas, such specific data is, more often than not, lacking at a governmental level. 
+Why is this important? Increasing active travel uptake can help decarbonize transport systems and improve physical and psychological well-being. To increase uptake, it is essential to have specific geographic data which could be used as evidence to inform decision-making processes with regards to the planning and building or upgrading of active travel infrastructure. Alas, such specific data is, more often than not, lacking at a governmental level. 
 
-We believe that one way of addressing the aforementioned issue is to combine citizen science and open data sources. Thus, we want you to join us in creating open data about our local environment that could be used by policy makers, researchers, and you.
+We, the Openinfra project team, believe that one way of addressing the aforementioned issue is to combine citizen science and open data sources. Our work focused on exploring the utility of OpenStreetMap as an open data-source for locally sourced evidence on active travel infrastructure, for which the Openinfra team were nominated finalists for the Leeds Digital Festival (LDF) 2022 [Sustainability Award](https://www.yorkshirepost.co.uk/business/leeds-digital-festival-awards-celebrate-regions-tech-talent-3866188), more project information can be found on our [GitHub](https://github.com/udsleeds/openinfra). As such, we want you to join us in creating more open-data about our local environment that could be used by policy makers, researchers, and you!
 
 In this event you will:
 1. learn about OpenStreetMap;
@@ -29,8 +30,10 @@ In this event you will:
 4. meet and discuss with like-minded people;
 5. we will be more than pleased to share resources for getting started with OSM data analysis in R to improve your data science skills; :)
 
-Prerequisites: We do not expect any prior knowledge of OpenStreetMap or mapping -- you will be introduced to all of the tips and tricks. However, we do expect you to have a working smartphone that supports either the StreetComplete (Android) or Go Map!! (iOS) apps (internet required for both). Also, we will ask you to create an account with OpenStreetMap. The instructions will be sent before the start of the event.
+Prerequisites: Knowledge of OpenStreetMap or OSM mapping is beneficial, but not essential as you will be introduced to all of the tips and tricks. However, we do expect you to have a working smartphone that supports either the StreetComplete (Android) or Go Map!! (iOS) apps (internet required for both). Also, we will ask you to create an account with OpenStreetMap. The instructions will be sent before the start of the event.
+
+Lunch, and snacks with coffee & tea will be provided throughout the day.
 
 The event is being organised and will be run by Robin Lovelace, Gregory Marler, James Hulse, and Greta Timaite with support from Leeds Institute for Data Analytics (LIDA).
 
-If you have any questions, please contact Greta via email: g.timaite@warwick.ac.uk
+If you have any questions, please contact Greta or James via email: g.timaite@warwick.ac.uk & hulse.jjc@sky.com
