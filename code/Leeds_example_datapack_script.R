@@ -45,7 +45,7 @@ leeds_lines_network = oe_get(
   boundary_type = "clipsrc",
   force_download = TRUE
 )
-# TODO : Update lines & pois network to contain new required tags. 
+
 # Load reproducible example
 #leeds_lines_network = sf::read_sf(paste0("https://github.com/udsleeds/openinfr",
 #                                         "a/releases/download/0.4.2/leeds_line",
@@ -93,43 +93,8 @@ im_surfaces = oi_im_surfaces(lines_network)
 im_tactile_paving = oi_im_tactile_paving(lines_network)
 cycle_infra_pack = oi_cycle_separation(lines_network, remove=TRUE)
 
-# Points networks below
+# Point networks
 cycle_parking_pack = oi_bicycle_parking(points_network, remove=TRUE)
-
-# TODO: review if this can be deleted
-# old code  ---------------------------------------------------------------
-
-# Select relevant columns for data_pack
-#a_test_network = a_test_network %>%
-#  select(osm_id, highway, matches(match = "oi_|im_"))
-
-# Put geometry column at the end of the data.frame - good sf practice. 
-#a_test_network = sf::st_sf(
-#  a_test_network %>% sf::st_drop_geometry(),
-#  geometry = a_test_network$geometry
-#)
-#names(a_test_network)
-
-# Upload data -------------------------------------------------------------
-
-#data_pack_basename = paste0("datapack_", region_name)
-#data_pack_basename
-#formats = c(".geojson", ".gpkg")
-#for (f in formats) {
-#  data_pack_filename = paste0(data_pack_basename, f)
-#  message("Writing data for ", region_name, ": ", data_pack_filename)
-#  sf::write_sf(a_test_network, data_pack_filename)
-#  message("Uploading data for ", region_name, ": ", data_pack_filename)
-#  piggyback::pb_upload(data_pack_filename)
-#}
-# create shapefile (not by default)
-#data_pack_filename_shp = paste0(data_pack_basename, ".shp")
-#dir.create(paste0(data_pack_basename, "_shp"))
-#sf::write_sf(a_test_network, file.path(paste0(data_pack_basename, "_shp"), data_pack_filename_shp))
-#waldo::compare(names(a_test_network), names(a_test_shp))
-#a_test_shp = sf::read_sf("datapack_leeds_shp/datapack_leeds.shp")
-#zip(zipfile = paste0(data_pack_basename, ".zip"), files = paste0(data_pack_basename, "_shp"))
-#piggyback::pb_upload(paste0(data_pack_basename, ".zip"))
 
 
 # Create example plots for data_packs.Rmd ---------------------------------
@@ -253,7 +218,6 @@ im_tactile_paving_map
 
 # 10
 cycle_infra_map
-#591 --> 655
 
 # Points
 # 9

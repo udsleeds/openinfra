@@ -119,12 +119,9 @@ for (network_filename in lines_network_files){
       # Delete data pack .gpkg
       unlink(paste0(lines_data_pack_dir, creation_date,"_datapack_",
                     sub(".geojson", ".gpkg", network_filename)))
-      # Nothing else - code below will re-write new data pack.
+      # Code below will re-write new data pack.
     } else {
       # Don't overwrite the data pack, move onto the next region
-      
-      #message(paste0("Error:" , region_name, 
-      #               " already has a data pack, skipping region."))
       next
     }
   }

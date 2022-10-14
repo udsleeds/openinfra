@@ -29,9 +29,8 @@ overwrite_datapack = FALSE            # Overwrite existing data pack geojsons?
 local_save_data_pack = TRUE           # Save data packs locally?  
 piggyback_data_packs = TRUE           # Upload data packs to releases? 
 save_formats = c(".geojson", ".gpkg") # Data pack file formats
-release_tag = "0.5"                   # Releases tag for piggyback
-creation_date = "2022_09_21"          # Date of download for england-latest.osm
-lad_limit = 1:330                     # Limits number of LADs to be processed
+release_tag = "v0.5"                  # Releases tag for piggyback
+creation_date = "2022_10_10"          # Date of download for england-latest.osm
 # Comment below if not using local dev package versions
 devtools::load_all()
 
@@ -130,6 +129,7 @@ dl_eng_latest = oe_get(
   place = "England",
   extra_tags = required_tags,
   download_only = TRUE,
+  max_file_size = 9e+09,
   skip_vectortranslate = TRUE,
   download_directory = paste0("/home/james/Desktop/LIDA_OSM_Project/",
                               "openinfra/eng_osm_downloads/", creation_date)
@@ -314,14 +314,12 @@ for (network_filename in lines_network_files){
       # Nothing else - code below will re-write new data pack.
     } else {
       # Don't overwrite the data pack, move onto the next region
-      
-      #message(paste0("Error:" , region_name, 
-      #               " already has a data pack, skipping region."))
       next
     }
   }
+  
   message(paste(region_name, "lines data pack missing - creating now."))
-  # Load the current LAD lines network
+  # Load current LAD lines network
   lines_network = sf::read_sf(paste0(lines_network_dir, network_filename))
   message("lines -- ", dim(lines_network))
   # Apply all openinfra functions to network (create the data pack)
@@ -390,17 +388,15 @@ for (network_filename in lines_network_files){
       
       message("Uploading data pack for: ", region_name, " with format: ", f)
       
-      ############change file name for upload to releases#######################
+      ####### change file name to specify lines or points data pack ############
       current_filename = paste0(lines_data_pack_dir, data_pack_filename)
       upload_filename = gsub("datapack", "lines_datapack", current_filename)
       file.rename(current_filename, upload_filename)
-      ##########################################################################
-      
-      #piggyback::pb_upload(paste0(lines_data_pack_dir, data_pack_filename), 
-      #                     tag = release_tag)
-      
+      # Upload data pack
       piggyback::pb_upload(upload_filename, tag = release_tag)
-      file.rename(upload_filename, current_filename) # Change filename back 
+      # Change filename back
+      file.rename(upload_filename, current_filename) 
+      ##########################################################################
     }
   }
 }
@@ -409,13 +405,13 @@ for (network_filename in lines_network_files){
 
 # Generate points layer infrastructure data packs -------------------------
 
+# Go through stored networks, apply Openinfra functions and create data packs.
 message(paste0("Creating points layer data packs now ",
           format(Sys.time(), "%a %b %d %X %Y")))
-
-# Go through stored networks, apply Openinfra functions and create data packs. 
-points_network_files = list.files(points_network_dir) # Load stored files
-# Dir. to store data packs (Note we can just use piggyback if u don't want to 
-#                           store these locally - maybe add boolean check ?)
+ 
+# Load stored files
+points_network_files = list.files(points_network_dir)
+# Dir. to store data packs
 points_data_pack_dir = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
                              "openinfra/data_packs/points/", creation_date, "/")
 
@@ -432,28 +428,21 @@ for (network_filename in points_network_files){
     # In this instance the data pack already exists - what to do next... ?
     if (overwrite_datapack){
       # Delete data pack .geojson
-      #unlink(paste0(points_data_pack_dir, creation_date,"_datapack_",
-      #              network_filename))
       unlink(paste0(points_data_pack_dir, "datapack_", level, 
                     gsub(".geojson", "", network_filename), "_",
                     creation_date, ".geojson"))
       # Delete data pack .gpkg
-      #unlink(paste0(points_data_pack_dir, creation_date,"_datapack_",
-      #              sub(".geojson", ".gpkg", network_filename)))
       unlink(paste0(points_data_pack_dir, "datapack_", level, 
                     gsub(".geojson", "", network_filename), "_",
                     creation_date, ".gpkg"))
-      
       # Nothing else - code below will re-write new data pack.
     } else {
       # Don't overwrite the data pack, move onto the next region
-      
-      #message(paste0("Error:" , region_name, 
-      #               " already has points a data pack, skipping region."))
       next
     }
   }
   message(paste(region_name, " points data pack missing - creating now."))
+  
   # Load the current LAD lines network
   points_network = sf::read_sf(paste0(points_network_dir, network_filename))
   
@@ -472,8 +461,6 @@ for (network_filename in points_network_files){
   if (local_save_data_pack) {
     for (f in save_formats){
       #region_name
-      #data_pack_filename = paste0(creation_date, "_", "datapack_",
-      #                            gsub(".geojson", "", network_filename), f)
       data_pack_filename = paste0("datapack_", level, "_", 
                                   gsub(".geojson", "", network_filename), "_",
                                   creation_date, f)
@@ -488,89 +475,22 @@ for (network_filename in points_network_files){
   # Upload points data packs with piggyback 
   if (piggyback_data_packs){
     for (f in save_formats){
-      #data_pack_filename = paste0(creation_date, "_", "datapack_",
-      #                            gsub(".geojson", "", network_filename), f)
       data_pack_filename = paste0("datapack_", level, "_", 
                                   gsub(".geojson", "", network_filename), "_",
                                   creation_date, f)
       
       message("Uploading points data pack for: ", region_name,
               " with format: ", f)
-      ############change file name for upload to releases#######################
+      
+      ####### change file name to specify lines or points data pack ############
       current_filename = paste0(points_data_pack_dir, data_pack_filename)
       upload_filename = gsub("datapack", "points_datapack", current_filename)
       file.rename(current_filename, upload_filename)
-      ##########################################################################
+      # Upload data pack
       piggyback::pb_upload(upload_filename, tag = release_tag)
-      file.rename(upload_filename, current_filename) # Change name back 
+      # Change name back
+      file.rename(upload_filename, current_filename)
+      ##########################################################################
     }
   }
 }
-
-
-# Upload data packs only --------------------------------------------------
-# Assuming data packs have already been created, simply upload the lines and 
-# points data packs to gh releases using piggyback.
-
-# Upload lines data packs:
-#message("Uploading lines data packs now")
-#for (lines_network_filename in lines_network_files){
-#  region_name = gsub(".geojson", "", lines_network_filename)
-#  
-#  if (piggyback_data_packs){
-#    for (f in save_formats){
-#      data_pack_filename = paste0(creation_date, "_", "datapack_",
-#                                  gsub(".geojson", "", lines_network_filename), f)
-#      message("Uploading lines data pack for: ", region_name, " with format: ", f)
-#      
-#      ############change file name for upload to releases#######################
-#      current_filename = paste0(lines_data_pack_dir, data_pack_filename)
-#      upload_filename = gsub("datapack", "lines_datapack", current_filename)
-#      file.rename(current_filename, upload_filename)
-#      ##########################################################################
-#      
-#      #piggyback::pb_upload(paste0(lines_data_pack_dir, data_pack_filename), 
-#      #                     tag = release_tag)
-#      piggyback::pb_upload(upload_filename, tag = release_tag)
-#      file.rename(upload_filename, current_filename) # Change filename back 
-#    }
-#  }
-#}
-
-# Upload points data packs
-#message("Uploading points data packs now")
-#for (points_network_filename in points_network_files){
-#  region_name = gsub(".geojson", "", points_network_filename)
-#  
-#  if (piggyback_data_packs){
-#    for (f in save_formats){
-#      data_pack_filename = paste0(creation_date, "_", "datapack_",
-#                                  gsub(".geojson", "", points_network_filename), f)
-#      message("Uploading points data pack for: ", region_name,
-#              " with format: ", f)
-#      ############change file name for upload to releases#######################
-#      current_filename = paste0(points_data_pack_dir, data_pack_filename)
-#      #print(current_filename)
-#      upload_filename = gsub("datapack", "points_datapack", current_filename)
-#      #print(upload_filename)
-#      file.rename(current_filename, upload_filename)
-#      ##########################################################################
-#      piggyback::pb_upload(upload_filename, tag = release_tag)
-#      file.rename(upload_filename, current_filename) # Change name back 
-#    }
-#  }
-#}
-
-
-
-# Save/Upload data pack as shapefile ? (NOT by default) ------------------------
-#data_pack_filename_shp = paste0(data_pack_basename, ".shp")
-#dir.create(paste0(data_pack_basename, "_shp"))
-#sf::write_sf(a_test_network, 
-#             file.path(paste0(data_pack_basename, "_shp"), 
-#             data_pack_filename_shp))
-#waldo::compare(names(a_test_network), names(a_test_shp))
-#a_test_shp = sf::read_sf("datapack_leeds_shp/datapack_leeds.shp")
-#zip(zipfile = paste0(data_pack_basename, ".zip"),
-#    files = paste0(data_pack_basename, "_shp"))
-#piggyback::pb_upload(paste0(data_pack_basename, ".zip"))
