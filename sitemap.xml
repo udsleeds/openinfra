@@ -55,7 +55,13 @@
     <loc>/reference/example_data.html</loc>
   </url>
   <url>
+    <loc>/reference/example_data_other_rels.html</loc>
+  </url>
+  <url>
     <loc>/reference/example_data_pois.html</loc>
+  </url>
+  <url>
+    <loc>/reference/example_data_rels.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
