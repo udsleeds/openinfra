@@ -21,14 +21,17 @@ What is an active travel mapathon? First things first, a mapathon is an organise
 
 Why is this important? Increasing active travel uptake can help decarbonize transport systems and improve physical and psychological well-being. To increase uptake, it is essential to have specific geographic data which could be used as evidence to inform decision-making processes with regards to the planning and building or upgrading of active travel infrastructure. Alas, such specific data is, more often than not, lacking at a governmental level. 
 
-We, the Openinfra project team, believe that one way of addressing the aforementioned issue is to combine citizen science and open data sources. Our work focused on exploring the utility of OpenStreetMap as an open data-source for locally sourced evidence on active travel infrastructure, for which the Openinfra team were nominated finalists for the Leeds Digital Festival (LDF) 2022 [Sustainability Award](https://www.yorkshirepost.co.uk/business/leeds-digital-festival-awards-celebrate-regions-tech-talent-3866188), more project information can be found on our [GitHub](https://github.com/udsleeds/openinfra). As such, we want you to join us in creating more open-data about our local environment that could be used by policy makers, researchers, and you!
+We, the Openinfra project team, believe that one way of addressing the aforementioned issue is to combine citizen science and open data sources. Our work focuses on exploring the utility of OpenStreetMap as an open data-source for local evidence on active travel infrastructure. Recognising the importance of the project, we were nominated finalists for the Leeds Digital Festival (LDF) [Sustainability Award 2022](https://www.yorkshirepost.co.uk/business/leeds-digital-festival-awards-celebrate-regions-tech-talent-3866188). You can find more about the project on our [GitHub](https://github.com/udsleeds/openinfra).
+
+Let’s meet and create more open-data about our local environment that could be used by policy makers, researchers, and you!
 
 In this event you will:
 1. learn about OpenStreetMap;
 2. learn how to contribute to OpenStreetMap by adding data;
-3. understand how and why OpenStreetMap data can help local areas plan active travel infrastructure;
+3. understand how and why OpenStreetMap data can help local authorities plan active travel infrastructure;
 4. meet and discuss with like-minded people;
-5. we will be more than pleased to share resources for getting started with OSM data analysis in R to improve your data science skills; :)
+
+We are more than happy to share resources for getting started with OSM data analysis in R to improve your data science skills. :)
 
 Prerequisites: Knowledge of OpenStreetMap or OSM mapping is beneficial, but not essential as you will be introduced to all of the tips and tricks. However, we do expect you to have a working smartphone that supports either the StreetComplete (Android) or Go Map!! (iOS) apps (internet required for both). Also, we will ask you to create an account with OpenStreetMap. The instructions will be sent before the start of the event.
 
