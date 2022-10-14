@@ -5,7 +5,7 @@
 \alias{example_data_pois}
 \title{OSM points data used in the creation of transport infrastructure data packs.}
 \format{
-A dat frame of OSM ways.
+A data frame of OSM nodes within a 2.5km radius of Leeds City Centre.
 }
 \source{
 {\href{https://github.com/udsleeds/openinfra/blob/main/test-code/generate_example_data.R}{generate_example_data.R}}

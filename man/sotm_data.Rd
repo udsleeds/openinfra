@@ -5,7 +5,7 @@
 \alias{sotm_data}
 \title{OSM infrastructure data used in SOTM2022 workshop & figures for SOTM2022.}
 \format{
-A data frame of OSM ways.
+A data frame of OSM ways within a 2.5km radius of Leeds City Centre.
 }
 \source{
 {\href{https://github.com/udsleeds/openinfra/blob/main/test-code/generate_example_data.R}{generate_example_data.R}}
