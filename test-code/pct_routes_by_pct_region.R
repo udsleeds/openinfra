@@ -85,8 +85,6 @@ RNs = unique(RNs$region_name)
 
 for(RN in RNs){
   
-  #TODO: Add check for existing files, don't want to save too many. 
-  
   message("Loading region name: ", RN)
   
   # Get pct route network
