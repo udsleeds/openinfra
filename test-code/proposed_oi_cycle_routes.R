@@ -155,10 +155,12 @@ oi_cycle_networks_update = function(osm_sf_ways, osm_sf_relations, cols_to_retur
     dplyr::mutate(openinfra_cycle_route = dplyr::case_when(
       #message("lcn ways")
       # ways a part of lcn routes must be tagged lcn=*
-      (! is.na(lcn) &  lcn != "no") ~ paste("lcn:", lcn, lcn_ref),
+      (!is.na(lcn) & lcn!="no") | network=="lcn" 
+      ~ paste("lcn:", lcn, lcn_ref, ref),
       #message("ncn ways")
       # ways a part of ncn routes must be tagged ncn=*
-      (! is.na(ncn) & ncn != "no") ~ paste("ncn:", ncn, ncn_ref)
+      (!is.na(ncn) & ncn!="no") | network=="ncn"  
+      ~ paste("ncn:", ncn, ncn_ref)
     ))
   
   message("rbinding: ", format(Sys.time(), "%a %b %d %X %Y"))
