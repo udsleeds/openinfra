@@ -178,14 +178,14 @@ oi_cycle_networks_update = function(osm_sf_ways, osm_sf_relations, cols_to_retur
   return(combined_osm_sf)
 }
 
-cols_to_return = c("osm_id", "highway", "name", "lcn", "ncn", "lcn_ref", "ncn_ref", "geometry", "openinfra_cycle_route")
+cols_to_return = c("osm_id", "highway", "name", "lcn", "ncn", "lcn_ref", "ncn_ref", "geometry", "openinfra_cycle_route", "network")
 
 output = oi_cycle_networks_update(england_osm_lines, england_relations, cols_to_return)
 
 output_noNA = output %>% dplyr::filter(! is.na(openinfra_cycle_route))
 
-ncn_output = output_noNA %>% dplyr::filter( ncn %in% c("proposed", "yes"))
-lcn_output = output_noNA %>% dplyr::filter( lcn %in% c("proposed", "yes"))
+ncn_output = output_noNA %>% dplyr::filter( ncn %in% c("proposed", "yes") | network == "ncn")
+lcn_output = output_noNA %>% dplyr::filter( lcn %in% c("proposed", "yes") | network == "lcn")
 neither = output_noNA %>% dplyr::filter(is.na(ncn) & is.na(lcn))
 
 tmap::tmap_mode("view")
