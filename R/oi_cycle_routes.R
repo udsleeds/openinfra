@@ -60,52 +60,60 @@ oi_cycle_routes = function(osm_ways, osm_relations, ..., remove=FALSE){
   }
   
   
-  # First, find lcn & ncnc network routes from ways layer
-  message("processing ways: ", format(Sys.time(), "%X %Y"))
-  
-  osm_ways_recat = osm_ways %>% 
-    dplyr::mutate(openinfra_cycle_routes = dplyr::case_when(
-      # ways part of lcn routes must be tagged lcn=*
-      (! is.na(lcn) &  lcn != "no") ~ paste("lcn:", lcn, lcn_ref),
-      # ways part of ncn routes must be tagged ncn=*
-      (! is.na(ncn) & ncn != "no") ~ paste("ncn:", ncn, ncn_ref)
-    ))
-  
-  # Next, find lcn & ncn network routes from the relations layer
-  message("processing relations: ", format(Sys.time(), "%X %Y"))
-  
-  osm_relations_recat = osm_relations %>% 
-    dplyr::mutate(openinfra_cycle_routes = dplyr::case_when(
-      
+  # First, find appropriate routes from relations layer
+  message("osm relations: ", format(Sys.time(), "%a %b %d %X %Y"))
+  osm_sf_rels_recat = osm_sf_relations %>% 
+    
+    # Find NCN and LCN routes from relation layer
+    dplyr::mutate(openinfra_cycle_route = dplyr::case_when(
+      #message("lcn relations")
       # lcn relation type must be a route, for a bicycle.
       (type == "route" & route == "bicycle") & 
-      # relation must be related to lcns
-      ((!is.na(lcn)) & (lcn != "no")) & 
+        # relation must be related to lcns
+        (((!is.na(lcn)) & (lcn != "no")) | (network == "lcn")) #& 
       # Relation must be lcn network (or NA if not entered)
-      (is.na(network) | network == "lcn")
-      ~ paste("lcn:", lcn, lcn_ref, name, cycle_network),
+      #(is.na(network) | network == "lcn")
+      ~ paste("lcn:", lcn, lcn_ref, ref, name, cycle_network),
+      
       
       # ncn relation type must be a route for a bicycle
       (type == "route" & route == "bicycle") & 
-      # relation must be related to ncns
-      ((!is.na(ncn)) & (ncn != "no")) & 
+        # relation must be related to ncns
+        (((!is.na(ncn)) & (ncn != "no")) | (network == "ncn"))
       # Relation must be ncn network (or NA if not entered)
-      (is.na(network) | network == "ncn")
-      ~ paste("ncn:", ncn, ncn_ref, name, cycle_network)
+      #(is.na(network) | network == "ncn")
+      ~ paste("ncn:", ncn, ncn_ref, ref, name, cycle_network)
+    )) 
+  
+  message("osm ways: ", format(Sys.time(), "%a %b %d %X %Y"))
+  # Second, find appropriate routes from ways layer
+  osm_sf_ways_recat = osm_sf_ways %>%
+    
+    # Find NCN and LCN routes from ways layer
+    dplyr::mutate(openinfra_cycle_route = dplyr::case_when(
+      #message("lcn ways")
+      # ways a part of lcn routes must be tagged lcn=*
+      (!is.na(lcn) & lcn!="no") | network=="lcn" 
+      ~ paste("lcn:", lcn, lcn_ref, ref),
+      #message("ncn ways")
+      # ways a part of ncn routes must be tagged ncn=*
+      (!is.na(ncn) & ncn!="no") | network=="ncn"  
+      ~ paste("ncn:", ncn, ncn_ref)
     ))
   
-  # Now, combine way and relation networks into a single object
-  message("Joining relations & ways: ", format(Sys.time(), "%X %Y"))
+  message("rbinding: ", format(Sys.time(), "%a %b %d %X %Y"))
+  # Now, select common columns to be returned, rbind the data frames and return the network.
+  combined_osm_sf = rbind(osm_sf_rels_recat %>% dplyr::select(all_of(cols_to_return)),
+                          osm_sf_ways_recat %>% dplyr::select(all_of(cols_to_return)))
+  message("removing NAs: ", format(Sys.time(), "%a %b %d %X %Y"))
+  # If remove = TRUE, remove rows with NA openinfra_cycle_route values
   
-  routes = rbind(osm_ways_recat %>% dplyr::select(all_of(return_cols)),
-                 osm_relations_recat %>% dplyr::select(all_of(return_cols)))
+  message(names(combined_osm_sf))
   
-  # If remove == TRUE, remove features if openinfra_cycle_routes contains NAs
-  if(remove){
-    routes = routes %>% dplyr::filter(!is.na(openinfra_cycle_routes))
+  if (remove){
+    combined_osm_sf = combined_osm_sf %>% 
+      dplyr::filter(! is.na(openinfra_cycle_route))
   }
   
-  # Return recategorised osm data
-  return(routes)
-  
+  return(combined_osm_sf)
 }
