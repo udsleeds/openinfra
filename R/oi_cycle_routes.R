@@ -62,17 +62,15 @@ oi_cycle_routes = function(osm_ways, osm_relations, ..., remove=FALSE){
   
   # First, find appropriate routes from relations layer
   message("osm relations: ", format(Sys.time(), "%a %b %d %X %Y"))
-  osm_sf_rels_recat = osm_sf_relations %>% 
+  osm_relations_recat = osm_relations %>% 
     
     # Find NCN and LCN routes from relation layer
-    dplyr::mutate(openinfra_cycle_route = dplyr::case_when(
+    dplyr::mutate(openinfra_cycle_routes = dplyr::case_when(
       #message("lcn relations")
       # lcn relation type must be a route, for a bicycle.
       (type == "route" & route == "bicycle") & 
         # relation must be related to lcns
-        (((!is.na(lcn)) & (lcn != "no")) | (network == "lcn")) #& 
-      # Relation must be lcn network (or NA if not entered)
-      #(is.na(network) | network == "lcn")
+        (((!is.na(lcn)) & (lcn != "no")) | (network == "lcn"))
       ~ paste("lcn:", lcn, lcn_ref, ref, name, cycle_network),
       
       
@@ -87,10 +85,10 @@ oi_cycle_routes = function(osm_ways, osm_relations, ..., remove=FALSE){
   
   message("osm ways: ", format(Sys.time(), "%a %b %d %X %Y"))
   # Second, find appropriate routes from ways layer
-  osm_sf_ways_recat = osm_sf_ways %>%
+  osm_ways_recat = osm_ways %>%
     
     # Find NCN and LCN routes from ways layer
-    dplyr::mutate(openinfra_cycle_route = dplyr::case_when(
+    dplyr::mutate(openinfra_cycle_routes = dplyr::case_when(
       #message("lcn ways")
       # ways a part of lcn routes must be tagged lcn=*
       (!is.na(lcn) & lcn!="no") | network=="lcn" 
@@ -103,8 +101,8 @@ oi_cycle_routes = function(osm_ways, osm_relations, ..., remove=FALSE){
   
   message("rbinding: ", format(Sys.time(), "%a %b %d %X %Y"))
   # Now, select common columns to be returned, rbind the data frames and return the network.
-  combined_osm_sf = rbind(osm_sf_rels_recat %>% dplyr::select(all_of(cols_to_return)),
-                          osm_sf_ways_recat %>% dplyr::select(all_of(cols_to_return)))
+  combined_osm_sf = rbind(osm_relations_recat %>% dplyr::select(all_of(return_cols)),
+                          osm_ways_recat %>% dplyr::select(all_of(return_cols)))
   message("removing NAs: ", format(Sys.time(), "%a %b %d %X %Y"))
   # If remove = TRUE, remove rows with NA openinfra_cycle_route values
   
@@ -112,7 +110,7 @@ oi_cycle_routes = function(osm_ways, osm_relations, ..., remove=FALSE){
   
   if (remove){
     combined_osm_sf = combined_osm_sf %>% 
-      dplyr::filter(! is.na(openinfra_cycle_route))
+      dplyr::filter(! is.na(openinfra_cycle_routes))
   }
   
   return(combined_osm_sf)
