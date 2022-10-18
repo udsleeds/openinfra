@@ -28,8 +28,8 @@ will be returned with the following default values: "osm_id", "highway",
 "name", "lcn", "ncn", "lcn_ref", "ncn_ref", "openinfra_cycle_routes",
 "geometry".
 
-\strong{Note}: columns to be returned MUST be present in both \code{osm_ways} and
-\code{osm_relations}}
+\strong{Note}: columns to be returned \strong{MUST} be present in both \code{osm_ways} and
+\code{osm_relations} to perform \code{rbind}. For more information see \code{?rbind()}}
 
 \item{remove}{\itemize{
 \item A boolean value, \code{FALSE} by default. If \code{TRUE}, removes

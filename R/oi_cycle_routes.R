@@ -23,8 +23,8 @@
 #'   "name", "lcn", "ncn", "lcn_ref", "ncn_ref", "openinfra_cycle_routes", 
 #'   "geometry".
 #'   
-#'   **Note**: columns to be returned MUST be present in both `osm_ways` and 
-#'   `osm_relations`
+#'   **Note**: columns to be returned **MUST** be present in both `osm_ways` and 
+#'   `osm_relations` to perform `rbind`. For more information see `?rbind()`
 #'   
 #' @return a single `sf` object is returned containing both local and national
 #'   cycle network routes from the ways and relations layer. Information on 
@@ -71,7 +71,8 @@ oi_cycle_routes = function(osm_ways, osm_relations, ..., remove=FALSE){
       (type == "route" & route == "bicycle") & 
         # relation must be related to lcns
         (((!is.na(lcn)) & (lcn != "no")) | (network == "lcn"))
-      ~ paste("lcn:", lcn, lcn_ref, ref, name, cycle_network),
+      ~ paste(na.omit(c("lcn:", lcn, lcn_ref, ref, name, cycle_network)),
+              collapse = " "),
       
       
       # ncn relation type must be a route for a bicycle
@@ -80,35 +81,34 @@ oi_cycle_routes = function(osm_ways, osm_relations, ..., remove=FALSE){
         (((!is.na(ncn)) & (ncn != "no")) | (network == "ncn"))
       # Relation must be ncn network (or NA if not entered)
       #(is.na(network) | network == "ncn")
-      ~ paste("ncn:", ncn, ncn_ref, ref, name, cycle_network)
+      ~ paste(na.omit(c("ncn:", ncn, ncn_ref, ref, name, cycle_network)),
+              collapse = " ")
     )) 
   
-  message("osm ways: ", format(Sys.time(), "%a %b %d %X %Y"))
   # Second, find appropriate routes from ways layer
+  message("osm ways: ", format(Sys.time(), "%a %b %d %X %Y"))
   osm_ways_recat = osm_ways %>%
     
     # Find NCN and LCN routes from ways layer
     dplyr::mutate(openinfra_cycle_routes = dplyr::case_when(
-      #message("lcn ways")
+      
       # ways a part of lcn routes must be tagged lcn=*
       (!is.na(lcn) & lcn!="no") | network=="lcn" 
-      ~ paste("lcn:", lcn, lcn_ref, ref),
-      #message("ncn ways")
+      ~ paste(na.omit(c("lcn:", lcn, lcn_ref, ref)), collapse = " "),
+      
       # ways a part of ncn routes must be tagged ncn=*
       (!is.na(ncn) & ncn!="no") | network=="ncn"  
-      ~ paste("ncn:", ncn, ncn_ref)
+      ~ paste(na.omit(c("ncn:", ncn, ncn_ref)), collapse = " ")
     ))
   
+  # Select columns to be returned, bind ways & relations, return joined network.
   message("rbinding: ", format(Sys.time(), "%a %b %d %X %Y"))
-  # Now, select common columns to be returned, rbind the data frames and return the network.
   combined_osm_sf = rbind(osm_relations_recat %>% dplyr::select(all_of(return_cols)),
                           osm_ways_recat %>% dplyr::select(all_of(return_cols)))
-  message("removing NAs: ", format(Sys.time(), "%a %b %d %X %Y"))
+  
   # If remove = TRUE, remove rows with NA openinfra_cycle_route values
-  
-  message(names(combined_osm_sf))
-  
-  if (remove){
+  if(remove){
+    message("Removing NAs: ", format(Sys.time(), "%a %b %d %X %Y"))
     combined_osm_sf = combined_osm_sf %>% 
       dplyr::filter(! is.na(openinfra_cycle_routes))
   }
