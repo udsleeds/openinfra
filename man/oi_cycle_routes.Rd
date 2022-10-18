@@ -48,6 +48,11 @@ This function parses OSM data at the ways (linestrings), and relations
 cycle network (lcn/ncn) routes.
 }
 \details{
+Note that the routes obtained through this function are for bicycle routes
+only. That is, features from relations must contain the route="bicycle" tag,
+as opposed to say, route="mtb", a tag for mountain bike trails. For more
+information see \href{https://wiki.openstreetmap.org/wiki/Key:route}{routes}.
+
 Note: the \code{osm_ways} & \code{osm_relations} must contain the following
 tags: "lcn", "lcn_ref", "ncn", "ncn_ref", "type", "route", "network",
 "cycle_network"

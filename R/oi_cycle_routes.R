@@ -4,6 +4,11 @@
 #' (colection of geometrical features) level to obtain local and national 
 #' cycle network (lcn/ncn) routes.
 #' 
+#' Note that the routes obtained through this function are for bicycle routes 
+#' only. That is, features from relations must contain the route="bicycle" tag,
+#' as opposed to say, route="mtb", a tag for mountain bike trails. For more 
+#' information see [routes](https://wiki.openstreetmap.org/wiki/Key:route). 
+#' 
 #' @usage oi_cycle_routes(osm_ways, osm_relations, ..., remove=FALSE)
 #' @param osm_ways - A `sf` object containing OpenStreetMap infrastructure data
 #'   on ways (linestrings), obtained using the
@@ -98,7 +103,7 @@ oi_cycle_routes = function(osm_ways, osm_relations, ..., remove=FALSE){
       
       # ways a part of ncn routes must be tagged ncn=*
       (!is.na(ncn) & ncn!="no") | network=="ncn"  
-      ~ paste(na.omit(c("ncn:", ncn, ncn_ref)), collapse = " ")
+      ~ paste(na.omit(c("ncn:", ncn, ncn_ref, ref)), collapse = " ")
     ))
   
   # Select columns to be returned, bind ways & relations, return joined network.
