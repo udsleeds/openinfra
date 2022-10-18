@@ -227,6 +227,9 @@ eng_relations = osmextract::oe_read(
 eng_local_relations = rbind(eng_multilines,
                             eng_relations)
 
+
+# Check if lcn/ncn or network tags are better?  ---------------------------
+
 ncn_local_relations = eng_local_relations %>% dplyr::filter(network == "ncn")
 
 legacy_ncn_relation_curr = eng_local_relations %>% 
@@ -241,7 +244,6 @@ id_1 = legacy_ncn_relation_curr$osm_id
 id_2 = legacy_ncn_relations$osm_id
 
 ids = c()
-
 # Find relations
 for(id in id_2){
   if((id %in% id_1) == FALSE){
@@ -254,8 +256,50 @@ for(id in id_2){
 a_test = legacy_ncn_relations %>% dplyr::filter(osm_id %in% ids)
 
 # Networks captured by my function, missed by network == ncn
-
-
-
 tmap::tmap_mode("view")
 tmap::qtm(a_test)
+
+
+# Investigate network OR lcn/ncn tag on ways (legacy tagging) -------------
+
+eng_network_keys = as.data.frame(table(england_osm$network))
+# ^ Most network keys on linestrings are for rail/road. Some for lcn/ncn
+eng_ncn_keys = as.data.frame(table(england_osm$ncn))
+eng_lcn_keys = as.data.frame(table(england_osm$lcn))  
+
+
+lcn_ways_legacy = england_osm %>% dplyr::filter(lcn %in% c("yes"))
+ncn_ways_legacy = england_osm %>% dplyr::filter(ncn %in% c("yes"))
+
+lcn_ways_network = england_osm %>% dplyr::filter(network == "lcn")
+ncn_ways_network = england_osm %>% dplyr::filter(network == "ncn")
+
+lcn_combined = rbind(lcn_ways_legacy %>% sf::st_drop_geometry(),
+                     lcn_ways_network %>% sf::st_drop_geometry())
+ncn_combined = rbind(ncn_ways_legacy %>% sf::st_drop_geometry(),
+                     ncn_ways_network %>% sf::st_drop_geometry()) 
+
+# Compare how many features captured by network tag are already captured by 
+# legacy tagging (lcn/ncn). If all are already captured - no need for network. 
+ncn_net_ids = ncn_ways_network$osm_id
+lcn_net_ids = lcn_ways_network$osm_id
+
+for(id in ncn_net_ids){
+  if(id %in% ncn_ways_legacy$osm_id){
+    message(id," is already in ncn legacy tagging")
+  } else {
+    message(id, " would have been missed")
+  }
+}
+
+for(id in lcn_net_ids){
+  if(id %in% lcn_ways_legacy$osm_id){
+    message(id, "is already in lcn legacy tagging")
+  } else {
+    message(id, " would have been missed")
+  }
+}
+
+
+# We see that some features that are genuine lcn/ncn networks are not captured 
+# by just lcn/ncn tagging, and so the network tag is also required when assessing ways. 
