@@ -66,6 +66,12 @@ england_osm_other_rels = osmextract::oe_get(
 )
 
 
+england_relations = rbind(england_osm_line_rels,
+                          england_osm_other_rels)
+
+eng_rels_network_vcs = as.data.frame(table(england_relations$network))
+eng_lines_network_vcs = as.data.frame(table(england_osm$network))
+
 # investigate lcn, ncn & _ref tags ----------------------------------------
 
 # These will be the common values to use as names, or to be parsed before being

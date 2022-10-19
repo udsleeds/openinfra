@@ -15,3 +15,6 @@ utils::globalVariables(c("openinfra_cycle_infra"))
 utils::globalVariables(c("openinfra_cycle_crossings"))
 # oi_road_names
 utils::globalVariables(c("openinfra_road_name"))
+# oi_cycle_routes
+utils::globalVariables(c("all_of", "hasArg", "unique",
+                         "openinfra_cycle_routes"))

@@ -23,7 +23,8 @@ Imports:
     stats19,
     tmap,
     readr,
-    stringr
+    stringr,
+    methods
 Suggests:
     rmarkdown,
     knitr,
