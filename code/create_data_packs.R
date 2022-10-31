@@ -2,16 +2,13 @@
 # Info  -------------------------------------------------------------------    #
 # This script contains the workflow that generates transport infrastructure    #
 # data packs for each Local Authority District (LAD) within England - we look  #
-# to update this workflow to also contain the LADs of Scotland and potentially #
-# Norther Ireland (NI) provided tags here are consistent with the rest of the  #
-# United Kingdom (UK).                                                         #
+# to update this workflow to also contain the LADs of Norther Ireland (NI)     #
 #                                                                              #
-# Workflow proposal:                                                           #
-# 1 - Download England-latest.osm.pbf and store locally                        #
+# Workflow:                                                                    #
+# 1 - Download great-britain-latest.osm.pbf and store locally                  #
 #                                                                              #
-# 2 - For each LAD, get default OSM networks by subsetting from England-latest #
-#     using oe_read(), pointing to local England-latest as input file. Save    #
-#     each LAD network as a .geojson                                           #
+# 2 - For each LAD, get default OSM networks by sub-setting from gb-latest     #
+#     using oe_read(). Save each LAD network as a .geojson                     #
 #                                                                              #
 # 3 - For each LAD network, read the .geojson and load into R, then apply the  #
 #     openinfra functions to create a data pack for that LAD                   #
@@ -30,7 +27,7 @@ local_save_data_pack = TRUE           # Save data packs locally?
 piggyback_data_packs = TRUE           # Upload data packs to releases? 
 save_formats = c(".geojson", ".gpkg") # Data pack file formats
 release_tag = "v0.5"                  # Releases tag for piggyback
-creation_date = "2022_10_10"          # Date of download for england-latest.osm
+creation_date = "2022_10_31"          # Date of download for england-latest.osm
 # Comment below if not using local dev package versions
 devtools::load_all()
 
@@ -96,20 +93,25 @@ pkgs = c(pkgs, "osmextract", "openinfra")
 lapply(pkgs, library, character.only = TRUE)[length(pkgs)]
 
 # Create required directories ---------------------------------------------
+
 #Create directory for current date to store england-latest.osm.pbf
 dir.create(paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
-                  "eng_osm_downloads/", creation_date))
+                  "eng_osm_downloads/", creation_date), recursive = TRUE)
+
+#Create directory for current date to store great-britain-latest.osm.pbf
+dir.create(paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
+                  "gb_osm_downloads/", creation_date), recursive = TRUE)
 
 # Create dirs at current date to store default OSM networks from eng-latest.osm
-dir.create(paste0(lines_network_dir, creation_date))  # Lines dir
-dir.create(paste0(points_network_dir, creation_date)) # Points dir
+dir.create(paste0(lines_network_dir, creation_date), recursive = TRUE)  # Lines dir
+dir.create(paste0(points_network_dir, creation_date), recursive = TRUE) # Points dir
 
 # Create dir for current date to store data packs created from default networks
-dir.create(paste0(lines_data_pack_dir, creation_date))
+dir.create(paste0(lines_data_pack_dir, creation_date), recursive = TRUE)
 
-dir.create(paste0(points_data_pack_dir, creation_date))
+dir.create(paste0(points_data_pack_dir, creation_date), recursive = TRUE)
 
-# Get required data -------------------------------------------------------
+# Download required data --------------------------------------------------
 
 # Tags required to make data packs
 required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
@@ -125,20 +127,42 @@ required_tags = c("foot", "bicycle", "access", "service", "maxspeed", "oneway",
 
 # Download & save OSM data
 options(timeout = 1000) # Un-comment if download fails due to timeout. 
-dl_eng_latest = oe_get(
-  place = "England",
+
+
+## Get England  -----------------------------------------------------------
+
+# dl_eng_latest = oe_get(
+#   place = "England",
+#   extra_tags = required_tags,
+#   download_only = TRUE,
+#   max_file_size = 9e+09,
+#   skip_vectortranslate = TRUE,
+#   download_directory = paste0("/home/james/Desktop/LIDA_OSM_Project/",
+#                               "openinfra/eng_osm_downloads/", creation_date)
+# )
+# 
+# # File path to the downloaded (above) england-latest.osm.pbf
+# eng_latest_fp = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
+#                        "eng_osm_downloads/", creation_date,
+#                        "/geofabrik_england-latest.osm.pbf")
+
+
+## Get Great Britain ------------------------------------------------------
+dl_gb_latest = oe_get(
+  place = "Great Britain",
   extra_tags = required_tags,
   download_only = TRUE,
   max_file_size = 9e+09,
   skip_vectortranslate = TRUE,
   download_directory = paste0("/home/james/Desktop/LIDA_OSM_Project/",
-                              "openinfra/eng_osm_downloads/", creation_date)
+                              "openinfra/gb_osm_downloads/", creation_date)
 )
 
 # File path to the downloaded (above) england-latest.osm.pbf
-eng_latest_fp = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
-                       "eng_osm_downloads/", creation_date,
-                       "/geofabrik_england-latest.osm.pbf")
+gb_latest_fp = paste0("/home/james/Desktop/LIDA_OSM_Project/openinfra/",
+                       "gb_osm_downloads/", creation_date,
+                       "/geofabrik_great-britain-latest.osm.pbf")
+
 
 # Get LAD Boundaries ------------------------------------------------------
 # Download LAD boundary polygons
@@ -150,12 +174,15 @@ welsh_lads = LADs %>% dplyr::filter(stringr::str_detect(string = LAD22CD, patter
 scottish_lads = LADs %>% dplyr::filter(stringr::str_detect(string = LAD22CD, pattern = "S"))
 ni_lads = LADs %>% dplyr::filter(stringr::str_detect(string = LAD22CD, pattern = "N"))
 
-# Remove Scottish LADs
-LADs = LADs %>%  dplyr::filter(! LAD22NM %in% scottish_lads$LAD22NM)
+# Remove Scottish LADs - using GB now
+#LADs = LADs %>%  dplyr::filter(! LAD22NM %in% scottish_lads$LAD22NM)
+
 # Remove NI LADs
 LADs = LADs %>% dplyr::filter(! LAD22NM %in% ni_lads$LAD22NM)
-# Remove Welsh LADs
-LADs = LADs %>% dplyr::filter(! LAD22NM %in% welsh_lads$LAD22NM)
+
+# Remove Welsh LADs - using GB now
+#LADs = LADs %>% dplyr::filter(! LAD22NM %in% welsh_lads$LAD22NM)
+
 # Remove NA LADs
 LADs = LADs %>% dplyr::filter(! is.na(LAD22NM))
 
@@ -210,7 +237,7 @@ for (region_name in LADs$LAD22NM){
   # Get network by sub setting England.osm.pbf, save output as geojson.
   message("Reading lines for: ", region_name)
   network_lines = oe_read(
-    eng_latest_fp,
+    gb_latest_fp,
     vectortranslate_options = translate_options,
     layer = "lines",
     extra_tags = required_tags,
@@ -224,7 +251,7 @@ for (region_name in LADs$LAD22NM){
                append = FALSE, quiet = TRUE)
   
   # Print status
-  message(c(region_name, "lines network created @ ",
+  message(c(region_name, " lines network created @ ",
             format(Sys.time(), "%a %b %d %X %Y")))
 }
 
@@ -265,7 +292,7 @@ for (region_name in LADs$LAD22NM){
   # Get network by sub setting England.osm.pbf, save output as geojson.
   message("Reading points for: ", region_name)
   network_points = oe_read(
-    eng_latest_fp,
+    gb_latest_fp,
     vectortranslate_options = translate_options,
     layer = "points",
     extra_tags = required_tags,
@@ -322,9 +349,11 @@ for (network_filename in lines_network_files){
   # Load current LAD lines network
   lines_network = sf::read_sf(paste0(lines_network_dir, network_filename))
   message("lines -- ", dim(lines_network))
+  
   # Apply all openinfra functions to network (create the data pack)
   lines_network_data_pack = oi_active_cycle(lines_network, remove = FALSE)
-  message("1st DP -- ", dim(lines_network_data_pack))
+  #message("1st DP -- ", dim(lines_network_data_pack))
+  
   lines_network_data_pack = oi_active_walk(lines_network_data_pack,
                                            remove = FALSE)
   lines_network_data_pack = oi_clean_maxspeed_uk(lines_network_data_pack,
