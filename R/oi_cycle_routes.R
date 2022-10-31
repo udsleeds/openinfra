@@ -117,6 +117,6 @@ oi_cycle_routes = function(osm_ways, osm_relations, ..., remove=FALSE){
     combined_osm_sf = combined_osm_sf %>% 
       dplyr::filter(! is.na(openinfra_cycle_routes))
   }
-  
+  message("Complete ", format(Sys.time(), "%a %b %d %X %Y"))
   return(combined_osm_sf)
 }
