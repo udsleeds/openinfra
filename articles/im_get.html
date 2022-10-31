@@ -105,7 +105,8 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Function and documentation for Inclusive Mobility guide (2021)</h1>
+      <h1 data-toc-skip>Function and documentation for Inclusive
+Mobility guide (2021)</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/udsleeds/openinfra/blob/HEAD/vignettes/im_get.Rmd" class="external-link"><code>vignettes/im_get.Rmd</code></a></small>
@@ -115,13 +116,35 @@
 
     
     
-<p>The purpose of the <code>inclusive_mobility_get</code> function is to recategorize OSM data based on the recent Inclusive Mobility (IM) guide UK. The goal behind this is to encourage the use of crowd-sourced open data in the inclusive infrastructure planning. Indeed, the function has been written to encourage discussions around the applicability of open data and act as a starting point.</p>
-<p>It has to be noted that this function is a simplification of all the requirements outlined in the guide. There are a couple of reasons for this. First, while there is a large number of tags in OSM to create detailed maps, but the values imputed are not always IM guide-friendly. For example, in the guide 6 different types of tactile paving are outlined, yet those types are not key values in the OSM as it focused on the presence/absence of tactile paving. This, then, leads not only to the fact that not all OSM data can be sensibly recategorized based on the IM guide but also that it is highly unlikely that a single function could capture the detailed specifications outlined in the IM guide. <br><br></p>
+<p>The purpose of the <code>inclusive_mobility_get</code> function is to
+recategorize OSM data based on the recent Inclusive Mobility (IM) guide
+UK. The goal behind this is to encourage the use of crowd-sourced open
+data in the inclusive infrastructure planning. Indeed, the function has
+been written to encourage discussions around the applicability of open
+data and act as a starting point.</p>
+<p>It has to be noted that this function is a simplification of all the
+requirements outlined in the guide. There are a couple of reasons for
+this. First, while there is a large number of tags in OSM to create
+detailed maps, but the values imputed are not always IM guide-friendly.
+For example, in the guide 6 different types of tactile paving are
+outlined, yet those types are not key values in the OSM as it focused on
+the presence/absence of tactile paving. This, then, leads not only to
+the fact that not all OSM data can be sensibly recategorized based on
+the IM guide but also that it is highly unlikely that a single function
+could capture the detailed specifications outlined in the IM guide.
+<br><br></p>
 <div class="section level2">
 <h2 id="function-updates">Function updates<a class="anchor" aria-label="anchor" href="#function-updates"></a>
 </h2>
-<p>Please note that, as per <a href="https://github.com/udsleeds/openinfra/issues/129" class="external-link">#129</a>, the <code>oi_inclusive_mobility</code> function, based on the function defined below, has now been split into a number of sub-functions as described below:</p>
+<p>Please note that, as per <a href="https://github.com/udsleeds/openinfra/issues/129" class="external-link">#129</a>, the
+<code>oi_inclusive_mobility</code> function, based on the function
+defined below, has now been split into a number of sub-functions as
+described below:</p>
 <table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
 <thead><tr class="header">
 <th>New Function</th>
 <th>Assesses</th>
@@ -129,29 +152,38 @@
 <tbody>
 <tr class="odd">
 <td>oi_im_flush_kerb</td>
-<td><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#kerb" class="external-link">Flush Kerb</a></td>
+<td><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#kerb" class="external-link">Flush
+Kerb</a></td>
 </tr>
 <tr class="even">
 <td>oi_im_pavement_width</td>
 <td>
-<a href="https://udsleeds.github.io/openinfra/articles/im_get.html#width" class="external-link">Pavement Width</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#width" class="external-link">Estimated Width</a>
+<a href="https://udsleeds.github.io/openinfra/articles/im_get.html#width" class="external-link">Pavement
+Width</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#width" class="external-link">Estimated
+Width</a>
 </td>
 </tr>
 <tr class="odd">
 <td>oi_im_pedestrian_infra</td>
 <td>
-<a href="https://udsleeds.github.io/openinfra/articles/im_get.html#footways" class="external-link">Footways</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#footpaths" class="external-link">Footpaths</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#implied-footways" class="external-link">Implied Footways</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#crossings" class="external-link">Crossings</a>
+<a href="https://udsleeds.github.io/openinfra/articles/im_get.html#footways" class="external-link">Footways</a>
+<br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#footpaths" class="external-link">Footpaths</a>
+<br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#implied-footways" class="external-link">Implied
+Footways</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#crossings" class="external-link">Crossings</a>
 </td>
 </tr>
 <tr class="even">
 <td>oi_im_surfaces</td>
 <td>
-<a href="https://udsleeds.github.io/openinfra/articles/im_get.html#surface" class="external-link">Paved Surface</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#surface" class="external-link">Even Surface</a>
+<a href="https://udsleeds.github.io/openinfra/articles/im_get.html#surface" class="external-link">Paved
+Surface</a> <br><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#surface" class="external-link">Even
+Surface</a>
 </td>
 </tr>
 <tr class="odd">
 <td>oi_im_tactile_paving</td>
-<td><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#tactile-paving" class="external-link">Tactile Pacing</a></td>
+<td><a href="https://udsleeds.github.io/openinfra/articles/im_get.html#tactile-paving" class="external-link">Tactile
+Pacing</a></td>
 </tr>
 <tr class="even">
 <td>oi_is_lit</td>
@@ -163,7 +195,8 @@
 </tr>
 </tbody>
 </table>
-<p><br> For further information, please see <a href="">documentation</a> for the functions starting <code>oi_im_*</code> <br></p>
+<p><br> For further information, please see <a href="">documentation</a>
+for the functions starting <code>oi_im_*</code> <br></p>
 </div>
 <div class="section level2">
 <h2 id="get-osm">get osm<a class="anchor" aria-label="anchor" href="#get-osm"></a>
@@ -266,15 +299,26 @@
 </h3>
 <p>There are two requirements for a function:</p>
 <ol style="list-style-type: decimal">
-<li>it must be an <code>sf</code> (simple features) object. It can easily be obtained using <code>osmextract</code> package</li>
-<li>it needs to have <em>all</em> the tags needed for recategorization, otherwise an error will be given.</li>
+<li>it must be an <code>sf</code> (simple features) object. It can
+easily be obtained using <code>osmextract</code> package</li>
+<li>it needs to have <em>all</em> the tags needed for recategorization,
+otherwise an error will be given.</li>
 </ol>
-<p>The following tags are used: highway, kerb, footway, path, cycleway, sidewalk, foot, segregated, access, crossing, lit, maxspeed, tactile_paving, surface, width, est_width.</p>
-<p>To learn how to get extra tags, see lines 20-94 of this notebook or <a href="https://udsleeds.github.io/openinfra/articles/getosm.html" class="external-link">this vignette</a>.</p>
-<p>Finally, it is important to highlight what this function does not do:</p>
+<p>The following tags are used: highway, kerb, footway, path, cycleway,
+sidewalk, foot, segregated, access, crossing, lit, maxspeed,
+tactile_paving, surface, width, est_width.</p>
+<p>To learn how to get extra tags, see lines 20-94 of this notebook or
+<a href="https://udsleeds.github.io/openinfra/articles/getosm.html" class="external-link">this
+vignette</a>.</p>
+<p>Finally, it is important to highlight what this function does not
+do:</p>
 <ul>
-<li>it does not pre-define a walking/cycling/wheeling network. You can do this manually or rely on, for example, <code>osmextract</code> to download a pre-defined waking or cycling network</li>
-<li>it does not provide a ground truth evaluation of OSM data. It is important to stay critical of the data and what is being returned (e.g., a negative OSM width value should be suspicious)</li>
+<li>it does not pre-define a walking/cycling/wheeling network. You can
+do this manually or rely on, for example, <code>osmextract</code> to
+download a pre-defined waking or cycling network</li>
+<li>it does not provide a ground truth evaluation of OSM data. It is
+important to stay critical of the data and what is being returned (e.g.,
+a negative OSM width value should be suspicious)</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inclusive_mobility_get</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">osm_sf</span><span class="op">)</span> <span class="op">{</span></span>
@@ -410,24 +454,40 @@
 <p><em>Inclusive mobility</em>: pavements adjacent to roads</p>
 <p><em>OSM</em>:</p>
 <ul>
-<li>Highway = footway: used for mapping minor pathways which are used mainly or exclusively by pedestrians.
+<li>Highway = footway: used for mapping minor pathways which are used
+mainly or exclusively by pedestrians.
 <ul>
-<li>If the footway is associated with a road then add a footway=sidewalk tag. ○ <a href="https://wiki.openstreetmap.org/wiki/Tag:highway%3Dfootway" class="external-link uri">https://wiki.openstreetmap.org/wiki/Tag:highway%3Dfootway</a>
+<li>If the footway is associated with a road then add a footway=sidewalk
+tag. ○ <a href="https://wiki.openstreetmap.org/wiki/Tag:highway%3Dfootway" class="external-link uri">https://wiki.openstreetmap.org/wiki/Tag:highway%3Dfootway</a>
 </li>
 </ul>
 </li>
-<li>Add the cycleway=* tag to a highway=* to map cycling infrastructure that is an inherent part of the road. —&gt; If it’s part of the road and it’s permitted to walk/wheel on, then it’s a sidewalk as there’s an implication for the sidewalk running next to the carriageway</li>
-<li>The highway=cycleway tag indicates a separate way for the use of cyclists. —&gt; is not clear if highway=cycleway goes adjacent to roads</li>
-<li>There are two main ways of mapping footways, cycleways, and bridleways in the UK —&gt; see <a href="https://wiki.openstreetmap.org/wiki/Classic_vs_Alternative_tagging_schemes_in_use_in_the_United_Kingdom" class="external-link uri">https://wiki.openstreetmap.org/wiki/Classic_vs_Alternative_tagging_schemes_in_use_in_the_United_Kingdom</a>
+<li>Add the cycleway=* tag to a highway=* to map cycling infrastructure
+that is an inherent part of the road. —&gt; If it’s part of the road and
+it’s permitted to walk/wheel on, then it’s a sidewalk as there’s an
+implication for the sidewalk running next to the carriageway</li>
+<li>The highway=cycleway tag indicates a separate way for the use of
+cyclists. —&gt; is not clear if highway=cycleway goes adjacent to
+roads</li>
+<li>There are two main ways of mapping footways, cycleways, and
+bridleways in the UK —&gt; see <a href="https://wiki.openstreetmap.org/wiki/Classic_vs_Alternative_tagging_schemes_in_use_in_the_United_Kingdom" class="external-link uri">https://wiki.openstreetmap.org/wiki/Classic_vs_Alternative_tagging_schemes_in_use_in_the_United_Kingdom</a>
 </li>
 <li>Segregated might be used to indicate shared space
 <ul>
 <li>
-<a href="https://wiki.openstreetmap.org/wiki/Key:sidewalk" class="external-link uri">https://wiki.openstreetmap.org/wiki/Key:sidewalk</a> In such cases — where the footway is considered an integral part of the combined foot- and cycleway — sidewalk=* tends to be omitted in favour of segregated=yes</li>
+<a href="https://wiki.openstreetmap.org/wiki/Key:sidewalk" class="external-link uri">https://wiki.openstreetmap.org/wiki/Key:sidewalk</a> In such
+cases — where the footway is considered an integral part of the combined
+foot- and cycleway — sidewalk=* tends to be omitted in favour of
+segregated=yes</li>
 </ul>
 </li>
 </ul>
-<p><em>Hence</em>, it can be assumed key:footway and key:sidewalk are associated with the footways going adjacent to the road. Also, given that key:cycleway is supposed to be an inherent part of the road, then it should go adjacent to the road, which implies that if one can wheel/walk on it, then it’s a footway too. Moreover, key:segregated might be used instead of sidewalk tag for shared spaces.</p>
+<p><em>Hence</em>, it can be assumed key:footway and key:sidewalk are
+associated with the footways going adjacent to the road. Also, given
+that key:cycleway is supposed to be an inherent part of the road, then
+it should go adjacent to the road, which implies that if one can
+wheel/walk on it, then it’s a footway too. Moreover, key:segregated
+might be used instead of sidewalk tag for shared spaces.</p>
 </div>
 <div class="section level3">
 <h3 id="footpaths">Footpaths<a class="anchor" aria-label="anchor" href="#footpaths"></a>
@@ -438,16 +498,25 @@
 </ul>
 <p><em>OSM</em>:</p>
 <ul>
-<li>Highway = path: This tag is used for paths for which all and any of highway=footway, highway=cycleway and highway=bridleway would be inappropriate or inadequate.</li>
-<li>UK tagging scheme implies that highway values of footways, cycleways, and bridleways are foot = designated —&gt; <a href="https://wiki.openstreetmap.org/wiki/Classic_vs_Alternative_tagging_schemes_in_use_in_the_United_Kingdom" class="external-link uri">https://wiki.openstreetmap.org/wiki/Classic_vs_Alternative_tagging_schemes_in_use_in_the_United_Kingdom</a>
+<li>Highway = path: This tag is used for paths for which all and any of
+highway=footway, highway=cycleway and highway=bridleway would be
+inappropriate or inadequate.</li>
+<li>UK tagging scheme implies that highway values of footways,
+cycleways, and bridleways are foot = designated —&gt; <a href="https://wiki.openstreetmap.org/wiki/Classic_vs_Alternative_tagging_schemes_in_use_in_the_United_Kingdom" class="external-link uri">https://wiki.openstreetmap.org/wiki/Classic_vs_Alternative_tagging_schemes_in_use_in_the_United_Kingdom</a>
 </li>
 </ul>
-<p><em>So</em>, footpaths should be all the paths that are not footways.</p>
+<p><em>So</em>, footpaths should be all the paths that are not
+footways.</p>
 </div>
 <div class="section level3">
 <h3 id="implied-footways">Implied footways<a class="anchor" aria-label="anchor" href="#implied-footways"></a>
 </h3>
-<p>Sidewalk can be considered a negative tag because it is implied that roads have sidewalks. Yet, given that it is not explicitly mapped so, there is an assumption that might not always be correct. For this reason, a separate column was created to account for that and indicate which highways might have sidewalks but the user, in the end, can make a decision based on the need.</p>
+<p>Sidewalk can be considered a negative tag because it is implied that
+roads have sidewalks. Yet, given that it is not explicitly mapped so,
+there is an assumption that might not always be correct. For this
+reason, a separate column was created to account for that and indicate
+which highways might have sidewalks but the user, in the end, can make a
+decision based on the need.</p>
 </div>
 <div class="section level3">
 <h3 id="crossings">Crossings<a class="anchor" aria-label="anchor" href="#crossings"></a>
@@ -456,20 +525,29 @@
 <ul>
 <li>refers to Traffic Signs Manual</li>
 <li>highlights give-way and signal controlled crossings</li>
-<li>notes that the key qualities of a crossing are safety, convenience, and accessibility —&gt; it must improve all of them to some extent</li>
+<li>notes that the key qualities of a crossing are safety, convenience,
+and accessibility —&gt; it must improve all of them to some extent</li>
 </ul>
 <p><em>OSM</em>:</p>
 <ul>
-<li>Can be mapped as nodes with highway=crossing (sidewalks part of the road)
+<li>Can be mapped as nodes with highway=crossing (sidewalks part of the
+road)
 <ul>
 <li><a href="https://wiki.openstreetmap.org/wiki/Tag:highway%3Dcrossing" class="external-link uri">https://wiki.openstreetmap.org/wiki/Tag:highway%3Dcrossing</a></li>
 </ul>
 </li>
-<li>Can be linestrings with footway = crossing (sidewalks mapped as separate from the road) - <a href="https://wiki.openstreetmap.org/wiki/Tag:footway%3Dcrossing" class="external-link uri">https://wiki.openstreetmap.org/wiki/Tag:footway%3Dcrossing</a>
+<li>Can be linestrings with footway = crossing (sidewalks mapped as
+separate from the road) - <a href="https://wiki.openstreetmap.org/wiki/Tag:footway%3Dcrossing" class="external-link uri">https://wiki.openstreetmap.org/wiki/Tag:footway%3Dcrossing</a>
 </li>
-<li>Mapping techniques depend on how the sidewalk was mapped (part of the road or not)</li>
+<li>Mapping techniques depend on how the sidewalk was mapped (part of
+the road or not)</li>
 </ul>
-<p>OSM allows to specify the type of a crossing, yet the three approved tags are traffic_lights, uncontrolled, or none. Given this, OSM was recategorized based on the broad categorization of crossings in the IM guide. If the type of a crossing is unknown but it’s mapped as present, “yes” value was used, if it is explicitly known that there is no crossing, then “no” value is present.</p>
+<p>OSM allows to specify the type of a crossing, yet the three approved
+tags are traffic_lights, uncontrolled, or none. Given this, OSM was
+recategorized based on the broad categorization of crossings in the IM
+guide. If the type of a crossing is unknown but it’s mapped as present,
+“yes” value was used, if it is explicitly known that there is no
+crossing, then “no” value is present.</p>
 </div>
 <div class="section level3">
 <h3 id="tactile-paving">Tactile paving<a class="anchor" aria-label="anchor" href="#tactile-paving"></a>
@@ -492,14 +570,19 @@
 </li>
 <li>No default value (i.e. existence is not implied)</li>
 </ul>
-<p><em>So</em>, OSM does not seem to support the categorization of tactile paving as outlines in the IM guide. For this reason simplified approach was taken in which only the presence or absence of tactile paving is determined.</p>
+<p><em>So</em>, OSM does not seem to support the categorization of
+tactile paving as outlines in the IM guide. For this reason simplified
+approach was taken in which only the presence or absence of tactile
+paving is determined.</p>
 </div>
 <div class="section level3">
 <h3 id="surface">Surface<a class="anchor" aria-label="anchor" href="#surface"></a>
 </h3>
 <p><em>Inclusive Mobility</em>:</p>
 <ul>
-<li>Should be: even, firm, and slip-resistant —&gt; There are requirements for the joint width (i.e., cobbles unlikely to be suitable)</li>
+<li>Should be: even, firm, and slip-resistant —&gt; There are
+requirements for the joint width (i.e., cobbles unlikely to be
+suitable)</li>
 </ul>
 <p><em>OSM</em>:</p>
 <ul>
@@ -510,14 +593,20 @@
 </li>
 <li>Two main groups: —&gt; Paved and Unpaved</li>
 </ul>
-<p><em>So</em>, it is hard to determine if a given surface matches the requirements of IM guide, especially if it’s slip-resistant. For this reason, a simple recategorization was used to only indicate if the surface is even. A basic assumption is that all surfaces, except asphalt and concrete, are not unless they have an excellent or good smoothness level tagged.</p>
+<p><em>So</em>, it is hard to determine if a given surface matches the
+requirements of IM guide, especially if it’s slip-resistant. For this
+reason, a simple recategorization was used to only indicate if the
+surface is even. A basic assumption is that all surfaces, except asphalt
+and concrete, are not unless they have an excellent or good smoothness
+level tagged.</p>
 </div>
 <div class="section level3">
 <h3 id="lighting">Lighting<a class="anchor" aria-label="anchor" href="#lighting"></a>
 </h3>
 <p><em>Inclusive Mobolity</em>:</p>
 <ul>
-<li>lighting might increase a sense of security, improve the ability to read signs, and navigate the space in general.</li>
+<li>lighting might increase a sense of security, improve the ability to
+read signs, and navigate the space in general.</li>
 <li>it is important for both people with and without disabilities</li>
 <li>different illumination levels for different spaces</li>
 </ul>
@@ -534,10 +623,19 @@
 <li>Point data</li>
 </ul>
 </li>
-<li>Two different schemes seem to be present – either add lit as a highway attribute or as an element of its own. Overlaps are present, hence this should be handled with care</li>
+<li>Two different schemes seem to be present – either add lit as a
+highway attribute or as an element of its own. Overlaps are present,
+hence this should be handled with care</li>
 </ul>
-<p><em>So</em>, OSM does not seem to provide an ability to tag illumination levels. Given that, a simple present/absent recategorization has been done. To account for potential overlaps between different tagging schemes, only key:lit has been used. However, for a more in-depth examination of lighting, both approaches should, ideally, be taken into consideration.</p>
-<p>Note: if you want to include <code>highway=street_lamp</code> in your analysis, you will have to download point data by specifying this in the query before downloading the data.</p>
+<p><em>So</em>, OSM does not seem to provide an ability to tag
+illumination levels. Given that, a simple present/absent
+recategorization has been done. To account for potential overlaps
+between different tagging schemes, only key:lit has been used. However,
+for a more in-depth examination of lighting, both approaches should,
+ideally, be taken into consideration.</p>
+<p>Note: if you want to include <code>highway=street_lamp</code> in your
+analysis, you will have to download point data by specifying this in the
+query before downloading the data.</p>
 </div>
 <div class="section level3">
 <h3 id="speed">Speed<a class="anchor" aria-label="anchor" href="#speed"></a>
@@ -545,7 +643,9 @@
 <p><em>Inclusive Mobility</em>:</p>
 <ul>
 <li>does not explicitly outline (max) speed requirements</li>
-<li>note that vehicle speed (and volume) have impact on pedestrian’s ability to cross a street given that there are no traffic-control mechanisms</li>
+<li>note that vehicle speed (and volume) have impact on pedestrian’s
+ability to cross a street given that there are no traffic-control
+mechanisms</li>
 </ul>
 <p><em>OSM</em>:</p>
 <ul>
@@ -555,7 +655,10 @@
 </ul>
 </li>
 </ul>
-<p><em>So</em>, the speed was categorized into 4 groups: 1 to 20, 21 to 40, and 41 to 60, and over 60 mph. The main focus here might be on the roads with up to 20 mph speed limit as it has a positive effect on increasing active modes of travel.</p>
+<p><em>So</em>, the speed was categorized into 4 groups: 1 to 20, 21 to
+40, and 41 to 60, and over 60 mph. The main focus here might be on the
+roads with up to 20 mph speed limit as it has a positive effect on
+increasing active modes of travel.</p>
 </div>
 <div class="section level3">
 <h3 id="kerb">Kerb<a class="anchor" aria-label="anchor" href="#kerb"></a>
@@ -564,7 +667,9 @@
 <ul>
 <li>dropped flush kerbs are essential for wheelchair users</li>
 <li>flush kerbs should be used with tactile paving</li>
-<li>dropped kerbs should be flush with the road with a maximum of 6mm tolerance (or a rounded bullnose is provided at the change of level)</li>
+<li>dropped kerbs should be flush with the road with a maximum of 6mm
+tolerance (or a rounded bullnose is provided at the change of
+level)</li>
 </ul>
 <p><em>OSM</em>:</p>
 <ul>
@@ -581,7 +686,10 @@
 </ul>
 </li>
 </ul>
-<p><em>So</em>, while there is an implication in OSM tagging scheme that kerbs of ~ 3cm height are wheelchair-friendly, it is not a case in the IM guide. Therefore, only kerbs having values of ‘flush’ or ‘no’ have been categorized as “flush”.</p>
+<p><em>So</em>, while there is an implication in OSM tagging scheme that
+kerbs of ~ 3cm height are wheelchair-friendly, it is not a case in the
+IM guide. Therefore, only kerbs having values of ‘flush’ or ‘no’ have
+been categorized as “flush”.</p>
 </div>
 <div class="section level3">
 <h3 id="width">Width<a class="anchor" aria-label="anchor" href="#width"></a>
@@ -592,7 +700,8 @@
 <li>the width of 2m should be the minimum
 <ul>
 <li>absolute minimum of footway width should be 1.5m</li>
-<li>if there is an obstruction (e.g., a tree) absolute minimum width can be 1m but the max length of this should not exceed 6m</li>
+<li>if there is an obstruction (e.g., a tree) absolute minimum width can
+be 1m but the max length of this should not exceed 6m</li>
 </ul>
 </li>
 </ul>
@@ -610,37 +719,50 @@
 </li>
 <li>default values are implied to be meters</li>
 </ul>
-<p><em>So</em>, the function recategorizes OSM data into 3 groups: width under 1.5 m, between 1.5 and 2m, and above 2 meters. The same is done for the key:est_width. It’s important to note that two new columns are returned – one for the estimated and another for the <em>actual</em> width. Finally, because of OSM tagging scheme, it is not always easy to differentiate (unless it is explicitly tagged) if the width refers to the carriageway, sidewalk, or include both. The function here does not provide this differentiation either, thus bear in mind that this column might be misleading. To avoid this, it is recommended to process the data further so only sidewalks and/or footways remain in the dataset as much as it is possible given the limitations of OSM.</p>
+<p><em>So</em>, the function recategorizes OSM data into 3 groups: width
+under 1.5 m, between 1.5 and 2m, and above 2 meters. The same is done
+for the key:est_width. It’s important to note that two new columns are
+returned – one for the estimated and another for the <em>actual</em>
+width. Finally, because of OSM tagging scheme, it is not always easy to
+differentiate (unless it is explicitly tagged) if the width refers to
+the carriageway, sidewalk, or include both. The function here does not
+provide this differentiation either, thus bear in mind that this column
+might be misleading. To avoid this, it is recommended to process the
+data further so only sidewalks and/or footways remain in the dataset as
+much as it is possible given the limitations of OSM.</p>
 </div>
 <div class="section level3">
 <h3 id="notes">Notes:<a class="anchor" aria-label="anchor" href="#notes"></a>
 </h3>
 <ul>
 <li>
-<input type="checkbox" disabled checked>
-im_footway_pot needs to be updated to exclude crossings</li>
+<input type="checkbox" disabled checked>im_footway_pot needs
+to be updated to exclude crossings</li>
 <li>
-<input type="checkbox" disabled checked>
-is it possible to download both lines and points at the same time so I don’t have to join them?</li>
-<li>[] addressing potential overlaps of crossings (see Park Lane - Westgate)</li>
+<input type="checkbox" disabled checked>is it possible to
+download both lines and points at the same time so I don’t have to join
+them?</li>
+<li>[] addressing potential overlaps of crossings (see Park Lane -
+Westgate)</li>
 <li>[] can illumination level be mapped?</li>
 <li>
-<input type="checkbox" disabled checked>
-overlaps between points and lines (e.g., adding lit to a highway but then also highway = street_lamp)</li>
+<input type="checkbox" disabled checked>overlaps between
+points and lines (e.g., adding lit to a highway but then also highway =
+street_lamp)</li>
 <li>
-<input type="checkbox" disabled checked>
-add key:smoothness</li>
+<input type="checkbox" disabled checked>add
+key:smoothness</li>
 <li>
-<input type="checkbox" disabled checked>
-add key:width</li>
+<input type="checkbox" disabled checked>add key:width</li>
 <li>[] im_surface_paved looks bad to me</li>
 <li>[CANCELLED] add warning if tags are missing</li>
 <li>[CANCELLED] parsing warning</li>
 <li>
-<input type="checkbox" disabled checked>
-should maxspeed be here? I don’t think it’s in the guide</li>
+<input type="checkbox" disabled checked>should maxspeed be
+here? I don’t think it’s in the guide</li>
 <li>[] accounting for mph/km in speed</li>
-<li>[] note that not all OSM data is recategorized. E.g., key:smootheness is good as it is</li>
+<li>[] note that not all OSM data is recategorized. E.g.,
+key:smootheness is good as it is</li>
 </ul>
 <p>think about:</p>
 <ul>

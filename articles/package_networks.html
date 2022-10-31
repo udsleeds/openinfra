@@ -105,8 +105,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Network definitions (pre-defined networks) by OSM data package</h1>
-                        <h4 data-toc-skip class="author">James Hulse</h4>
+      <h1 data-toc-skip>Network definitions (pre-defined networks) by
+OSM data package</h1>
+                        <h4 data-toc-skip class="author">James
+Hulse</h4>
             
             <h4 data-toc-skip class="date">2022-06-15</h4>
       
@@ -118,24 +120,53 @@
     
     
 <p><br><br></p>
-<p><em>This vignette is currently a work in progress and changes are likely (20/6/22)</em> <br><br> This Vignette looks at the pyrosm, OSMnx, and osmsxtract packages for obtaining network data from OpenStreetMaps. <br><br> Here, we look at how each package defines one of three pre-defined networks:</p>
+<p><em>This vignette is currently a work in progress and changes are
+likely (20/6/22)</em> <br><br> This Vignette looks at the pyrosm, OSMnx,
+and osmsxtract packages for obtaining network data from OpenStreetMaps.
+<br><br> Here, we look at how each package defines one of three
+pre-defined networks:</p>
 <ul>
 <li>Driving Network</li>
 <li>Walking Network</li>
 <li>Cycling Network</li>
 </ul>
-<p><br> With OpenInfra’s specific focus on active travel and infrastructure our focus is on Cycling and Walking networks. <br> Driving networks have been included for completeness. <br><br> Understanding how such packages define networks will allow us to analyse and combine the tag filters used by each package to define, hopefully, the best defined active travel networks. <br><br></p>
+<p><br> With OpenInfra’s specific focus on active travel and
+infrastructure our focus is on Cycling and Walking networks. <br>
+Driving networks have been included for completeness. <br><br>
+Understanding how such packages define networks will allow us to analyse
+and combine the tag filters used by each package to define, hopefully,
+the best defined active travel networks. <br><br></p>
 <div class="section level2">
 <h2 id="osmextract-network-filters">osmextract network filters<a class="anchor" aria-label="anchor" href="#osmextract-network-filters"></a>
 </h2>
-<p><br> Firstly we go through the osmextract (R) package function documentation to see which filters are applied to each of the three network types. <br><br> osmextract creates networks with the following workflow. A place name string (i.e. “Leeds”) is matched to one of two dataset providers, <a href="https://download.bbbike.org/osm/bbbike/" class="external-link">BBBike</a> or <a href="https://download.geofabrik.de/" class="external-link">Geofabrik</a> before downloading a compressed <a href="https://wiki.openstreetmap.org/wiki/PBF_Format" class="external-link"><code>.pbf</code></a> file of OSM data for the specified place (Leeds). Next the downloaded file is converted into the open standard <a href="https://www.geopackage.org/" class="external-link"><code>.gpkg</code></a> format. This file is then parsed with an SQL query to obtain network features specified by the user (i.e. “walking”, “cycling”, or “driving”). <br><br> Here we look at the three pre-defined filters offered by <code>osmextract</code> and how these are parsed with an SQL query, we then try to translate these queries into a python format, similar to the filtering usilised by pyrosm/OSMnx. <br><br> After, we compare the tag filtering applied by each package to obtain our final networks. <br> Note that as the <code>osmextract</code> package defines the osm layer it is looking at (<code>layer="lines"</code>) as being the lines (OSM ways - roads, footpaths, etc.) then we do not need to specify area=“no”, as by default, no areas (polygons) are returned within the <code>"lines"</code> layer.</p>
+<p><br> Firstly we go through the osmextract (R) package function
+documentation to see which filters are applied to each of the three
+network types. <br><br> osmextract creates networks with the following
+workflow. A place name string (i.e. “Leeds”) is matched to one of two
+dataset providers, <a href="https://download.bbbike.org/osm/bbbike/" class="external-link">BBBike</a> or <a href="https://download.geofabrik.de/" class="external-link">Geofabrik</a> before downloading a
+compressed <a href="https://wiki.openstreetmap.org/wiki/PBF_Format" class="external-link"><code>.pbf</code></a>
+file of OSM data for the specified place (Leeds). Next the downloaded
+file is converted into the open standard <a href="https://www.geopackage.org/" class="external-link"><code>.gpkg</code></a> format. This
+file is then parsed with an SQL query to obtain network features
+specified by the user (i.e. “walking”, “cycling”, or “driving”).
+<br><br> Here we look at the three pre-defined filters offered by
+<code>osmextract</code> and how these are parsed with an SQL query, we
+then try to translate these queries into a python format, similar to the
+filtering usilised by pyrosm/OSMnx. <br><br> After, we compare the tag
+filtering applied by each package to obtain our final networks. <br>
+Note that as the <code>osmextract</code> package defines the osm layer
+it is looking at (<code>layer="lines"</code>) as being the lines (OSM
+ways - roads, footpaths, etc.) then we do not need to specify area=“no”,
+as by default, no areas (polygons) are returned within the
+<code>"lines"</code> layer.</p>
 <div class="section level3">
 <h3 id="driving-filter">Driving Filter<a class="anchor" aria-label="anchor" href="#driving-filter"></a>
 </h3>
 <p><br></p>
 <div class="section level5">
 <h5 id="osmextract-r-sql">
-<a href="https://github.com/ropensci/osmextract/blob/master/R/get-network.R#L230" class="external-link">osmextract</a> (R &amp; SQL)<a class="anchor" aria-label="anchor" href="#osmextract-r-sql"></a>
+<a href="https://github.com/ropensci/osmextract/blob/master/R/get-network.R#L230" class="external-link">osmextract</a>
+(R &amp; SQL)<a class="anchor" aria-label="anchor" href="#osmextract-r-sql"></a>
 </h5>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># A motorcar/motorcycle mode of transport includes the following scenarios:</span></span>
@@ -208,7 +239,8 @@ osmextract_filter["driving"] = (
 </h3>
 <div class="section level4">
 <h4 id="osmextract-r-sql-1">
-<a href="https://github.com/ropensci/osmextract/blob/master/R/get-network.R#L197" class="external-link">osmextract</a> (R &amp; SQL)<a class="anchor" aria-label="anchor" href="#osmextract-r-sql-1"></a>
+<a href="https://github.com/ropensci/osmextract/blob/master/R/get-network.R#L197" class="external-link">osmextract</a>
+(R &amp; SQL)<a class="anchor" aria-label="anchor" href="#osmextract-r-sql-1"></a>
 </h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># See also https://wiki.openstreetmap.org/wiki/Key:footway and</span></span>
@@ -290,7 +322,8 @@ osmextract_filter["walking"] = (
 </h3>
 <div class="section level4">
 <h4 id="osmextract-r-sql-2">
-<a href="https://github.com/ropensci/osmextract/blob/master/R/get-network.R#L157" class="external-link">osmextract</a> (R &amp; SQL)<a class="anchor" aria-label="anchor" href="#osmextract-r-sql-2"></a>
+<a href="https://github.com/ropensci/osmextract/blob/master/R/get-network.R#L157" class="external-link">osmextract</a>
+(R &amp; SQL)<a class="anchor" aria-label="anchor" href="#osmextract-r-sql-2"></a>
 </h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># A cycling mode of transport includes the following scenarios:</span></span>
@@ -374,7 +407,16 @@ osmextract_filter["cycling"] = (
 <div class="section level2">
 <h2 id="general-network-definitions-by-package">General Network Definitions (by package)<a class="anchor" aria-label="anchor" href="#general-network-definitions-by-package"></a>
 </h2>
-<p>The pyrosm package defines networks by first taking a complete network from OSM. It then recursively removes features that contain tags matching specific networks described below: <br><br> Definitions have been obtained from <a href="https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1" class="external-link">pyrosm source code</a>, the <a href="https://github.com/gboeing/osmnx/blob/77fd41c4e8d3f87aa93a23193f3f604c263996f8/osmnx/downloader.py#L28" class="external-link">OSMnx source code</a>, and the <a href="https://github.com/ropensci/osmextract/blob/master/R/get-network.R" class="external-link">osmextract source code</a>. <br><br> It should be noted that for all OSMnx OSM API queries the “highway” tag is specified.<br><em>specifying way[“highway”] means that all ways returned must have a highway tag. the specific filters then remove ways by tag/value.</em> <br><br><strong>Cycling Filter</strong> removed tags</p>
+<p>The pyrosm package defines networks by first taking a complete
+network from OSM. It then recursively removes features that contain tags
+matching specific networks described below: <br><br> Definitions have
+been obtained from <a href="https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1" class="external-link">pyrosm
+source code</a>, the <a href="https://github.com/gboeing/osmnx/blob/77fd41c4e8d3f87aa93a23193f3f604c263996f8/osmnx/downloader.py#L28" class="external-link">OSMnx
+source code</a>, and the <a href="https://github.com/ropensci/osmextract/blob/master/R/get-network.R" class="external-link">osmextract
+source code</a>. <br><br> It should be noted that for all OSMnx OSM API
+queries the “highway” tag is specified.<br><em>specifying
+way[“highway”] means that all ways returned must have a highway tag. the
+specific filters then remove ways by tag/value.</em> <br><br><strong>Cycling Filter</strong> removed tags</p>
 <table class="table">
 <colgroup>
 <col width="21%">
@@ -407,17 +449,30 @@ osmextract_filter["cycling"] = (
 </tr>
 <tr class="odd">
 <td align="center">highway</td>
-<td align="center">“footway”, “steps”, “corridor”, “elevator”, “escalator”, “motor”, “proposed”, “construction”, “abandoned”, “platform”, “raceway”, “motorway”, “motorway_link”</td>
-<td align="center">“abandoned”, “bus_guideway”, “construction”, “corridor”, “elevator”, “escalator”, “footway”, “motor”, “planned”, “platform”, “proposed”, “raceway”, “steps”</td>
-<td align="center">‘abandoned’, ‘bus_guideway’, ‘byway’, ‘construction’, ‘corridor’, ‘elevator’, ‘fixme’, ‘escalator’, ‘gallop’, ‘historic’, ‘no’, ‘planned’, ‘platform’, ‘proposed’, ‘raceway’, ‘steps’</td>
-<td align="center">‘abandoned’, ‘bus_guideway’, ‘byway’, ‘construction’, ‘corridor’, ‘elevator’, ‘fixme’, ‘escalator’, ‘gallop’, ‘historic’, ‘no’, ‘planned’, ‘platform’, ‘proposed’, ‘raceway’, ‘steps’, “motor”</td>
+<td align="center">“footway”, “steps”, “corridor”, “elevator”,
+“escalator”, “motor”, “proposed”, “construction”, “abandoned”,
+“platform”, “raceway”, “motorway”, “motorway_link”</td>
+<td align="center">“abandoned”, “bus_guideway”, “construction”,
+“corridor”, “elevator”, “escalator”, “footway”, “motor”, “planned”,
+“platform”, “proposed”, “raceway”, “steps”</td>
+<td align="center">‘abandoned’, ‘bus_guideway’, ‘byway’, ‘construction’,
+‘corridor’, ‘elevator’, ‘fixme’, ‘escalator’, ‘gallop’, ‘historic’,
+‘no’, ‘planned’, ‘platform’, ‘proposed’, ‘raceway’, ‘steps’</td>
+<td align="center">‘abandoned’, ‘bus_guideway’, ‘byway’, ‘construction’,
+‘corridor’, ‘elevator’, ‘fixme’, ‘escalator’, ‘gallop’, ‘historic’,
+‘no’, ‘planned’, ‘platform’, ‘proposed’, ‘raceway’, ‘steps’,
+“motor”</td>
 </tr>
 <tr class="even">
 <td align="center">highway</td>
 <td align="center"><strong>not needed</strong></td>
 <td align="center"><strong>not needed</strong></td>
-<td align="center">Remove feature if highway = (“motorway”, “motorway_link”, “footway”, “bridleway”) UNLESS bicycle = (“yes”, “designated”, “permissive”, “destination”)</td>
-<td align="center">Remove if highway= (“motorway”, “motorway_link”, “footway”, “bridleway”) UNLESS bicycle = (“yes”, “designated”, “permissive”, “destination)</td>
+<td align="center">Remove feature if highway = (“motorway”,
+“motorway_link”, “footway”, “bridleway”) UNLESS bicycle = (“yes”,
+“designated”, “permissive”, “destination”)</td>
+<td align="center">Remove if highway= (“motorway”, “motorway_link”,
+“footway”, “bridleway”) UNLESS bicycle = (“yes”, “designated”,
+“permissive”, “destination)</td>
 </tr>
 <tr class="odd">
 <td align="center">bicycle</td>
@@ -430,7 +485,9 @@ osmextract_filter["cycling"] = (
 <td align="center">service</td>
 <td align="center">“private”</td>
 <td align="center">“private”</td>
-<td align="center">“[str for str in values if ”private” in str]”, (in other words if ‘private’ is in a value for this tag, remove this feature) where values = network[‘service’].keys()</td>
+<td align="center">“[str for str in values if ”private” in str]”, (in
+other words if ‘private’ is in a value for this tag, remove this
+feature) where values = network[‘service’].keys()</td>
 <td align="center">remove if key value contains substring “private”</td>
 </tr>
 </tbody>
@@ -468,10 +525,22 @@ osmextract_filter["cycling"] = (
 </tr>
 <tr class="odd">
 <td align="center">highway</td>
-<td align="center">“cycleway”, “footway”, “path”, “pedestrian”, “steps”, “track”, “corridor”, “elevator”, “escalator”, “proposed”, “construction”, “bridleway”, “abandoned”, “platform”, “raceway”</td>
-<td align="center">“abandoned”, “bridleway”, “bus_guideway”, “construction”, “corridor”, “cycleway”, “elevator”, “escalator”, “footway”, “path”, “pedestrian”, “planned”, “platform”, “proposed”, “raceway”, “service”, “steps”, “track”</td>
-<td align="center">‘abandoned’, ‘bus_guideway’, ‘byway’, ‘construction’, ‘corridor’, ‘elevator’, ‘fixme’, ‘escalator’, ‘gallop’, ‘historic’, ‘no’, ‘planned’, ‘platform’, ‘proposed’, ‘cycleway’, ‘pedestrian’, ‘bridleway’, ‘path’, ‘footway’, ‘steps’</td>
-<td align="center">‘abandoned’, ‘bus_guideway’, ‘byway’, ‘construction’, ‘corridor’, ‘elevator’, ‘fixme’, ‘escalator’, ‘gallop’, ‘historic’, ‘no’, ‘planned’, ‘platform’, ‘proposed’, ‘cycleway’, ‘pedestrian’, ‘bridleway’, ‘path’, ‘footway’, ‘steps’, “track”, “raceway”, “service”</td>
+<td align="center">“cycleway”, “footway”, “path”, “pedestrian”, “steps”,
+“track”, “corridor”, “elevator”, “escalator”, “proposed”,
+“construction”, “bridleway”, “abandoned”, “platform”, “raceway”</td>
+<td align="center">“abandoned”, “bridleway”, “bus_guideway”,
+“construction”, “corridor”, “cycleway”, “elevator”, “escalator”,
+“footway”, “path”, “pedestrian”, “planned”, “platform”, “proposed”,
+“raceway”, “service”, “steps”, “track”</td>
+<td align="center">‘abandoned’, ‘bus_guideway’, ‘byway’, ‘construction’,
+‘corridor’, ‘elevator’, ‘fixme’, ‘escalator’, ‘gallop’, ‘historic’,
+‘no’, ‘planned’, ‘platform’, ‘proposed’, ‘cycleway’, ‘pedestrian’,
+‘bridleway’, ‘path’, ‘footway’, ‘steps’</td>
+<td align="center">‘abandoned’, ‘bus_guideway’, ‘byway’, ‘construction’,
+‘corridor’, ‘elevator’, ‘fixme’, ‘escalator’, ‘gallop’, ‘historic’,
+‘no’, ‘planned’, ‘platform’, ‘proposed’, ‘cycleway’, ‘pedestrian’,
+‘bridleway’, ‘path’, ‘footway’, ‘steps’, “track”, “raceway”,
+“service”</td>
 </tr>
 <tr class="even">
 <td align="center">motor_vehicle</td>
@@ -489,14 +558,21 @@ osmextract_filter["cycling"] = (
 </tr>
 <tr class="even">
 <td align="center">service</td>
-<td align="center">“parking”, “parking_aisle”, “private”, “emergency_access”</td>
-<td align="center">“alley”, “driveway”, “emergency_access”, “parking”, “parking_aisle”, “private”</td>
-<td align="center">“[str for str in values if ”private” in str]”, (in other words if ‘private’ is in a value for this tag, remove this feature) where values = network[‘service’].keys()</td>
-<td align="center">“alley”, “driveway”, “emergency_access”, “parking”, “parking_aisle”, “private”/[str for str in values if ”private” in str]</td>
+<td align="center">“parking”, “parking_aisle”, “private”,
+“emergency_access”</td>
+<td align="center">“alley”, “driveway”, “emergency_access”, “parking”,
+“parking_aisle”, “private”</td>
+<td align="center">“[str for str in values if ”private” in str]”, (in
+other words if ‘private’ is in a value for this tag, remove this
+feature) where values = network[‘service’].keys()</td>
+<td align="center">“alley”, “driveway”, “emergency_access”, “parking”,
+“parking_aisle”, “private”/[str for str in values if ”private” in
+str]</td>
 </tr>
 </tbody>
 </table>
-<p><br><br><strong>Driving &amp; Service Filter</strong> removed tags</p>
+<p><br><br><strong>Driving &amp; Service Filter</strong> removed
+tags</p>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="26%">
@@ -525,8 +601,13 @@ osmextract_filter["cycling"] = (
 </tr>
 <tr class="odd">
 <td align="center">highway</td>
-<td align="center">“cycleway”, “footway”, “path”, “pedestrian”, “steps”, “track”, “corridor”, “elevator”, “escalator”, “proposed”, “construction”, “bridleway”, “abandoned”, “platform”, “raceway”</td>
-<td align="center">“abandoned”, “bridleway”, “bus_guideway”, “construction”, “corridor”, “cycleway”, “elevator”, “escalator”, “footway”, “path”, “pedestrian”, “planned”, “platform”, “proposed”, “raceway”, “steps”, “track”</td>
+<td align="center">“cycleway”, “footway”, “path”, “pedestrian”, “steps”,
+“track”, “corridor”, “elevator”, “escalator”, “proposed”,
+“construction”, “bridleway”, “abandoned”, “platform”, “raceway”</td>
+<td align="center">“abandoned”, “bridleway”, “bus_guideway”,
+“construction”, “corridor”, “cycleway”, “elevator”, “escalator”,
+“footway”, “path”, “pedestrian”, “planned”, “platform”, “proposed”,
+“raceway”, “steps”, “track”</td>
 <td align="center"><em>unspecified</em></td>
 </tr>
 <tr class="even">
@@ -543,8 +624,10 @@ osmextract_filter["cycling"] = (
 </tr>
 <tr class="even">
 <td align="center">service</td>
-<td align="center">“parking”, “parking_isle”, “private”, “emergency_access”</td>
-<td align="center">“emergency_access”, “parking”, “parking_aisle”, “private”</td>
+<td align="center">“parking”, “parking_isle”, “private”,
+“emergency_access”</td>
+<td align="center">“emergency_access”, “parking”, “parking_aisle”,
+“private”</td>
 <td align="center"><em>unspecified</em></td>
 </tr>
 <tr class="odd">
@@ -588,17 +671,27 @@ osmextract_filter["cycling"] = (
 </tr>
 <tr class="odd">
 <td align="center">highway</td>
-<td align="center">“cycleway”, “motor”, “proposed”, “construction”, “abandoned”, “platform”, “raceway”, “motorway”, “motorway_link”</td>
-<td align="center">“abandoned”, “bus_guideway”, “construction”, “cycleway”, “motor”, “planned”, “platform”, “proposed”, “raceway”</td>
-<td align="center">‘abandoned’, ‘bus_guideway’, ‘byway’, ‘construction’, ‘corridor’, ‘elevator’, ‘fixme’, ‘escalator’, ‘gallop’, ‘historic’, ‘no’, ‘planned’, ‘platform’, ‘proposed’, ‘raceway’, ‘motorway’, ‘motorway_link’</td>
-<td align="center">‘abandoned’, ‘bus_guideway’, ‘byway’, ‘construction’, ‘corridor’, ‘elevator’, ‘fixme’, ‘escalator’, ‘gallop’, ‘historic’, ‘no’, ‘planned’, ‘platform’, ‘proposed’, ‘raceway’, ‘motorway’, ‘motorway_link’, ‘motor’</td>
+<td align="center">“cycleway”, “motor”, “proposed”, “construction”,
+“abandoned”, “platform”, “raceway”, “motorway”, “motorway_link”</td>
+<td align="center">“abandoned”, “bus_guideway”, “construction”,
+“cycleway”, “motor”, “planned”, “platform”, “proposed”, “raceway”</td>
+<td align="center">‘abandoned’, ‘bus_guideway’, ‘byway’, ‘construction’,
+‘corridor’, ‘elevator’, ‘fixme’, ‘escalator’, ‘gallop’, ‘historic’,
+‘no’, ‘planned’, ‘platform’, ‘proposed’, ‘raceway’, ‘motorway’,
+‘motorway_link’</td>
+<td align="center">‘abandoned’, ‘bus_guideway’, ‘byway’, ‘construction’,
+‘corridor’, ‘elevator’, ‘fixme’, ‘escalator’, ‘gallop’, ‘historic’,
+‘no’, ‘planned’, ‘platform’, ‘proposed’, ‘raceway’, ‘motorway’,
+‘motorway_link’, ‘motor’</td>
 </tr>
 <tr class="even">
 <td align="center">highway</td>
 <td align="center"><strong>not needed</strong></td>
 <td align="center"><strong>not needed</strong></td>
-<td align="center">Remove feature if highway = “cycleway” UNLESS feature also has foot = “yes”, “permissive”, “designated”, “destination”</td>
-<td align="center">remove feature if highway=cycleway UNLESS feature has foot=(“yes”, “permissive”, “designated”, “destination”)</td>
+<td align="center">Remove feature if highway = “cycleway” UNLESS feature
+also has foot = “yes”, “permissive”, “designated”, “destination”</td>
+<td align="center">remove feature if highway=cycleway UNLESS feature has
+foot=(“yes”, “permissive”, “designated”, “destination”)</td>
 </tr>
 <tr class="odd">
 <td align="center">foot</td>
@@ -611,7 +704,9 @@ osmextract_filter["cycling"] = (
 <td align="center">service</td>
 <td align="center">“private”</td>
 <td align="center">“private”</td>
-<td align="center">“[str for str in values if ”private” in str]”, (in other words if ‘private’ is in a value for this tag, remove this feature) where values = network[‘service’].keys()</td>
+<td align="center">“[str for str in values if ”private” in str]”, (in
+other words if ‘private’ is in a value for this tag, remove this
+feature) where values = network[‘service’].keys()</td>
 <td align="center">“[str for str in values if ”private” in str]”</td>
 </tr>
 </tbody>
@@ -621,7 +716,11 @@ osmextract_filter["cycling"] = (
 <div class="section level2">
 <h2 id="creating-proposed-tag-filters">Creating Proposed Tag Filters<a class="anchor" aria-label="anchor" href="#creating-proposed-tag-filters"></a>
 </h2>
-<p>Here we show the code used to determine the final combination of proposed tag filters to use as our proposed filters within the tables above. <br><br> This was done by creating a set of each packages tags filter and finding the setdifference and combinging this, for each network type. See below:</p>
+<p>Here we show the code used to determine the final combination of
+proposed tag filters to use as our proposed filters within the tables
+above. <br><br> This was done by creating a set of each packages tags
+filter and finding the setdifference and combinging this, for each
+network type. See below:</p>
 <div class="section level3">
 <h3 id="drving-filter">Drving Filter<a class="anchor" aria-label="anchor" href="#drving-filter"></a>
 </h3>
@@ -646,7 +745,8 @@ print(OSMnx_set_drive.difference(osmextract_set_drive))
 # Things in OSMnx/pyrosm filters, not in osmextract
 print(pyrosm_set_drive.difference(osmextract_set_drive))
 ##&gt; {'raceway', 'track'}</code></pre>
-<p><br><br> The proposed filter is the <strong>osmextract</strong> filter with “track”, “raceway”, “service” keys added. <br><br></p>
+<p><br><br> The proposed filter is the <strong>osmextract</strong>
+filter with “track”, “raceway”, “service” keys added. <br><br></p>
 </div>
 <div class="section level3">
 <h3 id="cycling-filter-1">Cycling Filter<a class="anchor" aria-label="anchor" href="#cycling-filter-1"></a>
@@ -672,7 +772,11 @@ print(OSMnx_cycle.difference(osmextract_combined))
 #Tags in OSMnx/pyrosm filters not in osmextract filters
 print(pyrosm_cycle.difference(osmextract_combined))
 ##&gt; {'motor'}</code></pre>
-<p><br><br> The proposed filter is the <strong>osmextract</strong> filter with “motor” key added. <br><br> Note this will still include the remove feature if highway=[“motorway”, “motorway_link”, “footway”, “bridleway”] UNLESS bicycle=[“yes”, “designated”, “permissive”, “destination”] clause. <br><br></p>
+<p><br><br> The proposed filter is the <strong>osmextract</strong>
+filter with “motor” key added. <br><br> Note this will still include the
+remove feature if highway=[“motorway”, “motorway_link”, “footway”,
+“bridleway”] UNLESS bicycle=[“yes”, “designated”, “permissive”,
+“destination”] clause. <br><br></p>
 </div>
 <div class="section level3">
 <h3 id="walking-filter-1">Walking Filter<a class="anchor" aria-label="anchor" href="#walking-filter-1"></a>
@@ -711,7 +815,11 @@ print(OSMnx_walk.difference(osmextract_walk))
 # Comparing difference to osmextract filter
 print(pyrosm_walk.difference(osmextract_walk))
 ##&gt; {'motor', 'cycleway'}</code></pre>
-<p><br><br> We can see that the osmnextract filter is missing both “motor” and “cycleway”. <br><br> For the proposed filter we will add “motor” but not cycleway, as this will be taken care of by the proceeding highway=cycleway UNLESS foot=(“yes”, “designated”, “permissive”, “destination”) clause.</p>
+<p><br><br> We can see that the osmnextract filter is missing both
+“motor” and “cycleway”. <br><br> For the proposed filter we will add
+“motor” but not cycleway, as this will be taken care of by the
+proceeding highway=cycleway UNLESS foot=(“yes”, “designated”,
+“permissive”, “destination”) clause.</p>
 <p><br><br></p>
 </div>
 <div class="section level3">
@@ -724,7 +832,11 @@ print(pyrosm_walk.difference(osmextract_walk))
 <div class="section level4">
 <h4 id="cycling">Cycling<a class="anchor" aria-label="anchor" href="#cycling"></a>
 </h4>
-<p><br> From a pyrosm package <a href="https://github.com/HTenkanen/pyrosm/pull/175" class="external-link">pull request</a> it has been proposed to <a href="https://github.com/HTenkanen/pyrosm/pull/175/files" class="external-link">add</a> highway=“busway” to the removed features list. <br><br> Additionaly, it was propsed to also use bicycle=“use_sidepath”, however this is already covered by the osmextract package.</p>
+<p><br> From a pyrosm package <a href="https://github.com/HTenkanen/pyrosm/pull/175" class="external-link">pull request</a> it
+has been proposed to <a href="https://github.com/HTenkanen/pyrosm/pull/175/files" class="external-link">add</a>
+highway=“busway” to the removed features list. <br><br> Additionaly, it
+was propsed to also use bicycle=“use_sidepath”, however this is already
+covered by the osmextract package.</p>
 </div>
 <div class="section level4">
 <h4 id="driving">Driving<a class="anchor" aria-label="anchor" href="#driving"></a>
@@ -736,7 +848,33 @@ print(pyrosm_walk.difference(osmextract_walk))
 <div class="section level2">
 <h2 id="proposed-data-aquisition-method-">Proposed Data Aquisition Method.<a class="anchor" aria-label="anchor" href="#proposed-data-aquisition-method-"></a>
 </h2>
-<p>I am looking into how each package (osmextract, pyrosm, OSMnx) acquires OSM data so that we may use the most appropriate method moving forward. <br><br> Pyrosm collects pre-formated OSM extracts by custom user query from one of two providers, BBBike or Geofabrik. <br><br> It appears that Pyrosm takes all data for a user place query, before iteratively removing features from the parsed .osm.pbf file, in a top-down approach. If features do not satisfy the filter conditions specified by the <a href="https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1" class="external-link">filter documentation</a> then they are removed. Features are only removed from the downloaded file if they are caught by the pyrosm filtering, suggesting that some incorrect (<em>unknown</em>) features may still remain in the network if they are not caught by this filter. <br><br> On the other hand, it seems that osmextract also downloads data from providers (Geofabrik &amp; BBBike) before then filtering data using a bottom up apprpach. <br> From the downloaded <code>.pbf</code> file which is then converted to the open <code>.gpkg</code> format, <code>osmextract</code> then parses the <code>.gpkg</code> file using SQL queries. The networks features returned from such a request will only be returned if they satisfy the SQL query passed, and as such only known features should be returned, unlike pyrosm which may contain unknown features. <br><br> From studying the OSMnx documentation, it seems this may take a similar approach to osmextract making direct queries to the OSM API but I need to study this further. <br><br> I propose that we proceed utilizing the osmextract library, making use of the SQL query option so that we can specifically define queries (i.e. highway=cycleway UNLESS foot=yes, permissive, designated, destination etc…)</p>
+<p>I am looking into how each package (osmextract, pyrosm, OSMnx)
+acquires OSM data so that we may use the most appropriate method moving
+forward. <br><br> Pyrosm collects pre-formated OSM extracts by custom
+user query from one of two providers, BBBike or Geofabrik. <br><br> It
+appears that Pyrosm takes all data for a user place query, before
+iteratively removing features from the parsed .osm.pbf file, in a
+top-down approach. If features do not satisfy the filter conditions
+specified by the <a href="https://github.com/HTenkanen/pyrosm/blob/1d93eb050a37e4564b56f49ef816e409b6ae658c/pyrosm/config/osm_filters.py#L1" class="external-link">filter
+documentation</a> then they are removed. Features are only removed from
+the downloaded file if they are caught by the pyrosm filtering,
+suggesting that some incorrect (<em>unknown</em>) features may still
+remain in the network if they are not caught by this filter. <br><br> On
+the other hand, it seems that osmextract also downloads data from
+providers (Geofabrik &amp; BBBike) before then filtering data using a
+bottom up apprpach. <br> From the downloaded <code>.pbf</code> file
+which is then converted to the open <code>.gpkg</code> format,
+<code>osmextract</code> then parses the <code>.gpkg</code> file using
+SQL queries. The networks features returned from such a request will
+only be returned if they satisfy the SQL query passed, and as such only
+known features should be returned, unlike pyrosm which may contain
+unknown features. <br><br> From studying the OSMnx documentation, it
+seems this may take a similar approach to osmextract making direct
+queries to the OSM API but I need to study this further. <br><br> I
+propose that we proceed utilizing the osmextract library, making use of
+the SQL query option so that we can specifically define queries
+(i.e. highway=cycleway UNLESS foot=yes, permissive, designated,
+destination etc…)</p>
 </div>
   </div>
 

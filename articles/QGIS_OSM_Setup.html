@@ -118,16 +118,26 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This article covers the <a href="https://www.qgis.org/en/site/" class="external-link">QGIS</a> plugin <a href="https://plugins.qgis.org/plugins/OSMDownloader/" class="external-link">OSMDownloader</a>, answering how to obtain OSM data through a Graphical User Interface (GUI). <br><br> It is assumed that users already have QGIS installed - If not it can be downloaded for Mac and Windows Operating Systems <a href="https://qgis.org/en/site/forusers/download.html" class="external-link">here</a>. <br><br> There is also a guide for Linux users, however this may be confusing harder to follow, and so we go through the process of remving QGIS (users may have corrupted versions or unstable versions) before re-installing a stable version of QGIS at the bottom of this article.</p>
+<p>This article covers the <a href="https://www.qgis.org/en/site/" class="external-link">QGIS</a> plugin <a href="https://plugins.qgis.org/plugins/OSMDownloader/" class="external-link">OSMDownloader</a>,
+answering how to obtain OSM data through a Graphical User Interface
+(GUI). <br><br> It is assumed that users already have QGIS installed -
+If not it can be downloaded for Mac and Windows Operating Systems <a href="https://qgis.org/en/site/forusers/download.html" class="external-link">here</a>.
+<br><br> There is also a guide for Linux users, however this may be
+confusing harder to follow, and so we go through the process of remving
+QGIS (users may have corrupted versions or unstable versions) before
+re-installing a stable version of QGIS at the bottom of this
+article.</p>
 <p><br><br></p>
 <div class="section level3">
 <h3 id="installing-osmdownloader">Installing OSMDownloader<a class="anchor" aria-label="anchor" href="#installing-osmdownloader"></a>
 </h3>
-<p>The installation guide has been paraphrased from the following <a href="https://www.youtube.com/watch?v=XKKpPeSQ9UU" class="external-link">YouTube video</a>, should you wish to follow the video instead. <br><br></p>
+<p>The installation guide has been paraphrased from the following <a href="https://www.youtube.com/watch?v=XKKpPeSQ9UU" class="external-link">YouTube video</a>,
+should you wish to follow the video instead. <br><br></p>
 <ol style="list-style-type: decimal">
 <li>Open QGIS (type <code>qgis</code> in terminal) <br><br>
 </li>
-<li>GoTo Plugins &gt; Manage and Install Plugins (in QGIS toolbar) <br><br>
+<li>GoTo Plugins &gt; Manage and Install Plugins (in QGIS toolbar)
+<br><br>
 </li>
 <li>In the pop up, select the “Not Installed” tab <br><br>
 </li>
@@ -135,28 +145,47 @@
 </li>
 <li>Close the plugin window <br><br>
 </li>
-<li>Open a QGIS tile from the browser. We use XYZ Tiles &gt; OpenStreetMap <img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-22-19.png"><br><br>
+<li>Open a QGIS tile from the browser. We use XYZ Tiles &gt;
+OpenStreetMap <img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-22-19.png"><br><br>
 </li>
-<li>Zoom to a desired location, we go to Institute for Transport Studies (ITS) Leeds <img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-29-39.png"><br><br>
+<li>Zoom to a desired location, we go to Institute for Transport Studies
+(ITS) Leeds <img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-29-39.png"><br><br>
 </li>
-<li>Select area to download using newly installed OSMDownloader tool —&gt; <img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-21.17-48-25.png"><br><br>
+<li>Select area to download using newly installed OSMDownloader tool
+—&gt; <img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-21.17-48-25.png"><br><br>
 </li>
 <li>Specify download save location <img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-24-45.png"><br><br>
 </li>
-<li>Hit “OK”. The OSM data for your selected bounding box will be downloaded to your specified location as a .osm file! <img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-25-58.png"><img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-28-04.png">
+<li>Hit “OK”. The OSM data for your selected bounding box will be
+downloaded to your specified location as a .osm file! <img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-25-58.png"><img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-28-04.png">
 </li>
 </ol>
-<p><br><br> Data downloaded using the OSMDownloader QGIS plugin comes in the .osm format. This file can either be loaded into a GeoDataframe for further analysis using the <a href="https://github.com/gboeing/osmnx" class="external-link">OSMnx</a> Python package in our <a href="https://udsleeds.github.io/openinfra/articles/osm-python.html" class="external-link">Getting and using OSM data in Python</a> tutorial vignette. <br><br> Alternatively, the downloaded OSM layers can be loaded into QGIS as tiles too. <br><br><img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-38-13.png"><br><br> Please see the <a href="https://www.youtube.com/watch?v=XKKpPeSQ9UU" class="external-link">linked</a> video for a longer example of using OSM layers within QGIS.</p>
+<p><br><br> Data downloaded using the OSMDownloader QGIS plugin comes in
+the .osm format. This file can either be loaded into a GeoDataframe for
+further analysis using the <a href="https://github.com/gboeing/osmnx" class="external-link">OSMnx</a> Python package in our
+<a href="https://udsleeds.github.io/openinfra/articles/osm-python.html" class="external-link">Getting
+and using OSM data in Python</a> tutorial vignette. <br><br>
+Alternatively, the downloaded OSM layers can be loaded into QGIS as
+tiles too. <br><br><img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-38-13.png"><br><br> Please see the <a href="https://www.youtube.com/watch?v=XKKpPeSQ9UU" class="external-link">linked</a> video for
+a longer example of using OSM layers within QGIS.</p>
 <p><br><br><br></p>
 </div>
 <div class="section level3">
 <h3 id="ubuntu-linux-qgis-uninstall-and-stable-install">Ubuntu Linux QGIS Uninstall and Stable Install<a class="anchor" aria-label="anchor" href="#ubuntu-linux-qgis-uninstall-and-stable-install"></a>
 </h3>
-<p>This section covers the removal of unstable or outdated QGIS versions before covering the stable installation of QGIS for Ubuntu Linux 20.04. <br><br> This sections paraphrases the following <a href="https://www.youtube.com/watch?v=Zzhb8jnEEDI" class="external-link">YouTube video</a> covering this process, you may prefer to follow the video so it has been linked. <br><br></p>
-<p>First open the software properties interface from the terminal with:</p>
+<p>This section covers the removal of unstable or outdated QGIS versions
+before covering the stable installation of QGIS for Ubuntu Linux 20.04.
+<br><br> This sections paraphrases the following <a href="https://www.youtube.com/watch?v=Zzhb8jnEEDI" class="external-link">YouTube video</a>
+covering this process, you may prefer to follow the video so it has been
+linked. <br><br></p>
+<p>First open the software properties interface from the terminal
+with:</p>
 <pre><code>&gt; sudo software-properties-gtk
 # then enter your password</code></pre>
-<p>Next go to the software tab in the popup and remove any provider that contains <code>gis</code>, in our example the highlighted <code>ubuntugis/ppa</code> url, before then clicking <code>close</code> and then <code>reload/refresh</code>:</p>
+<p>Next go to the software tab in the popup and remove any provider that
+contains <code>gis</code>, in our example the highlighted
+<code>ubuntugis/ppa</code> url, before then clicking <code>close</code>
+and then <code>reload/refresh</code>:</p>
 <pre><code># Go to "Other Software" tab
 # Remove ANY provider that contains "gis" within URL 
 
@@ -165,22 +194,27 @@
 </code></pre>
 <p><img src="https://github.com/udsleeds/openinfraresults/releases/download/v0.1/Screenshot.from.2022-06-22.11-08-05.png"></p>
 <p><br><br></p>
-<p>Now we have removed QGIS from providers, we must purge our system of any QGIS files:</p>
+<p>Now we have removed QGIS from providers, we must purge our system of
+any QGIS files:</p>
 <pre><code>&gt; sudo apt purge qgis* python-qgis* --auto-remove
 # Then enter your password
 # Type 'y' then hit Enter</code></pre>
-<p><br><br> Now we have removed QGIS, we must update our repository to be able to download QGIS stable:</p>
+<p><br><br> Now we have removed QGIS, we must update our repository to
+be able to download QGIS stable:</p>
 <pre><code># Need to add the repository that we can download stable QGIS from:
 &gt; sudo add-apt-repository ppa:ubuntugis/ppa
 # Hit enter</code></pre>
-<p><br><br> Now we need to refresh our list of repositories after adding the QGIS repo before installing QGIS:</p>
+<p><br><br> Now we need to refresh our list of repositories after adding
+the QGIS repo before installing QGIS:</p>
 <pre><code>#Now we need to refresh the list of repositories
 &gt; sudo apt-get update
 
 # Now we can reinstall QGIS
 &gt; sudo apt-get install qgis
 # Type 'y' and hit Enter</code></pre>
-<p>Congratulations, QGIS (stable) should now be re-installed! <br><br> To load QGIS, simply type <code>qgis</code> into the terminal and hit enter!</p>
+<p>Congratulations, QGIS (stable) should now be re-installed! <br><br>
+To load QGIS, simply type <code>qgis</code> into the terminal and hit
+enter!</p>
 </div>
 </div>
   </div>
