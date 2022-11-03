@@ -159,7 +159,7 @@ tmap::tm_shape(OSM_ASL) +
 
 # IDEA - Create an n meter buffer around each OSM ASL node, then count how many 
 # CiD ASL linestrings are entirely within or intersect this -  these are features
-# mapped in both instaces, the st_disjoin are features present in only one dataset.
+# mapped in both instances, the st_disjoin are features present in only one dataset.
 
 # In other words, they are complimentary datasets. 
 
