@@ -83,7 +83,7 @@ translate_options = c(
 
 # Info for locally stored england-latest.osm.pbf
 creation_date = "2022_10_04"
-GAIST_eng_latest_dir = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_eng_latest/'
+GAIST_eng_latest_dir = 'GAIST_eng_latest/'
 
 
 # Generate GAIST networks below -------------------------------------------
@@ -144,7 +144,7 @@ rnet_pct_default_network_top10 = rnet_pct_top10[region_buffer, op=st_within]
 
 
 # Save PCT routes. --------------------------------------------------------
-GAIST_network_dir = '/home/james/Desktop/LIDA_OSM_Project/openinfra/GAIST_Networks/'
+GAIST_network_dir = 'GAIST_Networks/'
 region_filename = paste0(LA_name, "_central_", region_name,"/")
 base_dir = paste0(GAIST_network_dir, region_filename)
 dir.create(base_dir, showWarnings = FALSE)
