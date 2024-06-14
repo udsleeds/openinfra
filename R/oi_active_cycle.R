@@ -49,7 +49,7 @@ oi_active_cycle = function(osm_sf, remove=FALSE){
     access %in% c('private', 'no') ~ "no",
     
     # Way must not bar cyclists
-    bicycle %in% c('no', 'private', 'ue_sidepath', 'restricted') ~ "no", 
+    bicycle %in% c('no', 'private', 'use_sidepath', 'restricted') ~ "no", 
     
     # Way must not contain "private" within the service tag
     grepl("private", service) ~ "no",
